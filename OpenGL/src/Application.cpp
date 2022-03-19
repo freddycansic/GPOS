@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include <cmath>
 
 int main(void)
 {
@@ -24,6 +25,12 @@ int main(void)
 	{
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glBegin(GL_TRIANGLES);
+		glVertex2f(-0.5f, -0.5f);
+		glVertex2f(0.0f, sqrt(3)/2);
+		glVertex2f(0.5f, -0.5f);
+		glEnd();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
