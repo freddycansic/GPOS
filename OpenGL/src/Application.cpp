@@ -36,15 +36,30 @@ int main(void)
 	if (glewInit() != GLEW_OK)
 		return -1;
 
+	float vertices[3 * 2] = {
+		-0.5f, -0.5f,
+		0.0f, 0.5f,
+		0.5f, -0.5f
+	};
+
+	// gen vertex buffer
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	// bind it
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	// push data into it
+	glBufferData(GL_ARRAY_BUFFER, 3 * 2 * sizeof(float), vertices, GL_STATIC_DRAW);
+
+	// setup vertex attribs:
+	// position
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
+
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// triangle
-		glBegin(GL_TRIANGLES);
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f(0.0f, (float) sqrt(3) / 2);
-		glVertex2f(0.5f, -0.5f);
-		glEnd();
+		// draw
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(window);
 
