@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <iostream>
-#include <memory>
 #include <string>
 
 void errorCallback(int error, const char* description)
