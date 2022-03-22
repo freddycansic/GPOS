@@ -3,3 +3,5 @@ bin/**
 OpenGL.ctb~
 OpenGL.ctb~~
 OpenGL.ctb~~~
+CppProperties.json
+*.vspx

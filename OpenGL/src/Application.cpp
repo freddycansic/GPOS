@@ -103,21 +103,16 @@ static unsigned int createProgram(const std::string& vertexSource, const std::st
 
 int main(void)
 {
-	Mat4 matrix(
+	Mat4 A(
 		1, 2, 3, 4,
 		5, 6, 7, 8,
 		9, 10, 11, 12,
 		13, 14, 15, 16
 	);
 
-	Mat4 matrix2(
-		1, 2, 3, 4,
-		5, 6, 7, 8,
-		9, 10, 11, 12,
-		13, 14, 15, 16
-	);
+	std::cout << A + A << std::endl;
 
-	
+	std::cout << A + Mat4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) << std::endl;
 
 	GLFWwindow* window;
 
