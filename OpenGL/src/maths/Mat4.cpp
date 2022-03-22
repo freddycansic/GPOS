@@ -1,5 +1,49 @@
 #include "Mat4.h"
 
+Mat4::Mat4(
+	float r1c1, float r1c2, float r1c3, float r1c4,
+	float r2c1, float r2c2, float r2c3, float r2c4,
+	float r3c1, float r3c2, float r3c3, float r3c4,
+	float r4c1, float r4c2, float r4c3, float r4c4) {
+
+	m_Data = { { // weird double brackets
+		{r1c1, r1c2, r1c3, r1c4},
+		{r2c1, r2c2, r2c3, r2c4},
+		{r3c1, r3c2, r3c3, r3c4},
+		{r4c1, r4c2, r4c3, r4c4}
+	} };
+
+}
+
+Mat4::Mat4(
+	const MATRIX_ROW& row1,
+	const MATRIX_ROW& row2,
+	const MATRIX_ROW& row3,
+	const MATRIX_ROW& row4
+)
+{
+	m_Data[0] = row1;
+	m_Data[1] = row2;
+	m_Data[2] = row3;
+	m_Data[3] = row4;
+}
+
+Mat4& Mat4::operator=(Mat4&& other) noexcept {
+	
+	if (this != &other) {
+		m_Data = std::move(other.m_Data);
+		return *this;
+	}
+	
+	return *this;
+}
+
+Mat4::Mat4(int element) {
+	for (int i = 0; i < ORDER; i++) {
+		memset(&m_Data[i], element, ORDER * sizeof(float));
+	}
+}
+
 const Mat4::MATRIX_ROW& Mat4::operator[](int index) const {
 	return m_Data[index];
 }
@@ -8,7 +52,7 @@ Mat4::MATRIX_ROW& Mat4::operator[](int index) {
 	return m_Data[index];
 }
 
-Mat4 Mat4::operator+(const Mat4& other) const {
+Mat4 Mat4::operator+(const Mat4& other) const noexcept {
 	
 	Mat4 result = Mat4();
 
@@ -21,7 +65,7 @@ Mat4 Mat4::operator+(const Mat4& other) const {
 	return result;
 }
 
-Mat4 Mat4::operator+(Mat4&& other) const { // saves on memory as we don't have to construct another matrix to store result in, instead we can steal the memory already allocated in the temporary rvalue
+Mat4 Mat4::operator+(Mat4&& other) const noexcept { // saves on memory as we don't have to construct another matrix to store result in, instead we can steal the memory already allocated in the temporary rvalue
 	for (int row = 0; row < Mat4::ORDER; row++) {
 		for (int col = 0; col < Mat4::ORDER; col++) {
 			other[row][col] = m_Data[row][col] + other[row][col];
@@ -31,7 +75,7 @@ Mat4 Mat4::operator+(Mat4&& other) const { // saves on memory as we don't have t
 	return other;
 }
 
-Mat4 Mat4::operator*(float scalar) const {
+Mat4 Mat4::operator*(float scalar) const noexcept {
 	// copy current matrix
 	Mat4 result = *this;
 	
@@ -45,7 +89,7 @@ Mat4 Mat4::operator*(float scalar) const {
 	return result;
 }
 
-Mat4 Mat4::operator*(const Mat4& other) const {
+Mat4 Mat4::operator*(const Mat4& other) const noexcept {
 	
 	Mat4 result = Mat4(0);
 
