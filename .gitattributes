@@ -1,1 +1,2 @@
 dependencies/** linguist-detectable=false
+res/shaders/** linguist-language=GLSL
