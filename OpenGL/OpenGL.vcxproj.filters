@@ -7,4 +7,8 @@
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\default.vert" />
+    <None Include="res\shaders\default.frag" />
+  </ItemGroup>
 </Project>

@@ -1,14 +1,19 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <cmath>
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 #include "maths/Mat4.h"
 
-void errorCallback(int error, const char* description)
-{
-	std::cerr << "Error: " << description << "";
+static std::string getFileContents(const std::string& filepath) {
+	
+	std::ostringstream stream;
+	stream << std::ifstream(filepath).rdbuf();
+
+	return stream.str();
 }
 
 static unsigned int compileShader(unsigned int type, const std::string& source) {
@@ -142,9 +147,6 @@ int main(void)
 		return -1;
 	}
 
-	// callbacks
-	glfwSetErrorCallback(errorCallback);
-
 	// set opengl rendering context
 	glfwMakeContextCurrent(window);
 
@@ -152,10 +154,10 @@ int main(void)
 	if (glewInit() != GLEW_OK)
 		return -1;
 
-	float vertices[3 * 2] = {
-		-0.5f, -0.5f,
-		0.0f, 0.5f,
-		0.5f, -0.5f
+	std::vector<float> vertices = {
+		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+		 0.0f,  0.5f, 0.0f, 1.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f
 	};
 
 	// gen vertex buffer
@@ -164,30 +166,18 @@ int main(void)
 	// bind it
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	// push data into it
-	glBufferData(GL_ARRAY_BUFFER, 3 * 2 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
 	// setup vertex attribs:
 	// position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)0);
+	
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)(2 * sizeof(float)));
 
-	std::string vertexSource =
-		"#version 330 core\n"
-		"\n"
-		"layout(location = 0) in vec4 position;\n"
-		"\n"
-		"void main() {\n"
-		"	gl_Position = position;\n"
-		"}\n";
-
-	std::string fragmentSource = 
-		"#version 330 core\n"
-		"\n"
-		"out vec4 color;\n"
-		"\n"
-		"void main() {\n"
-		"	color = vec4(1.0, 0.0, 1.0, 1.0);\n"
-		"}\n";
+	std::string vertexSource = getFileContents("res/shaders/default.vert");
+	std::string fragmentSource = getFileContents("res/shaders/default.frag");
 
 	unsigned int shaderProgram = createProgram(vertexSource, fragmentSource);
 	glUseProgram(shaderProgram);
