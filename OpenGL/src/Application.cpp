@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+#include "maths/Mat4.h"
+
 void errorCallback(int error, const char* description)
 {
 	std::cerr << "Error: " << description << "";
@@ -101,6 +103,22 @@ static unsigned int createProgram(const std::string& vertexSource, const std::st
 
 int main(void)
 {
+	Mat4 matrix(
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	);
+
+	Mat4 matrix2(
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	);
+
+	
+
 	GLFWwindow* window;
 
 	// initialise GLFW
