@@ -147,32 +147,44 @@ int main(void)
 	if (glewInit() != GLEW_OK)
 		return -1;
 
-	std::vector<float> vertices = {
-		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
-		 0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+	constexpr unsigned int VERTEX_LENGTH = 5;
+	constexpr unsigned int VERTEX_BUFFER_LENGTH = VERTEX_LENGTH * 4;
 
-		 0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-		 0.5f, -0.5f, 1.0f, 1.0f, 1.0f,
-		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-
+	float vertices[] = {
+		 0.5f,  0.5f, 0.0f, 0.0f, 1.0f, // top right
+		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top left
+		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, // bottom left
+		 0.5f, -0.5f, 1.0f, 1.0f, 1.0f // bottom right
 	};
 
-	// gen vertex buffer
+	constexpr unsigned int INDEX_BUFFER_LENGTH = 6;
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	// index buffer
+	unsigned int ibo;
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER_LENGTH * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	// vertex buffer
 	unsigned int buffer;
 	glGenBuffers(1, &buffer);
-	// bind it
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	// push data into it
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, VERTEX_BUFFER_LENGTH * sizeof(float), vertices, GL_STATIC_DRAW);
 
 	// setup vertex attribs:
 	// position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)0);
 	
+	// color
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)(2 * sizeof(float)));
+
 
 	std::string vertexSource = getFileContents("res/shaders/default.vert");
 	std::string fragmentSource = getFileContents("res/shaders/default.frag");
@@ -184,7 +196,7 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw
-		glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 5);
+		glDrawElements(GL_TRIANGLES, INDEX_BUFFER_LENGTH, GL_UNSIGNED_INT, nullptr);
 
 		glfwSwapBuffers(window);
 
