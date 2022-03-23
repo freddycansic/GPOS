@@ -108,28 +108,19 @@ static unsigned int createProgram(const std::string& vertexSource, const std::st
 
 int main(void)
 {
-	Mat4 A(
-		1, 2, 3, 4,
-		5, 6, 7, 8,
-		9, 10, 11, 12,
-		13, 14, 15, 16
-	);
+	//Mat4 A(
+	//	1, 2, 3, 4,
+	//	5, 6, 7, 8,
+	//	9, 10, 11, 12,
+	//	13, 14, 15, 16
+	//);
 
-	Mat4 B(
-		2, 4, 6, 8,
-		10, 12, 14, 16,
-		18, 20, 22, 24,
-		26, 28, 30, 32
-	);
-
-	std::cout << "A = " << A << std::endl;
-	std::cout << "B = " << B << std::endl;
-
-	A = std::move(B);
-
-	std::cout << "A = " << A << std::endl;
-	std::cout << "B = " << B << std::endl;
-
+	//Mat4 B(
+	//	2, 4, 6, 8,
+	//	10, 12, 14, 16,
+	//	18, 20, 22, 24,
+	//	26, 28, 30, 32
+	//);
 	
 	GLFWwindow* window;
 
@@ -138,10 +129,12 @@ int main(void)
 		return -1;
 
 	// get vidmode of primary monitor
-	const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	//const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 	// create window + context, set to 3/4 screen width + height
-	window = glfwCreateWindow(3 * vidmode->width / 4, 3 * vidmode->height / 4, "Hello World", NULL, NULL);
+	//window = glfwCreateWindow(3 * vidmode->width / 4, 3 * vidmode->height / 4, "Hello World", NULL, NULL);
+	
+	window = glfwCreateWindow(1024, 1024, "Hello, world!", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -156,8 +149,13 @@ int main(void)
 
 	std::vector<float> vertices = {
 		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-		 0.0f,  0.5f, 0.0f, 1.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f
+		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+
+		 0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+		 0.5f, -0.5f, 1.0f, 1.0f, 1.0f,
+		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+
 	};
 
 	// gen vertex buffer
@@ -186,7 +184,7 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 5);
 
 		glfwSwapBuffers(window);
 
