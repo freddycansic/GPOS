@@ -62,10 +62,11 @@ public:
 
 	Mat4& operator=(Mat4&& other) noexcept; // move assignment operator
 
-	Mat4 operator*(float scalar) const noexcept; // scalar multiplication
-	Mat4 operator*(const Mat4& other) const noexcept ; // matrix matrix multiplication
-	Mat4 operator+(const Mat4& other) const noexcept; // matrix matrix addition
-	Mat4 operator+(Mat4&& other) const noexcept; // rvalue reference
+	Mat4 operator*(float scalar) const; // scalar multiplication
+	Mat4 operator*(const Mat4& other) const; // matrix matrix multiplication
+	
+	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
+	Mat4 operator+(Mat4&& other) const; // rvalue reference
 
 	operator const char*();
 	operator std::string();

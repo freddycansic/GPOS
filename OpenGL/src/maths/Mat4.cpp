@@ -52,7 +52,7 @@ Mat4::MATRIX_ROW& Mat4::operator[](int index) {
 	return m_Data[index];
 }
 
-Mat4 Mat4::operator+(const Mat4& other) const noexcept {
+Mat4 Mat4::operator+(const Mat4& other) const {
 	
 	Mat4 result = Mat4();
 
@@ -65,7 +65,7 @@ Mat4 Mat4::operator+(const Mat4& other) const noexcept {
 	return result;
 }
 
-Mat4 Mat4::operator+(Mat4&& other) const noexcept { // saves on memory as we don't have to construct another matrix to store result in, instead we can steal the memory already allocated in the temporary rvalue
+Mat4 Mat4::operator+(Mat4&& other) const { // saves on memory as we don't have to construct another matrix to store result in, instead we can steal the memory already allocated in the temporary rvalue
 	for (int row = 0; row < Mat4::ORDER; row++) {
 		for (int col = 0; col < Mat4::ORDER; col++) {
 			other[row][col] = m_Data[row][col] + other[row][col];
@@ -75,7 +75,7 @@ Mat4 Mat4::operator+(Mat4&& other) const noexcept { // saves on memory as we don
 	return other;
 }
 
-Mat4 Mat4::operator*(float scalar) const noexcept {
+Mat4 Mat4::operator*(float scalar) const {
 	// copy current matrix
 	Mat4 result = *this;
 	
@@ -89,7 +89,7 @@ Mat4 Mat4::operator*(float scalar) const noexcept {
 	return result;
 }
 
-Mat4 Mat4::operator*(const Mat4& other) const noexcept {
+Mat4 Mat4::operator*(const Mat4& other) const {
 	
 	Mat4 result = Mat4(0);
 
@@ -126,7 +126,7 @@ Mat4::operator const char *() {
 	for (int row = 0; row < Mat4::ORDER; row++) {
 		output += "| ";
 		for (int col = 0; col < Mat4::ORDER; col++) {
-			output += m_Data[row][col];
+			output += std::to_string(m_Data[row][col]);
 		}
 		output += "|\n";
 	}

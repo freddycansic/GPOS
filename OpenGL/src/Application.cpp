@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "maths/Mat4.h"
 
 #if _WIN32
@@ -258,14 +260,6 @@ int main(void)
 		18, 20, 22, 24,
 		26, 28, 30, 32
 	);
-	
-	std::cout << A + B << std::endl;
-	std::cout << A + Mat4(
-		2, 4, 6, 8,
-		10, 12, 14, 16,
-		18, 20, 22, 24,
-		26, 28, 30, 32
-	) << std::endl;
 
 	GLFWwindow* window;
 
@@ -313,7 +307,7 @@ int main(void)
 		 0.5f, -0.5f  // bottom right
 	};
 
-	constexpr unsigned int INDEX_BUFFER_LENGTH = 6;
+	constexpr unsigned int INDEX_BUFFER_COUNT = 6;
 
 	unsigned int indices[] = {
 		0, 1, 2,
@@ -326,22 +320,14 @@ int main(void)
 	glBindVertexArray(vao);
 
 	// index buffer
-	unsigned int ibo;
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // bound vertex buffer links to bound VAO
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER_LENGTH * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	IndexBuffer ibo(indices, INDEX_BUFFER_COUNT);
 
-	// vertex buffer
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, VERTEX_BUFFER_LENGTH * sizeof(float), vertices, GL_STATIC_DRAW);
+	VertexBuffer vbo(vertices, VERTEX_BUFFER_LENGTH * sizeof(GLfloat));
 
 	// setup vertex attribs:
 	// position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)0);
-	// set attrib to currently bound VAO
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(GLfloat), (const void*)0);
 
 	std::string vertexSource = getFileContents("res/shaders/default.vert");
 	std::string fragmentSource = getFileContents("res/shaders/default.frag");
@@ -352,19 +338,22 @@ int main(void)
 	int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
 	glUniform4f(uColorLocation, 1.0f, 0.0f, 1.0f, 1.0f);
 
-	glUseProgram(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	// unbind vao before ibo
 	glBindVertexArray(0);
+	glUseProgram(0);
+	vbo.unbind();
+	// so unbinding the ibo doesn't affect the vao
+	ibo.unbind();
 
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shaderProgram);
+		
 		glBindVertexArray(vao);
 
 		// draw
-		glDrawElements(GL_TRIANGLES, INDEX_BUFFER_LENGTH, GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr);
 
 		glfwSwapBuffers(window);
 
@@ -372,8 +361,7 @@ int main(void)
 	}
 
 	// clean up resources
-	glDeleteBuffers(1, &buffer);
-	glDeleteBuffers(1, &ibo);
+	glDeleteVertexArrays(1, &vao);
 	glDeleteProgram(shaderProgram);
 
 	glfwDestroyWindow(window);
