@@ -5,11 +5,13 @@
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
+    <ClCompile Include="src\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\IndexBuffer.h" />
+    <ClInclude Include="src\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
