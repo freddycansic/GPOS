@@ -13,11 +13,13 @@
 #define RED SetConsoleTextAttribute(HANDLE, FOREGROUND_RED)
 #define ORANGE SetConsoleTextAttribute(HANDLE, FOREGROUND_RED | FOREGROUND_GREEN)
 #define YELLOW SetConsoleTextAttribute(HANDLE, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY)
+#define LIGHT_BLUE SetConsoleTextAttribute(HANDLE, FOREGROUND_BLUE  | FOREGROUND_INTENSITY)
 #define CLEAR SetConsoleTextAttribute(HANDLE, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
 #else
 #define RED
 #define ORANGE
 #define YELLOW
+#define LIGHT_BLUE
 #define CLEAR
 #endif
 
@@ -124,6 +126,17 @@ void GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 		ORANGE;
 		std::cout << severityStr;
 		break;
+
+	case GL_DEBUG_SEVERITY_LOW:
+		YELLOW;
+		std::cout << severityStr;
+		break;
+
+	case GL_DEBUG_SEVERITY_NOTIFICATION:
+		LIGHT_BLUE;
+		std::cout << severityStr;
+		break;
+
 	default:
 		std::cout << severityStr;
 	}
@@ -283,14 +296,14 @@ int main(void)
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GLDebugMessageCallback, 0);
 
-	constexpr unsigned int VERTEX_LENGTH = 5;
+	constexpr unsigned int VERTEX_LENGTH = 2;
 	constexpr unsigned int VERTEX_BUFFER_LENGTH = VERTEX_LENGTH * 4;
 
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f, 0.0f, 1.0f, // top right
-		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top left
-		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, // bottom left
-		 0.5f, -0.5f, 1.0f, 1.0f, 1.0f // bottom right
+		 0.5f,  0.5f, // top right
+		-0.5f,  0.5f, // top left
+		-0.5f, -0.5f, // bottom left
+		 0.5f, -0.5f  // bottom right
 	};
 
 	constexpr unsigned int INDEX_BUFFER_LENGTH = 6;
@@ -318,9 +331,8 @@ int main(void)
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)0);
 	
 	// color
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)(2 * sizeof(float)));
-
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)(2 * sizeof(float)));
 
 	std::string vertexSource = getFileContents("res/shaders/default.vert");
 	std::string fragmentSource = getFileContents("res/shaders/default.frag");
@@ -328,7 +340,26 @@ int main(void)
 	unsigned int shaderProgram = createProgram(vertexSource, fragmentSource);
 	glUseProgram(shaderProgram);
 
+	int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
+	float red = 0.0f, green = 0.0f, blue = 0.0f;
+
+	float lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
+		float currentTime = glfwGetTime();
+		float delta = (currentTime - lastTime);
+		lastTime = currentTime;
+
+		red += delta;
+		if (red > 1.0f) red = 0.0f;
+
+		green += delta * 2;
+		if (green > 1.0f) green = 0.0f;
+
+		blue += delta * 3;
+		if (blue > 1.0f) blue = 0.0f;
+
+		glUniform4f(uColorLocation, red, green, blue, 1.0f);
+		
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw
