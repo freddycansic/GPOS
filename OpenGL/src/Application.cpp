@@ -279,6 +279,10 @@ int main(void)
 	// create window + context, set to 3/4 screen width + height
 	//window = glfwCreateWindow(3 * vidmode->width / 4, 3 * vidmode->height / 4, "Hello World", NULL, NULL);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	// glfw core profile = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
 	window = glfwCreateWindow(1024, 1024, "Hello, world!", NULL, NULL);
 	if (!window) {
@@ -288,6 +292,9 @@ int main(void)
 
 	// set opengl rendering context
 	glfwMakeContextCurrent(window);
+
+	// vsync = true
+	glfwSwapInterval(1);
 
 	// initialise GLEW, must be called after there is a opengl rendering context
 	if (glewInit() != GLEW_OK)
@@ -313,10 +320,15 @@ int main(void)
 		0, 2, 3
 	};
 
+	// vertex array object
+	unsigned int vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
 	// index buffer
 	unsigned int ibo;
 	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // bound vertex buffer links to bound VAO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER_LENGTH * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	// vertex buffer
@@ -329,10 +341,7 @@ int main(void)
 	// position
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)0);
-	
-	// color
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(float), (const void*)(2 * sizeof(float)));
+	// set attrib to currently bound VAO
 
 	std::string vertexSource = getFileContents("res/shaders/default.vert");
 	std::string fragmentSource = getFileContents("res/shaders/default.frag");
@@ -341,26 +350,18 @@ int main(void)
 	glUseProgram(shaderProgram);
 
 	int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
-	float red = 0.0f, green = 0.0f, blue = 0.0f;
+	glUniform4f(uColorLocation, 1.0f, 0.0f, 1.0f, 1.0f);
 
-	float lastTime = glfwGetTime();
+	glUseProgram(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
 	while (!glfwWindowShouldClose(window)) {
-		float currentTime = glfwGetTime();
-		float delta = (currentTime - lastTime);
-		lastTime = currentTime;
-
-		red += delta;
-		if (red > 1.0f) red = 0.0f;
-
-		green += delta * 2;
-		if (green > 1.0f) green = 0.0f;
-
-		blue += delta * 3;
-		if (blue > 1.0f) blue = 0.0f;
-
-		glUniform4f(uColorLocation, red, green, blue, 1.0f);
-		
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaderProgram);
+		glBindVertexArray(vao);
 
 		// draw
 		glDrawElements(GL_TRIANGLES, INDEX_BUFFER_LENGTH, GL_UNSIGNED_INT, nullptr);
