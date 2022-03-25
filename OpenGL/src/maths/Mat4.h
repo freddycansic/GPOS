@@ -71,7 +71,8 @@ public:
 
 	// transformations
 	Mat4 scale(float xScale, float yScale, float zScale);
-	Mat4 rotation(float xRotate, float yRotate, float zRotate);
+	Mat4 scale(float xyzScale) { return scale(xyzScale, xyzScale, xyzScale); }
+	Mat4 rotate(float xRotate, float yRotate, float zRotate);
 	Mat4 translate(float xTranslate, float yTranslate, float zTranslate);
 
 	const float* getPtr() const { return m_Data[0].data(); }

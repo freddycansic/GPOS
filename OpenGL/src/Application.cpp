@@ -357,19 +357,25 @@ int main(void)
 	float increment = 0.95f;
 	float scaleMag = 1.0f;
 
+	LOG("Identity\n" << Mat4::identity());
+	LOG("Translated\n" << (Mat4::identity().translate(3.0f, 0, 0)));
+	LOG("Rotated\n" << Mat4::identity().rotate(0, 0, 45.0f));
+	LOG("Scaled\n" << Mat4::identity().scale(3.0f));
+
 	float lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glUseProgram(shaderProgram);
-		glBindVertexArray(vao);
-
 		// calculate deltaTime
 		float currentTime = glfwGetTime();
 		float delta = (currentTime - lastTime);
 		float lastTime = currentTime;
 
-		Mat4 transform = Mat4::identity().translate(1.0f, 0, 0).scale(0.5f, 0.5f, 1.0f).rotation(0, glfwGetTime(), 0);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaderProgram);
+		glBindVertexArray(vao);
+		
+		// translation, rotation, scale function = scale, rotate, translate matrix
+		Mat4 transform = Mat4::identity().translate(-0.5f, 0, 0).rotate(0, 0, glfwGetTime()).scale(0.3f);
 
 		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
 

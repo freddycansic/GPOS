@@ -6,6 +6,6 @@ uniform mat4 u_Transform;
 
 void main() {  
 	
-	gl_Position = position * u_Transform;  
+	gl_Position = u_Transform * position;  
 
 };
