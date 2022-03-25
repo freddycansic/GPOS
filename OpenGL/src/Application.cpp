@@ -8,6 +8,7 @@
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 #include "maths/Mat4.h"
 
 #if _WIN32
@@ -25,7 +26,6 @@
 #define LIGHT_BLUE
 #define CLEAR
 #endif
-
 
 void GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	const char* severityStr;
@@ -321,6 +321,8 @@ int main(void)
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
+	//VertexArray vao;
+
 	// index buffer
 	IndexBuffer ibo(indices, INDEX_BUFFER_COUNT);
 
@@ -340,19 +342,30 @@ int main(void)
 	int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
 	glUniform4f(uColorLocation, 1.0f, 0.0f, 1.0f, 1.0f);
 
-	// unbind vao before ibo
+	int uTransformMatLocation = glGetUniformLocation(shaderProgram, "u_Transform");
+	
+		// unbind vao before ibo
 	glBindVertexArray(0);
 	glUseProgram(0);
 	vbo.unbind();
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
+	Mat4 transform = Mat4::identity();
+	float increment = 0.05f;
+
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shaderProgram);
-		
 		glBindVertexArray(vao);
+
+		if (transform[0][0] > 3) increment = -0.05f;
+		if (transform[0][0] < 0.1) increment = 0.05f;
+
+		transform = transform * increment;
+
+		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getRawData());
 
 		// draw
 		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr);

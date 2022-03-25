@@ -7,7 +7,7 @@ class VertexArray
 public:
 	VertexArray();
 
-	void addAttrib(unsigned int index, unsigned int count, GLEnum type, bool normalised, unsigned int stride, unsigned int offset);
+	void addAttrib(unsigned int index, unsigned int count, GLenum type, bool normalised, unsigned int stride, unsigned int offset);
 	void bind() const;
 	void unbind() const;
 
