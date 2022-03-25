@@ -75,6 +75,15 @@ Mat4 Mat4::operator+(Mat4&& other) const { // saves on memory as we don't have t
 	return other;
 }
 
+Mat4 Mat4::scale(float xScale , float yScale)
+{
+	Mat4 scale = Mat4::identity();
+	scale[0][0] = scale[0][0] * xScale;
+	scale[1][1] = scale[1][1] * yScale;
+
+	return scale;
+}
+
 Mat4 Mat4::operator*(float scalar) const {
 	// copy current matrix
 	Mat4 result = *this;

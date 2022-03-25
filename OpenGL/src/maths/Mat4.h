@@ -62,11 +62,15 @@ public:
 
 	Mat4& operator=(Mat4&& other) noexcept; // move assignment operator
 
+	// mathematical operations
 	Mat4 operator*(float scalar) const; // scalar multiplication
 	Mat4 operator*(const Mat4& other) const; // matrix matrix multiplication
 	
 	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
 	Mat4 operator+(Mat4&& other) const; // rvalue reference
+
+	// transformations
+	static Mat4 scale(float x, float y);
 
 	const float* getPtr() const { return m_Data[0].data();  }
 
