@@ -11,6 +11,8 @@
 #include "VertexArray.h"
 #include "maths/Mat4.h"
 
+#define LOG(x) std::cout << x << std::endl
+
 #if _WIN32
 #include <Windows.h>
 #define HANDLE GetStdHandle(STD_OUTPUT_HANDLE)
@@ -352,7 +354,7 @@ int main(void)
 	ibo.unbind();
 
 	Mat4 transform = Mat4::identity();
-	float increment = 0.05f;
+	float increment = 0.95f;
 
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -360,12 +362,13 @@ int main(void)
 		glUseProgram(shaderProgram);
 		glBindVertexArray(vao);
 
-		if (transform[0][0] > 3) increment = -0.05f;
-		if (transform[0][0] < 0.1) increment = 0.05f;
+		if (transform[0][0] > 1) increment = 0.95f;
+		if (transform[0][0] < 0.2) increment = 1.05f;
 
-		transform = transform * increment;
+		transform[0][0] = transform[0][0] * increment;
+		transform[1][1] = transform[1][1] * increment;
 
-		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getRawData());
+		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
 
 		// draw
 		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr);

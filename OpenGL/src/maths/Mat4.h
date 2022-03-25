@@ -68,7 +68,7 @@ public:
 	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
 	Mat4 operator+(Mat4&& other) const; // rvalue reference
 
-	const float* getRawData() const { return m_Data[0].data();  }
+	const float* getPtr() const { return m_Data[0].data();  }
 
 	operator const char*();
 	operator std::string();
