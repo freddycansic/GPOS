@@ -75,13 +75,50 @@ Mat4 Mat4::operator+(Mat4&& other) const { // saves on memory as we don't have t
 	return other;
 }
 
-Mat4 Mat4::scale(float xScale , float yScale)
+Mat4 Mat4::scale(float xScale , float yScale, float zScale)
 {
-	Mat4 scale = Mat4::identity();
-	scale[0][0] = scale[0][0] * xScale;
-	scale[1][1] = scale[1][1] * yScale;
+	return Mat4 (
+		xScale, 0, 0, 0,
+		0, yScale, 0, 0,
+		0, 0, zScale, 0,
+		0, 0, 0, 1
+	);
+}
 
-	return scale;
+Mat4 Mat4::rotation(float xRotate, float yRotate, float zRotate)
+{
+	return (
+		Mat4 (
+		1, 0, 0, 0,
+		0, cos(xRotate), -sin(xRotate), 0,
+		0, sin(xRotate), cos(xRotate), 0,
+		0, 0, 0, 1) 
+		
+		*
+		
+		Mat4 (
+		cos(yRotate), 0, sin(yRotate), 0,
+		0, 1, 0, 0,
+		-sin(yRotate), 0, cos(yRotate), 0,
+		0, 0, 0, 1) 
+		
+		*
+		
+		Mat4 (
+		cos(zRotate), -sin(zRotate), 0, 0,
+		sin(zRotate), cos(zRotate), 0, 0,
+		0, 0, 1, 1,
+		0, 0, 0, 1) 
+	);
+}
+
+Mat4 Mat4::translate(float xTranslate, float yTranslate, float zTranslate) {
+	return Mat4(
+		1, 0, 0, xTranslate,
+		0, 1, 0, yTranslate,
+		0, 0, 1, zTranslate,
+		0, 0, 0, 1
+	);
 }
 
 Mat4 Mat4::operator*(float scalar) const {

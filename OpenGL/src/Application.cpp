@@ -354,9 +354,8 @@ int main(void)
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
-	Mat4 scale = Mat4::identity();
 	float increment = 0.95f;
-	float angle = 0.0f;
+	float scaleMag = 1.0f;
 
 	float lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
@@ -370,31 +369,7 @@ int main(void)
 		float delta = (currentTime - lastTime);
 		float lastTime = currentTime;
 
-		// scale x and y positions
-		if (scale[0][0] > 1) increment = 0.95f;
-		if (scale[0][0] < 0.2) increment = 1.05f;
-
-		scale = Mat4::scale(increment, increment);
-
-		//scale[0][0] = scale[0][0] * increment;
-		//scale[1][1] = scale[1][1] * increment;
-		
-		// calculate rotation matrix on Y axis
-		angle += delta;
-		if (angle == 360) angle = 0;
-
-		LOG(angle);
-
-		Mat4 rotation(
-			cos(angle), 0, sin(angle), 0,
-			0, 1, 0, 0,
-			-sin(angle), 0, cos(angle), 0,
-			0, 0, 0, 1
-		);
-
-		// combine matrices
-		Mat4 transform = scale * rotation;
-		//Mat4 transform = scale;
+		Mat4 transform = Mat4::identity().translate(1.0f, 0, 0).scale(0.5f, 0.5f, 1.0f).rotation(0, glfwGetTime(), 0);
 
 		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
 
