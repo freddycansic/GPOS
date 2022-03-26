@@ -10,6 +10,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
+#include "Shader.h"
 #include "maths/Mat4.h"
 
 #define LOG(x) std::cout << x << std::endl
@@ -337,6 +338,8 @@ int main(void)
 	//glEnableVertexAttribArray(0);
 	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(GLfloat), (const void*)0);
 
+	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
+
 	std::string vertexSource = getFileContents("res/shaders/default.vert");
 	std::string fragmentSource = getFileContents("res/shaders/default.frag");
 
@@ -356,21 +359,26 @@ int main(void)
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
+	float xTranslate = 0.0f, increment = 0.05f;
+
 	float lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		// calculate deltaTime
+		
 		float currentTime = glfwGetTime();
-		float delta = (currentTime - lastTime);
-		float lastTime = currentTime;
+		float delta = currentTime - lastTime;
+		lastTime = currentTime;	
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shaderProgram);
 		vao.bind();
 
+		if (xTranslate > 1.0f || xTranslate < -1.0f) increment *= -1;
+		xTranslate += increment * delta * 50;
+
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 transform = Mat4::identity().translate(-0.5f, 0, 0).rotate(0, 0, glfwGetTime()).scale(0.3f);
-		
+		Mat4 transform = Mat4::identity().translate(xTranslate, xTranslate, 0).rotate(0, 0, currentTime).scale(0.3f);
 		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
 
 		// draw
