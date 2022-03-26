@@ -1,13 +1,16 @@
 #pragma once
 
 #include <GL/glew.h>
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 
 class VertexArray
 {
 public:
 	VertexArray();
+	~VertexArray();
 
-	void addAttrib(unsigned int index, unsigned int count, GLenum type, bool normalised, unsigned int stride, unsigned int offset);
+	void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout);
 	void bind() const;
 	void unbind() const;
 

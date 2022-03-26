@@ -9,6 +9,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "VertexBufferLayout.h"
 #include "maths/Mat4.h"
 
 #define LOG(x) std::cout << x << std::endl
@@ -304,7 +305,7 @@ int main(void)
 	constexpr unsigned int VERTEX_LENGTH = 2;
 	constexpr unsigned int VERTEX_BUFFER_LENGTH = VERTEX_LENGTH * 4;
 
-	float vertices[] = {
+	GLfloat vertices[] = {
 		 0.5f,  0.5f, // top right
 		-0.5f,  0.5f, // top left
 		-0.5f, -0.5f, // bottom left
@@ -313,27 +314,28 @@ int main(void)
 
 	constexpr unsigned int INDEX_BUFFER_COUNT = 6;
 
-	unsigned int indices[] = {
+	GLuint indices[] = {
 		0, 1, 2,
 		0, 2, 3
 	};
 
 	// vertex array object
-	unsigned int vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	//VertexArray vao;
-
-	// index buffer
-	IndexBuffer ibo(indices, INDEX_BUFFER_COUNT);
+	VertexArray vao;
 
 	VertexBuffer vbo(vertices, VERTEX_BUFFER_LENGTH * sizeof(GLfloat));
 
 	// setup vertex attribs:
 	// position
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(GLfloat), (const void*)0);
+	VertexBufferLayout layout;
+	layout.addElement<GLfloat>(2, false);
+
+	vao.addBuffer(vbo, layout);
+
+	// index buffer
+	IndexBuffer ibo(indices, INDEX_BUFFER_COUNT);
+
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(GLfloat), (const void*)0);
 
 	std::string vertexSource = getFileContents("res/shaders/default.vert");
 	std::string fragmentSource = getFileContents("res/shaders/default.frag");
@@ -348,19 +350,11 @@ int main(void)
 	int uTransformMatLocation = glGetUniformLocation(shaderProgram, "u_Transform");
 	
 	// unbind vao before ibo
-	glBindVertexArray(0);
+	vao.unbind();
 	glUseProgram(0);
 	vbo.unbind();
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
-
-	float increment = 0.95f;
-	float scaleMag = 1.0f;
-
-	LOG("Identity\n" << Mat4::identity());
-	LOG("Translated\n" << (Mat4::identity().translate(3.0f, 0, 0)));
-	LOG("Rotated\n" << Mat4::identity().rotate(0, 0, 45.0f));
-	LOG("Scaled\n" << Mat4::identity().scale(3.0f));
 
 	float lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
@@ -372,11 +366,11 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shaderProgram);
-		glBindVertexArray(vao);
-		
+		vao.bind();
+
 		// translation, rotation, scale function = scale, rotate, translate matrix
 		Mat4 transform = Mat4::identity().translate(-0.5f, 0, 0).rotate(0, 0, glfwGetTime()).scale(0.3f);
-
+		
 		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
 
 		// draw
@@ -388,7 +382,7 @@ int main(void)
 	}
 
 	// clean up resources
-	glDeleteVertexArrays(1, &vao);
+	//glDeleteVertexArrays(1, &vao);
 	glDeleteProgram(shaderProgram);
 
 	glfwDestroyWindow(window);

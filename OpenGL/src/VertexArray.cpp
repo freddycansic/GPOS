@@ -1,13 +1,26 @@
 #include "VertexArray.h"
 
-VertexArray::VertexArray() {
+#include <iostream>
 
+VertexArray::VertexArray() {
+	glGenVertexArrays(1, &m_ID);
+	glBindVertexArray(m_ID);
 }
 
-void VertexArray::addAttrib(unsigned int index, unsigned int count, GLenum type, bool normalised, unsigned int stride, unsigned int offset) {
+void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) {
+	this->bind();
+	buffer.bind();
+	// for each element in the layout add it
+	unsigned int index = 0, offset = 0;
+	for (const auto& element : layout.getElements()) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, element.count, element.type, element.normalised ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)offset);
+		
+		std::cout << "index = " << index << " count = " << element.count << " normalised = " << element.normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
 
-	glEnableVertexAttribArray(index);
-	
+		offset += element.size;
+		index++;
+	}
 }
 
 void VertexArray::bind() const
@@ -18,4 +31,8 @@ void VertexArray::bind() const
 void VertexArray::unbind() const
 {
 	glBindVertexArray(0);
+}
+
+VertexArray::~VertexArray() {
+	glDeleteVertexArrays(1, &m_ID);
 }
