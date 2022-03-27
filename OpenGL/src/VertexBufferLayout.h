@@ -50,7 +50,7 @@ public:
 	void addElement<GLbyte>(unsigned int count, bool normalised) {
 		unsigned int size = count * sizeof(GLbyte);
 
-		m_Elements.push_back({ GL_UNSIGNED_BYTE, count, size, normalised});
+		m_Elements.push_back({ GL_UNSIGNED_BYTE, count, size, true});
 		m_Stride += size;
 	}
 

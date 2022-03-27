@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <sstream>
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -12,9 +10,9 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "Renderer.h"
+#include "Texture.h"
+#include "Window.h"
 #include "maths/Mat4.h"
-
-#define LOG(x) std::cout << x << std::endl
 
 #if _WIN32
 #include <Windows.h>
@@ -170,29 +168,7 @@ int main(void)
 	//	26, 28, 30, 32
 	//);
 
-	GLFWwindow* window;
-
-	// initialise GLFW
-	if (!glfwInit())
-		return -1;
-
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	// glfw core profile = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
-
-	window = glfwCreateWindow(1024, 1024, "Hello, world!", NULL, NULL);
-	if (!window) {
-		glfwTerminate();
-		return -1;
-	}
-
-	// set opengl rendering context
-	glfwMakeContextCurrent(window);
-
-	// vsync = true
-	glfwSwapInterval(1);
+	Window window(1024, 1024, "Hello, world!");
 
 	// initialise GLEW, must be called after there is a opengl rendering context
 	if (glewInit() != GLEW_OK)
@@ -201,53 +177,62 @@ int main(void)
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GLDebugMessageCallback, 0);
 
-	constexpr unsigned int VERTEX_LENGTH = 2;
-	constexpr unsigned int VERTEX_BUFFER_LENGTH = VERTEX_LENGTH * 4;
+	//GLfloat vertices[] = {
+	//	 0.5f,  0.5f, // top right
+	//	-0.5f,  0.5f, // top left
+	//	- 0.5f, -0.5f, // bottom left
+	//	 0.5f, -0.5f// bottom right
+	//};
 
 	GLfloat vertices[] = {
-		 0.5f,  0.5f, // top right
-		-0.5f,  0.5f, // top left
-		-0.5f, -0.5f, // bottom left
-		 0.5f, -0.5f  // bottom right
+		 0.5f,  0.5f, 1.0f, 1.0f, // top right
+		-0.5f,  0.5f, 0.0f, 1.0f  // top left
+		-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+		 0.5f, -0.5f, 1.0f, 0.0f, // bottom right
 	};
 
-	constexpr unsigned int INDEX_BUFFER_COUNT = 6;
+	constexpr unsigned int VERTEX_LENGTH = 4; // 4 floats per vertex
+	constexpr unsigned int VERTICES_COUNT = VERTEX_LENGTH * 4; // 4 vertices total
 
 	GLuint indices[] = {
 		0, 1, 2,
 		0, 2, 3
 	};
 
-	VertexArray vao;
+	constexpr unsigned int INDEX_BUFFER_COUNT = 6;
 
-	VertexBuffer vbo(vertices, VERTEX_BUFFER_LENGTH * sizeof(GLfloat));
+	VertexArray vao;
+	VertexBuffer vbo(vertices, VERTICES_COUNT * sizeof(GLfloat));
+	IndexBuffer ibo(indices, GL_UNSIGNED_INT, INDEX_BUFFER_COUNT);
 
 	VertexBufferLayout layout;
+	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(2, false);
 
 	vao.addBuffer(vbo, layout);
 
-	IndexBuffer ibo(indices, GL_UNSIGNED_INT, INDEX_BUFFER_COUNT);
-
 	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
 	shader.bind();
 
-	shader.setUniform4f("u_Color", 1.0f, 0.0f, 1.0f, 1.0f);
+	Texture texture("res/textures/image.png");
+	texture.bind(); // default no params = texture slot 0
+
+	// texture is bound to slot 0
+	shader.setUniform1i("u_Texture", 0);
+	
+	Renderer r;
 
 	// unbind vao before ibo
 	vao.unbind();
-	//glUseProgram(0);
 	shader.unbind();
 	vbo.unbind();
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
-	Renderer r;
-
 	float xTranslate = 0.0f, increment = 0.05f;
 
 	float lastTime = glfwGetTime();
-	while (!glfwWindowShouldClose(window)) {
+	while (!window.shouldClose()) {
 		// calculate deltaTime
 		float currentTime = glfwGetTime();
 		float delta = currentTime - lastTime;
@@ -267,14 +252,8 @@ int main(void)
 		// draw
 		r.draw(vao, ibo, shader);
 
-		glfwSwapBuffers(window);
-
-		glfwPollEvents();
+		window.update();
 	}
-
-	// clean up resources
-	glfwDestroyWindow(window);
-	glfwTerminate();
 
 	return 0;
 }

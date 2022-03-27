@@ -35,10 +35,19 @@ void Shader::findAndAddUniforms(const std::string& source) {
 	for (unsigned int i = 0; i < tokens.size(); i++) {
 		std::string token = tokens[i];
 
-		if (token == "uniform") {					// remove semi-colon at the end of token
-			std::string uniformName = tokens[i + 2].substr(0, tokens[i+2].size()-1);
-			//m_Uniforms.push_back({ uniformName, glGetUniformLocation(m_ID, uniformName.c_str()) });
-			m_Uniforms[uniformName] = glGetUniformLocation(m_ID, uniformName.c_str());
+		if (token == "uniform") {
+			std::string uniformName = tokens[i + 2];
+
+			if (uniformName.at(uniformName.size() - 1) == ';')
+				uniformName = uniformName.substr(0, uniformName.size() - 1);
+
+			int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
+			
+			if (uniformLocation == -1) {
+				std::cout << "Uniform not found (-1)" << std::endl;
+			}
+			
+			m_Uniforms[uniformName] = uniformLocation;
 		}
 	}
 
@@ -47,12 +56,17 @@ void Shader::findAndAddUniforms(const std::string& source) {
 void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
 	glUniform4f(m_Uniforms[name], v0, v1, v2, v3);
-	// unordered map operator[] is O(1)
+	// unordered map operator[] is O(1) so this is fine
 }
 
 void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
 	glUniformMatrix4fv(m_Uniforms[name], 1, GL_TRUE, matrix.getPtr());
+}
+
+void Shader::setUniform1i(const std::string& name, int value) {
+	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
+	glUniform1i(m_Uniforms[name], value);
 }
 
 
@@ -154,12 +168,6 @@ Shader::Shader(const std::string& vertexShaderSourceDir, const std::string& frag
 
 	findAndAddUniforms(vertexShaderSource);
 	findAndAddUniforms(fragmentShaderSource);
-
-	std::cout << m_Uniforms << std::endl;
-
-	//for (const auto& uniform : m_Uniforms) {
-	//	std::cout << uniform << std::endl;
-	//}
 }
 
 void Shader::bind() const {

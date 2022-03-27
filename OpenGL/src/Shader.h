@@ -23,6 +23,7 @@ public:
 	Shader(const std::string& vertexShaderSourceDir, const std::string& fragmentShaderSourceDir);
 	~Shader();
 	
+	void setUniform1i(const std::string& name, int value);
 	void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4);
 	void setUniformMat4(const std::string& name, const Mat4& matrix);
 
