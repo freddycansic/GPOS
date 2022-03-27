@@ -11,6 +11,7 @@
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
 #include "Shader.h"
+#include "Renderer.h"
 #include "maths/Mat4.h"
 
 #define LOG(x) std::cout << x << std::endl
@@ -153,104 +154,6 @@ void GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 	std::cout << "* [" << sourceStr << "] (" << typeStr << "): " << message << std::endl;
 }
 
-static std::string getFileContents(const std::string& filepath) {
-	
-	std::ostringstream stream;
-	stream << std::ifstream(filepath).rdbuf();
-
-	return stream.str();
-}
-
-static unsigned int compileShader(unsigned int type, const std::string& source) {
-	// generate shader
-	unsigned int id = glCreateShader(type);
-	
-	// link shader with its source code
-	const char* charSource = source.c_str();
-	glShaderSource(id, 1, &charSource, nullptr);
-	
-	// compile shader with source code into executable program to be run on gpu
-	glCompileShader(id);
-
-	// store value of GL_COMPILE_STATUS in result
-	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-	if (result == GL_FALSE) { // if it failed
-		std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader." << std::endl;
-		
-		// get length of the shader info log
-		int length;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		
-		// allocate block of memory on the STACK dynamically, then cast to char pointer
-		char* message = (char*)alloca(length * sizeof(char));
-		glGetShaderInfoLog(id, length, &length, message);
-		
-		std::cout << message << std::endl;
-
-		return 0;
-	}
-
-	return id;
-}
-
-static unsigned int createProgram(const std::string& vertexSource, const std::string& fragmentSource) {
-
-	// generate program
-	unsigned int program = glCreateProgram();
-	
-	// generate shaders
-	unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
-	unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
-
-	// attach shaders to program
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-	
-	// link program + error check
-	glLinkProgram(program);
-	
-	int result;
-	glGetProgramiv(program, GL_LINK_STATUS, &result);
-	if (result == GL_FALSE) {
-		std::cout << "Failed to link program" << std::endl;
-
-		int length;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-
-		char* message = (char*)alloca(length * sizeof(char));
-		glGetProgramInfoLog(program, length, &length, message);
-
-		std::cout << message << std::endl;
-
-		return 0;
-	}
-
-	// validate program + error check
-	glValidateProgram(program);
-
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &result);
-	if (result == GL_FALSE) {
-		std::cout << "Failed to validate program" << std::endl;
-
-		int length;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-
-		char* message = (char*)alloca(length * sizeof(char));
-		glGetProgramInfoLog(program, length, &length, message);
-
-		std::cout << message << std::endl;
-
-		return 0;
-	}
-
-	// delete shaders as they are no longer needed as they are contained in the program
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return program;
-}
-
 int main(void)
 {
 	//Mat4 A(
@@ -273,11 +176,6 @@ int main(void)
 	if (!glfwInit())
 		return -1;
 
-	// get vidmode of primary monitor
-	//const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-	// create window + context, set to 3/4 screen width + height
-	//window = glfwCreateWindow(3 * vidmode->width / 4, 3 * vidmode->height / 4, "Hello World", NULL, NULL);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -320,42 +218,22 @@ int main(void)
 		0, 2, 3
 	};
 
-	// vertex array object
 	VertexArray vao;
 
 	VertexBuffer vbo(vertices, VERTEX_BUFFER_LENGTH * sizeof(GLfloat));
 
-	// setup vertex attribs:
-	// position
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(2, false);
 
 	vao.addBuffer(vbo, layout);
 
-	// index buffer
-	IndexBuffer ibo(indices, INDEX_BUFFER_COUNT);
-
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_LENGTH * sizeof(GLfloat), (const void*)0);
+	IndexBuffer ibo(indices, GL_UNSIGNED_INT, INDEX_BUFFER_COUNT);
 
 	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
-
-	//std::string vertexSource = getFileContents("res/shaders/default.vert");
-	//std::string fragmentSource = getFileContents("res/shaders/default.frag");
-
-	//unsigned int shaderProgram = createProgram(vertexSource, fragmentSource);
-	//glUseProgram(shaderProgram);
-
 	shader.bind();
-
-	// color uniform
-	//int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
-	//glUniform4f(uColorLocation, 1.0f, 0.0f, 1.0f, 1.0f);
 
 	shader.setUniform4f("u_Color", 1.0f, 0.0f, 1.0f, 1.0f);
 
-	//int uTransformMatLocation = glGetUniformLocation(shaderProgram, "u_Transform");
-	
 	// unbind vao before ibo
 	vao.unbind();
 	//glUseProgram(0);
@@ -364,32 +242,30 @@ int main(void)
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
+	Renderer r;
+
 	float xTranslate = 0.0f, increment = 0.05f;
 
 	float lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		// calculate deltaTime
-		
 		float currentTime = glfwGetTime();
 		float delta = currentTime - lastTime;
 		lastTime = currentTime;	
 
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		//glUseProgram(shaderProgram);
-		shader.bind();
-		vao.bind();
-
+		r.clear();
+		
 		if (xTranslate > 1.0f || xTranslate < -1.0f) increment *= -1;
 		xTranslate += increment * delta * 50;
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 transform = Mat4::identity().translate(xTranslate, xTranslate, 0).rotate(0, 0, currentTime).scale(0.3f);
-		//glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
+		Mat4 transform = Mat4::identity().translate(xTranslate, 0, 0).rotate(0, 0, currentTime).scale(0.3f);
+
+		shader.bind();
 		shader.setUniformMat4("u_Transform", transform);
 
 		// draw
-		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr);
+		r.draw(vao, ibo, shader);
 
 		glfwSwapBuffers(window);
 
@@ -397,9 +273,6 @@ int main(void)
 	}
 
 	// clean up resources
-	//glDeleteVertexArrays(1, &vao);
-	//glDeleteProgram(shaderProgram);
-
 	glfwDestroyWindow(window);
 	glfwTerminate();
 

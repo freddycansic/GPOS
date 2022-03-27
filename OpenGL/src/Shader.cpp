@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-std::ostream& operator<<(std::ostream& os, const std::map<std::string, int>& map) {
+std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& element : map) {
 		std::string key = element.first;
 		int value = element.second;
@@ -47,6 +47,7 @@ void Shader::findAndAddUniforms(const std::string& source) {
 void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
 	glUniform4f(m_Uniforms[name], v0, v1, v2, v3);
+	// unordered map operator[] is O(1)
 }
 
 void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) {
