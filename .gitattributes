@@ -1,3 +1,2 @@
 dependencies/** linguist-detectable=false
 res/shaders/** linguist-language=GLSL
-snippets/** linguist-language="Visual Studio Snippet"
