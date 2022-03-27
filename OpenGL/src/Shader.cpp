@@ -3,8 +3,13 @@
 #include <fstream>
 #include <sstream>
 
-std::ostream& operator<<(std::ostream& os, const Uniform& uniform) {
-	os << "Name = \"" << uniform.name << "\" Location = " << uniform.location;
+std::ostream& operator<<(std::ostream& os, const std::map<std::string, int>& map) {
+	for (const auto& element : map) {
+		std::string key = element.first;
+		int value = element.second;
+
+		os << "Name = " << key << " Location = " << value << "\n";
+	}
 	return os;
 }
 
@@ -32,11 +37,23 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 		if (token == "uniform") {					// remove semi-colon at the end of token
 			std::string uniformName = tokens[i + 2].substr(0, tokens[i+2].size()-1);
-			m_Uniforms.push_back({ uniformName, glGetUniformLocation(m_ID, uniformName.c_str()) });
+			//m_Uniforms.push_back({ uniformName, glGetUniformLocation(m_ID, uniformName.c_str()) });
+			m_Uniforms[uniformName] = glGetUniformLocation(m_ID, uniformName.c_str());
 		}
 	}
 
 }
+
+void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
+	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
+	glUniform4f(m_Uniforms[name], v0, v1, v2, v3);
+}
+
+void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) {
+	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
+	glUniformMatrix4fv(m_Uniforms[name], 1, GL_TRUE, matrix.getPtr());
+}
+
 
 unsigned int compileShader(unsigned int type, const std::string& source) {
 	// generate shader
@@ -137,9 +154,11 @@ Shader::Shader(const std::string& vertexShaderSourceDir, const std::string& frag
 	findAndAddUniforms(vertexShaderSource);
 	findAndAddUniforms(fragmentShaderSource);
 
-	for (const auto& uniform : m_Uniforms) {
-		std::cout << uniform << std::endl;
-	}
+	std::cout << m_Uniforms << std::endl;
+
+	//for (const auto& uniform : m_Uniforms) {
+	//	std::cout << uniform << std::endl;
+	//}
 }
 
 void Shader::bind() const {

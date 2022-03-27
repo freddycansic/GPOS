@@ -340,21 +340,26 @@ int main(void)
 
 	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
 
-	std::string vertexSource = getFileContents("res/shaders/default.vert");
-	std::string fragmentSource = getFileContents("res/shaders/default.frag");
+	//std::string vertexSource = getFileContents("res/shaders/default.vert");
+	//std::string fragmentSource = getFileContents("res/shaders/default.frag");
 
-	unsigned int shaderProgram = createProgram(vertexSource, fragmentSource);
-	glUseProgram(shaderProgram);
+	//unsigned int shaderProgram = createProgram(vertexSource, fragmentSource);
+	//glUseProgram(shaderProgram);
+
+	shader.bind();
 
 	// color uniform
-	int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
-	glUniform4f(uColorLocation, 1.0f, 0.0f, 1.0f, 1.0f);
+	//int uColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
+	//glUniform4f(uColorLocation, 1.0f, 0.0f, 1.0f, 1.0f);
 
-	int uTransformMatLocation = glGetUniformLocation(shaderProgram, "u_Transform");
+	shader.setUniform4f("u_Color", 1.0f, 0.0f, 1.0f, 1.0f);
+
+	//int uTransformMatLocation = glGetUniformLocation(shaderProgram, "u_Transform");
 	
 	// unbind vao before ibo
 	vao.unbind();
-	glUseProgram(0);
+	//glUseProgram(0);
+	shader.unbind();
 	vbo.unbind();
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
@@ -371,7 +376,8 @@ int main(void)
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
+		//glUseProgram(shaderProgram);
+		shader.bind();
 		vao.bind();
 
 		if (xTranslate > 1.0f || xTranslate < -1.0f) increment *= -1;
@@ -379,7 +385,8 @@ int main(void)
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
 		Mat4 transform = Mat4::identity().translate(xTranslate, xTranslate, 0).rotate(0, 0, currentTime).scale(0.3f);
-		glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
+		//glUniformMatrix4fv(uTransformMatLocation, 1, GL_TRUE, transform.getPtr());
+		shader.setUniformMat4("u_Transform", transform);
 
 		// draw
 		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr);
@@ -391,7 +398,7 @@ int main(void)
 
 	// clean up resources
 	//glDeleteVertexArrays(1, &vao);
-	glDeleteProgram(shaderProgram);
+	//glDeleteProgram(shaderProgram);
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
