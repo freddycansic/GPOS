@@ -1,3 +1,3 @@
 dependencies/** linguist-detectable=false
 res/shaders/** linguist-language=GLSL
-src/stb_image/stb_image.h linguist-detectable=false
+src/stb_image/** linguist-detectable=false
