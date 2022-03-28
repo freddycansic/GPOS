@@ -217,7 +217,7 @@ int main(void)
 	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
 	shader.bind();
 
-	Texture texture("res/textures/image.png");
+	Texture texture("res/textures/kali.png");
 	texture.bind(); // default no params = texture slot 0
 
 	// texture is bound to slot 0
