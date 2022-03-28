@@ -15,7 +15,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string& title
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// glfw core profile = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
-	m_ID = glfwCreateWindow(1024, 1024, "Hello, world!", NULL, NULL);
+	m_ID = glfwCreateWindow(width, height, "Hello, world!", NULL, NULL);
 	if (!m_ID) {
 		glfwTerminate();
 		std::cout << "Failed to create window!" << std::endl;;

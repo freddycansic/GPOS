@@ -45,7 +45,7 @@ public:
 	Mat4(MATRIX_DATA&& data) noexcept : m_Data(std::move(data)) {}
 
 	// not sure if i need to set other.m_Data to null or not
-	Mat4(Mat4&& other) : m_Data(std::move(other.m_Data)) {}
+	Mat4(Mat4&& other) noexcept : m_Data(std::move(other.m_Data)) {}
 
 	// gross
 	static Mat4 identity() {
@@ -75,9 +75,11 @@ public:
 	Mat4 rotate(float xRotate, float yRotate, float zRotate);
 	Mat4 translate(float xTranslate, float yTranslate, float zTranslate);
 
+	// projection
+	static Mat4 ortho(float left, float right, float top, float bottom, float near = -1.0f, float far = 1.0f);
+
 	const float* getPtr() const { return m_Data[0].data(); }
 
-	operator const char*();
 	operator std::string();
 	friend std::ostream& operator<<(std::ostream& os, const Mat4& matrix);
 

@@ -169,6 +169,16 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 	return result;
 }
 
+
+Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, float far) {
+	return Mat4(
+		2 / (right - left), 0, 0, 0,
+		0, 2 / (top - bottom), 0, 0,
+		0, 0, -2 / (far - near), 0,
+	-(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1
+	);
+}
+
 std::ostream& operator<<(std::ostream& os, const Mat4& matrix) {
 	for (int row = 0; row < Mat4::ORDER; row++) {
 		os << "| ";
@@ -180,19 +190,6 @@ std::ostream& operator<<(std::ostream& os, const Mat4& matrix) {
 
 	return os;
 };
-
-Mat4::operator const char *() {
-	std::string output;
-	for (int row = 0; row < Mat4::ORDER; row++) {
-		output += "| ";
-		for (int col = 0; col < Mat4::ORDER; col++) {
-			output += std::to_string(m_Data[row][col]);
-		}
-		output += "|\n";
-	}
-
-	return output.c_str();
-}
 
 Mat4::operator std::string() {
 	std::string output;

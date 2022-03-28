@@ -176,7 +176,7 @@ int main(void)
 	//	26, 28, 30, 32
 	//);
 
-	Window window(1024, 1024, "Hello, world!");
+	Window window(1920, 1080, "Hello, world!");
 
 	// initialise GLEW, must be called after there is a opengl rendering context
 	if (glewInit() != GLEW_OK)
@@ -243,14 +243,16 @@ int main(void)
 
 		r.clear();
 		
-		if (xTranslate > 1.0f || xTranslate < -1.0f) increment *= -1;
+		if (xTranslate > 8 || xTranslate < -8) increment *= -1;
 		xTranslate += increment * delta * 50;
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 transform = Mat4::identity().translate(xTranslate, 0, 0).rotate(0, 0, currentTime).scale(0.3f);
+		Mat4 model = Mat4::identity().translate(xTranslate, 0.0f, 0.0f).rotate(0, 0, currentTime);
+
+		Mat4 proj = Mat4::ortho(-8, 8, -4.5f, 4.5f);
 
 		shader.bind();
-		shader.setUniformMat4("u_ModelViewProj", transform);
+		shader.setUniformMat4("u_ModelViewProj", proj * model);
 
 		// draw
 		vao.bind();
