@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
 
-IndexBuffer::IndexBuffer(const void* data, GLenum type, unsigned int count)
+IndexBuffer::IndexBuffer(const void* data, GLenum type, size_t count)
 	: m_Count(count), m_Type(type) 
 {
 	

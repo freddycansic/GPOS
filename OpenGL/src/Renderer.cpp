@@ -12,7 +12,7 @@ void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader
 	vao.bind();
 	ibo.bind();
 
-	glDrawElements(GL_TRIANGLES, ibo.getCount(), ibo.getType(), nullptr);
+	glDrawElements(GL_TRIANGLES, (GLsizei) ibo.getCount(), ibo.getType(), nullptr);
 
 }
 

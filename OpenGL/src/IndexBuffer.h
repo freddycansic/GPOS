@@ -5,17 +5,17 @@
 class IndexBuffer
 {
 public:
-	IndexBuffer(const void* data, GLenum type, unsigned int count);
+	IndexBuffer(const void* data, GLenum type, size_t count);
 	~IndexBuffer();
 	void bind() const;
 	void unbind() const;
 
-	unsigned int getCount() const { return m_Count; }
+	size_t getCount() const { return m_Count; }
 	GLenum getType() const { return m_Type; }
 
 private:
 	unsigned int m_ID;
-	unsigned int m_Count;
+	size_t m_Count;
 	GLenum m_Type;
 };
 

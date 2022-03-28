@@ -155,7 +155,7 @@ void GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 }
 
 struct Vertex {
-	static constexpr unsigned int length = 4;
+	static constexpr size_t length = 4;
 	Vec2<GLfloat> position;
 	Vec2<GLfloat> textureCoordinates;
 };
@@ -192,7 +192,7 @@ int main(void)
 		{{ 0.5f, -0.5f}, {1.0f, 0.0f}},
 	};
 
-	const unsigned int VERTEX_BUFFER_LENGTH = vertices.size() * Vertex::length; // 4 vertices total
+	const size_t VERTEX_BUFFER_LENGTH = vertices.size() * Vertex::length; // 4 vertices total
 
 	std::vector<GLuint> indices = {
 		0, 1, 2,
@@ -234,10 +234,10 @@ int main(void)
 
 	float xTranslate = 0.0f, increment = 0.05f;
 
-	float lastTime = glfwGetTime();
+	float lastTime = (float) glfwGetTime();
 	while (!window.shouldClose()) {
 		// calculate deltaTime
-		float currentTime = glfwGetTime();
+		float currentTime = (float) glfwGetTime();
 		float delta = currentTime - lastTime;
 		lastTime = currentTime;	
 
@@ -250,7 +250,7 @@ int main(void)
 		Mat4 transform = Mat4::identity().translate(xTranslate, 0, 0).rotate(0, 0, currentTime).scale(0.3f);
 
 		shader.bind();
-		shader.setUniformMat4("u_Transform", transform);
+		shader.setUniformMat4("u_ModelViewProj", transform);
 
 		// draw
 		vao.bind();
