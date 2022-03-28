@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -13,6 +14,7 @@
 #include "Texture.h"
 #include "Window.h"
 #include "maths/Mat4.h"
+#include "maths/Vectors.h"
 
 #if _WIN32
 #include <Windows.h>
@@ -152,6 +154,12 @@ void GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 	std::cout << "* [" << sourceStr << "] (" << typeStr << "): " << message << std::endl;
 }
 
+struct Vertex {
+	static constexpr unsigned int length = 4;
+	Vec2<GLfloat> position;
+	Vec2<GLfloat> textureCoordinates;
+};
+
 int main(void)
 {
 	//Mat4 A(
@@ -177,39 +185,34 @@ int main(void)
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GLDebugMessageCallback, 0);
 
-	//GLfloat vertices[] = {
-	//	 0.5f,  0.5f, // top right
-	//	-0.5f,  0.5f, // top left
-	//	- 0.5f, -0.5f, // bottom left
-	//	 0.5f, -0.5f// bottom right
-	//};
-
-	GLfloat vertices[] = {
-		 0.5f,  0.5f, 1.0f, 1.0f, // top right
-		-0.5f,  0.5f, 0.0f, 1.0f  // top left
-		-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
-		 0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+	std::vector<Vertex> vertices = {
+		{{ 0.5f,  0.5f}, {1.0f, 1.0f}},
+		{{-0.5f,  0.5f}, {0.0f, 1.0f}},
+		{{-0.5f, -0.5f}, {0.0f, 0.0f}},
+		{{ 0.5f, -0.5f}, {1.0f, 0.0f}},
 	};
 
-	constexpr unsigned int VERTEX_LENGTH = 4; // 4 floats per vertex
-	constexpr unsigned int VERTICES_COUNT = VERTEX_LENGTH * 4; // 4 vertices total
+	const unsigned int VERTEX_BUFFER_LENGTH = vertices.size() * Vertex::length; // 4 vertices total
 
-	GLuint indices[] = {
+	std::vector<GLuint> indices = {
 		0, 1, 2,
 		0, 2, 3
 	};
 
-	constexpr unsigned int INDEX_BUFFER_COUNT = 6;
-
 	VertexArray vao;
-	VertexBuffer vbo(vertices, VERTICES_COUNT * sizeof(GLfloat));
-	IndexBuffer ibo(indices, GL_UNSIGNED_INT, INDEX_BUFFER_COUNT);
+
+	VertexBuffer vbo(&vertices[0], VERTEX_BUFFER_LENGTH * sizeof(GLfloat));
+
+	IndexBuffer ibo(indices.data(), GL_UNSIGNED_INT, indices.size());
 
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(2, false);
 
 	vao.addBuffer(vbo, layout);
+	vao.bind();
+	vbo.bind();
+	ibo.bind();
 
 	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
 	shader.bind();
@@ -224,8 +227,8 @@ int main(void)
 
 	// unbind vao before ibo
 	vao.unbind();
-	shader.unbind();
 	vbo.unbind();
+	shader.unbind();
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
@@ -250,6 +253,7 @@ int main(void)
 		shader.setUniformMat4("u_Transform", transform);
 
 		// draw
+		vao.bind();
 		r.draw(vao, ibo, shader);
 
 		window.update();
