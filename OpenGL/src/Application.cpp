@@ -176,7 +176,7 @@ int main(void)
 	//	26, 28, 30, 32
 	//);
 
-	Window window(1920, 1080, "Hello, world!");
+	Window window(3*1920/4, 3*1080/4, "Hello, world!");
 
 	// initialise GLEW, must be called after there is a opengl rendering context
 	if (glewInit() != GLEW_OK)
@@ -247,7 +247,7 @@ int main(void)
 		xTranslate += increment * delta * 50;
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 model = Mat4::identity().translate(xTranslate, 0.0f, 0.0f).rotate(0, 0, currentTime);
+		Mat4 model = Mat4::identity().translate(xTranslate, 0.0f, 0.0f).rotate(0, 0, currentTime).scale(2.0f);
 
 		Mat4 proj = Mat4::ortho(-8, 8, -4.5f, 4.5f);
 

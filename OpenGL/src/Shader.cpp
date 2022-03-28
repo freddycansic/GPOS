@@ -41,7 +41,7 @@ void Shader::findAndAddUniforms(const std::string& source) {
 			if (uniformName.at(uniformName.size() - 1) == ';')
 				uniformName = uniformName.substr(0, uniformName.size() - 1);
 
-			std::cout << "Found uniform " << uniformName << std::endl;
+			//std::cout << "Found uniform " << uniformName << std::endl;
 
 			int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
 			
