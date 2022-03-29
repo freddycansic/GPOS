@@ -1,9 +1,11 @@
+#include <GL/glew.h>
 #include "Window.h"
 
 #include <iostream>
+#include "Debug.h"
 
 Window::Window(unsigned int width, unsigned int height, const std::string& title) 
-	: m_Width(width), m_Height(height)
+	: m_Width(width), m_Height(height), m_Delta(0)
 {
 	// initialise GLFW
 	if (!glfwInit())
@@ -27,6 +29,15 @@ Window::Window(unsigned int width, unsigned int height, const std::string& title
 
 	// vsync = true
 	glfwSwapInterval(1);
+
+	// initialise GLEW, must be called after there is a opengl rendering context
+	if (glewInit() != GLEW_OK) {
+		std::cout << "GLEW initialisation failed!" << std::endl;
+		std::cin.get();
+	}
+
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(Debug::GLDebugMessageCallback, 0);
 }
 
 Window::~Window()
@@ -37,9 +48,21 @@ Window::~Window()
 
 }
 
+float lastTime = (float) glfwGetTime();
+
 void Window::update() {
+	// calculate deltatime
+	float currentTime = (float)glfwGetTime();
+	m_Delta = currentTime - lastTime;
+	lastTime = currentTime;
+
 	glfwSwapBuffers(m_ID);
 	glfwPollEvents();
+}
+
+float Window::getDelta()
+{
+	return m_Delta;
 }
 
 int Window::shouldClose() const {

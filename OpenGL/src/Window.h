@@ -8,7 +8,7 @@ class Window
 private:
 	GLFWwindow* m_ID;
 	unsigned int m_Width, m_Height;
-
+	float m_Delta;
 public:
 
 	Window(unsigned int width, unsigned int height, const std::string& title);
@@ -16,5 +16,6 @@ public:
 
 	int shouldClose() const;
 	void update();
+	float getDelta();
 };
 

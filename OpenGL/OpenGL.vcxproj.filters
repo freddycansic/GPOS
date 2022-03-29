@@ -24,6 +24,7 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\maths\Vectors.h" />
+    <ClInclude Include="src\Debug.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
