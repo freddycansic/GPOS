@@ -90,7 +90,6 @@ int main(void)
 	float xTranslate = 0.0f, increment = 0.05f;
 
 	while (!window.shouldClose()) {
-		// calculate deltaTime
 		float delta = window.getDelta();
 
 		r.clear();
@@ -99,12 +98,16 @@ int main(void)
 		xTranslate += increment * delta * 50;
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 model = Mat4::identity().translate(xTranslate, 0.0f, 0.0f).rotate(0, 0, glfwGetTime()).scale(2.0f);
+		Mat4 model = Mat4::identity().translate(0.0f, xTranslate, 0.0f).rotate(0, 0, Window::getCurrentTime()).scale(2.0f);
+
+		Mat4 view = Mat4::identity();
 
 		Mat4 proj = Mat4::ortho(-8, 8, -4.5f, 4.5f);
 
+		Mat4 mvp = proj * view * model;
+
 		shader.bind();
-		shader.setUniformMat4("u_ModelViewProj", proj * model);
+		shader.setUniformMat4("u_ModelViewProj", mvp);
 
 		// draw
 		vao.bind();

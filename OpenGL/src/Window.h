@@ -16,6 +16,7 @@ public:
 
 	int shouldClose() const;
 	void update();
-	float getDelta();
+	float getDelta() const;
+	static float getCurrentTime();
 };
 

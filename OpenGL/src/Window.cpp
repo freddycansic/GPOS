@@ -48,11 +48,15 @@ Window::~Window()
 
 }
 
-float lastTime = (float) glfwGetTime();
+float Window::getCurrentTime() {
+	return (float) glfwGetTime();
+}
+
+float lastTime = Window::getCurrentTime();
 
 void Window::update() {
 	// calculate deltatime
-	float currentTime = (float)glfwGetTime();
+	float currentTime = getCurrentTime();
 	m_Delta = currentTime - lastTime;
 	lastTime = currentTime;
 
@@ -60,7 +64,7 @@ void Window::update() {
 	glfwPollEvents();
 }
 
-float Window::getDelta()
+float Window::getDelta() const
 {
 	return m_Delta;
 }

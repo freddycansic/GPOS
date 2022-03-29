@@ -1,0 +1,22 @@
+projection matrix = map world coords to screen coords
+convert vertex coordinates to noramlised device coordinates
+normalised space = coordinate system of -1 to 1 in x y and z
+perspective matrix = vertices with a smaller z value (further away) = closer to middle of screen = looks smaller
+
+orthographic projection = 2d side scroller, ui overlay
+perspective projection = fps
+
+view matrix
+aka eye matrix
+"the view of the camera"
+way to simulate camera 
+position, rotation(orientataion) scale of camera
+camera movements = do the inverse to vertex 
+e.g moving camera left 100 units = move everything else 100 units right
+
+model matrix
+transformation of model
+= translation rotation scale
+
+
+mvp matrix = model view proj matrix

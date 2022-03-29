@@ -172,10 +172,10 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 
 Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, float far) {
 	return Mat4(
-		2 / (right - left), 0, 0, 0,
-		0, 2 / (top - bottom), 0, 0,
-		0, 0, -2 / (far - near), 0,
-	-(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1
+		2 / (right - left), 0, 0, -(right + left) / (right - left),
+		0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
+		0, 0, -2 / (far - near), -(far + near) / (far - near),
+		0, 0, 0, 1
 	);
 }
 
