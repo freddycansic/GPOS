@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <array>
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -13,6 +14,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Window.h"
+#include "Files.h"
 
 #include "maths/Mat4.h"
 #include "maths/Vectors.h"
@@ -22,42 +24,36 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 struct Vertex {
-	static constexpr size_t length = 4;
+	static constexpr size_t length = 5;
 	Vec2<GLfloat> position;
 	Vec2<GLfloat> textureCoordinates;
+	GLfloat texID;
 };
 
 int main(void)
 {
-	
-	//Mat4 A(
-	//	1, 2, 3, 4,
-	//	5, 6, 7, 8,
-	//	9, 10, 11, 12,
-	//	13, 14, 15, 16
-	//);
-
-	//Mat4 B(
-	//	2, 4, 6, 8,
-	//	10, 12, 14, 16,
-	//	18, 20, 22, 24,
-	//	26, 28, 30, 32
-	//);
-
 	Window window(3*1920/4, 3*1080/4, "Hello, world!");
 
 	std::vector<Vertex> vertices = {
-		{{ 0.5f,  0.5f}, {1.0f, 1.0f}},
-		{{-0.5f,  0.5f}, {0.0f, 1.0f}},
-		{{-0.5f, -0.5f}, {0.0f, 0.0f}},
-		{{ 0.5f, -0.5f}, {1.0f, 0.0f}},
+		{{-6.0f,  0.5f}, {1.0f, 1.0f}, 0.0f},
+		{{-0.5f,  0.5f}, {0.0f, 1.0f}, 0.0f},
+		{{-0.5f, -0.5f}, {0.0f, 0.0f}, 0.0f},
+		{{ 0.5f, -0.5f}, {1.0f, 0.0f}, 0.0f},
+
+		{{ 0.5f,  0.5f}, {1.0f, 1.0f}, 1.0f},
+		{{-0.5f,  0.5f}, {0.0f, 1.0f}, 1.0f},
+		{{-0.5f, -0.5f}, {0.0f, 0.0f}, 1.0f},
+		{{ 0.5f, -0.5f}, {1.0f, 0.0f}, 1.0f},
 	};
 
 	const size_t VERTEX_BUFFER_LENGTH = vertices.size() * Vertex::length; // 4 vertices total
 
 	std::vector<GLuint> indices = {
 		0, 1, 2,
-		0, 2, 3
+		0, 2, 3,
+
+		4, 5, 6,
+		4, 6, 7
 	};
 
 	VertexArray vao;
@@ -70,20 +66,22 @@ int main(void)
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(2, false);
+	layout.addElement<GLfloat>(1, false);
 
 	vao.addBuffer(vbo, layout);
 	vao.bind();
 	vbo.bind();
 	ibo.bind();
 
+	//Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
 	shader.bind();
 
-	Texture texture("res/textures/kali.png");
-	texture.bind(); // default no params = texture slot 0
+	Texture kaliTex("res/textures/kali.png");
+	Texture elliotTex("res/textures/image.png");
 
-	// texture is bound to slot 0
-	shader.setUniform1i("u_Texture", 0);
+	std::array<int, 2> slots = {0, 1};
+	shader.setUniform1iv("u_Textures", slots.size(), slots.data());
 	
 	Renderer r;
 
@@ -112,10 +110,6 @@ int main(void)
 		ImGui::NewFrame();
 		r.clear();
 
-
-		//if (xTranslate > 8 || xTranslate < -8) increment *= -1;
-		//xTranslate += increment * delta * 50;
-
 		// translation, rotation, scale function = scale, rotate, translate matrix
 		Mat4 model = Mat4::identity().translate(xTranslate, yTranslate, 0.0f).rotate(0, 0, Window::getCurrentTime()).scale(2.0f);
 		Mat4 view = Mat4::identity();
@@ -125,6 +119,10 @@ int main(void)
 		shader.bind();
 		shader.setUniformMat4("u_ModelViewProj", mvp);
 		
+		// bind textures
+		kaliTex.bindSlot(0);
+		elliotTex.bindSlot(1);
+
 		// draw
 		r.draw(vao, ibo, shader);
 

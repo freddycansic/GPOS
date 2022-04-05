@@ -15,7 +15,7 @@ public:
 	Texture(const std::string& path);
 	~Texture();
 
-	void bind(unsigned int slot = 0) const;
+	void bind() const;
+	void bindSlot(unsigned int slot) const;
 	void unbind() const;
-
 };

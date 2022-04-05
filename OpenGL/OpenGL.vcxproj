@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Debug.h" />
+    <ClInclude Include="src\Files.h" />
     <ClInclude Include="src\libs\imgui\imconfig.h" />
     <ClInclude Include="src\libs\imgui\imgui.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_glfw.h" />
@@ -207,6 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\image.png" />
+    <Image Include="res\textures\kali.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

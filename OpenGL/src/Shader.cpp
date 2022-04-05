@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+//#include <algorithm>
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& element : map) {
@@ -42,6 +43,13 @@ void Shader::findAndAddUniforms(const std::string& source) {
 			// then we know the identifier of that uniform will be 2 tokens after it
 			std::string uniformName = tokens[i + 2];
 
+			// remove array notation e.g "[4]"
+			int startBracketIndex = uniformName.find('[');
+			if (startBracketIndex != std::string::npos) {
+				uniformName = uniformName.substr(0, startBracketIndex);
+			}
+			
+			// remove semi colon at end
 			if (uniformName.at(uniformName.size() - 1) == ';')
 				uniformName = uniformName.substr(0, uniformName.size() - 1);
 
@@ -74,6 +82,10 @@ void Shader::setUniform1i(const std::string& name, int value) {
 	glUniform1i(m_Uniforms.at(name), value);
 }
 
+void Shader::setUniform1iv(const std::string& name, unsigned int count, const int* value) {
+	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
+	glUniform1iv(m_Uniforms.at(name), count, value);
+}
 
 unsigned int compileShader(unsigned int type, const std::string& source) {
 	// generate shader

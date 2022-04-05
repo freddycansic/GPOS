@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Debug.h"
+#include "Texture.h"
 
 Window::Window(unsigned int width, unsigned int height, const std::string& title) 
 	: m_Width(width), m_Height(height), m_Delta(0)
@@ -38,6 +39,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string& title
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(Debug::GLDebugMessageCallback, 0);
+
 }
 
 Window::~Window()

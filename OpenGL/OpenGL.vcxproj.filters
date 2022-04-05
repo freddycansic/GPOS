@@ -41,6 +41,7 @@
     <ClInclude Include="src\libs\imgui\imstb_textedit.h" />
     <ClInclude Include="src\libs\imgui\imstb_truetype.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\Files.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -48,5 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\image.png" />
+    <Image Include="res\textures\kali.png" />
   </ItemGroup>
 </Project>

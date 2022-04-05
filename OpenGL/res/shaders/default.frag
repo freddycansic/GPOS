@@ -3,10 +3,13 @@
 out vec4 color;
 
 in vec2 v_TexCoord;
-uniform sampler2D u_Texture;
+in float v_TexID;
+
+uniform sampler2D u_Textures[2];
 
 void main() {  
 
-	color = texture(u_Texture, v_TexCoord);
+	int index = int(v_TexID);
+	color = texture(u_Textures[index], v_TexCoord);
 
 };

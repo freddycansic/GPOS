@@ -32,9 +32,12 @@ Texture::~Texture() {
 	glDeleteTextures(1, &m_ID);
 }
 
-void Texture::bind(unsigned int slot) const {
-	glActiveTexture(GL_TEXTURE0 + slot); // GL_TEXTURE enums are defined one after another so just adding the offset from the first one works
+void Texture::bind() const {
 	glBindTexture(GL_TEXTURE_2D, m_ID);
+}
+
+void Texture::bindSlot(unsigned int slot) const {
+	glBindTextureUnit(slot, m_ID);
 }
 
 void Texture::unbind() const
