@@ -4,15 +4,14 @@ Mat4::Mat4(
 	float r1c1, float r1c2, float r1c3, float r1c4,
 	float r2c1, float r2c2, float r2c3, float r2c4,
 	float r3c1, float r3c2, float r3c3, float r3c4,
-	float r4c1, float r4c2, float r4c3, float r4c4) {
-
-	m_Data = { { // weird double brackets
+	float r4c1, float r4c2, float r4c3, float r4c4) :
+	m_Data( {{
 		{r1c1, r1c2, r1c3, r1c4},
 		{r2c1, r2c2, r2c3, r2c4},
 		{r3c1, r3c2, r3c3, r3c4},
 		{r4c1, r4c2, r4c3, r4c4}
-	} };
-
+	}})
+{
 }
 
 Mat4::Mat4(

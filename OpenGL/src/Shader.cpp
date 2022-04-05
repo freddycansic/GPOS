@@ -66,9 +66,9 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 }
 
-void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
+void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
-	glUniform4f(m_Uniforms.at(name), v0, v1, v2, v3);
+	glUniform4f(m_Uniforms.at(name), v1, v2, v3, v4);
 	// unordered map operator[] is O(1) so this is fine
 }
 
