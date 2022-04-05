@@ -27,21 +27,23 @@ void Shader::findAndAddUniforms(const std::string& source) {
 	std::vector<std::string> tokens;
 	std::stringstream ss(source);
 
+	// create vector of all tokens
 	std::string token;
 	while (ss >> token) {
 		tokens.push_back(token);
 	}
 
+	// iterate over tokens
 	for (unsigned int i = 0; i < tokens.size(); i++) {
 		std::string token = tokens[i];
 
+		// if we find a uniform
 		if (token == "uniform") {
+			// then we know the identifier of that uniform will be 2 tokens after it
 			std::string uniformName = tokens[i + 2];
 
 			if (uniformName.at(uniformName.size() - 1) == ';')
 				uniformName = uniformName.substr(0, uniformName.size() - 1);
-
-			//std::cout << "Found uniform " << uniformName << std::endl;
 
 			int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
 			
@@ -49,6 +51,7 @@ void Shader::findAndAddUniforms(const std::string& source) {
 				std::cout << "Uniform not in use." << std::endl;
 			}
 			
+			// insert the uniform into a map
 			m_Uniforms[uniformName] = uniformLocation;
 		}
 	}
@@ -57,18 +60,18 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
-	glUniform4f(m_Uniforms[name], v0, v1, v2, v3);
+	glUniform4f(m_Uniforms.at(name), v0, v1, v2, v3);
 	// unordered map operator[] is O(1) so this is fine
 }
 
 void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
-	glUniformMatrix4fv(m_Uniforms[name], 1, GL_TRUE, matrix.getPtr());
+	glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_TRUE, matrix.getPtr());
 }
 
 void Shader::setUniform1i(const std::string& name, int value) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
-	glUniform1i(m_Uniforms[name], value);
+	glUniform1i(m_Uniforms.at(name), value);
 }
 
 

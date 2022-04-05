@@ -1,5 +1,6 @@
 bin/**
 .vs/**
+OpenGL/imgui.ini
 OpenGL.ctb~
 OpenGL.ctb~~
 OpenGL.ctb~~~

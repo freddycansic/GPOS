@@ -64,11 +64,6 @@ void Window::update() {
 	glfwPollEvents();
 }
 
-float Window::getDelta() const
-{
-	return m_Delta;
-}
-
 int Window::shouldClose() const {
 	return glfwWindowShouldClose(m_ID);
 }

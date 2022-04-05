@@ -16,7 +16,9 @@ public:
 
 	int shouldClose() const;
 	void update();
-	float getDelta() const;
 	static float getCurrentTime();
+
+	float getDelta() const { return m_Delta; }
+	GLFWwindow* getGLFWWindow() const { return m_ID; }
 };
 

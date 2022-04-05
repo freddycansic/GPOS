@@ -93,6 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -109,6 +110,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)OpenGL\src\libs;$(SolutionDir)OpenGL\src\libs</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,6 +128,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,6 +149,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;;$(SolutionDir)OpenGL\src\libs</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,6 +160,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\libs\imgui\imgui.cpp" />
+    <ClCompile Include="src\libs\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\libs\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\libs\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\libs\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\libs\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
@@ -169,6 +180,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Debug.h" />
+    <ClInclude Include="src\libs\imgui\imconfig.h" />
+    <ClInclude Include="src\libs\imgui\imgui.h" />
+    <ClInclude Include="src\libs\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\libs\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\libs\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\libs\imgui\imgui_internal.h" />
+    <ClInclude Include="src\libs\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\libs\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\libs\imgui\imstb_truetype.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\IndexBuffer.h" />
