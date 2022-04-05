@@ -4,11 +4,11 @@
 
 namespace Files {
 
-	std::string internal(std::string filePath) {
+	std::string internal(const std::string& filePath) {
 		return "res/" + filePath;
 	}
 
-	std::string external(std::string filePath) {
+	std::string external(const std::string& filePath) {
 		return filePath;
 	}
 

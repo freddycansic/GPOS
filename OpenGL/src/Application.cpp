@@ -74,11 +74,11 @@ int main(void)
 	ibo.bind();
 
 	//Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
-	Shader shader("res/shaders/default.vert", "res/shaders/default.frag");
+	Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 	shader.bind();
 
-	Texture kaliTex("res/textures/kali.png");
-	Texture elliotTex("res/textures/image.png");
+	Texture kaliTex(Files::internal("textures/kali.png"));
+	Texture elliotTex(Files::internal("textures/image.png"));
 
 	std::array<int, 2> slots = {0, 1};
 	shader.setUniform1iv("u_Textures", slots.size(), slots.data());
