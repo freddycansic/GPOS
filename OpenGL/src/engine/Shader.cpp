@@ -44,7 +44,7 @@ void Shader::findAndAddUniforms(const std::string& source) {
 			std::string uniformName = tokens[i + 2];
 
 			// remove array notation e.g "[4]"
-			int startBracketIndex = uniformName.find('[');
+			size_t startBracketIndex = uniformName.find('[');
 			if (startBracketIndex != std::string::npos) {
 				uniformName = uniformName.substr(0, startBracketIndex);
 			}
@@ -82,9 +82,9 @@ void Shader::setUniform1i(const std::string& name, int value) {
 	glUniform1i(m_Uniforms.at(name), value);
 }
 
-void Shader::setUniform1iv(const std::string& name, unsigned int count, const int* value) {
+void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
-	glUniform1iv(m_Uniforms.at(name), count, value);
+	glUniform1iv(m_Uniforms.at(name), (GLsizei) count, value);
 }
 
 unsigned int compileShader(unsigned int type, const std::string& source) {

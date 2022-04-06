@@ -6,47 +6,46 @@
 #include <vector>
 #include <array>
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "VertexBufferLayout.h"
-#include "Shader.h"
-#include "Renderer.h"
-#include "Texture.h"
-#include "Window.h"
-#include "Files.h"
+#include "engine/VertexBuffer.h"
+#include "engine/IndexBuffer.h"
+#include "engine/VertexArray.h"
+#include "engine/VertexBufferLayout.h"
+#include "engine/Shader.h"
+#include "engine/Renderer.h"
+#include "engine/Texture.h"
+#include "engine/Window.h"
+#include "engine/Files.h"
+#include "engine/Vertex.h"
 
 #include "maths/Mat4.h"
 #include "maths/Vectors.h"
+
+#include "shapes/Rectangle.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-struct Vertex {
-	static constexpr size_t length = 5;
-	Vec2<GLfloat> position;
-	Vec2<GLfloat> textureCoordinates;
-	GLfloat texID;
-};
-
 int main(void)
 {
-	Window window(3*1920/4, 3*1080/4, "Hello, world!");
+	Vec4<float> result = Mat4::identity * Vec4<float>(1.5f, 1000.0f, 1.0f, 1.0f);
+	std::cout << result << std::endl;
+
+	Rectangle rect(10, 10, 100, 100);
+
+	Window window(3 * 1920 / 4, 3 * 1080 / 4, "Hello, world!");
 
 	std::vector<Vertex> vertices = {
-		{{-6.0f,  0.5f}, {1.0f, 1.0f}, 0.0f},
-		{{-0.5f,  0.5f}, {0.0f, 1.0f}, 0.0f},
-		{{-0.5f, -0.5f}, {0.0f, 0.0f}, 0.0f},
-		{{ 0.5f, -0.5f}, {1.0f, 0.0f}, 0.0f},
+		{{-6.0f,  0.5f, 0.0f}, {1.0f, 1.0f}, 0.0f},
+		{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 0.0f},
+		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 0.0f},
+		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 0.0f},
 
-		{{ 0.5f,  0.5f}, {1.0f, 1.0f}, 1.0f},
-		{{-0.5f,  0.5f}, {0.0f, 1.0f}, 1.0f},
-		{{-0.5f, -0.5f}, {0.0f, 0.0f}, 1.0f},
-		{{ 0.5f, -0.5f}, {1.0f, 0.0f}, 1.0f},
+		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, 1.0f},
+		{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 1.0f},
+		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 1.0f},
+		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 1.0f},
 	};
-
-	const size_t VERTEX_BUFFER_LENGTH = vertices.size() * Vertex::length; // 4 vertices total
 
 	std::vector<GLuint> indices = {
 		0, 1, 2,
@@ -58,13 +57,12 @@ int main(void)
 
 	VertexArray vao;
 
-	VertexBuffer vbo(vertices.data(), VERTEX_BUFFER_LENGTH * sizeof(GLfloat));
-	//VertexBuffer vbo(vertices.data(), sizeof(vertices));
+	VertexBuffer vbo(vertices.data(), vertices.size() * sizeof(Vertex));
 
 	IndexBuffer ibo(indices.data(), GL_UNSIGNED_INT, indices.size());
 
 	VertexBufferLayout layout;
-	layout.addElement<GLfloat>(2, false);
+	layout.addElement<GLfloat>(3, false);
 	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(1, false);
 
@@ -111,8 +109,8 @@ int main(void)
 		r.clear();
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 model = Mat4::identity().translate(xTranslate, yTranslate, 0.0f).rotate(0, 0, Window::getCurrentTime()).scale(2.0f);
-		Mat4 view = Mat4::identity();
+		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f).rotate(0, 0, Window::getCurrentTime()).scale(2.0f);
+		Mat4 view = Mat4::identity;
 		Mat4 mvp = proj * view * model;
 		
 		// push mvp uniform to shader

@@ -3,14 +3,14 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
-    <ClCompile Include="src\VertexBuffer.cpp" />
-    <ClCompile Include="src\IndexBuffer.cpp" />
-    <ClCompile Include="src\VertexArray.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\engine\VertexBuffer.cpp" />
+    <ClCompile Include="src\engine\IndexBuffer.cpp" />
+    <ClCompile Include="src\engine\VertexArray.cpp" />
+    <ClCompile Include="src\engine\Shader.cpp" />
+    <ClCompile Include="src\engine\Renderer.cpp" />
     <ClCompile Include="src\libs\stb_image\stb_image.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\engine\Texture.cpp" />
+    <ClCompile Include="src\engine\Window.cpp" />
     <ClCompile Include="src\libs\imgui\imgui.cpp" />
     <ClCompile Include="src\libs\imgui\imgui_demo.cpp" />
     <ClCompile Include="src\libs\imgui\imgui_draw.cpp" />
@@ -18,20 +18,23 @@
     <ClCompile Include="src\libs\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\libs\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\libs\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\engine\ShapeRenderer.cpp" />
+    <ClCompile Include="src\shapes\Rectangle.cpp" />
+    <ClCompile Include="src\shapes\Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
-    <ClInclude Include="src\VertexBuffer.h" />
-    <ClInclude Include="src\IndexBuffer.h" />
-    <ClInclude Include="src\VertexArray.h" />
-    <ClInclude Include="src\VertexBufferLayout.h" />
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\engine\VertexBuffer.h" />
+    <ClInclude Include="src\engine\IndexBuffer.h" />
+    <ClInclude Include="src\engine\VertexArray.h" />
+    <ClInclude Include="src\engine\VertexBufferLayout.h" />
+    <ClInclude Include="src\engine\Shader.h" />
+    <ClInclude Include="src\engine\Renderer.h" />
     <ClInclude Include="src\libs\stb_image\stb_image.h" />
-    <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\Window.h" />
+    <ClInclude Include="src\engine\Texture.h" />
+    <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\maths\Vectors.h" />
-    <ClInclude Include="src\Debug.h" />
+    <ClInclude Include="src\engine\Debug.h" />
     <ClInclude Include="src\libs\imgui\imconfig.h" />
     <ClInclude Include="src\libs\imgui\imgui.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_glfw.h" />
@@ -41,7 +44,11 @@
     <ClInclude Include="src\libs\imgui\imstb_textedit.h" />
     <ClInclude Include="src\libs\imgui\imstb_truetype.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="src\Files.h" />
+    <ClInclude Include="src\engine\Files.h" />
+    <ClInclude Include="src\engine\ShapeRenderer.h" />
+    <ClInclude Include="src\shapes\Rectangle.h" />
+    <ClInclude Include="src\shapes\Shape.h" />
+    <ClInclude Include="src\engine\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

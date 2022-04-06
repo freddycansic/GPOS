@@ -27,6 +27,13 @@ Mat4::Mat4(
 	m_Data[3] = row4;
 }
 
+const Mat4 Mat4::identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	0, 0, 0, 1
+};
+
 Mat4& Mat4::operator=(Mat4&& other) noexcept {
 	
 	if (this != &other) {
@@ -74,7 +81,7 @@ Mat4 Mat4::operator+(Mat4&& other) const { // saves on memory as we don't have t
 	return other;
 }
 
-Mat4 Mat4::scale(float xScale , float yScale, float zScale)
+Mat4 Mat4::scale(float xScale, float yScale, float zScale) const
 {
 	return 
 		*this
@@ -89,7 +96,7 @@ Mat4 Mat4::scale(float xScale , float yScale, float zScale)
 	);
 }
 
-Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate)
+Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 {
 	return (
 		*this
@@ -120,7 +127,7 @@ Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate)
 	);
 }
 
-Mat4 Mat4::translate(float xTranslate, float yTranslate, float zTranslate) {
+Mat4 Mat4::translate(float xTranslate, float yTranslate, float zTranslate) const {
 	return 
 		*this 
 		
@@ -167,7 +174,6 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 
 	return result;
 }
-
 
 Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, float far) {
 	return Mat4(

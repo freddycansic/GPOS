@@ -4,15 +4,15 @@
 #include <iostream>
 #include <string>
 
-using std::array;
+#include <maths/Vectors.h>
 
 class Mat4
 {
 public:
 	constexpr static unsigned int ORDER = 4;
 	
-	using MATRIX_DATA = array<array<float, ORDER>, ORDER>;
-	using MATRIX_ROW = array<float, ORDER>;
+	using MATRIX_ROW = std::array<float, ORDER>;
+	using MATRIX_DATA = std::array<MATRIX_ROW, ORDER>;
 
 	// constructors
 	Mat4(
@@ -47,15 +47,7 @@ public:
 	// not sure if i need to set other.m_Data to null or not
 	Mat4(Mat4&& other) noexcept : m_Data(std::move(other.m_Data)) {}
 
-	// gross
-	static Mat4 identity() {
-		return Mat4(
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1
-		);
-	}
+	const static Mat4 identity;
 
 	const MATRIX_ROW& operator[](int index) const;
 	MATRIX_ROW& operator[](int index);
@@ -66,14 +58,30 @@ public:
 	Mat4 operator*(float scalar) const; // scalar multiplication
 	Mat4 operator*(const Mat4& other) const; // matrix matrix multiplication
 	
+	template<typename T>
+	Vec4<T> operator*(const Vec4<T>& other) const {
+		T values[]{ other.x, other.y, other.z, other.w }; // put it into an array so i can subscript operator them
+
+		for (int row = 0; row < Mat4::ORDER; row++) { // for each row in matrix4
+			T total = 0; // running total
+			for (int element = 0; element < 4; element++) { // for each element in vector
+				total += m_Data[row][element] * values[element];
+			}
+			values[row] = total;
+		}
+
+		return Vec4<T>(values);
+
+	}
+
 	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
 	Mat4 operator+(Mat4&& other) const; // rvalue reference
 
 	// transformations
-	Mat4 scale(float xScale, float yScale, float zScale);
-	Mat4 scale(float xyzScale) { return scale(xyzScale, xyzScale, xyzScale); }
-	Mat4 rotate(float xRotate, float yRotate, float zRotate);
-	Mat4 translate(float xTranslate, float yTranslate, float zTranslate);
+	Mat4 scale(float xScale, float yScale, float zScale) const;
+	Mat4 scale(float xyzScale) const { return scale(xyzScale, xyzScale, xyzScale); }
+	Mat4 rotate(float xRotate, float yRotate, float zRotate) const;
+	Mat4 translate(float xTranslate, float yTranslate, float zTranslate) const;
 
 	// projection
 	static Mat4 ortho(float left, float right, float top, float bottom, float near = -1.0f, float far = 1.0f);
