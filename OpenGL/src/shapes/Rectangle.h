@@ -4,7 +4,7 @@
 
 #include "Shape.h"
 
-class Rectangle : Shape
+class Rectangle : public Shape
 {
 private:
 	const static std::array<Vertex, 4> s_UnitRectVertices;

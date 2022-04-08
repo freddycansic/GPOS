@@ -20,6 +20,8 @@
     <ClCompile Include="src\libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\engine\ShapeRenderer.cpp" />
     <ClCompile Include="src\shapes\Rectangle.cpp" />
+    <ClCompile Include="src\maths\Vectors.cpp" />
+    <ClCompile Include="src\engine\Vertex.cpp" />
     <ClCompile Include="src\shapes\Shape.cpp" />
   </ItemGroup>
   <ItemGroup>

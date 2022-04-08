@@ -6,7 +6,7 @@
 #include "Texture.h"
 
 Window::Window(unsigned int width, unsigned int height, const std::string& title) 
-	: m_Width(width), m_Height(height), m_Delta(0)
+	: m_Width(width), m_Height(height)
 {
 	// initialise GLFW
 	if (!glfwInit())
@@ -19,11 +19,17 @@ Window::Window(unsigned int width, unsigned int height, const std::string& title
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	// glfw core profile = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
+
 	m_ID = glfwCreateWindow(width, height, "Hello, world!", NULL, NULL);
 	if (!m_ID) {
 		glfwTerminate();
 		std::cout << "Failed to create window!" << std::endl;;
 	}
+	
+	// get display width + height
+	const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	m_DisplayWidth = vidmode->width;
+	m_DisplayHeight = vidmode->height;
 
 	// set opengl rendering context
 	glfwMakeContextCurrent(m_ID);

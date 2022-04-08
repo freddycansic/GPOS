@@ -16,10 +16,15 @@ Rectangle::Rectangle(float x, float y, float width, float height)
 : Shape(x, y), m_Width(width), m_Height(height) {
 	vertices.reserve(4);
 
-	for (auto& unitVertex : s_UnitRectVertices) {
-		unitVertex.position = Mat4::identity.translate(x, y, 0.0f).scale(width, height, 1.0f) * Vec4<GLfloat>(unitVertex.position, 1.0f);
+	for (const auto& unitVertex : s_UnitRectVertices) {
+		// copy unit vertex
+		Vertex newVertex = unitVertex;
 
+		// set new position
+		newVertex.position = Vec3(Mat4::identity.translate(x, y, 0.0f).rotate(0, 0, 0).scale(width, height, 1.0f) * Vec4(unitVertex.position, 1.0f));
 
+		// add new vertex to the buffer
+		vertices.push_back(newVertex);
 	}
 
 

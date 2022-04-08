@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include <maths/Vectors.h>
+#include "maths/Vectors.h"
 
 class Mat4
 {
@@ -57,23 +57,8 @@ public:
 	// mathematical operations
 	Mat4 operator*(float scalar) const; // scalar multiplication
 	Mat4 operator*(const Mat4& other) const; // matrix matrix multiplication
-	
-	template<typename T>
-	Vec4<T> operator*(const Vec4<T>& other) const {
-		T values[]{ other.x, other.y, other.z, other.w }; // put it into an array so i can subscript operator them
-
-		for (int row = 0; row < Mat4::ORDER; row++) { // for each row in matrix4
-			T total = 0; // running total
-			for (int element = 0; element < 4; element++) { // for each element in vector
-				total += m_Data[row][element] * values[element];
-			}
-			values[row] = total;
-		}
-
-		return Vec4<T>(values);
-
-	}
-
+	Vec4 operator*(const Vec4& other) const; // matrix vec4 multiplication
+	Vec3 operator*(const Vec3& other) const; // matrix vec3 multiplication
 	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
 	Mat4 operator+(Mat4&& other) const; // rvalue reference
 

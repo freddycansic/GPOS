@@ -160,7 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\shapes\Shape.cpp" />
+    <ClCompile Include="src\engine\Vertex.cpp" />
+    <ClCompile Include="src\maths\Vectors.cpp" />
     <ClCompile Include="src\shapes\Rectangle.cpp" />
     <ClCompile Include="src\engine\ShapeRenderer.cpp" />
     <ClCompile Include="src\libs\imgui\imgui.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\engine\VertexArray.cpp" />
     <ClCompile Include="src\engine\Texture.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
+    <ClCompile Include="src\shapes\Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\Vertex.h" />

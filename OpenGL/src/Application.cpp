@@ -28,24 +28,29 @@
 
 int main(void)
 {
-	Vec4<float> result = Mat4::identity * Vec4<float>(1.5f, 1000.0f, 1.0f, 1.0f);
-	std::cout << result << std::endl;
-
-	Rectangle rect(10, 10, 100, 100);
-
 	Window window(3 * 1920 / 4, 3 * 1080 / 4, "Hello, world!");
+	
+	Rectangle rect(window.getWidth()/2, window.getHeight()/2, 100, 100);
+	rect.setTexID(1);
 
-	std::vector<Vertex> vertices = {
-		{{-6.0f,  0.5f, 0.0f}, {1.0f, 1.0f}, 0.0f},
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 0.0f},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 0.0f},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 0.0f},
+	for (const auto& vertex : rect.vertices) {
+		std::cout << vertex << std::endl;
+	}
 
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, 1.0f},
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 1.0f},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 1.0f},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 1.0f},
-	};
+
+	//std::vector<Vertex> vertices = {
+	//	{{-6.0f,  0.5f, 0.0f}, {1.0f, 1.0f}, 0.0f},
+	//	{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 0.0f},
+	//	{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 0.0f},
+	//	{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 0.0f},
+
+	//	{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, 1.0f},
+	//	{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 1.0f},
+	//	{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 1.0f},
+	//	{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 1.0f},
+	//};
+
+	auto vertices = rect.vertices;
 
 	std::vector<GLuint> indices = {
 		0, 1, 2,
@@ -96,7 +101,7 @@ int main(void)
 	// so unbinding the ibo doesn't affect the vao
 	ibo.unbind();
 
-	Mat4 proj = Mat4::ortho(-8, 8, -4.5f, 4.5f);
+	Mat4 proj = Mat4::ortho(0, window.getWidth(), 0, window.getHeight());
 	
 	float xTranslate = 0.0f, yTranslate = 0.0f;
 
@@ -109,7 +114,7 @@ int main(void)
 		r.clear();
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f).rotate(0, 0, Window::getCurrentTime()).scale(2.0f);
+		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);//.rotate(0, 0, Window::getCurrentTime());
 		Mat4 view = Mat4::identity;
 		Mat4 mvp = proj * view * model;
 		
@@ -128,8 +133,8 @@ int main(void)
 			ImGui::SetNextWindowPos(ImVec2(10, 10));
 			ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 			
-			ImGui::SliderFloat("X", &xTranslate, -8, 8);
-			ImGui::SliderFloat("Y", &yTranslate, -4.5, 4.5);
+			ImGui::SliderFloat("X", &xTranslate, window.getWidth() / -2, window.getWidth() / 2);
+			ImGui::SliderFloat("Y", &yTranslate, window.getHeight() / -2, window.getHeight() / 2);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			
 			ImGui::End();

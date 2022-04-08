@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "engine/Vertex.h"
-#include "maths/Vectors.h"
 
 class Shape
 {
@@ -17,6 +16,7 @@ public:
 	: m_XPos(x), m_YPos(y)
 	{}
 
+	void setTexID(unsigned int ID); // TODO TEMPORARY
 	std::vector<Vertex> vertices; // TODO TEMPORARY
 	
 };
