@@ -14,8 +14,9 @@
 #include "engine/Renderer.h"
 #include "engine/Texture.h"
 #include "engine/Window.h"
-#include "engine/Files.h"
 #include "engine/Vertex.h"
+#include "engine/ShapeRenderer.h"
+#include "engine/Files.h"
 
 #include "maths/Mat4.h"
 #include "maths/Vectors.h"
@@ -32,11 +33,6 @@ int main(void)
 	
 	Rectangle rect(window.getWidth()/2, window.getHeight()/2, 100, 100);
 	rect.setTexID(1);
-
-	for (const auto& vertex : rect.vertices) {
-		std::cout << vertex << std::endl;
-	}
-
 
 	//std::vector<Vertex> vertices = {
 	//	{{-6.0f,  0.5f, 0.0f}, {1.0f, 1.0f}, 0.0f},
@@ -65,9 +61,10 @@ int main(void)
 	VertexBuffer vbo(vertices.data(), vertices.size() * sizeof(Vertex));
 
 	IndexBuffer ibo(indices.data(), GL_UNSIGNED_INT, indices.size());
-
+	
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(3, false);
+	layout.addElement<GLfloat>(4, false);
 	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(1, false);
 
@@ -76,9 +73,10 @@ int main(void)
 	vbo.bind();
 	ibo.bind();
 
-	//Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 	Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
-	shader.bind();
+	
+	Renderer::init();
+	ShapeRenderer::init();
 
 	Texture kaliTex(Files::internal("textures/kali.png"));
 	Texture elliotTex(Files::internal("textures/image.png"));
@@ -86,7 +84,6 @@ int main(void)
 	std::array<int, 2> slots = {0, 1};
 	shader.setUniform1iv("u_Textures", slots.size(), slots.data());
 	
-	Renderer r;
 
 	// imgui
 	ImGui::CreateContext();
@@ -111,7 +108,8 @@ int main(void)
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		r.clear();
+		
+		Renderer::clear(0.62f, 0.62f, 0.62f);
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
 		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);//.rotate(0, 0, Window::getCurrentTime());
@@ -123,11 +121,11 @@ int main(void)
 		shader.setUniformMat4("u_ModelViewProj", mvp);
 		
 		// bind textures
-		kaliTex.bindSlot(0);
-		elliotTex.bindSlot(1);
+		kaliTex.bindToSlot(0);
+		elliotTex.bindToSlot(1);
 
 		// draw
-		r.draw(vao, ibo, shader);
+		Renderer::draw(vao, ibo, shader);
 
 		{
 			ImGui::SetNextWindowPos(ImVec2(10, 10));

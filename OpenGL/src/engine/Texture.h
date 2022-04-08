@@ -16,6 +16,8 @@ public:
 	~Texture();
 
 	void bind() const;
-	void bindSlot(unsigned int slot) const;
+	void bindToSlot(unsigned int slot) const;
 	void unbind() const;
+
+	unsigned int getID() const { return m_ID; }
 };

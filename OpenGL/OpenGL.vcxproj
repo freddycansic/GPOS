@@ -160,6 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\Color.cpp" />
+    <ClCompile Include="src\engine\Files.cpp" />
     <ClCompile Include="src\engine\Vertex.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
     <ClCompile Include="src\shapes\Rectangle.cpp" />
@@ -184,6 +186,7 @@
     <ClCompile Include="src\shapes\Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\Color.h" />
     <ClInclude Include="src\engine\Vertex.h" />
     <ClInclude Include="src\shapes\Shape.h" />
     <ClInclude Include="src\shapes\Rectangle.h" />

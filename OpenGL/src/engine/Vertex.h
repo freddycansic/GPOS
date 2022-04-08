@@ -6,11 +6,11 @@
 
 struct Vertex {
 	Vec3 position = {0, 0, 0};
-	//Vec4<GLfloat> colour = {0, 0, 0, 0};
+	Vec4 color = {0, 0, 0, 0};
 	Vec2 textureCoordinates = {0, 0};
 	float texID = 0;
 
-	Vertex(Vec3 position, Vec2 textureCoordinates, float texID);
+	Vertex(Vec3 position, Vec4 color, Vec2 textureCoordinates, float texID);
 
 };
 

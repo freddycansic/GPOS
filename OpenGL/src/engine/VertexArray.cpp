@@ -7,7 +7,7 @@ VertexArray::VertexArray() {
 	glBindVertexArray(m_ID);
 }
 
-void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) {
+void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) const {
 	this->bind();
 	buffer.bind();
 	

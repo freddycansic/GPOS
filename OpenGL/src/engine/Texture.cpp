@@ -36,7 +36,7 @@ void Texture::bind() const {
 	glBindTexture(GL_TEXTURE_2D, m_ID);
 }
 
-void Texture::bindSlot(unsigned int slot) const {
+void Texture::bindToSlot(unsigned int slot) const {
 	glBindTextureUnit(slot, m_ID);
 }
 

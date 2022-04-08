@@ -66,23 +66,23 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 }
 
-void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) {
+void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
 	glUniform4f(m_Uniforms.at(name), v1, v2, v3, v4);
 	// unordered map operator[] is O(1) so this is fine
 }
 
-void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) {
+void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
 	glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_TRUE, matrix.getPtr());
 }
 
-void Shader::setUniform1i(const std::string& name, int value) {
+void Shader::setUniform1i(const std::string& name, int value) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
 	glUniform1i(m_Uniforms.at(name), value);
 }
 
-void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) {
+void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
 	glUniform1iv(m_Uniforms.at(name), (GLsizei) count, value);
 }

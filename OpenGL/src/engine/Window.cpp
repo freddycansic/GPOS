@@ -5,7 +5,7 @@
 #include "Debug.h"
 #include "Texture.h"
 
-Window::Window(unsigned int width, unsigned int height, const std::string& title) 
+Window::Window(int width, int height, const std::string& title) 
 	: m_Width(width), m_Height(height)
 {
 	// initialise GLFW

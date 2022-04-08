@@ -3,17 +3,18 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "Color.h"
 
 class Renderer
 {
 private:
-
+	Renderer();
 
 public:
-	Renderer();
+	static void init();
+	static void clear(float r, float g, float b);
 	
-	void draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader) const;
-	void clear() const;
+	static void draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader);
 
 };
 

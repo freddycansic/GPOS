@@ -3,6 +3,11 @@
 #include <GL/glew.h>
 #include <vector>
 #include <iostream>
+#include <concepts>
+
+// i really just wanted to write concept
+template<typename T>
+concept Numeric = std::integral<T> && std::floating_point<T>;
 
 // each layout component contains these 3
 struct VertexBufferElement {
@@ -25,8 +30,9 @@ public:
 
 	template<typename T>
 	void addElement(unsigned int count, bool normalised) {
-		//static_assert(false);
-		std::cout << "Hllo" << std::endl;
+		while (true) {
+			std::cout << "VertexBufferLayout : Bad element type\n";
+		}
 	}
 
 	template<>
