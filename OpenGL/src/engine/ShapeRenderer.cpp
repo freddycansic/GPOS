@@ -10,6 +10,9 @@
 const size_t ShapeRenderer::MAX_VERTICES = 50000;
 const size_t ShapeRenderer::MAX_INDICES = 75000;
 
+std::vector<Vertex> ShapeRenderer::s_VertexBatch;
+std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
+
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
 
