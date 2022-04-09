@@ -6,7 +6,10 @@ class IndexBuffer
 {
 public:
 	IndexBuffer(const void* data, GLenum type, size_t count);
+	IndexBuffer();
 	~IndexBuffer();
+
+	void setSubData(unsigned int offset, size_t count, const void* data) const;
 	void bind() const;
 	void unbind() const;
 

@@ -51,9 +51,6 @@ int main(void)
 	std::vector<GLuint> indices = {
 		0, 1, 2,
 		0, 2, 3,
-
-		4, 5, 6,
-		4, 6, 7
 	};
 
 	VertexArray vao;

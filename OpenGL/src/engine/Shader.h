@@ -21,6 +21,7 @@ private:
 
 public:
 	Shader(const std::string& vertexShaderSourceDir, const std::string& fragmentShaderSourceDir);
+	Shader();
 	~Shader();
 	
 	void setUniform1i(const std::string& name, int value) const;
