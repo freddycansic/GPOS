@@ -66,13 +66,7 @@ int main(void)
 		ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
 		
 		ShapeRenderer::begin();
-		ShapeRenderer::draw(rect, {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(rect, {0.3f, 0.1f, 1.0f, 1.0f});
 		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
 		ShapeRenderer::end();
 

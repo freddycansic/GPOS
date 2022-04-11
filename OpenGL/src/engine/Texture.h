@@ -13,6 +13,7 @@ private:
 
 public:
 	Texture(const std::string& path);
+	Texture() = default;
 	~Texture();
 
 	void bind() const;

@@ -13,7 +13,7 @@ const size_t ShapeRenderer::MAX_INDICES = 75000;
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
 
-std::array<const Texture&, 32> ShapeRenderer::s_TextureSlots = {};
+std::array<Texture, 32> ShapeRenderer::s_TextureSlots;
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -49,10 +49,6 @@ void ShapeRenderer::init()
 	s_Ibo->unbind();
 
 	s_IsInitialised = true;
-
-	for (const auto& texture : s_TextureSlots) {
-		std::cout << texture.getID() << std::endl;
-	}
 }
 
 void ShapeRenderer::begin()
@@ -88,15 +84,15 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	unsigned int textureSlot;
 
 	// check if texture already has a slot
-	//auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
-	//
-	//// if the returned iterator doesnt point past the end of the array = if it found it
+	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
+	// TODO problem = no comparison operator between textures i think
+
+	// if the returned iterator doesnt point past the end of the array = if it found it
 	//if (textureSlotItr != std::end(s_TextureSlots)) {
 	//	textureSlot = std::distance(s_TextureSlots.begin(), textureSlotItr); // return position of slot
 	//}
 	//else {
 	//	auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), 0);
-
 	//}
 
 	// if not then check if there is space for another texture
@@ -104,12 +100,12 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	// if so then insert the texture
 
 	// copy vertices
-	auto vertices = shape.getVertices();
+	//auto vertices = shape.getVertices();
 
-	for (auto& vertex : vertices) {
-		vertex.texID = textureSlot;
-		s_VertexBatch.push_back(vertex);
-	}
+	//for (auto& vertex : vertices) {
+	//	vertex.texID = (float) textureSlot;
+	//	s_VertexBatch.push_back(vertex);
+	//}
 }
 
 void ShapeRenderer::end()
