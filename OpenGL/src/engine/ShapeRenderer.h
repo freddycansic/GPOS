@@ -2,6 +2,7 @@
 
 #include <array>
 #include <string>
+#include <memory>
 
 #include "shapes/Rectangle.h"
 #include "engine/Texture.h"
@@ -27,10 +28,10 @@ private:
 	// keep track of which textures are being used
 	static std::array<const Texture&, 32> s_TextureSlots;
 
-	static VertexArray s_Vao;
-	static VertexBuffer s_Vbo;
-	static IndexBuffer s_Ibo;
-	static Shader s_Shader;
+	static std::shared_ptr<VertexArray> s_Vao;
+	static std::shared_ptr<VertexBuffer> s_Vbo;
+	static std::shared_ptr<IndexBuffer> s_Ibo;
+	static std::shared_ptr<Shader> s_Shader;
 
 	ShapeRenderer()
 	{

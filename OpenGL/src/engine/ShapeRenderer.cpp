@@ -10,34 +10,31 @@
 const size_t ShapeRenderer::MAX_VERTICES = 50000;
 const size_t ShapeRenderer::MAX_INDICES = 75000;
 
-std::vector<Vertex> ShapeRenderer::s_VertexBatch;
-std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
-
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
 
-IndexBuffer ShapeRenderer::s_Ibo;
-VertexArray ShapeRenderer::s_Vao; // TODO i think the problem is that this constructor is being called and the vao bound before there is a valid opengl context since this variable is static
-VertexBuffer ShapeRenderer::s_Vbo;
-Shader ShapeRenderer::s_Shader;
+std::shared_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
+std::shared_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
+std::shared_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
+std::shared_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
 
 void ShapeRenderer::init()
 {
-	s_Vao.bind();
 	// TODO FIX ME DDDD:
-	s_Shader = Shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));	
-	s_Shader.bind();
+	s_Shader = std::make_shared<Shader>(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
+	s_Shader->bind();
 
 	// setup index array for texture slots
 	std::array<int, 32> slots = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-	s_Shader.setUniform1iv("u_Textures", slots.size(), slots.data());
+	s_Shader->setUniform1iv("u_Textures", slots.size(), slots.data());
 
 	// init vao, allocate empty vbo + ibo
-	s_Vbo = VertexBuffer(nullptr, MAX_VERTICES * sizeof(Vertex));
-	s_Ibo = IndexBuffer(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
+	s_Vao = std::make_shared<VertexArray>();
+	s_Vbo = std::make_shared<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
+	s_Ibo = std::make_shared<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
 	
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(3, false);
@@ -45,10 +42,10 @@ void ShapeRenderer::init()
 	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(1, false);
 
-	s_Vao.addBuffer(s_Vbo, layout);
-	s_Vao.bind();
-	s_Vbo.bind();
-	s_Ibo.bind();
+	s_Vao->addBuffer(*s_Vbo, layout);
+	s_Vao->unbind();
+	s_Vbo->unbind();
+	s_Ibo->unbind();
 }
 
 void ShapeRenderer::begin()
@@ -104,11 +101,11 @@ void ShapeRenderer::end()
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
 	}
 
-	s_Vao.bind();
-	s_Vbo.setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
-	s_Ibo.setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
+	s_Vao->bind();
+	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
+	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
 
-	Renderer::draw(s_Vao, s_Ibo, s_Shader);
+	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 
 	s_HasBegun = false;
 }
