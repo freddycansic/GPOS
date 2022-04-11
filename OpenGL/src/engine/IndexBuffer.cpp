@@ -16,6 +16,7 @@ IndexBuffer::IndexBuffer() :
 	
 void IndexBuffer::setSubData(unsigned int offset, size_t count, const void* data) const
 {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, count * sizeof(GLuint), data);
 }
 

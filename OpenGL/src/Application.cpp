@@ -32,7 +32,10 @@ int main(void)
 	Window window(3 * 1920 / 4, 3 * 1080 / 4, "Hello, world!");
 	
 	Rectangle rect(window.getWidth()/2, window.getHeight()/2, 100, 100);
-	rect.setTexID(1);
+
+	for (const auto& vertex : rect.getVertices()) {
+		std::cout << vertex << std::endl;
+	}
 
 	//std::vector<Vertex> vertices = {
 	//	{{-6.0f,  0.5f, 0.0f}, {1.0f, 1.0f}, 0.0f},
@@ -46,41 +49,41 @@ int main(void)
 	//	{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 1.0f},
 	//};
 
-	auto vertices = rect.vertices;
+	//auto vertices = rect.vertices;
 
-	std::vector<GLuint> indices = {
-		0, 1, 2,
-		0, 2, 3,
-	};
+	//std::vector<GLuint> indices = {
+	//	0, 1, 2,
+	//	0, 2, 3,
+	//};
 
-	VertexArray vao;
+	//VertexArray vao;
 
-	VertexBuffer vbo(vertices.data(), vertices.size() * sizeof(Vertex));
+	//VertexBuffer vbo(nullptr, vertices.size() * sizeof(Vertex));
 
-	IndexBuffer ibo(indices.data(), GL_UNSIGNED_INT, indices.size());
-	
-	VertexBufferLayout layout;
-	layout.addElement<GLfloat>(3, false);
-	layout.addElement<GLfloat>(4, false);
-	layout.addElement<GLfloat>(2, false);
-	layout.addElement<GLfloat>(1, false);
+	//IndexBuffer ibo(indices.data(), GL_UNSIGNED_INT, indices.size());
+	//
+	//VertexBufferLayout layout;
+	//layout.addElement<GLfloat>(3, false);
+	//layout.addElement<GLfloat>(4, false);
+	//layout.addElement<GLfloat>(2, false);
+	//layout.addElement<GLfloat>(1, false);
 
-	vao.addBuffer(vbo, layout);
-	vao.bind();
-	vbo.bind();
-	ibo.bind();
+	//vao.addBuffer(vbo, layout);
+	//vao.bind();
+	//vbo.bind();
+	//ibo.bind();
 
-	Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
-	
+	//Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
+	//
+
+	//Texture kaliTex(Files::internal("textures/kali.png"));
+	//Texture elliotTex(Files::internal("textures/image.png"));
+
+	//std::array<int, 2> slots = {0, 1};
+	//shader.setUniform1iv("u_Textures", slots.size(), slots.data());
+
 	Renderer::init();
 	ShapeRenderer::init();
-
-	Texture kaliTex(Files::internal("textures/kali.png"));
-	Texture elliotTex(Files::internal("textures/image.png"));
-
-	std::array<int, 2> slots = {0, 1};
-	shader.setUniform1iv("u_Textures", slots.size(), slots.data());
-	
 
 	// imgui
 	ImGui::CreateContext();
@@ -88,12 +91,12 @@ int main(void)
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
 
-	// unbind vao before ibo
-	vao.unbind();
-	vbo.unbind();
-	shader.unbind();
-	// so unbinding the ibo doesn't affect the vao
-	ibo.unbind();
+	//// unbind vao before ibo
+	//vao.unbind();
+	//vbo.unbind();
+	//shader.unbind();
+	//// so unbinding the ibo doesn't affect the vao
+	//ibo.unbind();
 
 	Mat4 proj = Mat4::ortho(0, window.getWidth(), 0, window.getHeight());
 	
@@ -106,23 +109,22 @@ int main(void)
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		
-		Renderer::clear(0.62f, 0.62f, 0.62f);
+		Renderer::clear(0.42f, 0.42f, 0.42f);
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
 		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);//.rotate(0, 0, Window::getCurrentTime());
+		//Mat4 model = Mat4::identity;//.rotate(0, 0, Window::getCurrentTime());
 		Mat4 view = Mat4::identity;
 		Mat4 mvp = proj * view * model;
 		
-		// push mvp uniform to shader
-		shader.bind();
-		shader.setUniformMat4("u_ModelViewProj", mvp);
+		// push mvp uniform to shader // TODO TEMPORARY
+		ShapeRenderer::s_Shader->bind();
+		ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
 		
-		// bind textures
-		kaliTex.bindToSlot(0);
-		elliotTex.bindToSlot(1);
-
-		// draw
-		Renderer::draw(vao, ibo, shader);
+		ShapeRenderer::begin();
+		ShapeRenderer::draw(rect, {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::end();
 
 		{
 			ImGui::SetNextWindowPos(ImVec2(10, 10));

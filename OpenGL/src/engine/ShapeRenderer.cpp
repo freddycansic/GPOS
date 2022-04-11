@@ -5,6 +5,7 @@
 
 #include "engine/Files.h"
 #include "engine/Renderer.h"
+#include <cassert>
 
 // little bit scared these magic numbers will come back to bite me
 const size_t ShapeRenderer::MAX_VERTICES = 50000;
@@ -43,9 +44,10 @@ void ShapeRenderer::init()
 	layout.addElement<GLfloat>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
-	s_Vao->unbind();
 	s_Vbo->unbind();
 	s_Ibo->unbind();
+
+	s_IsInitialised = true;
 }
 
 void ShapeRenderer::begin()
@@ -57,6 +59,60 @@ void ShapeRenderer::begin()
 	s_HasBegun = true;
 }
 
+void ShapeRenderer::draw(const Shape& shape, const Vec4& color)
+{
+	checkBatchBegun();
+	addShapeIndices(shape);
+
+	// copy vertices
+	auto vertices = shape.getVertices();
+
+	// modify vertices and add to buffer
+	for (auto& vertex : vertices) {
+		vertex.texID = -1;
+		vertex.color = color;
+		s_VertexBatch.push_back(vertex);
+	}
+}
+
+void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
+{
+	checkBatchBegun();
+	addShapeIndices(shape);
+
+	for (const auto& vertex : shape.getVertices()) {
+		//vertex.texID = s_TextureSlots.at;
+		s_VertexBatch.push_back(vertex);
+	}
+}
+
+void ShapeRenderer::end()
+{
+	checkBatchBegun();
+
+	s_Vao->bind();
+	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
+	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
+
+	for (const auto& vertex : s_VertexBatch) {
+		std::cout << vertex << "\n";
+	}
+
+	for (const auto& index : s_IndexBatch) {
+		std::cout << index << "\n";
+	}
+
+	std::cout.flush();
+
+	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+
+	// clear buffers
+	s_VertexBatch.clear();
+	s_IndexBatch.clear();
+
+	s_HasBegun = false;
+}
+
 void ShapeRenderer::checkBatchBegun() {
 	if (!s_HasBegun) {
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
@@ -65,47 +121,18 @@ void ShapeRenderer::checkBatchBegun() {
 
 void ShapeRenderer::addShapeIndices(const Shape& shape) {
 	// add indices to index buffer
-	// dereference to get value at iterator in vector
-	unsigned int maxIndex = *std::max_element(s_IndexBatch.begin(), s_IndexBatch.end());
+
+	// find maxIndex to offset next indices so they dont reference any previous ones
+	unsigned int maxIndex;
+	if (s_IndexBatch.size() == 0) {
+		maxIndex = 0;
+	}
+	else {
+		// dereference to get value at iterator in vector
+		maxIndex = *std::max_element(s_IndexBatch.begin(), s_IndexBatch.end()) + 1;
+	}
+
 	for (unsigned int index : shape.getIndices()) {
-		s_IndexBatch.push_back(index + maxIndex + 1);
+		s_IndexBatch.push_back(index + maxIndex);
 	}
-}
-
-void ShapeRenderer::draw(Shape& shape, const Vec4& color)
-{
-	checkBatchBegun();
-	addShapeIndices(shape);
-
-	for (auto& vertex : shape.getVertices()) {
-		vertex.texID = -1;
-		vertex.color = color;
-		s_VertexBatch.push_back(vertex);
-	}
-}
-
-void ShapeRenderer::draw(Shape& shape, const Texture& tex)
-{
-	checkBatchBegun();
-	addShapeIndices(shape);
-
-	for (auto& vertex : shape.getVertices()) {
-		//vertex.texID = s_TextureSlots.at;
-		s_VertexBatch.push_back(vertex);
-	}
-}
-
-void ShapeRenderer::end()
-{
-	if (!s_HasBegun) {
-		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
-	}
-
-	s_Vao->bind();
-	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
-	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
-
-	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-
-	s_HasBegun = false;
 }

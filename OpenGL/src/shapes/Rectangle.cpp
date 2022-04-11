@@ -4,23 +4,23 @@
 
 #include "maths/Mat4.h"
 
-const std::array<Vertex, 4> Rectangle::s_UnitVertices =
+const std::vector<Vertex> Rectangle::s_UnitVertices =
 {
-	Vertex({ -0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, -1.0f),
-	Vertex({ -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, -1.0f),
-	Vertex({  0.5f,  0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, -1.0f),
-	Vertex({  0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, -1.0f)
+	Vertex({ -0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, -1.0f),
+	Vertex({ -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, -1.0f),
+	Vertex({  0.5f,  0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, -1.0f),
+	Vertex({  0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, -1.0f)
 };
 
-const std::array<unsigned int, 6> Rectangle::s_UnitIndices =
+const std::vector<unsigned int> Rectangle::s_UnitIndices =
 {
 	0, 1, 2,
 	0, 2, 3,
 };
 
 Rectangle::Rectangle(float x, float y, float width, float height)
-: Shape(x, y), m_Width(width), m_Height(height) {
-	vertices.reserve(4);
+: Shape(x, y), m_Width(width), m_Height(height){
+	m_Vertices.reserve(s_UnitIndices.size());
 
 	for (const auto& unitVertex : s_UnitVertices) {
 		// copy unit vertex
@@ -29,12 +29,19 @@ Rectangle::Rectangle(float x, float y, float width, float height)
 		// set new position
 		newVertex.position = Vec3(Mat4::identity.translate(x, y, 0.0f).rotate(0, 0, 0).scale(width, height, 1.0f) * Vec4(unitVertex.position, 1.0f));
 
-		// add new vertex to the buffer TODO TEMPORARY
-		vertices.push_back(newVertex);
-
+		// add vertex to the buffer
 		m_Vertices.push_back(newVertex);
 	}
 
+}
+
+// dont write override here (?)
+std::vector<Vertex> Rectangle::getVertices() const {
+	return m_Vertices;
+}
+
+std::vector<unsigned int> Rectangle::getIndices() const {
+	return s_UnitIndices;
 }
 
 

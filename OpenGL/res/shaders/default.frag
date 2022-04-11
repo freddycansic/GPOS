@@ -12,11 +12,11 @@ void main() {
 
 	int index = int(v_TexID);
 
-	if (index >= 0) { // if index != -1 do a texture
-		color = texture(u_Textures[index], v_TexCoord);
-	}
-	else { // else do a color
+	if (index < 0) { // if index < 0 do a texture
 		color = v_Color;
+	}
+	else { // else do a texture
+		color = texture(u_Textures[index], v_TexCoord);
 	}
 
 

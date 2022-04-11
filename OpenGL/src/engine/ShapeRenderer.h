@@ -31,7 +31,6 @@ private:
 	static std::shared_ptr<VertexArray> s_Vao;
 	static std::shared_ptr<VertexBuffer> s_Vbo;
 	static std::shared_ptr<IndexBuffer> s_Ibo;
-	static std::shared_ptr<Shader> s_Shader;
 
 	ShapeRenderer()
 	{
@@ -45,11 +44,12 @@ private:
 	static void checkBatchBegun();
 
 public:
+	static std::shared_ptr<Shader> s_Shader;
 
 	static void init();
 	static void begin();
-	static void draw(Shape& shape, const Vec4& color);
-	static void draw(Shape& shape, const Texture& tex);
+	static void draw(const Shape& shape, const Vec4& color);
+	static void draw(const Shape& shape, const Texture& tex);
 	static void end();
 };
 
