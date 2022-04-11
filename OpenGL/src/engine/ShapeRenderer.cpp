@@ -16,8 +16,17 @@ std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
 
+std::vector<Vertex> ShapeRenderer::s_VertexBatch;
+std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
+
+IndexBuffer ShapeRenderer::s_Ibo;
+VertexArray ShapeRenderer::s_Vao; // TODO i think the problem is that this constructor is being called and the vao bound before there is a valid opengl context since this variable is static
+VertexBuffer ShapeRenderer::s_Vbo;
+Shader ShapeRenderer::s_Shader;
+
 void ShapeRenderer::init()
 {
+	s_Vao.bind();
 	// TODO FIX ME DDDD:
 	s_Shader = Shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));	
 	s_Shader.bind();
@@ -32,6 +41,7 @@ void ShapeRenderer::init()
 	
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(3, false);
+	layout.addElement<GLfloat>(4, false);
 	layout.addElement<GLfloat>(2, false);
 	layout.addElement<GLfloat>(1, false);
 
@@ -71,6 +81,7 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	addShapeIndices(shape);
 
 	for (auto& vertex : shape.getVertices()) {
+		vertex.texID = -1;
 		vertex.color = color;
 		s_VertexBatch.push_back(vertex);
 	}
@@ -93,9 +104,10 @@ void ShapeRenderer::end()
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
 	}
 
-	s_Vbo.bind();
+	s_Vao.bind();
 	s_Vbo.setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
-	
+	s_Ibo.setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
+
 	Renderer::draw(s_Vao, s_Ibo, s_Shader);
 
 	s_HasBegun = false;

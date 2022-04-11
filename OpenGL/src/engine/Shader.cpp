@@ -187,6 +187,11 @@ Shader::Shader(const std::string& vertexShaderSourceDir, const std::string& frag
 	findAndAddUniforms(fragmentShaderSource);
 }
 
+Shader::Shader() :
+	m_ID(0)
+{
+}
+
 void Shader::bind() const {
 	glUseProgram(m_ID);
 }

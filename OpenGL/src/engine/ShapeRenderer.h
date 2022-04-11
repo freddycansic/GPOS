@@ -19,8 +19,12 @@ private:
 	const static size_t MAX_INDICES;
 	
 	static bool s_HasBegun, s_IsInitialised;
+
+	// vertex + index data
 	static std::vector<Vertex> s_VertexBatch;
 	static std::vector<unsigned int> s_IndexBatch;
+
+	// keep track of which textures are being used
 	static std::array<const Texture&, 32> s_TextureSlots;
 
 	static VertexArray s_Vao;
