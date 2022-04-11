@@ -33,55 +33,6 @@ int main(void)
 	
 	Rectangle rect(window.getWidth()/2, window.getHeight()/2, 100, 100);
 
-	for (const auto& vertex : rect.getVertices()) {
-		std::cout << vertex << std::endl;
-	}
-
-	//std::vector<Vertex> vertices = {
-	//	{{-6.0f,  0.5f, 0.0f}, {1.0f, 1.0f}, 0.0f},
-	//	{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 0.0f},
-	//	{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 0.0f},
-	//	{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 0.0f},
-
-	//	{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, 1.0f},
-	//	{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, 1.0f},
-	//	{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, 1.0f},
-	//	{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, 1.0f},
-	//};
-
-	//auto vertices = rect.vertices;
-
-	//std::vector<GLuint> indices = {
-	//	0, 1, 2,
-	//	0, 2, 3,
-	//};
-
-	//VertexArray vao;
-
-	//VertexBuffer vbo(nullptr, vertices.size() * sizeof(Vertex));
-
-	//IndexBuffer ibo(indices.data(), GL_UNSIGNED_INT, indices.size());
-	//
-	//VertexBufferLayout layout;
-	//layout.addElement<GLfloat>(3, false);
-	//layout.addElement<GLfloat>(4, false);
-	//layout.addElement<GLfloat>(2, false);
-	//layout.addElement<GLfloat>(1, false);
-
-	//vao.addBuffer(vbo, layout);
-	//vao.bind();
-	//vbo.bind();
-	//ibo.bind();
-
-	//Shader shader(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
-	//
-
-	//Texture kaliTex(Files::internal("textures/kali.png"));
-	//Texture elliotTex(Files::internal("textures/image.png"));
-
-	//std::array<int, 2> slots = {0, 1};
-	//shader.setUniform1iv("u_Textures", slots.size(), slots.data());
-
 	Renderer::init();
 	ShapeRenderer::init();
 
@@ -90,13 +41,6 @@ int main(void)
 	ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
-
-	//// unbind vao before ibo
-	//vao.unbind();
-	//vbo.unbind();
-	//shader.unbind();
-	//// so unbinding the ibo doesn't affect the vao
-	//ibo.unbind();
 
 	Mat4 proj = Mat4::ortho(0, window.getWidth(), 0, window.getHeight());
 	

@@ -94,16 +94,6 @@ void ShapeRenderer::end()
 	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
 	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
 
-	for (const auto& vertex : s_VertexBatch) {
-		std::cout << vertex << "\n";
-	}
-
-	for (const auto& index : s_IndexBatch) {
-		std::cout << index << "\n";
-	}
-
-	std::cout.flush();
-
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 
 	// clear buffers
