@@ -44,7 +44,7 @@ private:
 	static void checkBatchBegun();
 
 public:
-	static std::shared_ptr<Shader> s_Shader;
+	static std::shared_ptr<Shader> s_Shader; // TODO TEMPORARY
 
 	static void init();
 	static void begin();

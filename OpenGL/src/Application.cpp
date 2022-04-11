@@ -68,6 +68,12 @@ int main(void)
 		ShapeRenderer::begin();
 		ShapeRenderer::draw(rect, {0.0f, 1.0f, 1.0f, 1.0f});
 		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
 		ShapeRenderer::end();
 
 		{
@@ -76,7 +82,7 @@ int main(void)
 			
 			ImGui::SliderFloat("X", &xTranslate, window.getWidth() / -2, window.getWidth() / 2);
 			ImGui::SliderFloat("Y", &yTranslate, window.getHeight() / -2, window.getHeight() / 2);
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
 			
 			ImGui::End();
 		}

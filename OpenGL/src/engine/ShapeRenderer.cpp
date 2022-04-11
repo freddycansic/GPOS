@@ -5,7 +5,6 @@
 
 #include "engine/Files.h"
 #include "engine/Renderer.h"
-#include <cassert>
 
 // little bit scared these magic numbers will come back to bite me
 const size_t ShapeRenderer::MAX_VERTICES = 50000;
@@ -13,6 +12,8 @@ const size_t ShapeRenderer::MAX_INDICES = 75000;
 
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
+
+std::array<const Texture&, 32> ShapeRenderer::s_TextureSlots = {};
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -48,6 +49,10 @@ void ShapeRenderer::init()
 	s_Ibo->unbind();
 
 	s_IsInitialised = true;
+
+	for (const auto& texture : s_TextureSlots) {
+		std::cout << texture.getID() << std::endl;
+	}
 }
 
 void ShapeRenderer::begin()
@@ -80,8 +85,29 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	for (const auto& vertex : shape.getVertices()) {
-		//vertex.texID = s_TextureSlots.at;
+	unsigned int textureSlot;
+
+	// check if texture already has a slot
+	//auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
+	//
+	//// if the returned iterator doesnt point past the end of the array = if it found it
+	//if (textureSlotItr != std::end(s_TextureSlots)) {
+	//	textureSlot = std::distance(s_TextureSlots.begin(), textureSlotItr); // return position of slot
+	//}
+	//else {
+	//	auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), 0);
+
+	//}
+
+	// if not then check if there is space for another texture
+
+	// if so then insert the texture
+
+	// copy vertices
+	auto vertices = shape.getVertices();
+
+	for (auto& vertex : vertices) {
+		vertex.texID = textureSlot;
 		s_VertexBatch.push_back(vertex);
 	}
 }
