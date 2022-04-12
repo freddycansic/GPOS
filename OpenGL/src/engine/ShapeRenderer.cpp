@@ -83,29 +83,37 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 
 	unsigned int textureSlot;
 
-	// check if texture already has a slot
+	// check if texture already has a slot 
 	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
-	// TODO problem = no comparison operator between textures i think
-
+	
 	// if the returned iterator doesnt point past the end of the array = if it found it
-	//if (textureSlotItr != std::end(s_TextureSlots)) {
-	//	textureSlot = std::distance(s_TextureSlots.begin(), textureSlotItr); // return position of slot
-	//}
-	//else {
-	//	auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), 0);
-	//}
+	if (textureSlotItr != std::end(s_TextureSlots)) {
+		textureSlot = std::distance(s_TextureSlots.begin(), textureSlotItr); // return position of slot
+	}
+	
+	else {
+		// if not then check if there is space for another texture = check for a space with default texture
+		auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), Texture());
 
-	// if not then check if there is space for another texture
-
-	// if so then insert the texture
+		// if so then insert the texture
+		if (emptySlotItr != std::end(s_TextureSlots)) {
+			
+			textureSlot = std::distance(s_TextureSlots.begin(), emptySlotItr);
+			
+			s_TextureSlots[textureSlot] = tex;
+		}
+		else {
+			throw std::runtime_error("No texture slots left!"); // ill cross this bridge when i come to it
+		}
+	}
 
 	// copy vertices
-	//auto vertices = shape.getVertices();
+	auto vertices = shape.getVertices();
 
-	//for (auto& vertex : vertices) {
-	//	vertex.texID = (float) textureSlot;
-	//	s_VertexBatch.push_back(vertex);
-	//}
+	for (auto& vertex : vertices) {
+		vertex.texID = (float) textureSlot;
+		s_VertexBatch.push_back(vertex);
+	}
 }
 
 void ShapeRenderer::end()

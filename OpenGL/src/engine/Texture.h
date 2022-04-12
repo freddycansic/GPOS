@@ -20,5 +20,7 @@ public:
 	void bindToSlot(unsigned int slot) const;
 	void unbind() const;
 
+	friend bool operator==(const Texture& tex1, const Texture& tex2);
+
 	unsigned int getID() const { return m_ID; }
 };

@@ -36,6 +36,8 @@ int main(void)
 	Renderer::init();
 	ShapeRenderer::init();
 
+	Texture tex1(Files::internal("textures/image.png"));
+
 	// imgui
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
@@ -68,6 +70,7 @@ int main(void)
 		ShapeRenderer::begin();
 		ShapeRenderer::draw(rect, {0.3f, 0.1f, 1.0f, 1.0f});
 		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
+		ShapeRenderer::draw(Rectangle(100, 10.0f, 100.0f, 100.0f), tex1);
 		ShapeRenderer::end();
 
 		{
