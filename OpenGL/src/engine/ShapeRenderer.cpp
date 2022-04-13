@@ -124,6 +124,16 @@ void ShapeRenderer::end()
 	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
 	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
 
+	s_Shader->bind();
+
+	for (size_t i = 0; i < s_TextureSlots.size(); i++) {
+		const auto& texture = s_TextureSlots[i];
+
+		if (texture.getID() == NULL) continue;
+
+		texture.bindToSlot(i);
+	}
+
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 
 	// clear buffers

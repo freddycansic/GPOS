@@ -7,14 +7,14 @@ class Texture
 {
 private:
 	unsigned int m_ID;
-	std::string m_Filepath;
 	unsigned char* m_Buffer;
 	int m_Width, m_Height, m_ColorDepth;
 
 public:
 	Texture(const std::string& path);
-	Texture() = default;
+	Texture();
 	~Texture();
+	Texture(const Texture& tex) = delete;
 
 	void bind() const;
 	void bindToSlot(unsigned int slot) const;

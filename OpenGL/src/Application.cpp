@@ -44,7 +44,7 @@ int main(void)
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
 
-	Mat4 proj = Mat4::ortho(0, window.getWidth(), 0, window.getHeight());
+	Mat4 proj = Mat4::ortho(0, window.getWidth(), 0, window.getHeight()); // TODO add perspective matrix
 	
 	float xTranslate = 0.0f, yTranslate = 0.0f;
 
@@ -58,9 +58,8 @@ int main(void)
 		Renderer::clear(0.42f, 0.42f, 0.42f);
 
 		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);//.rotate(0, 0, Window::getCurrentTime());
-		//Mat4 model = Mat4::identity;//.rotate(0, 0, Window::getCurrentTime());
-		Mat4 view = Mat4::identity;
+		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);
+		Mat4 view = Mat4::identity; // TODO
 		Mat4 mvp = proj * view * model;
 		
 		// push mvp uniform to shader // TODO TEMPORARY
@@ -68,9 +67,8 @@ int main(void)
 		ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
 		
 		ShapeRenderer::begin();
-		ShapeRenderer::draw(rect, {0.3f, 0.1f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(10.0f, 10.0f, 100.0f, 100.0f), {0.0f, 1.0f, 1.0f, 1.0f});
-		ShapeRenderer::draw(Rectangle(100, 10.0f, 100.0f, 100.0f), tex1);
+		ShapeRenderer::draw(rect, tex1);
+		ShapeRenderer::draw(Rectangle(400.0f, 400.0f, 100.0f, 100.0f), {1.0f, 0.7f, 1.0f, 1.0f});
 		ShapeRenderer::end();
 
 		{

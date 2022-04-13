@@ -5,7 +5,7 @@
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string& path) 
-	: m_Filepath(path), m_Buffer(nullptr), m_ID(0), m_Width(0), m_Height(0), m_ColorDepth(0)
+	: m_Buffer(nullptr), m_ID(0), m_Width(0), m_Height(0), m_ColorDepth(0)
 {
 	// flips texture upside down as opengl expects first pixel to be bottom left as apposed to top left
 	stbi_set_flip_vertically_on_load(1);
@@ -26,6 +26,11 @@ Texture::Texture(const std::string& path)
 	unbind();
 
 	if (m_Buffer) stbi_image_free(m_Buffer);
+}
+
+Texture::Texture() :
+	m_ID(0), m_Buffer(nullptr), m_Width(0), m_Height(0), m_ColorDepth(0)
+{
 }
 
 Texture::~Texture() {
