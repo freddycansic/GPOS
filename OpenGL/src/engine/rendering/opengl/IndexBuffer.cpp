@@ -1,12 +1,14 @@
 #include "IndexBuffer.h"
 
+#include "engine/Debug.h"
+
 IndexBuffer::IndexBuffer(const void* data, GLenum type, size_t count)
 	: m_Count(count), m_Type(type) 
 {
 	
-	glGenBuffers(1, &m_ID);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID); 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_STATIC_DRAW);
+	GLAPI(glGenBuffers(1, &m_ID));
+	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
+	GLAPI(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_STATIC_DRAW));
 }
 
 IndexBuffer::IndexBuffer() :
@@ -16,18 +18,18 @@ IndexBuffer::IndexBuffer() :
 	
 void IndexBuffer::setSubData(unsigned int offset, size_t count, const void* data) const
 {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, count * sizeof(GLuint), data);
+	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
+	GLAPI(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, count * sizeof(GLuint), data));
 }
 
 void IndexBuffer::bind() const {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
+	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
 }
 
 void IndexBuffer::unbind() const {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 IndexBuffer::~IndexBuffer() {
-	glDeleteBuffers(1, &m_ID);
+	GLAPI(glDeleteBuffers(1, &m_ID));
 }
