@@ -1,46 +1,65 @@
-#include <GL/glew.h>
-#include "Window.h"
-
 #include <iostream>
-#include "Debug.h"
-#include "Texture.h"
+#include <stdexcept>
 
-Window::Window(int width, int height, const std::string& title) 
-	: m_Width(width), m_Height(height)
-{
+#include "Window.h"
+#include "Debug.h"
+
+bool Window::s_Initialised = false;
+int Window::s_DisplayWidth = 0, Window::s_DisplayHeight = 0;
+
+void Window::init() {
 	// initialise GLFW
-	if (!glfwInit())
-		std::cout << "GLFW failed initialisation!" << std::endl;;
+	if (!glfwInit()) {
+		throw std::runtime_error("GLFW failed to initialise!");
+	}
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	// glfw core profile = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
+	const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	s_DisplayWidth = vidmode->width;
+	s_DisplayHeight = vidmode->height;
 
-	m_ID = glfwCreateWindow(width, height, "Hello, world!", NULL, NULL);
-	if (!m_ID) {
-		glfwTerminate();
-		std::cout << "Failed to create window!" << std::endl;;
+	s_Initialised = true;
+}
+
+Window::Window(const WindowConfig& config)
+{
+	if (!s_Initialised) {
+		throw std::runtime_error("Window class not initialised! Did you call Window::init() first?");
+	}
+
+	// deduce window width and height
+	if (config.maxSize) {
+		m_Width = s_DisplayWidth;
+		m_Height = s_DisplayHeight;	
+	}
+	else {
+		m_Width = config.width;
+		m_Height = config.height;
 	}
 	
-	// get display width + height
-	const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	m_DisplayWidth = vidmode->width;
-	m_DisplayHeight = vidmode->height;
+	// init window
+	m_ID = glfwCreateWindow(m_Width, m_Height, config.title.c_str(), NULL, NULL);
+	
+	if (!m_ID) {
+		glfwTerminate();
+		throw std::runtime_error("Failed to create window!");
+	}
 
 	// set opengl rendering context
 	glfwMakeContextCurrent(m_ID);
 
 	// vsync = true
-	glfwSwapInterval(1);
+	glfwSwapInterval(config.vsync);
 
 	// initialise GLEW, must be called after there is a opengl rendering context
 	if (glewInit() != GLEW_OK) {
-		std::cout << "GLEW initialisation failed!" << std::endl;
-		std::cin.get();
+		throw std::runtime_error("GLEW initialisation failed!");
 	}
 
 	glEnable(GL_DEBUG_OUTPUT);
@@ -74,4 +93,12 @@ void Window::update() {
 
 int Window::shouldClose() const {
 	return glfwWindowShouldClose(m_ID);
+}
+
+int Window::getDisplayHeight() {
+	return s_DisplayHeight;
+}
+
+int Window::getDisplayWidth() {
+	return s_DisplayWidth;
 }

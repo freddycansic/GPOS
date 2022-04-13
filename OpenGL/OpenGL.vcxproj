@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)OpenGL\src;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,7 +110,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)OpenGL\src;$(SolutionDir)OpenGL\src\libs;$(SolutionDir)OpenGL\src\libs</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,7 +128,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)OpenGL\src;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,7 +149,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)OpenGL\src;;$(SolutionDir)OpenGL\src\libs</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,6 +160,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\ApplicationHandler.cpp" />
+    <ClCompile Include="src\engine\Debug.cpp" />
     <ClCompile Include="src\engine\Files.cpp" />
     <ClCompile Include="src\engine\rendering\Vertex.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
@@ -176,15 +179,16 @@
     <ClCompile Include="src\engine\rendering\opengl\Shader.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\IndexBuffer.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
-    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\libs\stb_image\stb_image.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexArray.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\Texture.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
-    <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\ApplicationHandler.h" />
     <ClInclude Include="src\engine\rendering\Vertex.h" />
     <ClInclude Include="src\engine\rendering\shapes\Shape.h" />
     <ClInclude Include="src\engine\rendering\shapes\Rectangle.h" />

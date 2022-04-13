@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\IndexBuffer.cpp" />
@@ -22,8 +22,10 @@
     <ClCompile Include="src\engine\rendering\shapes\Rectangle.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
     <ClCompile Include="src\engine\rendering\Vertex.cpp" />
-    <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
     <ClCompile Include="src\engine\Files.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\ApplicationHandler.cpp" />
+    <ClCompile Include="src\engine\Debug.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
@@ -52,6 +54,8 @@
     <ClInclude Include="src\engine\rendering\shapes\Rectangle.h" />
     <ClInclude Include="src\engine\rendering\shapes\Shape.h" />
     <ClInclude Include="src\engine\rendering\Vertex.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\ApplicationHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
