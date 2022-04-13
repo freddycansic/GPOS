@@ -1,9 +1,8 @@
 #pragma once
 
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
-#include "Color.h"
+#include "engine/rendering/opengl/VertexArray.h"
+#include "engine/rendering/opengl/IndexBuffer.h"
+#include "engine/rendering/opengl/Shader.h"
 
 class Renderer
 {

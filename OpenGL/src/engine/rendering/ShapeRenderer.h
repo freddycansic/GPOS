@@ -4,13 +4,14 @@
 #include <string>
 #include <memory>
 
-#include "shapes/Rectangle.h"
-#include "engine/Texture.h"
-#include "engine/VertexArray.h"
-#include "engine/VertexBuffer.h"
-#include "engine/IndexBuffer.h"
-#include "engine/Vertex.h"
-#include "engine/Shader.h"
+#include "engine/rendering/opengl/Texture.h"
+#include "engine/rendering/opengl/VertexArray.h"
+#include "engine/rendering/opengl/VertexBuffer.h"
+#include "engine/rendering/opengl/IndexBuffer.h"
+#include "engine/rendering/opengl/Shader.h"
+#include "engine/rendering/Vertex.h"
+
+#include "shapes/Shape.h"
 
 class ShapeRenderer
 {

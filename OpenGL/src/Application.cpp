@@ -6,22 +6,15 @@
 #include <vector>
 #include <array>
 
-#include "engine/VertexBuffer.h"
-#include "engine/IndexBuffer.h"
-#include "engine/VertexArray.h"
-#include "engine/VertexBufferLayout.h"
-#include "engine/Shader.h"
-#include "engine/Renderer.h"
-#include "engine/Texture.h"
+#include "engine/rendering/opengl/Texture.h"
+#include "engine/rendering/shapes/Rectangle.h"
+#include "engine/rendering/Renderer.h"
+#include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
-#include "engine/Vertex.h"
-#include "engine/ShapeRenderer.h"
 #include "engine/Files.h"
 
 #include "maths/Mat4.h"
 #include "maths/Vectors.h"
-
-#include "shapes/Rectangle.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"

@@ -1,4 +1,4 @@
-#include "engine/Vertex.h"
+#include "engine/rendering/Vertex.h"
 
 Vertex::Vertex(Vec3 position, Vec4 color, Vec2 textureCoordinates, float texID) :
 	position(position), color(color), textureCoordinates(textureCoordinates), texID(texID)

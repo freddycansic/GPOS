@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include "engine/Files.h"
-#include "engine/Renderer.h"
+#include "engine/rendering/Renderer.h"
 
 // little bit scared these magic numbers will come back to bite me
 const size_t ShapeRenderer::MAX_VERTICES = 50000;

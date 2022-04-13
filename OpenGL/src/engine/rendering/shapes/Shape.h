@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "engine/Vertex.h"
+#include "engine/rendering/Vertex.h"
 
 class Shape
 {
