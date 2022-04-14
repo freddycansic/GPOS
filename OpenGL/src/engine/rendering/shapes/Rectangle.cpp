@@ -20,7 +20,7 @@ const std::vector<unsigned int> Rectangle::s_UnitIndices =
 
 Rectangle::Rectangle(float x, float y, float width, float height)
 : Shape(x, y), m_Width(width), m_Height(height){
-	m_Vertices.reserve(s_UnitIndices.size());
+	m_Vertices.reserve(s_UnitVertices.size());
 
 	for (const auto& unitVertex : s_UnitVertices) {
 		// copy unit vertex
