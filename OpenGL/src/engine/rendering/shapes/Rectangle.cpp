@@ -1,7 +1,5 @@
 #include "Rectangle.h"
 
-#include <vector>
-
 #include "maths/Mat4.h"
 
 const std::vector<Vertex> Rectangle::s_UnitVertices =

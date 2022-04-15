@@ -13,7 +13,7 @@ const size_t ShapeRenderer::MAX_INDICES = 75000;
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
 
-std::array<Texture, 32> ShapeRenderer::s_TextureSlots;
+std::array<unsigned int, 32> ShapeRenderer::s_TextureSlots;
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -84,7 +84,7 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	unsigned int textureSlot;
 
 	// check if texture already has a slot 
-	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
+	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex.getID());
 	
 	// if the returned iterator doesnt point past the end of the array = if it found it
 	if (textureSlotItr != std::end(s_TextureSlots)) {
@@ -93,14 +93,14 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	
 	else {
 		// if not then check if there is space for another texture = check for a space with default texture
-		auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), Texture());
+		auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), 0);
 
 		// if so then insert the texture
 		if (emptySlotItr != std::end(s_TextureSlots)) {
 			
 			textureSlot = std::distance(s_TextureSlots.begin(), emptySlotItr);
 			
-			s_TextureSlots[textureSlot] = tex;
+			s_TextureSlots[textureSlot] = tex.getID();
 		}
 		else {
 			throw std::runtime_error("No texture slots left!"); // ill cross this bridge when i come to it
@@ -127,11 +127,13 @@ void ShapeRenderer::end()
 	s_Shader->bind();
 
 	for (size_t i = 0; i < s_TextureSlots.size(); i++) {
-		const auto& texture = s_TextureSlots[i];
+		const auto& texID = s_TextureSlots[i];
 
-		if (texture.getID() == NULL) continue;
+		if (texID == 0) continue;
 
-		texture.bindToSlot(i);
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, texID);
+		//texture.bindToSlot(i);
 	}
 
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);

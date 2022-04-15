@@ -1,5 +1,8 @@
 #include "Debug.h"
 
+#include <iostream>
+#include <string>
+
 const char* severityEnumToString(GLenum severity) {
 	switch (severity) {
 	case GL_DEBUG_SEVERITY_HIGH:
@@ -97,9 +100,18 @@ namespace Debug {
 		while (glGetError() != GL_NO_ERROR);
 	}
 
-	bool logGLFunc(const char* functionName, const char* fileName, int lineNum) {
+	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum) {
 		while (GLenum error = glGetError()) {
-			std::cout << "ERROR! (" << error << ") " << fileName << " " << functionName << " : " << lineNum << std::endl;
+			std::string filePathFull(errorFile);
+			
+			std::string fileName = filePathFull.substr(filePathFull.find_last_of('\\')+1);
+			std::string filePath = filePathFull.substr(0, filePathFull.find(fileName));
+
+			std::cout << "(" << error << ") " << filePath;
+			YELLOW;
+			std::cout << fileName;
+			CLEAR;
+			std::cout << " " << functionName << " : " << lineNum << std::endl;
 			return false;
 		}
 		return true;

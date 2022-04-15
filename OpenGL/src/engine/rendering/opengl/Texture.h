@@ -15,6 +15,7 @@ public:
 	Texture() = default;
 	~Texture();
 	Texture(const Texture& tex) = delete;
+	//Texture& operator=(const Texture& tex) = delete;
 
 	void bind() const;
 	void bindToSlot(unsigned int slot) const;

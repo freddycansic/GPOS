@@ -1,8 +1,6 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <iostream>
-#include <cassert>
 
 #define DEBUG
 

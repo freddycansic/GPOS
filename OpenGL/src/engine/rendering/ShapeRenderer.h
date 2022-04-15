@@ -27,7 +27,7 @@ private:
 	static std::vector<unsigned int> s_IndexBatch;
 
 	// keep track of which textures are being used
-	static std::array<Texture, 32> s_TextureSlots;
+	static std::array<unsigned int, 32> s_TextureSlots;
 
 	static std::shared_ptr<VertexArray> s_Vao;
 	static std::shared_ptr<VertexBuffer> s_Vbo;

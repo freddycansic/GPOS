@@ -1,5 +1,6 @@
 #include "Application.h"
 
+Texture tex1;
 
 void Application::init() {
 	ShapeRenderer::init();
