@@ -5,6 +5,7 @@
 
 #include "engine/Files.h"
 #include "engine/rendering/Renderer.h"
+#include "engine/Debug.h"
 
 // little bit scared these magic numbers will come back to bite me
 const size_t ShapeRenderer::MAX_VERTICES = 50000;
@@ -131,8 +132,8 @@ void ShapeRenderer::end()
 
 		if (texID == 0) continue;
 
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, texID);
+		GLAPI(glActiveTexture(GL_TEXTURE0 + i));
+		GLAPI(glBindTexture(GL_TEXTURE_2D, texID));
 		//texture.bindToSlot(i);
 	}
 
