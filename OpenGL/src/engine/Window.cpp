@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "Debug.h"
+#include "engine/rendering/opengl/Texture.h"
 
 bool Window::s_Initialised = false;
 int Window::s_DisplayWidth = 0, Window::s_DisplayHeight = 0;

@@ -30,14 +30,13 @@ void Application::render() {
 }
 
 void Application::imGuiRender() {
-
-	ImGui::SetNextWindowPos(ImVec2(10, 10));
+  ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
-				
-	ImGui::SliderFloat("X", &xTranslate, windowWidth / -2, windowWidth / 2);
-	ImGui::SliderFloat("Y", &yTranslate, windowHeight / -2, windowHeight / 2);
+	
+	ImGui::SliderFloat("X", &xTranslate, window.getWidth() / -2, window.getWidth() / 2);
+	ImGui::SliderFloat("Y", &yTranslate, window.getHeight() / -2, window.getHeight() / 2);
 	ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
-				
+	
 	ImGui::End();
 }
 
