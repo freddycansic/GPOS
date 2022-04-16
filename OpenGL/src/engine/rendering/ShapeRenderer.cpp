@@ -14,7 +14,7 @@ const size_t ShapeRenderer::MAX_INDICES = 75000;
 bool ShapeRenderer::s_HasBegun = false;
 bool ShapeRenderer::s_IsInitialised = false;
 
-std::array<unsigned int, 32> ShapeRenderer::s_TextureSlots;
+std::array<const Texture*, 32> ShapeRenderer::s_TextureSlots = {nullptr};
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -82,37 +82,42 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	unsigned int textureSlot;
+	int textureSlot = -1;
 
 	// check if texture already has a slot 
-	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex.getID());
-	
-	// if the returned iterator doesnt point past the end of the array = if it found it
-	if (textureSlotItr != std::end(s_TextureSlots)) {
-		textureSlot = std::distance(s_TextureSlots.begin(), textureSlotItr); // return position of slot
+	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
+		
+		const auto& texture = s_TextureSlots[i];
+		if (texture == nullptr) continue;
+		
+		if (tex.getID() == texture->getID()) {
+			textureSlot = i;
+		}
+		
 	}
-	
-	else {
-		// if not then check if there is space for another texture = check for a space with default texture
-		auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), 0);
 
-		// if so then insert the texture
-		if (emptySlotItr != std::end(s_TextureSlots)) {
-			
-			textureSlot = std::distance(s_TextureSlots.begin(), emptySlotItr);
-			
-			s_TextureSlots[textureSlot] = tex.getID();
+	// if it doesn't have a slot already then find a slot with id = 0 = empty and insert it there
+	if (textureSlot == -1) {
+		for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
+			const auto& texture = s_TextureSlots[i];
+			if (texture == nullptr) {
+				textureSlot = i;
+				s_TextureSlots[i] = &tex;
+				break;
+			}
 		}
-		else {
-			throw std::runtime_error("No texture slots left!"); // ill cross this bridge when i come to it
-		}
+	}
+
+	// if the texture has no slot and there is no more available slots then throw exception
+	if (textureSlot == -1) {
+		throw std::runtime_error("No more available texture slots!");
 	}
 
 	// copy vertices
 	auto vertices = shape.getVertices();
 
 	for (auto& vertex : vertices) {
-		vertex.texID = (float) textureSlot;
+		vertex.texID = textureSlot;
 		s_VertexBatch.push_back(vertex);
 	}
 }
@@ -128,13 +133,11 @@ void ShapeRenderer::end()
 	s_Shader->bind();
 
 	for (size_t i = 0; i < s_TextureSlots.size(); i++) {
-		const auto& texID = s_TextureSlots[i];
+		const auto& texture = s_TextureSlots[i];
 
-		if (texID == 0) continue;
+		if (texture == nullptr) continue;
 
-		GLAPI(glActiveTexture(GL_TEXTURE0 + i));
-		GLAPI(glBindTexture(GL_TEXTURE_2D, texID));
-		//texture.bindToSlot(i);
+		texture->bindToSlot(i);
 	}
 
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);

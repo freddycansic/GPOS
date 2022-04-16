@@ -6,3 +6,4 @@ OpenGL.ctb~~
 OpenGL.ctb~~~
 CppProperties.json
 *.vspx
+/count-lines-of-code.bat

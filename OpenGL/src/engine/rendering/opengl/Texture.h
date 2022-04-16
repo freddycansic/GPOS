@@ -12,8 +12,9 @@ private:
 
 public:
 	Texture(const std::string& path);
-	Texture() = default;
 	~Texture();
+	Texture() = default;
+
 	Texture(const Texture& tex) = delete;
 	//Texture& operator=(const Texture& tex) = delete;
 

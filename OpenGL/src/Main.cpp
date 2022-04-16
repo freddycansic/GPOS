@@ -9,7 +9,7 @@ int main(void)
 	config.window.height = 3 * 1080 / 4;
 	config.window.title = "Hi";
 
-	// TODO does it need to be lvalue?
+	// all variables inside app must have a default constructor or have default values
 	Application app;
 	ApplicationHandler appHandler(app, config);
 	

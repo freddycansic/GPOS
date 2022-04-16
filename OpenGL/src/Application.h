@@ -25,6 +25,7 @@
 class Application
 {
 private:
+	Texture tex1;
 	Mat4 proj;
 
 	float xTranslate = 0.0f, yTranslate = 0.0f;
@@ -35,6 +36,8 @@ private:
 
 
 public:
+	Application() = default;
+
 	void init();
 	void render();
 	void imGuiRender();
