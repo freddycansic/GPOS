@@ -62,9 +62,13 @@ Window::Window(const WindowConfig& config)
 		throw std::runtime_error("GLEW initialisation failed!");
 	}
 
+	// need to move this
 	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(Debug::GLDebugMessageCallback, 0);
 
+	// turn off notifications
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 }
 
 Window::~Window()

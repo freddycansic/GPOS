@@ -17,10 +17,16 @@ class ShapeRenderer
 {
 
 private:
+	enum class State {
+		UNINITIALISED,
+		STOPPED,
+		BEGUN,
+	};
+
 	const static size_t MAX_VERTICES;
 	const static size_t MAX_INDICES;
 	
-	static bool s_HasBegun, s_IsInitialised;
+	static State state;
 
 	// vertex + index data
 	static std::vector<Vertex> s_VertexBatch;

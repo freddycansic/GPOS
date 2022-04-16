@@ -30,9 +30,8 @@ public:
 
 	template<typename T>
 	void addElement(unsigned int count, bool normalised) {
-		while (true) {
-			std::cout << "VertexBufferLayout : Bad element type\n";
-		}
+		std::cout << "VertexBufferLayout : Bad element type\n";
+		__debugbreak();
 	}
 
 	template<>

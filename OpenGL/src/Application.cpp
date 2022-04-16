@@ -1,10 +1,10 @@
 #include "Application.h"
 
-
 void Application::init() {
 	ShapeRenderer::init();
 	
-	tex1 = Texture("res/textures/kali.png");
+	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
+
 	proj = Mat4::ortho(0, windowWidth, 0, windowHeight); // TODO add perspective matrix
 }
 
@@ -19,12 +19,14 @@ void Application::render() {
 	// push mvp uniform to shader // TODO TEMPORARY
 	ShapeRenderer::s_Shader->bind();
 	ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
-	
-	ShapeRenderer::begin();
-	ShapeRenderer::draw(Rectangle(windowWidth/2-100, windowHeight/2-100, 200, 200), tex1);
-	ShapeRenderer::end();
 
-	std::cout << "Rendered." << std::endl;
+	Rectangle rect1(windowWidth / 2 - 100, windowHeight / 2 - 100, 200, 200);
+	Rectangle rect2(windowWidth / 2 + 200, windowHeight / 2 - 100, 200, 200);
+
+	ShapeRenderer::begin();
+	ShapeRenderer::draw(rect1, *tex1);
+	ShapeRenderer::draw(rect2, {0.0f, 0.0f, 1.0f, 1.0f});
+	ShapeRenderer::end();
 }
 
 void Application::imGuiRender() {

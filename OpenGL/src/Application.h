@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <memory>
 
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Rectangle.h"
@@ -25,7 +26,7 @@
 class Application
 {
 private:
-	Texture tex1;
+	std::unique_ptr<Texture> tex1;
 	Mat4 proj;
 
 	float xTranslate = 0.0f, yTranslate = 0.0f;
@@ -33,7 +34,6 @@ private:
 	// TODO fix this
 	const float windowWidth = 3 * 1920 / 4;
 	const float windowHeight = 3 * 1080 / 4;
-
 
 public:
 	Application() = default;
