@@ -9,9 +9,9 @@ struct ApplicationConfig {
 	WindowConfig window;
 };
 
-class ApplicationHandler
+class ApplicationLauncher
 {
 public:
-	ApplicationHandler(Application& app, const ApplicationConfig& config);
+	ApplicationLauncher(Application& app, const ApplicationConfig& config);
 
 };

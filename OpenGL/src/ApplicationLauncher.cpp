@@ -1,4 +1,4 @@
-#include "ApplicationHandler.h"
+#include "ApplicationLauncher.h"
 
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
@@ -7,7 +7,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-ApplicationHandler::ApplicationHandler(Application& app, const ApplicationConfig& config)
+ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
 {
 	Window::init();
 	Window window(config.window);

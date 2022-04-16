@@ -1,4 +1,4 @@
-#include "ApplicationHandler.h"
+#include "ApplicationLauncher.h"
 #include "Application.h"
 
 int main(void)
@@ -11,7 +11,7 @@ int main(void)
 
 	// all variables inside app must have a default constructor or have default values
 	Application app;
-	ApplicationHandler appHandler(app, config);
+	ApplicationLauncher appHandler(app, config);
 	
 	//Window::init();
 

@@ -13,15 +13,16 @@ Texture::Texture(const std::string& path)
 	m_Buffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_ColorDepth, 4);
 	if (!m_Buffer) throw std::runtime_error("Image failed to load!");
 
-	GLAPI(glCreateTextures(GL_TEXTURE_2D, 1, &m_ID));
+	glGenTextures(1, &m_ID);
+	glBindTexture(GL_TEXTURE_2D, m_ID);
 
-	GLAPI(glTextureParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLAPI(glTextureParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	GLAPI(glTextureParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)); // horizontal wrap
-	GLAPI(glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)); // vertical wrap
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // horizontal wrap
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // vertical wrap
 
-	GLAPI(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_Buffer));
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_Buffer);
 
 	GLAPI(glBindTexture(GL_TEXTURE_2D, 0));
 
@@ -29,6 +30,7 @@ Texture::Texture(const std::string& path)
 }
 
 Texture::~Texture() {
+	std::cout << "Texture " << m_ID << " deleted" << std::endl;
 	GLAPI(glDeleteTextures(1, &m_ID));
 }
 
@@ -46,5 +48,6 @@ void Texture::unbind() const
 }
 
 bool operator==(const Texture& tex1, const Texture& tex2) {
+	std::cout << "Assignment operator used" << std::endl;
 	return tex1.m_ID == tex2.m_ID;
 }

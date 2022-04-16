@@ -145,6 +145,11 @@ void ShapeRenderer::end()
 	s_VertexBatch.clear();
 	s_IndexBatch.clear();
 
+	s_Vao->unbind();
+	s_Vbo->unbind();
+	s_Ibo->unbind();
+	s_Shader->unbind();
+
 	state = State::STOPPED;
 }
 
