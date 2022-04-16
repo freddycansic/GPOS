@@ -5,15 +5,15 @@
 
 #include "engine/Files.h"
 #include "engine/rendering/Renderer.h"
+#include "engine/Debug.h"
 
 // little bit scared these magic numbers will come back to bite me
 const size_t ShapeRenderer::MAX_VERTICES = 50000;
 const size_t ShapeRenderer::MAX_INDICES = 75000;
 
-bool ShapeRenderer::s_HasBegun = false;
-bool ShapeRenderer::s_IsInitialised = false;
+ShapeRenderer::State ShapeRenderer::state = ShapeRenderer::State::UNINITIALISED;
 
-std::array<Texture, 32> ShapeRenderer::s_TextureSlots;
+std::array<const Texture*, 32> ShapeRenderer::s_TextureSlots = {nullptr};
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -48,16 +48,16 @@ void ShapeRenderer::init()
 	s_Vbo->unbind();
 	s_Ibo->unbind();
 
-	s_IsInitialised = true;
+	state = State::STOPPED;
 }
 
 void ShapeRenderer::begin()
 {
-	if (!s_IsInitialised) {
+	if (state == State::UNINITIALISED) {
 		throw std::runtime_error("ShapeRenderer not initialised, did you call ShapeRenderer::init()?");
 	}
 
-	s_HasBegun = true;
+	state = State::BEGUN;
 }
 
 void ShapeRenderer::draw(const Shape& shape, const Vec4& color)
@@ -81,37 +81,42 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	unsigned int textureSlot = 0;
+	int textureSlot = -1;
 
 	// check if texture already has a slot 
-	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
-	
-	// if the returned iterator doesnt point past the end of the array = if it found it
-	if (textureSlotItr != std::end(s_TextureSlots)) {
-		textureSlot = std::distance(s_TextureSlots.begin(), textureSlotItr); // return position of slot
+	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
+		
+		const auto& texture = s_TextureSlots[i];
+		if (texture == nullptr) continue;
+		
+		if (tex.getID() == texture->getID()) {
+			textureSlot = i;
+			break;
+		}
 	}
-	
-	else {
-		// if not then check if there is space for another texture = check for a space with default texture
-		auto emptySlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), Texture());
 
-		// if so then insert the texture
-		if (emptySlotItr != std::end(s_TextureSlots)) {
-			
-			textureSlot = std::distance(s_TextureSlots.begin(), emptySlotItr);
-			
-			s_TextureSlots[textureSlot] = tex;
+	// if it doesn't have a slot already then find a slot with id = 0 = empty and insert it there
+	if (textureSlot == -1) {
+		for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
+			const auto& texture = s_TextureSlots[i];
+			if (texture == nullptr) {
+				textureSlot = i;
+				s_TextureSlots[i] = &tex;
+				break;
+			}
 		}
-		else {
-			throw std::runtime_error("No texture slots left!"); // ill cross this bridge when i come to it
-		}
+	}
+
+	// if the texture has no slot and there is no more available slots then throw exception
+	if (textureSlot == -1) {
+		throw std::runtime_error("No more available texture slots!");
 	}
 
 	// copy vertices
 	auto vertices = shape.getVertices();
 
 	for (auto& vertex : vertices) {
-		vertex.texID = (float) textureSlot;
+		vertex.texID = textureSlot;
 		s_VertexBatch.push_back(vertex);
 	}
 }
@@ -126,12 +131,12 @@ void ShapeRenderer::end()
 
 	s_Shader->bind();
 
-	for (size_t i = 0; i < s_TextureSlots.size(); i++) {
+	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
 		const auto& texture = s_TextureSlots[i];
 
-		if (texture.getID() == 0) continue;
+		if (texture == nullptr) continue;
 
-		texture.bindToSlot(i);
+		texture->bindToSlot(i);
 	}
 
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
@@ -140,11 +145,16 @@ void ShapeRenderer::end()
 	s_VertexBatch.clear();
 	s_IndexBatch.clear();
 
-	s_HasBegun = false;
+	s_Vao->unbind();
+	s_Vbo->unbind();
+	s_Ibo->unbind();
+	s_Shader->unbind();
+
+	state = State::STOPPED;
 }
 
 void ShapeRenderer::checkBatchBegun() {
-	if (!s_HasBegun) {
+	if (state == State::STOPPED) {
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
 	}
 }
@@ -158,7 +168,7 @@ void ShapeRenderer::addShapeIndices(const Shape& shape) {
 		maxIndex = 0;
 	}
 	else {
-		// dereference to get value at iterator in vector
+		// dereference to get value at iterator
 		maxIndex = *std::max_element(s_IndexBatch.begin(), s_IndexBatch.end()) + 1;
 	}
 

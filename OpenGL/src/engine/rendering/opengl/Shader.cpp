@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <sstream>
-//#include <algorithm>
+#include "engine/Debug.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& element : map) {
@@ -68,23 +68,23 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
-	glUniform4f(m_Uniforms.at(name), v1, v2, v3, v4);
+	GLAPI(glUniform4f(m_Uniforms.at(name), v1, v2, v3, v4));
 	// unordered map operator[] is O(1) so this is fine
 }
 
 void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform not found in shader!" << std::endl;
-	glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_TRUE, matrix.getPtr());
+	GLAPI(glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_TRUE, matrix.getPtr()));
 }
 
 void Shader::setUniform1i(const std::string& name, int value) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
-	glUniform1i(m_Uniforms.at(name), value);
+	GLAPI(glUniform1i(m_Uniforms.at(name), value));
 }
 
 void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) const {
 	if (m_Uniforms.count(name) == 0) std::cout << "Uniform " << name << " does not exist" << std::endl;
-	glUniform1iv(m_Uniforms.at(name), (GLsizei) count, value);
+	GLAPI(glUniform1iv(m_Uniforms.at(name), (GLsizei) count, value));
 }
 
 unsigned int compileShader(unsigned int type, const std::string& source) {
@@ -93,24 +93,24 @@ unsigned int compileShader(unsigned int type, const std::string& source) {
 
 	// link shader with its source code
 	const char* charSource = source.c_str();
-	glShaderSource(id, 1, &charSource, nullptr);
+	GLAPI(glShaderSource(id, 1, &charSource, nullptr));
 
 	// compile shader with source code into executable program to be run on gpu
-	glCompileShader(id);
+	GLAPI(glCompileShader(id));
 
 	// store value of GL_COMPILE_STATUS in result
 	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+	GLAPI(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE) { // if it failed
 		std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader." << std::endl;
 
 		// get length of the shader info log
 		int length;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+		GLAPI(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 
 		// allocate block of memory on the STACK dynamically, then cast to char pointer
 		char* message = (char*)alloca(length * sizeof(char));
-		glGetShaderInfoLog(id, length, &length, message);
+		GLAPI(glGetShaderInfoLog(id, length, &length, message));
 
 		std::cout << message << std::endl;
 
@@ -123,29 +123,29 @@ unsigned int compileShader(unsigned int type, const std::string& source) {
 unsigned int createProgram(const std::string& vertexSource, const std::string& fragmentSource) {
 
 	// generate program
-	unsigned int program = glCreateProgram();
+	unsigned int program = glCreateProgram());
 
 	// generate shaders
 	unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
 	unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
 	// attach shaders to program
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
+	GLAPI(glAttachShader(program, vertexShader));
+	GLAPI(glAttachShader(program, fragmentShader));
 
 	// link program + error check
-	glLinkProgram(program);
+	GLAPI(glLinkProgram(program));
 
 	int result;
-	glGetProgramiv(program, GL_LINK_STATUS, &result);
+	GLAPI(glGetProgramiv(program, GL_LINK_STATUS, &result));
 	if (result == GL_FALSE) {
 		std::cout << "Failed to link program" << std::endl;
 
 		int length;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		GLAPI(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
 
 		char* message = (char*)alloca(length * sizeof(char));
-		glGetProgramInfoLog(program, length, &length, message);
+		GLAPI(glGetProgramInfoLog(program, length, &length, message));
 
 		std::cout << message << std::endl;
 
@@ -153,17 +153,17 @@ unsigned int createProgram(const std::string& vertexSource, const std::string& f
 	}
 
 	// validate program + error check
-	glValidateProgram(program);
+	GLAPI(glValidateProgram(program));
 
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &result);
+	GLAPI(glGetProgramiv(program, GL_VALIDATE_STATUS, &result));
 	if (result == GL_FALSE) {
 		std::cout << "Failed to validate program" << std::endl;
 
 		int length;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		GLAPI(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
 
 		char* message = (char*)alloca(length * sizeof(char));
-		glGetProgramInfoLog(program, length, &length, message);
+		GLAPI(glGetProgramInfoLog(program, length, &length, message));
 
 		std::cout << message << std::endl;
 
@@ -171,8 +171,8 @@ unsigned int createProgram(const std::string& vertexSource, const std::string& f
 	}
 
 	// delete shaders as they are no longer needed as they are contained in the program
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	GLAPI(glDeleteShader(vertexShader));
+	GLAPI(glDeleteShader(fragmentShader));
 
 	return program;
 }
@@ -193,13 +193,13 @@ Shader::Shader() :
 }
 
 void Shader::bind() const {
-	glUseProgram(m_ID);
+	GLAPI(glUseProgram(m_ID));
 }
 
 void Shader::unbind() const {
-	glUseProgram(0);
+	GLAPI(glUseProgram(0));
 }
 
 Shader::~Shader() {
-	glDeleteProgram(m_ID);
+	GLAPI(glDeleteProgram(m_ID));
 }

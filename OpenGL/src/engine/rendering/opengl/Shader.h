@@ -24,6 +24,9 @@ public:
 	Shader();
 	~Shader();
 	
+	Shader(const Shader& tex) = delete;
+	Shader& operator=(const Shader& tex) = delete;
+
 	void setUniform1i(const std::string& name, int value) const;
 	void setUniform1iv(const std::string& name, size_t count, const int* value) const;
 	void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const;

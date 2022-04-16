@@ -19,5 +19,4 @@ void main() {
 		color = texture(u_Textures[index], v_TexCoord);
 	}
 
-
 };

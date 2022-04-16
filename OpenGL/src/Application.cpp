@@ -1,89 +1,46 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "Application.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <array>
-
-#include "engine/rendering/opengl/Texture.h"
-#include "engine/rendering/shapes/Rectangle.h"
-#include "engine/rendering/Renderer.h"
-#include "engine/rendering/ShapeRenderer.h"
-#include "engine/Window.h"
-#include "engine/Files.h"
-
-#include "maths/Mat4.h"
-#include "maths/Vectors.h"
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
-int main(void)
-{
-	Window window(3 * 1920 / 4, 3 * 1080 / 4, "Hello, world!");
-	
-	Rectangle rect(window.getWidth()/2, window.getHeight()/2, 100, 100);
-
-	Renderer::init();
+void Application::init() {
 	ShapeRenderer::init();
-
-	Texture tex1(Files::internal("textures/image.png"));
-
-	// imgui
-	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
-	ImGui_ImplOpenGL3_Init();
-	ImGui::StyleColorsDark();
-
-	Mat4 proj = Mat4::ortho(0, window.getWidth(), 0, window.getHeight()); // TODO add perspective matrix
 	
-	float xTranslate = 0.0f, yTranslate = 0.0f;
+	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
-	while (!window.shouldClose()) {
-		float delta = window.getDelta();
-		
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		
-		Renderer::clear(0.42f, 0.42f, 0.42f);
-
-		// translation, rotation, scale function = scale, rotate, translate matrix
-		Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);
-		Mat4 view = Mat4::identity; // TODO
-		Mat4 mvp = proj * view * model;
-		
-		// push mvp uniform to shader // TODO TEMPORARY
-		ShapeRenderer::s_Shader->bind();
-		ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
-		
-		ShapeRenderer::begin();
-		ShapeRenderer::draw(rect, tex1);
-		ShapeRenderer::draw(Rectangle(400.0f, 400.0f, 100.0f, 100.0f), {1.0f, 0.7f, 1.0f, 1.0f});
-		ShapeRenderer::end();
-		
-		{
-			ImGui::SetNextWindowPos(ImVec2(10, 10));
-			ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
-			
-			ImGui::SliderFloat("X", &xTranslate, window.getWidth() / -2, window.getWidth() / 2);
-			ImGui::SliderFloat("Y", &yTranslate, window.getHeight() / -2, window.getHeight() / 2);
-			ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
-			
-			ImGui::End();
-		}
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		window.update();
-	}
-
-	ImGui_ImplGlfw_Shutdown();
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui::DestroyContext();
-
-	return 0;
+	proj = Mat4::ortho(0, windowWidth, 0, windowHeight); // TODO add perspective matrix
 }
+
+void Application::render() {
+	Renderer::clear(0.42f, 0.42f, 0.42f);
+
+	// translation, rotation, scale function = scale, rotate, translate matrix
+	Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);
+	Mat4 view = Mat4::identity; // TODO
+	Mat4 mvp = proj * view * model;
+
+	// push mvp uniform to shader // TODO TEMPORARY
+	ShapeRenderer::s_Shader->bind();
+	ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
+
+	Rectangle rect1(windowWidth / 2 - 100, windowHeight / 2 - 100, 200, 200);
+	Rectangle rect2(windowWidth / 2 + 200, windowHeight / 2 - 100, 200, 200);
+
+	ShapeRenderer::begin();
+	ShapeRenderer::draw(rect1, *tex1);
+	ShapeRenderer::draw(rect2, {0.0f, 0.0f, 1.0f, 1.0f});
+	ShapeRenderer::end();
+}
+
+void Application::imGuiRender() {
+  ImGui::SetNextWindowPos(ImVec2(10, 10));
+	ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
+	
+	ImGui::SliderFloat("X", &xTranslate, window.getWidth() / -2, window.getWidth() / 2);
+	ImGui::SliderFloat("Y", &yTranslate, window.getHeight() / -2, window.getHeight() / 2);
+	ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
+	
+	ImGui::End();
+}
+
+void Application::destroy() {
+
+}
+

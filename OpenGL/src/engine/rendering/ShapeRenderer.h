@@ -17,17 +17,23 @@ class ShapeRenderer
 {
 
 private:
+	enum class State {
+		UNINITIALISED,
+		STOPPED,
+		BEGUN,
+	};
+
 	const static size_t MAX_VERTICES;
 	const static size_t MAX_INDICES;
 	
-	static bool s_HasBegun, s_IsInitialised;
+	static State state;
 
 	// vertex + index data
 	static std::vector<Vertex> s_VertexBatch;
 	static std::vector<unsigned int> s_IndexBatch;
 
 	// keep track of which textures are being used
-	static std::array<Texture, 32> s_TextureSlots;
+	static std::array<const Texture*, 32> s_TextureSlots;
 
 	static std::shared_ptr<VertexArray> s_Vao;
 	static std::shared_ptr<VertexBuffer> s_Vbo;
