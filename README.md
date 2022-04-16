@@ -3,6 +3,9 @@ Learning OpenGL
 
 Aiming to create a 3D graphics engine featuring
 - Batch rendering
+  - 2D shapes ✅
+  - 3D shapes
+  - Models
 - 2D + 3D graphics using orthographic and perspective matrices
 - GUI using Dear ImGui
 - Model loading?
