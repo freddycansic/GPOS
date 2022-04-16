@@ -14,30 +14,30 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 
 	Renderer::init();
 
-	//ImGui::CreateContext();
-	//ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
-	//ImGui_ImplOpenGL3_Init();
-	//ImGui::StyleColorsDark();
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
+	ImGui_ImplOpenGL3_Init();
+	ImGui::StyleColorsDark();
 
 	app.init();
 
 	while (!window.shouldClose()) {
-		//ImGui_ImplOpenGL3_NewFrame();
-		//ImGui_ImplGlfw_NewFrame();
-		//ImGui::NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
 		app.render();
-		//app.imGuiRender();
+		app.imGuiRender();
 	
-		//ImGui::Render();
-		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		window.update();
 	}
 
 	app.destroy();
 
-	//ImGui_ImplGlfw_Shutdown();
-	//ImGui_ImplOpenGL3_Shutdown();
-	//ImGui::DestroyContext();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui::DestroyContext();
 }

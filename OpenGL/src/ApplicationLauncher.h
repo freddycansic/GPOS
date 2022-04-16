@@ -13,5 +13,4 @@ class ApplicationLauncher
 {
 public:
 	ApplicationLauncher(Application& app, const ApplicationConfig& config);
-
 };

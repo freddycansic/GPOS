@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <array>
 #include <memory>
 
 #include "engine/rendering/opengl/Texture.h"
@@ -17,7 +16,6 @@
 #include "engine/Files.h"
 
 #include "maths/Mat4.h"
-#include "maths/Vectors.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -26,6 +24,7 @@
 class Application
 {
 private:
+	// i really dont like this
 	std::unique_ptr<Texture> tex1;
 	Mat4 proj;
 

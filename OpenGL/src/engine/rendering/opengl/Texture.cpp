@@ -30,7 +30,6 @@ Texture::Texture(const std::string& path)
 }
 
 Texture::~Texture() {
-	std::cout << "Texture " << m_ID << " deleted" << std::endl;
 	GLAPI(glDeleteTextures(1, &m_ID));
 }
 
@@ -45,9 +44,4 @@ void Texture::bindToSlot(unsigned int slot) const {
 void Texture::unbind() const
 {
 	GLAPI(glBindTexture(GL_TEXTURE_2D, 0));
-}
-
-bool operator==(const Texture& tex1, const Texture& tex2) {
-	std::cout << "Assignment operator used" << std::endl;
-	return tex1.m_ID == tex2.m_ID;
 }

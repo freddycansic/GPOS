@@ -13,6 +13,9 @@ public:
 	VertexArray();
 	~VertexArray();
 
+	VertexArray(const VertexArray& tex) = delete;
+	VertexArray& operator=(const VertexArray& tex) = delete;
+
 	void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) const;
 	void bind() const;
 	void unbind() const;
