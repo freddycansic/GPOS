@@ -63,7 +63,7 @@ int main(void)
 		ShapeRenderer::draw(rect, tex1);
 		ShapeRenderer::draw(Rectangle(400.0f, 400.0f, 100.0f, 100.0f), {1.0f, 0.7f, 1.0f, 1.0f});
 		ShapeRenderer::end();
-
+		
 		{
 			ImGui::SetNextWindowPos(ImVec2(10, 10));
 			ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);

@@ -81,7 +81,7 @@ void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	unsigned int textureSlot;
+	unsigned int textureSlot = 0;
 
 	// check if texture already has a slot 
 	auto textureSlotItr = std::find(s_TextureSlots.begin(), s_TextureSlots.end(), tex);
@@ -129,7 +129,7 @@ void ShapeRenderer::end()
 	for (size_t i = 0; i < s_TextureSlots.size(); i++) {
 		const auto& texture = s_TextureSlots[i];
 
-		if (texture.getID() == NULL) continue;
+		if (texture.getID() == 0) continue;
 
 		texture.bindToSlot(i);
 	}

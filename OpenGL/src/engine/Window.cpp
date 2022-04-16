@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "Debug.h"
-#include "Texture.h"
+#include "engine/rendering/opengl/Texture.h"
 
 Window::Window(int width, int height, const std::string& title) 
 	: m_Width(width), m_Height(height)
