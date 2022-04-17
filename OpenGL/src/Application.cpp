@@ -1,11 +1,13 @@
 #include "Application.h"
+#include <engine/rendering/shapes/Cube.h>
 
 void Application::init() {
 	ShapeRenderer::init();
 	
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
-	proj = Mat4::ortho(0, windowWidth, 0, windowHeight); // TODO add perspective matrix
+	//proj = Mat4::ortho(-windowWidth/2, windowWidth/2, -windowHeight/2, windowHeight/2, -10.0f, 10.0f); // TODO add perspective matrix
+	proj = Mat4::perspective()
 }
 
 void Application::render() {
@@ -24,8 +26,8 @@ void Application::render() {
 	Rectangle rect2(windowWidth / 2 + 200, windowHeight / 2 - 100, 200, 200);
 
 	ShapeRenderer::begin();
-	ShapeRenderer::draw(rect1, *tex1);
-	ShapeRenderer::draw(rect2, {0.0f, 0.0f, 1.0f, 1.0f});
+	//ShapeRenderer::draw(rect1, *tex1);
+	ShapeRenderer::draw(Cube(0, 0, 0, 2.0f), {0.0f, 0.0f, 1.0f, 1.0f});
 	ShapeRenderer::end();
 }
 
@@ -35,6 +37,7 @@ void Application::imGuiRender() {
 	
 	ImGui::SliderFloat("X", &xTranslate, windowWidth / -2, windowWidth / 2);
 	ImGui::SliderFloat("Y", &yTranslate, windowHeight / -2, windowHeight / 2);
+	ImGui::SliderFloat("Z", &zTranslate, -10.0f, 10.0f);
 	ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
 	
 	ImGui::End();

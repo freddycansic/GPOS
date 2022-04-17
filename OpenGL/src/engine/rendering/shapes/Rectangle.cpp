@@ -17,7 +17,7 @@ const std::vector<unsigned int> Rectangle::s_UnitIndices =
 };
 
 Rectangle::Rectangle(float x, float y, float width, float height)
-: Shape(x, y), m_Width(width), m_Height(height){
+: Shape(x, y, 0.0f), m_Width(width), m_Height(height){
 	m_Vertices.reserve(s_UnitVertices.size());
 
 	for (const auto& unitVertex : s_UnitVertices) {

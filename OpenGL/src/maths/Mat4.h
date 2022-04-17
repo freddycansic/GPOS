@@ -70,10 +70,10 @@ public:
 
 	// projection
 	static Mat4 ortho(float left, float right, float top, float bottom, float near = -1.0f, float far = 1.0f);
+	static Mat4 perspective(float fov, float aspect, float near, float far);
 
 	const float* getPtr() const { return m_Data[0].data(); }
 
-	operator std::string();
 	friend std::ostream& operator<<(std::ostream& os, const Mat4& matrix);
 
 private:

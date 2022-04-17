@@ -203,6 +203,17 @@ Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, f
 	);
 }
 
+Mat4 Mat4::perspective(float fov, float aspect, float near, float far) {
+	float f = 1 / tan(fov/2);
+
+	return Mat4(
+		f/aspect, 0, 0, 0,
+		0, f, 0, 0,
+		0, 0, (far + near) / (near - far), (2 * far * near) / (near - far),
+		0, 0, -1, 0
+	);
+}
+
 std::ostream& operator<<(std::ostream& os, const Mat4& matrix) {
 	for (int row = 0; row < Mat4::ORDER; row++) {
 		os << "| ";
@@ -214,16 +225,3 @@ std::ostream& operator<<(std::ostream& os, const Mat4& matrix) {
 
 	return os;
 };
-
-Mat4::operator std::string() {
-	std::string output;
-	for (int row = 0; row < Mat4::ORDER; row++) {
-		output += "| ";
-		for (int col = 0; col < Mat4::ORDER; col++) {
-			output += std::to_string(m_Data[row][col]) + "\t";
-		}
-		output += "|\n";
-	}
-
-	return output;
-}

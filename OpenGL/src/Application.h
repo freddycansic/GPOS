@@ -28,7 +28,7 @@ private:
 	std::unique_ptr<Texture> tex1;
 	Mat4 proj;
 
-	float xTranslate = 0.0f, yTranslate = 0.0f;
+	float xTranslate = 0.0f, yTranslate = 0.0f, zTranslate = 0.0f;
 
 	// TODO fix this
 	const float windowWidth = 3 * 1920 / 4;

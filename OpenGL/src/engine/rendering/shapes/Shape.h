@@ -7,14 +7,14 @@
 class Shape
 {
 protected:
-	float m_XPos, m_YPos;
+	float m_XPos, m_YPos, m_ZPos;
 	
 private:
 
 
 public:
-	Shape(float x, float y) 
-	: m_XPos(x), m_YPos(y)
+	Shape(float x, float y, float z) 
+	: m_XPos(x), m_YPos(y), m_ZPos(z)
 	{}
 
 	virtual std::vector<Vertex> getVertices() const = 0;
