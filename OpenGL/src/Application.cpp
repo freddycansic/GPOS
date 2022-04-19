@@ -7,7 +7,7 @@ void Application::init() {
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
 	//proj = Mat4::ortho(-windowWidth/2, windowWidth/2, -windowHeight/2, windowHeight/2, -10.0f, 10.0f); // TODO add perspective matrix
-	proj = Mat4::perspective()
+	proj = Mat4::perspective(45.0f, windowWidth/windowHeight, -1.0f, 1.0f);
 }
 
 void Application::render() {
@@ -27,7 +27,7 @@ void Application::render() {
 
 	ShapeRenderer::begin();
 	//ShapeRenderer::draw(rect1, *tex1);
-	ShapeRenderer::draw(Cube(0, 0, 0, 2.0f), {0.0f, 0.0f, 1.0f, 1.0f});
+	ShapeRenderer::draw(Cube(0, 0, 0, 1.0f), {0.0f, 0.0f, 1.0f, 1.0f});
 	ShapeRenderer::end();
 }
 
