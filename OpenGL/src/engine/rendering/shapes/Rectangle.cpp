@@ -30,7 +30,6 @@ Rectangle::Rectangle(float x, float y, float width, float height)
 		// add vertex to the buffer
 		m_Vertices.push_back(newVertex);
 	}
-
 }
 
 // dont write override here (?)

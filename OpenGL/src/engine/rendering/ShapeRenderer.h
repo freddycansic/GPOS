@@ -35,9 +35,9 @@ private:
 	// keep track of which textures are being used
 	static std::array<const Texture*, 32> s_TextureSlots;
 
-	static std::shared_ptr<VertexArray> s_Vao;
-	static std::shared_ptr<VertexBuffer> s_Vbo;
-	static std::shared_ptr<IndexBuffer> s_Ibo;
+	static std::unique_ptr<VertexArray> s_Vao;
+	static std::unique_ptr<VertexBuffer> s_Vbo;
+	static std::unique_ptr<IndexBuffer> s_Ibo;
 
 	ShapeRenderer()
 	{
@@ -51,7 +51,7 @@ private:
 	static void checkBatchBegun();
 
 public:
-	static std::shared_ptr<Shader> s_Shader; // TODO TEMPORARY
+	static std::unique_ptr<Shader> s_Shader; // TODO TEMPORARY
 
 	static void init();
 	static void begin();

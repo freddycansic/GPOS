@@ -8,9 +8,10 @@ class Shape
 {
 protected:
 	float m_XPos, m_YPos, m_ZPos;
-	
-private:
 
+private:
+	Vec3 m_Rotation;
+	std::vector<Vertex> vertices;
 
 public:
 	Shape(float x, float y, float z) 
@@ -19,5 +20,7 @@ public:
 
 	virtual std::vector<Vertex> getVertices() const = 0;
 	virtual std::vector<unsigned int> getIndices() const = 0;
+
+	void setRotation(float xRotation, float yRotation, float zRotation);
 };
 

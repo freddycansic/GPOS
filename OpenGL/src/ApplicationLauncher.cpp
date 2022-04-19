@@ -12,13 +12,15 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	Window::init();
 	Window window(config.window);
 
-	Renderer::init();
+	Renderer::init(window);
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
 
+	app.windowWidth = window.getDisplayWidth();
+	app.windowHeight = window.getDisplayHeight();
 	app.init();
 
 	while (!window.shouldClose()) {

@@ -18,15 +18,15 @@ std::array<const Texture*, 32> ShapeRenderer::s_TextureSlots = {nullptr};
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
 
-std::shared_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
-std::shared_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
-std::shared_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
-std::shared_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
+std::unique_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
+std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
+std::unique_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
+std::unique_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
 
 void ShapeRenderer::init()
 {
 	// TODO FIX ME DDDD:
-	s_Shader = std::make_shared<Shader>(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
+	s_Shader = std::make_unique<Shader>(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 	s_Shader->bind();
 
 	// setup index array for texture slots
@@ -34,9 +34,9 @@ void ShapeRenderer::init()
 	s_Shader->setUniform1iv("u_Textures", slots.size(), slots.data());
 
 	// init vao, allocate empty vbo + ibo
-	s_Vao = std::make_shared<VertexArray>();
-	s_Vbo = std::make_shared<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
-	s_Ibo = std::make_shared<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
+	s_Vao = std::make_unique<VertexArray>();
+	s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
+	s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
 	
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(3, false);
@@ -130,7 +130,7 @@ void ShapeRenderer::end()
 	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
 
 	s_Shader->bind();
-
+	
 	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
 		const auto& texture = s_TextureSlots[i];
 

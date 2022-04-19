@@ -46,18 +46,17 @@ Mat4& Mat4::operator=(Mat4&& other) noexcept {
 	return *this;
 }
 
-Mat4::Mat4(int element) {
-	for (int i = 0; i < ORDER; i++) {
-		memset(&m_Data[i], element, ORDER * sizeof(float));
-	}
-}
-
 const Mat4::MATRIX_ROW& Mat4::operator[](int index) const {
 	return m_Data[index];
 }
 
 Mat4::MATRIX_ROW& Mat4::operator[](int index) {
 	return m_Data[index];
+}
+
+Mat4& Mat4::operator=(const Mat4& mat) {
+	m_Data = mat.m_Data;
+	return *this;
 }
 
 Mat4 Mat4::operator+(const Mat4& other) const {
@@ -159,7 +158,7 @@ Mat4 Mat4::operator*(float scalar) const {
 
 Mat4 Mat4::operator*(const Mat4& other) const {
 	
-	Mat4 result = Mat4(0);
+	Mat4 result;
 
 	// for each row in matrix A
 	for (int k = 0; k < Mat4::ORDER; k++) {

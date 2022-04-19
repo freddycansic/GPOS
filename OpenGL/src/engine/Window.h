@@ -8,7 +8,7 @@ struct WindowConfig {
 	std::string title = "Hello, world!";
 	int width = 640;
 	int height = 400;
-	bool maxSize = false; // TODO
+	bool maxSize = false;
 	bool fullscreen = false; // TODO
 	bool vsync = true;
 };
@@ -28,7 +28,9 @@ public:
 
 	Window(const WindowConfig& config);
 	~Window();
+
 	Window(const Window& window) = delete;
+	Window& operator=(const Window& window) = delete;
 
 	int shouldClose() const;
 	void update();

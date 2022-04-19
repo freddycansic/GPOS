@@ -30,10 +30,6 @@ private:
 
 	float xTranslate = 0.0f, yTranslate = 0.0f, zTranslate = 0.0f;
 
-	// TODO fix this
-	const float windowWidth = 3 * 1920 / 4;
-	const float windowHeight = 3 * 1080 / 4;
-
 public:
 	Application() = default;
 
@@ -41,4 +37,7 @@ public:
 	void render();
 	void imGuiRender();
 	void destroy();
+
+	// bad
+	float windowWidth = 0.0f, windowHeight = 0.0f;
 };
