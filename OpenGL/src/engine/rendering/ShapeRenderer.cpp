@@ -37,7 +37,7 @@ void ShapeRenderer::init()
 	s_Vao = std::make_unique<VertexArray>();
 	s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 	s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
-	
+
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(3, false);
 	layout.addElement<GLfloat>(4, false);
@@ -72,6 +72,7 @@ void ShapeRenderer::draw(const Shape& shape, const Vec4& color)
 	for (auto& vertex : vertices) {
 		vertex.texID = -1;
 		vertex.color = color;
+	
 		s_VertexBatch.push_back(vertex);
 	}
 }

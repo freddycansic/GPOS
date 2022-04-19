@@ -33,18 +33,15 @@ const std::vector<unsigned int> Cube::s_UnitIndices =
 Cube::Cube(float x, float y, float z, float size)
 	: Shape(x, y, z), m_Size(size)
 {
+	std::cout << "CTOR" << std::endl;
 	m_Vertices.reserve(s_UnitVertices.size());
+	
+	// copy vertices
+	m_Vertices = s_UnitVertices;
 
-	for (const auto& unitVertex : s_UnitVertices) {
-		// copy unit vertex
-		Vertex newVertex = unitVertex;
-
-		// set new position
-		newVertex.position = Vec3(Mat4::identity.translate(x, y, z).rotate(0, 0, 0).scale(size, size, size) * Vec4(unitVertex.position, 1.0f));
-
-		// add vertex to the buffer
-		m_Vertices.push_back(newVertex);
-	}
+	// apply scale, rotate + translation to vertices
+	recalculateVertices();
+	std::cout << "CTOR STOP" << std::endl;
 }
 
 std::vector<Vertex> Cube::getVertices() const

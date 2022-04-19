@@ -66,6 +66,7 @@ Window::Window(const WindowConfig& config)
 	// need to move this
 	GLAPI(glEnable(GL_DEBUG_OUTPUT));
 	GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
+	//GLAPI(glEnable(GL_DEPTH_TEST));
 	GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, 0));
 
 	// turn off notifications

@@ -31,3 +31,6 @@ struct Vec4 {
 	Vec4(const Vec3& vec3, float w);
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Vec4& vector);
+std::ostream& operator<<(std::ostream& os, const Vec3& vector);

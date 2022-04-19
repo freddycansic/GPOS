@@ -8,8 +8,6 @@ private:
 	const static std::vector<Vertex> s_UnitVertices;
 	const static std::vector<unsigned int> s_UnitIndices;
 
-	std::vector<Vertex> m_Vertices;
-
 	float m_Size;
 
 public:
