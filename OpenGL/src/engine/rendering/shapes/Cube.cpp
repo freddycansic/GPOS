@@ -33,6 +33,9 @@ const std::vector<unsigned int> Cube::s_UnitIndices =
 Cube::Cube(float x, float y, float z, float size)
 	: Shape(x, y, z), m_Size(size)
 {
+	m_Scale = { size, size, size };
+	m_Translation = { x, y, z };
+
 	std::cout << "CTOR" << std::endl;
 	m_Vertices.reserve(s_UnitVertices.size());
 	
@@ -41,6 +44,11 @@ Cube::Cube(float x, float y, float z, float size)
 
 	// apply scale, rotate + translation to vertices
 	recalculateVertices();
+	std::cout << "CUBE CTOR VERTICES = " << std::endl;
+	for (const auto& vertex : m_Vertices) {
+		std::cout << vertex << std::endl;
+	}
+
 	std::cout << "CTOR STOP" << std::endl;
 }
 

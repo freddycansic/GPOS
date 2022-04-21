@@ -10,6 +10,7 @@
 
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Rectangle.h"
+#include "engine/rendering/shapes/Cube.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
@@ -24,9 +25,10 @@
 class Application
 {
 private:
-	// i really dont like this
+	// i really dont like this TODO make better
 	std::unique_ptr<Texture> tex1;
 	Mat4 proj;
+	Cube cube1;
 
 	float xTranslate = 0.0f, yTranslate = 0.0f, zTranslate = 0.0f;
 

@@ -6,11 +6,12 @@ void Shape::recalculateVertices()
 {
 	// goes through each vertex in shape and applies scale rotation and translation to it
 	for (auto& vertex : m_Vertices) {
-		std::cout << vertex << std::endl;
-		
+		std::cout << "Start = " << vertex << std::endl;
+		std::cout << "Scale = \n" << m_Scale << " Rotation = \n" << m_Rotation << " Translation = \n" << m_Translation << std::endl;
+
 		vertex.position = Vec3(Mat4::identity.scale(m_Scale.x, m_Scale.y, m_Scale.z).rotate(m_Rotation.x, m_Rotation.y, m_Rotation.z).translate(m_Translation.x, m_Translation.y, m_Translation.z) * Vec4(vertex.position, 1.0f));
 
-		std::cout << vertex << "\n" << std::endl;
+		std::cout << "Start = " << vertex << "\n" << std::endl;
 
 	}
 }

@@ -5,8 +5,8 @@ void Application::init() {
 	ShapeRenderer::init();
 	
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
-	//proj = Mat4::ortho(-windowWidth/2, windowWidth/2, -windowHeight/2, windowHeight/2, -1.0f, 1.0f);
-	proj = Mat4::perspective(45.0f, windowWidth/windowHeight, 1.0f, 1000.0f);
+
+	cube1 = Cube(0, 0, 0, 100.0f);
 }
 
 void Application::render() {
@@ -14,7 +14,6 @@ void Application::render() {
 
 	Renderer::setViewMatrix(Mat4::identity.translate(xTranslate, yTranslate, zTranslate));
 
-	Cube cube1(0, 0, 0, 100.0f);
 
 	cube1.setRotation(0, 0, Window::getCurrentTime());
 
