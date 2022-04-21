@@ -9,7 +9,7 @@ void Shape::recalculateVertices()
 		std::cout << "Start = " << vertex << std::endl;
 		std::cout << "Scale = \n" << m_Scale << " Rotation = \n" << m_Rotation << " Translation = \n" << m_Translation << std::endl;
 
-		vertex.position = Vec3(Mat4::identity.scale(m_Scale.x, m_Scale.y, m_Scale.z).rotate(m_Rotation.x, m_Rotation.y, m_Rotation.z).translate(m_Translation.x, m_Translation.y, m_Translation.z) * Vec4(vertex.position, 1.0f));
+		vertex.position = Vec3(Mat4::identity.translate(m_Translation.x, m_Translation.y, m_Translation.z).rotate(m_Rotation.x, m_Rotation.y, m_Rotation.z).scale(m_Scale.x, m_Scale.y, m_Scale.z) * Vec4(vertex.position, 1.0f));
 
 		std::cout << "Start = " << vertex << "\n" << std::endl;
 

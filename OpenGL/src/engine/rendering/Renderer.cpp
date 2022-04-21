@@ -27,9 +27,7 @@ void Renderer::init(const Window& window) {
 }
 
 void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader) {
-
-	// hard coded translation to move scene in front of near clipping plane
-	Mat4 vp = s_Proj * s_View.translate(0, 0, -500);
+	Mat4 vp = s_Proj * s_View;
 
 	shader.bind();
 	shader.setUniformMat4("u_ViewProj", vp);

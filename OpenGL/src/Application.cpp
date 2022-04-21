@@ -3,10 +3,13 @@
 
 void Application::init() {
 	ShapeRenderer::init();
-	
+
+	Vec3 pos(1.0f, 1.0f, 1.0f);
+	std::cout << Mat4::identity.scale(2.0f).translate(1.0f, 0.0f, 0.0f) * Vec4(pos, 1.0f) << std::endl;
+
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
-	cube1 = Cube(0, 0, 0, 100.0f);
+	cube1 = Cube(0, 0, 0, 10.0f);
 }
 
 void Application::render() {
