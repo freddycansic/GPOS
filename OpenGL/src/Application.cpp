@@ -5,7 +5,9 @@ void Application::init() {
 	ShapeRenderer::init();
 
 	Vec3 pos(1.0f, 1.0f, 1.0f);
-	std::cout << Mat4::identity.scale(2.0f).translate(1.0f, 0.0f, 0.0f) * Vec4(pos, 1.0f) << std::endl;
+	std::cout << Mat4::identity.scale(1.0f) << std::endl;
+	std::cout << Mat4::identity.rotate(0.0f, 0.0f, 0.0f) << std::endl;
+	std::cout << Mat4::identity.translate(0.0f, 0.0f, 0.f) << std::endl;
 
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
@@ -16,7 +18,6 @@ void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
 	Renderer::setViewMatrix(Mat4::identity.translate(xTranslate, yTranslate, zTranslate));
-
 
 	cube1.setRotation(0, 0, Window::getCurrentTime());
 

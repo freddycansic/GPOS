@@ -123,7 +123,7 @@ Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 		Mat4 (
 		cos(zRotate), -sin(zRotate), 0, 0,
 		sin(zRotate), cos(zRotate), 0, 0,
-		0, 0, 1, 1,
+		0, 0, 1, 0,
 		0, 0, 0, 1)
 	);
 }

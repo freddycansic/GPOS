@@ -1,7 +1,7 @@
 #include "ApplicationLauncher.h"
 #include "Application.h"
 
-int main(void)
+int main()
 {
 	ApplicationConfig config;
 	config.window.width = 1920 * 3 / 4;

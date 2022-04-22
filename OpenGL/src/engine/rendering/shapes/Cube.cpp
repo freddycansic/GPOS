@@ -35,8 +35,8 @@ Cube::Cube(float x, float y, float z, float size)
 {
 	m_Scale = { size, size, size };
 	m_Translation = { x, y, z };
+	m_Rotation = { 0.0f, 0.0f, 0.0f };
 
-	std::cout << "CTOR" << std::endl;
 	m_Vertices.reserve(s_UnitVertices.size());
 	
 	// copy vertices
@@ -44,12 +44,17 @@ Cube::Cube(float x, float y, float z, float size)
 
 	// apply scale, rotate + translation to vertices
 	recalculateVertices();
-	std::cout << "CUBE CTOR VERTICES = " << std::endl;
-	for (const auto& vertex : m_Vertices) {
-		std::cout << vertex << std::endl;
-	}
+}
 
-	std::cout << "CTOR STOP" << std::endl;
+void Cube::recalculateVertices()
+{
+	for (unsigned int i = 0; i < s_UnitVertices.size(); i++) {
+		const auto& baseVertex = s_UnitVertices[i]; // unit vertex
+		auto& resultVertex = m_Vertices[i]; // result vertex
+
+		// apply transformation to unit vertex and store in result vertex
+		resultVertex.position = Vec3(Mat4::identity.translate(m_Translation.x, m_Translation.y, m_Translation.z).rotate(m_Rotation.x, m_Rotation.y, m_Rotation.z).scale(m_Scale.x, m_Scale.y, m_Scale.z) * Vec4(baseVertex.position, 1.0f));
+	}
 }
 
 std::vector<Vertex> Cube::getVertices() const

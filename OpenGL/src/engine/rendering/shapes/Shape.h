@@ -11,7 +11,10 @@ protected:
 	float m_XPos = 0.0f, m_YPos = 0.0f, m_ZPos = 0.0f;
 	std::vector<Vertex> m_Vertices;
 
-	void recalculateVertices();
+	/**
+	Define in child class as applying transformation to vertex from unit vertices and add to member vertices
+	**/
+	virtual void recalculateVertices() = 0;
 
 public:
 	Shape(float x, float y, float z)
