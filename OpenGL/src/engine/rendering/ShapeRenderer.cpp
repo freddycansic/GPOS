@@ -60,10 +60,13 @@ void ShapeRenderer::begin()
 	state = State::BEGUN;
 }
 
-void ShapeRenderer::draw(const Shape& shape, const Vec4& color)
+void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchBegun();
 	addShapeIndices(shape);
+
+	// TODO this is better than doing it after every transformation kek
+	shape.recalculateVertices();
 
 	// copy vertices
 	auto vertices = shape.getVertices();
@@ -77,7 +80,7 @@ void ShapeRenderer::draw(const Shape& shape, const Vec4& color)
 	}
 }
 
-void ShapeRenderer::draw(const Shape& shape, const Texture& tex)
+void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
 	checkBatchBegun();
 	addShapeIndices(shape);
@@ -160,8 +163,12 @@ void ShapeRenderer::checkBatchBegun() {
 	}
 }
 
+/**
+	Add shape indices to index buffer
+
+	@param Shape to extract indices from
+**/
 void ShapeRenderer::addShapeIndices(const Shape& shape) {
-	// add indices to index buffer
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
 	unsigned int maxIndex;

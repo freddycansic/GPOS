@@ -59,6 +59,7 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ApplicationLauncher.h" />
     <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
+    <ClInclude Include="src\maths\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

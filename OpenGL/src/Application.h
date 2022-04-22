@@ -17,6 +17,7 @@
 #include "engine/Files.h"
 
 #include "maths/Mat4.h"
+#include "maths/Transform.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -30,7 +31,8 @@ private:
 	Mat4 proj;
 	Cube cube1;
 
-	float xTranslate = 0.0f, yTranslate = 0.0f, zTranslate = 0.0f;
+	Transform cubeTransform;
+	Transform viewTransform;
 
 public:
 	Application() = default;

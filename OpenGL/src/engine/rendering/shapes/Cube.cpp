@@ -49,11 +49,11 @@ Cube::Cube(float x, float y, float z, float size)
 void Cube::recalculateVertices()
 {
 	for (unsigned int i = 0; i < s_UnitVertices.size(); i++) {
-		const auto& baseVertex = s_UnitVertices[i]; // unit vertex
-		auto& resultVertex = m_Vertices[i]; // result vertex
+		const auto& unitPos = s_UnitVertices[i].position; // unit pos
+		auto& resultPos = m_Vertices[i].position; // result vertex
 
 		// apply transformation to unit vertex and store in result vertex
-		resultVertex.position = Vec3(Mat4::identity.translate(m_Translation.x, m_Translation.y, m_Translation.z).rotate(m_Rotation.x, m_Rotation.y, m_Rotation.z).scale(m_Scale.x, m_Scale.y, m_Scale.z) * Vec4(baseVertex.position, 1.0f));
+		resultPos = Vec3(Mat4::identity.translate(m_Translation.x, m_Translation.y, m_Translation.z).rotate(m_Rotation.x, m_Rotation.y, m_Rotation.z).scale(m_Scale.x, m_Scale.y, m_Scale.z) * Vec4(unitPos, 1.0f));
 	}
 }
 

@@ -3,16 +3,13 @@
 #include "maths/Mat4.h"
 
 void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
-	m_Rotation = { xRotation, yRotation, zRotation };
-	recalculateVertices();
+	m_Transform.rot = { xRotation, yRotation, zRotation };
 }
 
 void Shape::setScale(float xScale, float yScale, float zScale) {
-	m_Scale = { xScale, yScale, zScale };
-	recalculateVertices();
+	m_Transform.sca = { xScale, yScale, zScale };
 }
 
-void Shape::setTranslate(float xTranslate, float yTranslate, float zTranslate) {
-	m_Translation = { xTranslate, yTranslate, zTranslate };
-	recalculateVertices();
+void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
+	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
 }

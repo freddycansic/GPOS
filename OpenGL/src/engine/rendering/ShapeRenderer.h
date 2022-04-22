@@ -55,8 +55,8 @@ public:
 
 	static void init();
 	static void begin();
-	static void draw(const Shape& shape, const Vec4& color);
-	static void draw(const Shape& shape, const Texture& tex);
+	static void draw(Shape& shape, const Vec4& color);
+	static void draw(Shape& shape, const Texture& tex);
 	static void end();
 };
 

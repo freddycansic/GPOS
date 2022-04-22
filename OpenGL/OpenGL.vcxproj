@@ -217,6 +217,7 @@
     <ClInclude Include="src\engine\rendering\opengl\VertexBufferLayout.h" />
     <ClInclude Include="src\engine\rendering\opengl\Texture.h" />
     <ClInclude Include="src\engine\Window.h" />
+    <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Vectors.h" />
   </ItemGroup>
   <ItemGroup>
