@@ -177,18 +177,23 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 }
 
 Vec4 Mat4::operator*(const Vec4& other) const {
-	float values[]{ other.x, other.y, other.z, other.w }; // put it into an array so i can subscript operator them
+	//float values[]{ other.x, other.y, other.z, other.w }; // put it into an array so i can subscript operator them
 
-	for (int row = 0; row < Mat4::ORDER; row++) { // for each row in matrix4
-		float total = 0; // running total
-		for (int element = 0; element < 4; element++) { // for each element in vector
-			total += m_Data[row][element] * values[element];
-		}
-		values[row] = total;
-	}
+	//for (int row = 0; row < Mat4::ORDER; row++) { // for each row in matrix4
+	//	float total = 0; // running total
+	//	for (int element = 0; element < 4; element++) { // for each element in vector
+	//		total += m_Data[row][element] * values[element];
+	//	}
+	//	values[row] = total;
+	//}
 
-	return Vec4(values[0], values[1], values[2], values[3]);
-
+	//return Vec4(values[0], values[1], values[2], values[3]);
+	return Vec4(
+		other.x * m_Data[0][0] + other.y * m_Data[1][0] + other.z * m_Data[2][0] + other.w * m_Data[3][0],
+		other.x * m_Data[0][1] + other.y * m_Data[1][1] + other.z * m_Data[2][1] + other.w * m_Data[3][1],
+		other.x * m_Data[0][2] + other.y * m_Data[1][2] + other.z * m_Data[2][2] + other.w * m_Data[3][2],
+		other.x * m_Data[0][3] + other.y * m_Data[1][3] + other.z * m_Data[2][3] + other.w * m_Data[3][3]
+	);
 }
 
 Vec3 Mat4::operator*(const Vec3& other) const {

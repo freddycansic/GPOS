@@ -4,9 +4,14 @@
 void Application::init() {
 	ShapeRenderer::init();
 
+	Vec4 pos(0, 1, 2, 3);
+	Mat4 mat(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+	std::cout << mat * pos << std::endl;
+
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
 	cube1 = Cube(0, 0, 0, 10.0f);
+	//cube2 = Cube(0, 0, 0, 10.0f);
 }
 
 void Application::render() {
@@ -14,12 +19,16 @@ void Application::render() {
 
 	Renderer::setViewMatrix(Mat4::identity.translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).rotate(viewTransform.rot.x, viewTransform.rot.y, viewTransform.rot.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
+	//cube1.setTransform(Mat4::identity.rotate(0, Window::getCurrentTime(), 0).scale(10));
+	cubeTransform.rot.y = Window::getCurrentTime();
+
 	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
 	cube1.setRotation(cubeTransform.rot.x, cubeTransform.rot.y, cubeTransform.rot.z);
 	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
 
 	ShapeRenderer::begin();
 	ShapeRenderer::draw(cube1, {1, 1, 0, 1});
+	//ShapeRenderer::draw(cube2, {1, 0, 1, 1});
 	ShapeRenderer::end();
 }
 

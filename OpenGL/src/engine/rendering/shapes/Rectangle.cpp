@@ -32,8 +32,11 @@ Rectangle::Rectangle(float x, float y, float width, float height)
 	}
 }
 
-// dont write override here (?)
-std::vector<Vertex> Rectangle::getVertices() const {
+void Rectangle::setScale(float xScale, float yScale, float zScale) {
+	m_Transform.sca = { m_Width * xScale, m_Height * yScale, 1.0f };
+}
+
+std::vector<Vertex> Rectangle::getVertices() {
 	return m_Vertices;
 }
 

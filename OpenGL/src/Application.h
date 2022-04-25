@@ -29,7 +29,7 @@ private:
 	// i really dont like this TODO make better
 	std::unique_ptr<Texture> tex1;
 	Mat4 proj;
-	Cube cube1;
+	Cube cube1, cube2;
 
 	float xViewTranslate = 0.0f, yViewTranslate = 0.0f, zViewTranslate = 0.0f;
 

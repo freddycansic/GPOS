@@ -48,17 +48,30 @@ Cube::Cube(float x, float y, float z, float size)
 
 void Cube::recalculateVertices()
 {
+	//std::cout << m_Transform << std::endl;
+
+	Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+
+	//std::cout << transform << std::endl;
+	//std::cout << transformMatrix << std::endl;
+
 	for (unsigned int i = 0; i < s_UnitVertices.size(); i++) {
 		const auto& unitPos = s_UnitVertices[i].position; // unit pos
 		auto& resultPos = m_Vertices[i].position; // result vertex
-		std::cout << m_Transform << std::endl;
+		
 		// apply transformation to unit vertex and store in result vertex
-		resultPos = Vec3(Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z) * Vec4(unitPos, 1.0f));
+		resultPos = Vec3(transformMatrix * Vec4(unitPos, 1.0f));
+		//std::cout << "UNIT\n" << Vec4(unitPos, 1.0f) << std::endl;
 		//resultPos = Vec3(transform * Vec4(unitPos, 1.0f));
+		//std::cout << "END\n" << Vec4(resultPos, 1.0f) << std::endl;
 	}
 }
 
-std::vector<Vertex> Cube::getVertices() const
+void Cube::setScale(float xScale, float yScale, float zScale) {
+	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
+}
+
+std::vector<Vertex> Cube::getVertices() 
 {
 	return m_Vertices;
 }
@@ -68,6 +81,7 @@ std::vector<unsigned int> Cube::getIndices() const
 	return s_UnitIndices;
 }
 
+// TODO TEMP
 void Cube::setTransform(const Mat4& mat)
 {
 	transform = mat;
