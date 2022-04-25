@@ -31,10 +31,7 @@ private:
 	Mat4 proj;
 	Cube cube1, cube2;
 
-	float xViewTranslate = 0.0f, yViewTranslate = 0.0f, zViewTranslate = 0.0f;
-
-	Transform cubeTransform;
-	Transform viewTransform;
+	Transform cubeTransform, viewTransform;
 
 public:
 	Application() = default;

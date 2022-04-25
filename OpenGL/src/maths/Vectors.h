@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "Mat4.h"
 
 struct Vec2 {
 	float x = 0.0f, y = 0.0f;
@@ -25,13 +26,10 @@ struct Vec4 {
 	float x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f;
 
 	Vec4() = default;
-
-	// regular constructor
 	Vec4(float x, float y, float z, float w);
-		
-	// convert vec3 to vec4
 	Vec4(const Vec3& vec3, float w);
 
+	Vec4 operator*(const Mat4& mat) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Vec4& vector);

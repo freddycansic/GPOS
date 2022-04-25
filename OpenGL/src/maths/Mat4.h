@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 
-#include "maths/Vectors.h"
-
 class Mat4
 {
 public:
@@ -58,8 +56,6 @@ public:
 	// mathematical operations
 	Mat4 operator*(float scalar) const; // scalar multiplication
 	Mat4 operator*(const Mat4& other) const; // matrix matrix multiplication
-	Vec4 operator*(const Vec4& other) const; // matrix vec4 multiplication
-	Vec3 operator*(const Vec3& other) const; // matrix vec3 multiplication
 	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
 	Mat4 operator+(Mat4&& other) const; // rvalue reference
 

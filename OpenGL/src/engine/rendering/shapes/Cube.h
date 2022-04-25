@@ -21,8 +21,6 @@ public:
 	std::vector<unsigned int> getIndices() const override;
 	void setScale(float xScale, float yScale, float zScale);
 	void recalculateVertices() override;
-
-	void setTransform(const Mat4& mat);
 };
 
 
