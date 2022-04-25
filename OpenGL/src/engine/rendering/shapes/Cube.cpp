@@ -53,8 +53,8 @@ void Cube::recalculateVertices()
 		auto& resultPos = m_Vertices[i].position; // result vertex
 		std::cout << m_Transform << std::endl;
 		// apply transformation to unit vertex and store in result vertex
-		resultPos = Vec3(Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z) * Vec4(unitPos, 1.0f));
-		//resultPos = Vec3(transform * Vec4(unitPos, 1.0f));
+		//resultPos = Vec3(Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z) * Vec4(unitPos, 1.0f));
+		resultPos = Vec3(transform * Vec4(unitPos, 1.0f));
 	}
 }
 
@@ -66,6 +66,11 @@ std::vector<Vertex> Cube::getVertices() const
 std::vector<unsigned int> Cube::getIndices() const
 {
 	return s_UnitIndices;
+}
+
+void Cube::setScale(float xScale, float yScale, float zScale)
+{
+	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
 }
 
 void Cube::setTransform(const Mat4& mat)
