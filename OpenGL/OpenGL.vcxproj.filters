@@ -28,6 +28,7 @@
     <ClCompile Include="src\engine\Debug.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
+    <ClCompile Include="src\maths\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />

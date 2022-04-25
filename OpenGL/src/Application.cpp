@@ -15,12 +15,12 @@ void Application::init() {
 void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	Renderer::setViewMatrix(Mat4::identity.translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z));
-
-	//cube1.setRotation(0, 0, 0);
-	cube1.setRotation(cubeTransform.rot.x, cubeTransform.rot.y, cubeTransform.rot.z);
-	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
-	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
+	Renderer::setViewMatrix(Mat4::identity.translate(xViewTranslate, yViewTranslate, zViewTranslate));
+	
+	//cube1.setTransform(Mat4::identity.translate(0, 0, 0).rotate(0, Window::getCurrentTime(), 0).scale(10, 10, 10));
+	//cube1.setTranslation(0.0f, 0.0f, 0.0f);
+	cube1.setRotation(0.0f, Window::getCurrentTime(), 0.0f);
+	//cube1.setScale(10.0f, 10.0f, 10.0f);
 
 	ShapeRenderer::begin();
 	ShapeRenderer::draw(cube1, {1, 1, 0, 1});
@@ -31,11 +31,11 @@ void Application::imGuiRender() {
 	ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 	
-	ImGui::SliderFloat("X", &xTranslate, windowWidth / -2, windowWidth / 2);
-	ImGui::SliderFloat("Y", &yTranslate, windowHeight / -2, windowHeight / 2);
-	ImGui::SliderFloat("Z", &zTranslate, -1000.0f, 1000.0f);
-	ImGui::SliderFloat3("Z", &zTranslate, -1000.0f, 1000.0f);
-	
+	//ImGui::SliderFloat("X", &xTranslate, windowWidth / -2, windowWidth / 2);
+	//ImGui::SliderFloat("Y", &yTranslate, windowHeight / -2, windowHeight / 2);
+	//ImGui::SliderFloat("Z", &zTranslate, -1000.0f, 1000.0f);
+	//ImGui::SliderFloat3("Z", &zTranslate, -1000.0f, 1000.0f);
+	//
 	ImGui::SliderFloat("X View", &xViewTranslate, windowWidth / -2, windowWidth / 2);
 	ImGui::SliderFloat("Y View", &yViewTranslate, windowHeight / -2, windowHeight / 2);
 	ImGui::SliderFloat("Z View", &zViewTranslate, -1000.0f, 1000.0f);
