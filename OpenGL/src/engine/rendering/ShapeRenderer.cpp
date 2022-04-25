@@ -65,14 +65,10 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	// TODO this is better than doing it after every transformation kek
 	shape.recalculateVertices();
 
-	// copy vertices
-	auto vertices = shape.getVertices();
-
 	// modify vertices and add to buffer
-	for (auto& vertex : vertices) {
+	for (auto& vertex : shape.getVertices()) {
 		vertex.texID = -1;
 		vertex.color = color;
 	
@@ -116,10 +112,8 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 		throw std::runtime_error("No more available texture slots!");
 	}
 
-	// copy vertices
-	auto vertices = shape.getVertices();
-
-	for (auto& vertex : vertices) {
+	// modify vertices
+	for (auto& vertex : shape.getVertices()) {
 		vertex.texID = textureSlot;
 		s_VertexBatch.push_back(vertex);
 	}
