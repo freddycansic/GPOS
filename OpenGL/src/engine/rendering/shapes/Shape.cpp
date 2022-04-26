@@ -27,7 +27,7 @@ void Shape::setScale(float xScale, float yScale, float zScale) {
 }
 
 void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
-	m_Transform.rot = { Maths::radians(xRotation), Maths::radians(yRotation), Maths::radians(zRotation) };
+	m_Transform.rot = { xRotation, yRotation, zRotation };
 }
 
 void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {

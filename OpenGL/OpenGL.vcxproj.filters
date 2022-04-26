@@ -70,6 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\image.png" />
-    <Image Include="res\textures\kali.png" />
+    <Image Include="res\textures\hashinshin.png" />
   </ItemGroup>
 </Project>

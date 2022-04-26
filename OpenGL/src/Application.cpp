@@ -3,12 +3,15 @@
 void Application::init() {
 	ShapeRenderer::init();
 
-	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
+	tex1 = std::make_unique<Texture>(Files::internal("textures/image.png"));
+	tex2 = std::make_unique<Texture>(Files::internal("textures/hashinshin.png"));
 
 	cube1 = Cube(-5, -5, 0, 10.0f);
 	cube2 = Cube(-5, 5, 0, 10.0f);
+	cube3 = Cube(-8, -5, 0, 2);
+
 	rect1 = Rectangle(5, 5, 5, 5);
-	pp = Cube(-8, -5, 0, 2);
+	rect2 = Rectangle(8, 9, 3, 10);
 }
 
 void Application::render() {
@@ -21,10 +24,10 @@ void Application::render() {
 	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
 
 	ShapeRenderer::begin();
-	ShapeRenderer::draw(cube1, {1, 0, 0, 1});
-	ShapeRenderer::draw(cube2, {0, 1, 0, 1});
-	ShapeRenderer::draw(rect1, {0, 0, 1, 1});
-	ShapeRenderer::draw(pp,    {1, 0, 1, 1});
+	ShapeRenderer::draw(cube1, *tex1);
+	ShapeRenderer::draw(cube2, *tex2);
+	ShapeRenderer::draw(cube3, {0, 1, 0, 1});
+	ShapeRenderer::draw(rect1, {1, 1, 0, 1});
 	ShapeRenderer::end();
 }
 

@@ -2,8 +2,6 @@
 
 #include <GL/glew.h>
 
-#define DEBUG
-
 #if _WIN32
 	#include <Windows.h>
 	#define HANDLE GetStdHandle(STD_OUTPUT_HANDLE)
@@ -21,6 +19,8 @@
 #endif
 
 #define ASSERT(x) if (!(x)) __debugbreak();
+
+#define DEBUG
 
 #ifdef DEBUG
 #define GLAPI(x) Debug::clearGLError(); x; ASSERT(Debug::logGLFunc(#x, __FILE__, __LINE__))

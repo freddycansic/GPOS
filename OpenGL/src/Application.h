@@ -27,11 +27,10 @@ class Application
 {
 private:
 	// i really dont like this TODO make better
-	std::unique_ptr<Texture> tex1;
+	std::unique_ptr<Texture> tex1, tex2;
 	Mat4 proj;
-	Cube cube1, cube2;
-	Rectangle rect1;
-	Cube pp;
+	Cube cube1, cube2, cube3;
+	Rectangle rect1, rect2;
 
 	Transform cubeTransform, viewTransform;
 

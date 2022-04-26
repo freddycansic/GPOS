@@ -14,6 +14,8 @@ void Renderer::init(const Window& window) {
 	GLAPI(glEnable(GL_BLEND)); // enable alpha blending
 	GLAPI(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	//glBlendEquation(GL_FUNC_ADD); default
+	
+	GLAPI(glEnable(GL_DEPTH_TEST));
 
 	s_WindowWidth = window.getWidth();
 	s_WindowHeight = window.getHeight();
@@ -39,7 +41,7 @@ void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader
 
 void Renderer::clear(float r, float g, float b)
 {
-	GLAPI(glClear(GL_COLOR_BUFFER_BIT));
+	GLAPI(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	GLAPI(glClearColor(r, g, b, 1.0f));
 }
 

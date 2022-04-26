@@ -228,8 +228,8 @@
     <None Include="res\shaders\default.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\hashinshin.png" />
     <Image Include="res\textures\image.png" />
-    <Image Include="res\textures\kali.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

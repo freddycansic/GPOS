@@ -112,6 +112,8 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 		throw std::runtime_error("No more available texture slots!");
 	}
 
+	shape.recalculateVertices();
+
 	// modify vertices
 	for (auto& vertex : shape.getVertices()) {
 		vertex.texID = textureSlot;

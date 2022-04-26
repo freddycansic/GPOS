@@ -99,6 +99,10 @@ Mat4 Mat4::scale(float xScale, float yScale, float zScale) const
 
 Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 {
+	float xRadRotate = Maths::radians(xRotate);
+	float yRadRotate = Maths::radians(yRotate);
+	float zRadRotate = Maths::radians(zRotate);
+
 	return (
 		*this
 
@@ -106,23 +110,23 @@ Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 
 		Mat4 (
 		1, 0, 0, 0,
-		0, cos(xRotate), -sin(xRotate), 0,
-		0, sin(xRotate), cos(xRotate), 0,
+		0, cos(xRadRotate), -sin(xRadRotate), 0,
+		0, sin(xRadRotate), cos(xRadRotate), 0,
 		0, 0, 0, 1) 
 		
 		*
 		
 		Mat4 (
-		cos(yRotate), 0, sin(yRotate), 0,
+		cos(yRadRotate), 0, sin(yRadRotate), 0,
 		0, 1, 0, 0,
-		-sin(yRotate), 0, cos(yRotate), 0,
+		-sin(yRadRotate), 0, cos(yRadRotate), 0,
 		0, 0, 0, 1) 
 		
 		*
 		
 		Mat4 (
-		cos(zRotate), -sin(zRotate), 0, 0,
-		sin(zRotate), cos(zRotate), 0, 0,
+		cos(zRadRotate), -sin(zRadRotate), 0, 0,
+		sin(zRadRotate), cos(zRadRotate), 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1)
 	);
