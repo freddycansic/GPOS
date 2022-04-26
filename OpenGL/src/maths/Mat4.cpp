@@ -176,25 +176,6 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 	return result;
 }
 
-Vec4 Mat4::operator*(const Vec4& other) const {
-	float values[]{ other.x, other.y, other.z, other.w }; // put it into an array so i can subscript operator them
-
-	for (int row = 0; row < Mat4::ORDER; row++) { // for each row in matrix4
-		float total = 0; // running total
-		for (int element = 0; element < 4; element++) { // for each element in vector
-			total += m_Data[row][element] * values[element];
-		}
-		values[row] = total;
-	}
-
-	return Vec4(values[0], values[1], values[2], values[3]);
-
-}
-
-Vec3 Mat4::operator*(const Vec3& other) const {
-	return *this * Vec4(other, 1.0f); 
-}
-
 Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, float far) {
 	return Mat4(
 		2 / (right - left), 0, 0, -(right + left) / (right - left),

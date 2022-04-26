@@ -17,23 +17,28 @@ const std::vector<unsigned int> Rectangle::s_UnitIndices =
 };
 
 Rectangle::Rectangle(float x, float y, float width, float height)
-: Shape(x, y, 0.0f), m_Width(width), m_Height(height){
+: m_Width(width), m_Height(height){
 	m_Vertices.reserve(s_UnitVertices.size());
+
+	Mat4 transformMatrix = Mat4::identity.translate(x, y, 0.0f).rotate(0, 0, 0).scale(width, height, 1.0f);
 
 	for (const auto& unitVertex : s_UnitVertices) {
 		// copy unit vertex
 		Vertex newVertex = unitVertex;
 
 		// set new position
-		newVertex.position = Vec3(Mat4::identity.translate(x, y, 0.0f).rotate(0, 0, 0).scale(width, height, 1.0f) * Vec4(unitVertex.position, 1.0f));
+		newVertex.position = Vec3(Vec4(unitVertex.position, 1.0f) * transformMatrix);
 
 		// add vertex to the buffer
 		m_Vertices.push_back(newVertex);
 	}
 }
 
-// dont write override here (?)
-std::vector<Vertex> Rectangle::getVertices() const {
+void Rectangle::setScale(float xScale, float yScale, float zScale) {
+	m_Transform.sca = { m_Width * xScale, m_Height * yScale, 1.0f };
+}
+
+std::vector<Vertex> Rectangle::getVertices() {
 	return m_Vertices;
 }
 

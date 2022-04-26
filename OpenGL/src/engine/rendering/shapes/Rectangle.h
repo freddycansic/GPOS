@@ -18,7 +18,8 @@ private:
 public:
 	Rectangle(float x, float y, float width, float height);
 
-	std::vector<Vertex> getVertices() const override;
+	void setScale(float xScale, float yScale, float zScale) override;
+	std::vector<Vertex> getVertices() override;
 	std::vector<unsigned int> getIndices() const override;
 };
 
