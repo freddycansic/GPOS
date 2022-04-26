@@ -5,20 +5,26 @@ void Application::init() {
 
 	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
-	cube1 = Cube(10, 0, 0, 10.0f);
+	cube1 = Cube(-5, -5, 0, 10.0f);
+	cube2 = Cube(-5, 5, 0, 10.0f);
+	rect1 = Rectangle(5, 5, 5, 5);
+	pp = Cube(-8, -5, 0, 2);
 }
 
 void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	Renderer::setViewMatrix(Mat4::identity.translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).rotate(viewTransform.rot.x, viewTransform.rot.y, viewTransform.rot.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
+	Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
 	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
 	cube1.setRotation(cubeTransform.rot.x, cubeTransform.rot.y, cubeTransform.rot.z);
 	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
 
 	ShapeRenderer::begin();
-	ShapeRenderer::draw(cube1, {1, 1, 0, 1});
+	ShapeRenderer::draw(cube1, {1, 0, 0, 1});
+	ShapeRenderer::draw(cube2, {0, 1, 0, 1});
+	ShapeRenderer::draw(rect1, {0, 0, 1, 1});
+	ShapeRenderer::draw(pp, { 1, 0, 1, 1 });
 	ShapeRenderer::end();
 }
 
