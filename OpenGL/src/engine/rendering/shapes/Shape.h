@@ -32,19 +32,19 @@ public:
 	 * @see Cube#getUnitVertices()
 	 * @see Rectangle#getUnitVertices()
 	*/
-	virtual std::vector<Vertex> getUnitVertices() const = 0;
+	virtual const std::vector<Vertex>& getUnitVertices() const = 0;
 
 	/**
-	 * @brief Get all the vertices of the shape.
-	 * @return A vector of the shape's vertices.
+	 * @brief Get a modifiable reference to the vertices of the shape.
+	 * @return A modifiable reference to a vector of the shape's vertices.
 	*/
-	virtual std::vector<Vertex> getVertices() = 0;
+	virtual std::vector<Vertex>& getVertices() = 0;
 
 	/**
-	 * @brief Get all the indices of the shape.
-	 * @return A vector of the shape's indices.
+	 * @brief Get a const reference to the indices of the shape.
+	 * @return A const reference to a vector of the shape's indices.
 	*/
-	virtual std::vector<unsigned int> getIndices() const = 0;
+	virtual const std::vector<unsigned int>& getIndices() const = 0;
 
 	/**
 	 * @brief Set the scale for the shape.

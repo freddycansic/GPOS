@@ -1,6 +1,7 @@
 #include "Shape.h"
 
 #include "maths/Mat4.h"
+#include "maths/Maths.h"
 
 void Shape::recalculateVertices() {
 	if (m_Vertices.size() == 0) { // if recalculating from the constructor
@@ -9,9 +10,12 @@ void Shape::recalculateVertices() {
 
 	Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
-	for (unsigned int i = 0; i < getUnitVertices().size(); i++) {
-		const auto unitPos = getUnitVertices()[i].position; // unit pos
-		auto& resultPos = m_Vertices[i].position; // result vertex
+	// TODO copy bad
+	const std::vector<Vertex>& unitVertices = getUnitVertices();
+
+	for (unsigned int i = 0; i < unitVertices.size(); i++) {
+		const auto unitPos = unitVertices.at(i).position; // unit pos
+		auto& resultPos = m_Vertices.at(i).position; // result vertex
 		
 		// apply transformation to unit vertex and store in result vertex
 		resultPos = Vec3(Vec4(unitPos, 1.0f) * transformMatrix);
@@ -23,8 +27,7 @@ void Shape::setScale(float xScale, float yScale, float zScale) {
 }
 
 void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
-	
-	m_Transform.rot = { xRotation, yRotation, zRotation };
+	m_Transform.rot = { Maths::radians(xRotation), Maths::radians(yRotation), Maths::radians(zRotation) };
 }
 
 void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {

@@ -17,8 +17,8 @@ public:
 	Rectangle() = default;
 
 	void setScale(float xScale, float yScale, float zScale) override;
-	std::vector<Vertex> getVertices() override;
-	std::vector<unsigned int> getIndices() const override;
-	std::vector<Vertex> getUnitVertices() const override;
+	std::vector<Vertex>& getVertices() override;
+	const std::vector<unsigned int>& getIndices() const override;
+	const std::vector<Vertex>& getUnitVertices() const override;
 };
 

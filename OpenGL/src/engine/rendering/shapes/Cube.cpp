@@ -44,17 +44,16 @@ void Cube::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
 }
 
-std::vector<Vertex> Cube::getUnitVertices() const {
+const std::vector<Vertex>& Cube::getUnitVertices() const {
 	return s_UnitVertices;
 }
 
-
-std::vector<Vertex> Cube::getVertices() 
+std::vector<Vertex>& Cube::getVertices() 
 {
 	return m_Vertices;
 }
 
-std::vector<unsigned int> Cube::getIndices() const
+const std::vector<unsigned int>& Cube::getIndices() const
 {
 	return s_UnitIndices;
 }

@@ -29,15 +29,15 @@ void Rectangle::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Width * xScale, m_Height * yScale, 1.0f };
 }
 
-std::vector<Vertex> Rectangle::getUnitVertices() const {
+const std::vector<Vertex>& Rectangle::getUnitVertices() const {
 	return s_UnitVertices;
 }
 
-std::vector<Vertex> Rectangle::getVertices() {
+std::vector<Vertex>& Rectangle::getVertices() {
 	return m_Vertices;
 }
 
-std::vector<unsigned int> Rectangle::getIndices() const {
+const std::vector<unsigned int>& Rectangle::getIndices() const {
 	return s_UnitIndices;
 }
 
