@@ -9,8 +9,6 @@ private:
 	const static std::vector<unsigned int> s_UnitIndices;
 	const static std::vector<Vertex> s_UnitVertices;
 
-	Mat4 transform;
-
 	float m_Size = 0.0f;
 
 public:
@@ -21,7 +19,6 @@ public:
 	std::vector<Vertex> getUnitVertices() const override;
 	std::vector<unsigned int> getIndices() const override;
 	void setScale(float xScale, float yScale, float zScale) override;
-	//void recalculateVertices() override;
 };
 
 

@@ -24,7 +24,7 @@ void Application::render() {
 	ShapeRenderer::draw(cube1, {1, 0, 0, 1});
 	ShapeRenderer::draw(cube2, {0, 1, 0, 1});
 	ShapeRenderer::draw(rect1, {0, 0, 1, 1});
-	ShapeRenderer::draw(pp, { 1, 0, 1, 1 });
+	ShapeRenderer::draw(pp,    {1, 0, 1, 1});
 	ShapeRenderer::end();
 }
 

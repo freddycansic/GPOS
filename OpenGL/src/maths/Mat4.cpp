@@ -1,6 +1,6 @@
 #include "Mat4.h"
 
-#define PI 3.14159265358979323846
+#include "Maths.h"
 
 Mat4::Mat4(
 	float r1c1, float r1c2, float r1c3, float r1c4,
@@ -186,7 +186,7 @@ Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, f
 }
 
 Mat4 Mat4::perspective(float fovDeg, float aspect, float near, float far) {
-	float fov = fovDeg * PI / 180;
+	float fov = Maths::radians(fovDeg);
 	float f = 1 / tan(fov/2);
 
 	return Mat4(

@@ -13,10 +13,31 @@ public:
 	using MATRIX_DATA = std::array<MATRIX_ROW, ORDER>;
 
 private:
+	/**
+	 * @brief Internal data structure.
+	*/
 	MATRIX_DATA m_Data;
 
 public:
-	// constructors
+	/**
+	 * @brief Constructs a 4x4 matrix using 16 floats.
+	 * @param r1c1 Value for row 1, column 1.
+	 * @param r1c2 Value for row 1, column 2.
+	 * @param r1c3 Value for row 1, column 3.
+	 * @param r1c4 Value for row 1, column 4.
+	 * @param r2c1 Value for row 2, column 1.
+	 * @param r2c2 Value for row 2, column 2.
+	 * @param r2c3 Value for row 2, column 3.
+	 * @param r2c4 Value for row 2, column 4.
+	 * @param r3c1 Value for row 3, column 1.
+	 * @param r3c2 Value for row 3, column 2.
+	 * @param r3c3 Value for row 3, column 3.
+	 * @param r3c4 Value for row 3, column 4.
+	 * @param r4c1 Value for row 4, column 1.
+	 * @param r4c2 Value for row 4, column 2.
+	 * @param r4c3 Value for row 4, column 3.
+	 * @param r4c4 Value for row 4, column 4.
+	*/
 	Mat4(
 		float r1c1, float r1c2, float r1c3, float r1c4,
 		float r2c1, float r2c2, float r2c3, float r2c4,
@@ -24,6 +45,13 @@ public:
 		float r4c1, float r4c2, float r4c3, float r4c4
 	);
 
+	/**
+	 * @brief Constructs a 4x4 matrix using 4 arrays of length 4.
+	 * @param row1 Values for the first row.
+	 * @param row2 Values for the second row.
+	 * @param row3 Values for the third row.
+	 * @param row4 Values for the fourth row.
+	*/
 	Mat4(
 		const MATRIX_ROW& row1,
 		const MATRIX_ROW& row2,
@@ -31,6 +59,10 @@ public:
 		const MATRIX_ROW& row4
 	);
 	
+	/**
+	 * @brief Constructs a
+	 * @param data 
+	*/
 	Mat4(const MATRIX_DATA& data) : m_Data(data) {
 	}
 
