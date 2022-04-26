@@ -1,0 +1,56 @@
+\hypertarget{_window_8h_source}{}\doxysection{Window.\+h}
+\label{_window_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/Window.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/Window.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <GLFW/glfw3.h>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_window_config}{WindowConfig}} \{}
+\DoxyCodeLine{8     std::string title = \textcolor{stringliteral}{"{}Hello, world!"{}};}
+\DoxyCodeLine{9     \textcolor{keywordtype}{int} width = 640;}
+\DoxyCodeLine{10     \textcolor{keywordtype}{int} height = 400;}
+\DoxyCodeLine{11     \textcolor{keywordtype}{bool} maxSize = \textcolor{keyword}{false};}
+\DoxyCodeLine{12     \textcolor{keywordtype}{bool} fullscreen = \textcolor{keyword}{false}; \textcolor{comment}{// TODO}}
+\DoxyCodeLine{13     \textcolor{keywordtype}{bool} vsync = \textcolor{keyword}{true};}
+\DoxyCodeLine{14 \};}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{class_window}{Window}}}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{private}:}
+\DoxyCodeLine{19     GLFWwindow* m\_ID = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{20     \textcolor{keywordtype}{int} m\_Width = 0, m\_Height = 0;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{float} m\_Delta = 0;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     \textcolor{keyword}{static} \textcolor{keywordtype}{int} s\_DisplayWidth, s\_DisplayHeight;}
+\DoxyCodeLine{24     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} s\_Initialised;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     \textcolor{keyword}{static} \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \mbox{\hyperlink{class_window}{Window}}(\textcolor{keyword}{const} \mbox{\hyperlink{struct_window_config}{WindowConfig}}\& config);}
+\DoxyCodeLine{30     \mbox{\hyperlink{class_window}{\string~Window}}();}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \mbox{\hyperlink{class_window}{Window}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_window}{Window}}\& window) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{33     \mbox{\hyperlink{class_window}{Window}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{class_window}{Window}}\& window) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{keywordtype}{int} shouldClose() \textcolor{keyword}{const};}
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} update();}
+\DoxyCodeLine{37     }
+\DoxyCodeLine{38     \textcolor{comment}{// time}}
+\DoxyCodeLine{39     \textcolor{keyword}{static} \textcolor{keywordtype}{float} getCurrentTime();}
+\DoxyCodeLine{40     \textcolor{keywordtype}{float} getDelta()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Delta; \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{comment}{// getters}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{int} getWidth()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Width; \}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{int} getHeight()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Height; \}}
+\DoxyCodeLine{45     GLFWwindow* getGLFWWindow()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_ID; \}}
+\DoxyCodeLine{46     }
+\DoxyCodeLine{47     \textcolor{keyword}{static} \textcolor{keywordtype}{int} getDisplayHeight();}
+\DoxyCodeLine{48     \textcolor{keyword}{static} \textcolor{keywordtype}{int} getDisplayWidth();}
+\DoxyCodeLine{49 \};}
+\DoxyCodeLine{50 }
+
+\end{DoxyCode}

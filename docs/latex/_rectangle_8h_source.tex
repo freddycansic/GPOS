@@ -1,0 +1,31 @@
+\hypertarget{_rectangle_8h_source}{}\doxysection{Rectangle.\+h}
+\label{_rectangle_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Rectangle.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Rectangle.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Shape.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }\mbox{\hyperlink{class_rectangle}{Rectangle}} : \textcolor{keyword}{public} \mbox{\hyperlink{class_shape}{Shape}}}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{9 \textcolor{keyword}{private}:}
+\DoxyCodeLine{10     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<Vertex> s\_UnitVertices;}
+\DoxyCodeLine{11     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<unsigned int> s\_UnitIndices;}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13     \textcolor{comment}{// no need for indices field as they never change}}
+\DoxyCodeLine{14     std::vector<Vertex> m\_Vertices;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16     \textcolor{keywordtype}{float} m\_Width, m\_Height;}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{public}:}
+\DoxyCodeLine{19     \mbox{\hyperlink{class_rectangle}{Rectangle}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} width, \textcolor{keywordtype}{float} height);}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{keywordtype}{void} setScale(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) \textcolor{keyword}{override};}
+\DoxyCodeLine{22     std::vector<Vertex> getVertices() \textcolor{keyword}{override};}
+\DoxyCodeLine{23     std::vector<unsigned int> getIndices() \textcolor{keyword}{const override};}
+\DoxyCodeLine{24 \};}
+\DoxyCodeLine{25 }
+
+\end{DoxyCode}

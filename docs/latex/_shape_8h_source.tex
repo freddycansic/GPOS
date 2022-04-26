@@ -1,0 +1,31 @@
+\hypertarget{_shape_8h_source}{}\doxysection{Shape.\+h}
+\label{_shape_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Shape.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Shape.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}engine/rendering/Vertex.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}maths/Transform.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{class }\mbox{\hyperlink{class_shape}{Shape}}}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{11     \mbox{\hyperlink{struct_transform}{Transform}} m\_Transform;}
+\DoxyCodeLine{12     std::vector<Vertex> m\_Vertices;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{public}:}
+\DoxyCodeLine{15     \mbox{\hyperlink{class_shape}{Shape}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \textcolor{comment}{// define these when creating a shape}}
+\DoxyCodeLine{18     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} recalculateVertices() = 0;}
+\DoxyCodeLine{19     \textcolor{keyword}{virtual} std::vector<Vertex> getVertices() = 0;}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} std::vector<unsigned int> getIndices() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setScale(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) = 0; \textcolor{comment}{// all shapes will scale differently based off of original shape}}
+\DoxyCodeLine{23     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setRotation(\textcolor{keywordtype}{float} xRotation, \textcolor{keywordtype}{float} yRotation, \textcolor{keywordtype}{float} zRotation);}
+\DoxyCodeLine{24     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setTranslation(\textcolor{keywordtype}{float} xTranslate, \textcolor{keywordtype}{float} yTranslate, \textcolor{keywordtype}{float} zTranslate);}
+\DoxyCodeLine{25 \};}
+
+\end{DoxyCode}

@@ -1,0 +1,119 @@
+\hypertarget{class_mat4}{}\doxysection{Mat4 Class Reference}
+\label{class_mat4}\index{Mat4@{Mat4}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_mat4_af74dace22c3ddd69a3cd894978df3d2a}\label{class_mat4_af74dace22c3ddd69a3cd894978df3d2a}} 
+using {\bfseries MATRIX\+\_\+\+ROW} = std\+::array$<$ float, ORDER $>$
+\item 
+\mbox{\Hypertarget{class_mat4_a7555dede09f61a0cfd16a0a56bd25663}\label{class_mat4_a7555dede09f61a0cfd16a0a56bd25663}} 
+using {\bfseries MATRIX\+\_\+\+DATA} = std\+::array$<$ MATRIX\+\_\+\+ROW, ORDER $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_mat4_abe206a0e5bf5c5d94d1ecb1a8708764b}\label{class_mat4_abe206a0e5bf5c5d94d1ecb1a8708764b}} 
+{\bfseries Mat4} (float r1c1, float r1c2, float r1c3, float r1c4, float r2c1, float r2c2, float r2c3, float r2c4, float r3c1, float r3c2, float r3c3, float r3c4, float r4c1, float r4c2, float r4c3, float r4c4)
+\item 
+\mbox{\Hypertarget{class_mat4_a90c28db53937618fbf7d2abbac423bde}\label{class_mat4_a90c28db53937618fbf7d2abbac423bde}} 
+{\bfseries Mat4} (const MATRIX\+\_\+\+ROW \&row1, const MATRIX\+\_\+\+ROW \&row2, const MATRIX\+\_\+\+ROW \&row3, const MATRIX\+\_\+\+ROW \&row4)
+\item 
+\mbox{\Hypertarget{class_mat4_a325903716fd416b4dbc8864c64d46e2c}\label{class_mat4_a325903716fd416b4dbc8864c64d46e2c}} 
+{\bfseries Mat4} (const MATRIX\+\_\+\+DATA \&data)
+\item 
+\mbox{\Hypertarget{class_mat4_a8f5c5e3d869b0f7bab6c4572cf8d3ead}\label{class_mat4_a8f5c5e3d869b0f7bab6c4572cf8d3ead}} 
+{\bfseries Mat4} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\item 
+\mbox{\Hypertarget{class_mat4_a52d3ebd0964517297267c9463aaeb905}\label{class_mat4_a52d3ebd0964517297267c9463aaeb905}} 
+{\bfseries Mat4} (MATRIX\+\_\+\+DATA \&\&data) noexcept
+\item 
+\mbox{\Hypertarget{class_mat4_a8c579d353f5c44ee5713af0a6bbebd24}\label{class_mat4_a8c579d353f5c44ee5713af0a6bbebd24}} 
+{\bfseries Mat4} (\mbox{\hyperlink{class_mat4}{Mat4}} \&\&other) noexcept
+\item 
+\mbox{\Hypertarget{class_mat4_a3603a2b12694af2072a4f8a8cc4a0dd6}\label{class_mat4_a3603a2b12694af2072a4f8a8cc4a0dd6}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator=} (\mbox{\hyperlink{class_mat4}{Mat4}} \&\&other) noexcept
+\item 
+\mbox{\Hypertarget{class_mat4_a426499a4725b37923cc456f2cfd038f9}\label{class_mat4_a426499a4725b37923cc456f2cfd038f9}} 
+const MATRIX\+\_\+\+ROW \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int index) const
+\item 
+\mbox{\Hypertarget{class_mat4_a90e510e477fe78faff2b3016ea20ac9d}\label{class_mat4_a90e510e477fe78faff2b3016ea20ac9d}} 
+MATRIX\+\_\+\+ROW \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int index)
+\item 
+\mbox{\Hypertarget{class_mat4_a377ae73136203a260b89e6d3ce66be1a}\label{class_mat4_a377ae73136203a260b89e6d3ce66be1a}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&mat)
+\item 
+\mbox{\Hypertarget{class_mat4_a62d7095e1c57c73cd03bc5562c366aec}\label{class_mat4_a62d7095e1c57c73cd03bc5562c366aec}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator$\ast$} (float scalar) const
+\item 
+\mbox{\Hypertarget{class_mat4_a0955284674ae82fe3a31f1d0a963ed99}\label{class_mat4_a0955284674ae82fe3a31f1d0a963ed99}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other) const
+\item 
+\mbox{\Hypertarget{class_mat4_ab5e89b45113983750675f4a25a1ff44e}\label{class_mat4_ab5e89b45113983750675f4a25a1ff44e}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator+} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other) const
+\item 
+\mbox{\Hypertarget{class_mat4_a65ccaa1f22914bb252919a6b6f3cb32e}\label{class_mat4_a65ccaa1f22914bb252919a6b6f3cb32e}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator+} (\mbox{\hyperlink{class_mat4}{Mat4}} \&\&other) const
+\item 
+\mbox{\Hypertarget{class_mat4_a923f2c9f3eae1119e7e7b3bb239b9d01}\label{class_mat4_a923f2c9f3eae1119e7e7b3bb239b9d01}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries scale} (float x\+Scale, float y\+Scale, float z\+Scale) const
+\item 
+\mbox{\Hypertarget{class_mat4_aecc8cf585104af14dbe9e69bfb5f9789}\label{class_mat4_aecc8cf585104af14dbe9e69bfb5f9789}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries scale} (float xyz\+Scale) const
+\item 
+\mbox{\Hypertarget{class_mat4_aa945d1970c5497cfcb0f977e608e9c4f}\label{class_mat4_aa945d1970c5497cfcb0f977e608e9c4f}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries rotate} (float x\+Rotate, float y\+Rotate, float z\+Rotate) const
+\item 
+\mbox{\Hypertarget{class_mat4_a07d880f31c5fefdaa1b1d874d12c58e9}\label{class_mat4_a07d880f31c5fefdaa1b1d874d12c58e9}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries translate} (float x\+Translate, float y\+Translate, float z\+Translate) const
+\item 
+\mbox{\Hypertarget{class_mat4_abba6047592ed21971c459c992698ac35}\label{class_mat4_abba6047592ed21971c459c992698ac35}} 
+const float $\ast$ {\bfseries get\+Ptr} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_mat4_ac5f71a909ae3a4d86cbfdcff932c72e2}\label{class_mat4_ac5f71a909ae3a4d86cbfdcff932c72e2}} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries ortho} (float left, float right, float top, float bottom, float near=-\/1.\+0f, float far=1.\+0f)
+\item 
+\mbox{\Hypertarget{class_mat4_a7cb5833483b96a3baaee8d621ccdfff3}\label{class_mat4_a7cb5833483b96a3baaee8d621ccdfff3}} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries perspective} (float fov, float aspect, float near, float far)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_mat4_acd0e4dba9bfc2e36d01772634c7cb3dd}\label{class_mat4_acd0e4dba9bfc2e36d01772634c7cb3dd}} 
+static constexpr unsigned int {\bfseries ORDER} = 4
+\item 
+static const \mbox{\hyperlink{class_mat4}{Mat4}} \mbox{\hyperlink{class_mat4_a51b2c336d46f59e6583b02bd8ef1a7a0}{identity}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_mat4_a3c8abcbc32a3e09819ffe4c8615cad28}\label{class_mat4_a3c8abcbc32a3e09819ffe4c8615cad28}} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{class_mat4}{Mat4}} \&matrix)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_mat4_a51b2c336d46f59e6583b02bd8ef1a7a0}\label{class_mat4_a51b2c336d46f59e6583b02bd8ef1a7a0}} 
+\index{Mat4@{Mat4}!identity@{identity}}
+\index{identity@{identity}!Mat4@{Mat4}}
+\doxysubsubsection{\texorpdfstring{identity}{identity}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{class_mat4}{Mat4}} Mat4\+::identity\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    1, 0, 0, 0,}
+\DoxyCodeLine{    0, 1, 0, 0,}
+\DoxyCodeLine{    0, 0, 1, 0,}
+\DoxyCodeLine{    0, 0, 0, 1}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/maths/Mat4.\+h\item 
+C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/maths/Mat4.\+cpp\end{DoxyCompactItemize}

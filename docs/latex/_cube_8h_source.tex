@@ -1,0 +1,36 @@
+\hypertarget{_cube_8h_source}{}\doxysection{Cube.\+h}
+\label{_cube_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Cube.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Cube.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Shape.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}maths/Mat4.h"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{class }\mbox{\hyperlink{class_cube}{Cube}} : \textcolor{keyword}{public} \mbox{\hyperlink{class_shape}{Shape}}}
+\DoxyCodeLine{7 \{}
+\DoxyCodeLine{8 \textcolor{keyword}{private}:}
+\DoxyCodeLine{9     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<unsigned int> s\_UnitIndices;}
+\DoxyCodeLine{10     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<Vertex> s\_UnitVertices;}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12     \mbox{\hyperlink{class_mat4}{Mat4}} transform;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14     \textcolor{keywordtype}{float} m\_Size = 0.0f;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{public}:}
+\DoxyCodeLine{17     \mbox{\hyperlink{class_cube}{Cube}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} z, \textcolor{keywordtype}{float} size);}
+\DoxyCodeLine{18     \mbox{\hyperlink{class_cube}{Cube}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     std::vector<Vertex> getVertices() \textcolor{keyword}{override};}
+\DoxyCodeLine{21     std::vector<unsigned int> getIndices() \textcolor{keyword}{const override};}
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} setScale(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) \textcolor{keyword}{override};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{comment}{// TODO TEMPORARY}}
+\DoxyCodeLine{25     \textcolor{keywordtype}{void} setTransform(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& mat);}
+\DoxyCodeLine{26     \textcolor{keywordtype}{void} setScale(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale);}
+\DoxyCodeLine{27     \textcolor{keywordtype}{void} recalculateVertices() \textcolor{keyword}{override};}
+\DoxyCodeLine{28 \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+
+\end{DoxyCode}

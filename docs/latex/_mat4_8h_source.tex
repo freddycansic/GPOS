@@ -1,0 +1,82 @@
+\hypertarget{_mat4_8h_source}{}\doxysection{Mat4.\+h}
+\label{_mat4_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/maths/Mat4.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/maths/Mat4.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }\mbox{\hyperlink{class_mat4}{Mat4}}}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{9 \textcolor{keyword}{public}:}
+\DoxyCodeLine{10     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} ORDER = 4;}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12     \textcolor{keyword}{using} MATRIX\_ROW = std::array<float, ORDER>;}
+\DoxyCodeLine{13     \textcolor{keyword}{using} MATRIX\_DATA = std::array<MATRIX\_ROW, ORDER>;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{private}:}
+\DoxyCodeLine{16     MATRIX\_DATA m\_Data;}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{public}:}
+\DoxyCodeLine{19     \textcolor{comment}{// constructors}}
+\DoxyCodeLine{20     \mbox{\hyperlink{class_mat4}{Mat4}}(}
+\DoxyCodeLine{21         \textcolor{keywordtype}{float} r1c1, \textcolor{keywordtype}{float} r1c2, \textcolor{keywordtype}{float} r1c3, \textcolor{keywordtype}{float} r1c4,}
+\DoxyCodeLine{22         \textcolor{keywordtype}{float} r2c1, \textcolor{keywordtype}{float} r2c2, \textcolor{keywordtype}{float} r2c3, \textcolor{keywordtype}{float} r2c4,}
+\DoxyCodeLine{23         \textcolor{keywordtype}{float} r3c1, \textcolor{keywordtype}{float} r3c2, \textcolor{keywordtype}{float} r3c3, \textcolor{keywordtype}{float} r3c4,}
+\DoxyCodeLine{24         \textcolor{keywordtype}{float} r4c1, \textcolor{keywordtype}{float} r4c2, \textcolor{keywordtype}{float} r4c3, \textcolor{keywordtype}{float} r4c4}
+\DoxyCodeLine{25     );}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \mbox{\hyperlink{class_mat4}{Mat4}}(}
+\DoxyCodeLine{28         \textcolor{keyword}{const} MATRIX\_ROW\& row1,}
+\DoxyCodeLine{29         \textcolor{keyword}{const} MATRIX\_ROW\& row2,}
+\DoxyCodeLine{30         \textcolor{keyword}{const} MATRIX\_ROW\& row3,}
+\DoxyCodeLine{31         \textcolor{keyword}{const} MATRIX\_ROW\& row4}
+\DoxyCodeLine{32     );}
+\DoxyCodeLine{33     }
+\DoxyCodeLine{34     \mbox{\hyperlink{class_mat4}{Mat4}}(\textcolor{keyword}{const} MATRIX\_DATA\& data) : m\_Data(data) \{}
+\DoxyCodeLine{35     \}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \mbox{\hyperlink{class_mat4}{Mat4}}() : m\_Data(\{0\}) \{\}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{comment}{// copy constructor}}
+\DoxyCodeLine{40     \mbox{\hyperlink{class_mat4}{Mat4}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& other) : m\_Data(other.m\_Data) \{\}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{comment}{// move constructors (pog)}}
+\DoxyCodeLine{43     \mbox{\hyperlink{class_mat4}{Mat4}}(MATRIX\_DATA\&\& data) noexcept : m\_Data(std::move(data)) \{\}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \textcolor{comment}{// not sure if i need to set other.m\_Data to null or not}}
+\DoxyCodeLine{46     \mbox{\hyperlink{class_mat4}{Mat4}}(\mbox{\hyperlink{class_mat4}{Mat4}}\&\& other) noexcept : m\_Data(std::move(other.m\_Data)) \{\}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{keyword}{const} \textcolor{keyword}{static} \mbox{\hyperlink{class_mat4}{Mat4}} identity;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{comment}{// functional operators}}
+\DoxyCodeLine{51     \mbox{\hyperlink{class_mat4}{Mat4}}\& operator=(\mbox{\hyperlink{class_mat4}{Mat4}}\&\& other) \textcolor{keyword}{noexcept}; \textcolor{comment}{// move assignment operator}}
+\DoxyCodeLine{52     \textcolor{keyword}{const} MATRIX\_ROW\& operator[](\textcolor{keywordtype}{int} index) \textcolor{keyword}{const};}
+\DoxyCodeLine{53     MATRIX\_ROW\& operator[](\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{54     \mbox{\hyperlink{class_mat4}{Mat4}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& mat);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{comment}{// mathematical operations}}
+\DoxyCodeLine{57     \mbox{\hyperlink{class_mat4}{Mat4}} operator*(\textcolor{keywordtype}{float} scalar) \textcolor{keyword}{const}; \textcolor{comment}{// scalar multiplication}}
+\DoxyCodeLine{58     \mbox{\hyperlink{class_mat4}{Mat4}} operator*(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& other) \textcolor{keyword}{const}; \textcolor{comment}{// matrix matrix multiplication}}
+\DoxyCodeLine{59     \mbox{\hyperlink{class_mat4}{Mat4}} operator+(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& other) \textcolor{keyword}{const}; \textcolor{comment}{// matrix matrix addition}}
+\DoxyCodeLine{60     \mbox{\hyperlink{class_mat4}{Mat4}} operator+(\mbox{\hyperlink{class_mat4}{Mat4}}\&\& other) \textcolor{keyword}{const}; \textcolor{comment}{// rvalue reference}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{comment}{// transformations}}
+\DoxyCodeLine{63     \mbox{\hyperlink{class_mat4}{Mat4}} scale(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) \textcolor{keyword}{const};}
+\DoxyCodeLine{64     \mbox{\hyperlink{class_mat4}{Mat4}} scale(\textcolor{keywordtype}{float} xyzScale)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} scale(xyzScale, xyzScale, xyzScale); \}}
+\DoxyCodeLine{65     \mbox{\hyperlink{class_mat4}{Mat4}} rotate(\textcolor{keywordtype}{float} xRotate, \textcolor{keywordtype}{float} yRotate, \textcolor{keywordtype}{float} zRotate) \textcolor{keyword}{const};}
+\DoxyCodeLine{66     \mbox{\hyperlink{class_mat4}{Mat4}} translate(\textcolor{keywordtype}{float} xTranslate, \textcolor{keywordtype}{float} yTranslate, \textcolor{keywordtype}{float} zTranslate) \textcolor{keyword}{const};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{comment}{// projection}}
+\DoxyCodeLine{69     \textcolor{keyword}{static} \mbox{\hyperlink{class_mat4}{Mat4}} ortho(\textcolor{keywordtype}{float} left, \textcolor{keywordtype}{float} right, \textcolor{keywordtype}{float} top, \textcolor{keywordtype}{float} bottom, \textcolor{keywordtype}{float} near = -\/1.0f, \textcolor{keywordtype}{float} far = 1.0f);}
+\DoxyCodeLine{70     \textcolor{keyword}{static} \mbox{\hyperlink{class_mat4}{Mat4}} perspective(\textcolor{keywordtype}{float} fov, \textcolor{keywordtype}{float} aspect, \textcolor{keywordtype}{float} near, \textcolor{keywordtype}{float} far);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \textcolor{keyword}{const} \textcolor{keywordtype}{float}* getPtr()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Data[0].data(); \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{keyword}{friend} std::ostream\& operator<<(std::ostream\& os, \textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& matrix);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \};}
+
+\end{DoxyCode}

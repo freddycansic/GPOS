@@ -51,9 +51,6 @@ void ShapeRenderer::init()
 	state = State::STOPPED;
 }
 
-/**
-Start batch rendering. Must be called after @see init
-**/
 void ShapeRenderer::begin()
 {
 	if (state == State::UNINITIALISED) {
@@ -63,12 +60,6 @@ void ShapeRenderer::begin()
 	state = State::BEGUN;
 }
 
-/**
-Draw a shape using a solid color.
-
-@param Shape to use
-@param Color to use
-**/
 void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchBegun();
@@ -85,12 +76,6 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	}
 }
 
-/**
-Draw a shape using a texture.
-
-@param Shape to use
-@param Texture to use
-**/
 void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
 	checkBatchBegun();
@@ -172,11 +157,6 @@ void ShapeRenderer::checkBatchBegun() {
 	}
 }
 
-/**
-	Add shape indices to index buffer
-
-	@param Shape to extract indices from
-**/
 void ShapeRenderer::addShapeIndices(const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones

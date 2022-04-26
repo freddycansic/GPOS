@@ -48,25 +48,14 @@ Cube::Cube(float x, float y, float z, float size)
 
 void Cube::recalculateVertices()
 {
-	//Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+	Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
 	for (unsigned int i = 0; i < s_UnitVertices.size(); i++) {
 		const auto& unitPos = s_UnitVertices[i].position; // unit pos
 		auto& resultPos = m_Vertices[i].position; // result vertex
-		std::cout << m_Transform << std::endl;
-		// apply transformation to unit vertex and store in result vertex
-		//resultPos = Vec3(Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z) * Vec4(unitPos, 1.0f));
-		resultPos = Vec3(transform * Vec4(unitPos, 1.0f));
-	}
-		auto& resultPos = m_Vertices[i].position; // result pos
 		
-		std::cout << "UNIT\n" << unitPos << std::endl;
-
-		// apply transformation to unit pos and store in result pos
-		//resultPos = Vec3(Vec4(unitPos, 1.0f) * transformMatrix);
-		// TODO could change it from identity.scale to Mat4::scale
-		resultPos = Vec3(Vec4(unitPos, 1.0f) * Mat4::identity.scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z) * Mat4::identity.rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z) * Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z));
-		std::cout << "RESULT\n" << resultPos << std::endl;
+		// apply transformation to unit vertex and store in result vertex
+		resultPos = Vec3(Vec4(unitPos, 1.0f) * transformMatrix);
 	}
 }
 
@@ -82,14 +71,4 @@ std::vector<Vertex> Cube::getVertices()
 std::vector<unsigned int> Cube::getIndices() const
 {
 	return s_UnitIndices;
-}
-
-void Cube::setScale(float xScale, float yScale, float zScale)
-{
-	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
-}
-
-void Cube::setTransform(const Mat4& mat)
-{
-	transform = mat;
 }

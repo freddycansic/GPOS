@@ -1,0 +1,32 @@
+\hypertarget{_texture_8h_source}{}\doxysection{Texture.\+h}
+\label{_texture_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/Texture.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/Texture.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{class }\mbox{\hyperlink{class_texture}{Texture}}}
+\DoxyCodeLine{7 \{}
+\DoxyCodeLine{8 \textcolor{keyword}{private}:}
+\DoxyCodeLine{9     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID = 0;}
+\DoxyCodeLine{10     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* m\_Buffer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{11     \textcolor{keywordtype}{int} m\_Width = 0, m\_Height = 0, m\_ColorDepth = 0;}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{public}:}
+\DoxyCodeLine{14     \mbox{\hyperlink{class_texture}{Texture}}(\textcolor{keyword}{const} std::string\& path);}
+\DoxyCodeLine{15     \mbox{\hyperlink{class_texture}{\string~Texture}}();}
+\DoxyCodeLine{16     \mbox{\hyperlink{class_texture}{Texture}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18     \mbox{\hyperlink{class_texture}{Texture}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_texture}{Texture}}\& tex) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{19     \mbox{\hyperlink{class_texture}{Texture}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{class_texture}{Texture}}\& tex) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{keywordtype}{void} bind() \textcolor{keyword}{const};}
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} bindToSlot(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} slot) \textcolor{keyword}{const};}
+\DoxyCodeLine{23     \textcolor{keywordtype}{void} unbind() \textcolor{keyword}{const};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} getID()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_ID; \}}
+\DoxyCodeLine{26 \};}
+
+\end{DoxyCode}

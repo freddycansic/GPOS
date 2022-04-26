@@ -1,0 +1,33 @@
+\hypertarget{_index_buffer_8h_source}{}\doxysection{Index\+Buffer.\+h}
+\label{_index_buffer_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/IndexBuffer.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/IndexBuffer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{keyword}{class }\mbox{\hyperlink{class_index_buffer}{IndexBuffer}}}
+\DoxyCodeLine{6 \{}
+\DoxyCodeLine{7 \textcolor{keyword}{public}:}
+\DoxyCodeLine{8     \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}(\textcolor{keyword}{const} \textcolor{keywordtype}{void}* data, GLenum type, \textcolor{keywordtype}{size\_t} count);}
+\DoxyCodeLine{9     \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}();}
+\DoxyCodeLine{10     \mbox{\hyperlink{class_index_buffer}{\string~IndexBuffer}}();}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12     \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}\& tex) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{13     \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}\& tex) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15     \textcolor{keywordtype}{void} setSubData(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} offset, \textcolor{keywordtype}{size\_t} count, \textcolor{keyword}{const} \textcolor{keywordtype}{void}* data) \textcolor{keyword}{const};}
+\DoxyCodeLine{16     \textcolor{keywordtype}{void} bind() \textcolor{keyword}{const};}
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} unbind() \textcolor{keyword}{const};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keywordtype}{size\_t} getCount()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Count; \}}
+\DoxyCodeLine{20     GLenum getType()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Type; \}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{private}:}
+\DoxyCodeLine{23     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{size\_t} m\_Count;}
+\DoxyCodeLine{25     GLenum m\_Type;}
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+
+\end{DoxyCode}
