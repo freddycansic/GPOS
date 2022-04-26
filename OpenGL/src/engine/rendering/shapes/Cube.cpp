@@ -49,13 +49,17 @@ Cube::Cube(float x, float y, float z, float size)
 void Cube::recalculateVertices()
 {
 	Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+	
+	//std::cout << m_Transform << std::endl;
+	//std::cout << transformMatrix << std::endl;
 
 	for (unsigned int i = 0; i < s_UnitVertices.size(); i++) {
 		const auto& unitPos = s_UnitVertices[i].position; // unit pos
 		auto& resultPos = m_Vertices[i].position; // result vertex
-		
+		//std::cout << "UNIT POS\n" << unitPos << std::endl;
 		// apply transformation to unit vertex and store in result vertex
 		resultPos = Vec3(Vec4(unitPos, 1.0f) * transformMatrix);
+		//std::cout << "END POS\n" << resultPos << std::endl;
 	}
 }
 
