@@ -18,9 +18,10 @@ public:
 	Cube() = default;
 
 	std::vector<Vertex> getVertices() override;
+	std::vector<Vertex> getUnitVertices() const override;
 	std::vector<unsigned int> getIndices() const override;
 	void setScale(float xScale, float yScale, float zScale) override;
-	void recalculateVertices() override;
+	//void recalculateVertices() override;
 };
 
 

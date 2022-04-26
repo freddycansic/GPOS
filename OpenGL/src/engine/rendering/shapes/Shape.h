@@ -15,11 +15,12 @@ public:
 	Shape() = default;
 
 	// define these when creating a shape
-	virtual void recalculateVertices() = 0;
+	virtual std::vector<Vertex> getUnitVertices() const = 0;
 	virtual std::vector<Vertex> getVertices() = 0;
 	virtual std::vector<unsigned int> getIndices() const = 0;
 
-	virtual void setScale(float xScale, float yScale, float zScale) = 0; // all shapes will scale differently based off of original shape
+	void recalculateVertices();
+	virtual void setScale(float xScale, float yScale, float zScale); // all shapes will scale differently based off of original shape
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
 	virtual void setTranslation(float xTranslate, float yTranslate, float zTranslate);
 };
