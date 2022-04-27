@@ -3,8 +3,11 @@ Learning OpenGL
 
 Aiming to create a 3D graphics engine featuring
 - Batch rendering
-  - 2D shapes ✅
-  - 3D shapes ✅
+  - 2D shapes
+    - Rectangles ✅  
+  - 3D shapes
+    - Cubes ✅
+    - Spheres
   - Models
 - Instanced rendering
 - GUI using Dear ImGui
