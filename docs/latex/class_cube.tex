@@ -12,72 +12,96 @@ Inheritance diagram for Cube\+:\begin{figure}[H]
 \mbox{\Hypertarget{class_cube_a53e7ade9602edcecf3749961a8fe2adc}\label{class_cube_a53e7ade9602edcecf3749961a8fe2adc}} 
 {\bfseries Cube} (float x, float y, float z, float size)
 \item 
-std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \mbox{\hyperlink{class_cube_a4474ee74643bb9392ff77c32739000ea}{get\+Vertices}} () override
-\item 
-std\+::vector$<$ unsigned int $>$ \mbox{\hyperlink{class_cube_aa344217dcd7fb347dcabed4dc36888f5}{get\+Indices}} () const override
-\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& \mbox{\hyperlink{class_cube_a5f71b2923fb59a41353390811e47a418}{get\+Vertices}} () override
+\begin{DoxyCompactList}\small\item\em Get a modifiable reference to the vertices of the shape. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& \mbox{\hyperlink{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}{get\+Unit\+Vertices}} () const override
+\begin{DoxyCompactList}\small\item\em Get all the vertices which describe the unit shape. \end{DoxyCompactList}\item 
+const std\+::vector$<$ unsigned int $>$ \& \mbox{\hyperlink{class_cube_ac73fbfa26646453f498d93608068c7ff}{get\+Indices}} () const override
+\begin{DoxyCompactList}\small\item\em Get a const reference to the indices of the shape. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_cube_ae2e6dd72293671b5f0cddb2348733d1e}{set\+Scale}} (float x\+Scale, float y\+Scale, float z\+Scale) override
-\item 
-\mbox{\Hypertarget{class_cube_a4b06e63bff631671f9e1a97b03a9dad2}\label{class_cube_a4b06e63bff631671f9e1a97b03a9dad2}} 
-void {\bfseries set\+Transform} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&mat)
-\item 
-void \mbox{\hyperlink{class_cube_a40d582638e5a217b33f62ccc9972fb3a}{set\+Scale}} (float x\+Scale, float y\+Scale, float z\+Scale)
-\item 
-void \mbox{\hyperlink{class_cube_a5f6082d182424f5379bdce56f17eb4d2}{recalculate\+Vertices}} () override
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Set the scale for the shape. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_cube_aa344217dcd7fb347dcabed4dc36888f5}\label{class_cube_aa344217dcd7fb347dcabed4dc36888f5}} 
+\mbox{\Hypertarget{class_cube_ac73fbfa26646453f498d93608068c7ff}\label{class_cube_ac73fbfa26646453f498d93608068c7ff}} 
 \index{Cube@{Cube}!getIndices@{getIndices}}
 \index{getIndices@{getIndices}!Cube@{Cube}}
 \doxysubsubsection{\texorpdfstring{getIndices()}{getIndices()}}
-{\footnotesize\ttfamily std\+::vector$<$ unsigned int $>$ Cube\+::get\+Indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily const std\+::vector$<$ unsigned int $>$ \& Cube\+::get\+Indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{class_shape}{Shape}}.
+Get a const reference to the indices of the shape. 
 
-\mbox{\Hypertarget{class_cube_a4474ee74643bb9392ff77c32739000ea}\label{class_cube_a4474ee74643bb9392ff77c32739000ea}} 
+\begin{DoxyReturn}{Returns}
+A const reference to a vector of the shape\textquotesingle{}s indices. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_shape_a39b8f9de4991bf507a4faceff2c5794e}{Shape}}.
+
+\mbox{\Hypertarget{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}\label{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}} 
+\index{Cube@{Cube}!getUnitVertices@{getUnitVertices}}
+\index{getUnitVertices@{getUnitVertices}!Cube@{Cube}}
+\doxysubsubsection{\texorpdfstring{getUnitVertices()}{getUnitVertices()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& Cube\+::get\+Unit\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get all the vertices which describe the unit shape. 
+
+\begin{DoxyReturn}{Returns}
+A vector of vertices which describe the unit shape. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}{Cube\+::get\+Unit\+Vertices()}} 
+
+\mbox{\hyperlink{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}{Rectangle\+::get\+Unit\+Vertices()}} 
+\end{DoxySeeAlso}
+
+
+Implements \mbox{\hyperlink{class_shape_a8d59a80c5dc93e19c358ec4510f3d052}{Shape}}.
+
+\mbox{\Hypertarget{class_cube_a5f71b2923fb59a41353390811e47a418}\label{class_cube_a5f71b2923fb59a41353390811e47a418}} 
 \index{Cube@{Cube}!getVertices@{getVertices}}
 \index{getVertices@{getVertices}!Cube@{Cube}}
 \doxysubsubsection{\texorpdfstring{getVertices()}{getVertices()}}
-{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ Cube\+::get\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& Cube\+::get\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{class_shape}{Shape}}.
+Get a modifiable reference to the vertices of the shape. 
 
-\mbox{\Hypertarget{class_cube_a5f6082d182424f5379bdce56f17eb4d2}\label{class_cube_a5f6082d182424f5379bdce56f17eb4d2}} 
-\index{Cube@{Cube}!recalculateVertices@{recalculateVertices}}
-\index{recalculateVertices@{recalculateVertices}!Cube@{Cube}}
-\doxysubsubsection{\texorpdfstring{recalculateVertices()}{recalculateVertices()}}
-{\footnotesize\ttfamily void Cube\+::recalculate\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+\begin{DoxyReturn}{Returns}
+A modifiable reference to a vector of the shape\textquotesingle{}s vertices. 
+\end{DoxyReturn}
 
 
-
-Implements \mbox{\hyperlink{class_shape}{Shape}}.
-
-\mbox{\Hypertarget{class_cube_a40d582638e5a217b33f62ccc9972fb3a}\label{class_cube_a40d582638e5a217b33f62ccc9972fb3a}} 
-\index{Cube@{Cube}!setScale@{setScale}}
-\index{setScale@{setScale}!Cube@{Cube}}
-\doxysubsubsection{\texorpdfstring{setScale()}{setScale()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void Cube\+::set\+Scale (\begin{DoxyParamCaption}\item[{float}]{x\+Scale,  }\item[{float}]{y\+Scale,  }\item[{float}]{z\+Scale }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
-
-
-
-Implements \mbox{\hyperlink{class_shape}{Shape}}.
+Implements \mbox{\hyperlink{class_shape_a1b7108d4da4d5fb99a917e9b9a2f3a36}{Shape}}.
 
 \mbox{\Hypertarget{class_cube_ae2e6dd72293671b5f0cddb2348733d1e}\label{class_cube_ae2e6dd72293671b5f0cddb2348733d1e}} 
 \index{Cube@{Cube}!setScale@{setScale}}
 \index{setScale@{setScale}!Cube@{Cube}}
-\doxysubsubsection{\texorpdfstring{setScale()}{setScale()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\doxysubsubsection{\texorpdfstring{setScale()}{setScale()}}
 {\footnotesize\ttfamily void Cube\+::set\+Scale (\begin{DoxyParamCaption}\item[{float}]{x\+Scale,  }\item[{float}]{y\+Scale,  }\item[{float}]{z\+Scale }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{class_shape}{Shape}}.
+Set the scale for the shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+Scale} & The scale on the x axis \\
+\hline
+{\em y\+Scale} & The scale on the y axis \\
+\hline
+{\em z\+Scale} & The scale on the z axis \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_shape_a5f73f6bd9c5dc82c620488fa35db885b}{Shape}}.
 
 
 

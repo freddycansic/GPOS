@@ -14,18 +14,17 @@
 \DoxyCodeLine{10     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<Vertex> s\_UnitVertices;}
 \DoxyCodeLine{11     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<unsigned int> s\_UnitIndices;}
 \DoxyCodeLine{12 }
-\DoxyCodeLine{13     \textcolor{comment}{// no need for indices field as they never change}}
-\DoxyCodeLine{14     std::vector<Vertex> m\_Vertices;}
-\DoxyCodeLine{15 }
-\DoxyCodeLine{16     \textcolor{keywordtype}{float} m\_Width, m\_Height;}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{18 \textcolor{keyword}{public}:}
-\DoxyCodeLine{19     \mbox{\hyperlink{class_rectangle}{Rectangle}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} width, \textcolor{keywordtype}{float} height);}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{21     \textcolor{keywordtype}{void} setScale(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) \textcolor{keyword}{override};}
-\DoxyCodeLine{22     std::vector<Vertex> getVertices() \textcolor{keyword}{override};}
-\DoxyCodeLine{23     std::vector<unsigned int> getIndices() \textcolor{keyword}{const override};}
-\DoxyCodeLine{24 \};}
-\DoxyCodeLine{25 }
+\DoxyCodeLine{13     \textcolor{keywordtype}{float} m\_Width = 0.0f, m\_Height = 0.0f;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{public}:}
+\DoxyCodeLine{16     \mbox{\hyperlink{class_rectangle}{Rectangle}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} width, \textcolor{keywordtype}{float} height);}
+\DoxyCodeLine{17     \mbox{\hyperlink{class_rectangle}{Rectangle}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_rectangle_a7fb2a739c36b4a47003426825372cae8}{setScale}}(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) \textcolor{keyword}{override};}
+\DoxyCodeLine{20     std::vector<Vertex>\& \mbox{\hyperlink{class_rectangle_a726cc3c850e69b7a5c368fa24c72df1f}{getVertices}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{21     \textcolor{keyword}{const} std::vector<unsigned int>\& \mbox{\hyperlink{class_rectangle_a1bd042f14822f4efdc8935c1fba1caa0}{getIndices}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{22     \textcolor{keyword}{const} std::vector<Vertex>\& \mbox{\hyperlink{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}{getUnitVertices}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{23 \};}
+\DoxyCodeLine{24 }
 
 \end{DoxyCode}

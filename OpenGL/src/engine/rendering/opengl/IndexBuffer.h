@@ -5,8 +5,8 @@
 class IndexBuffer
 {
 public:
+
 	IndexBuffer(const void* data, GLenum type, size_t count);
-	IndexBuffer();
 	~IndexBuffer();
 
 	IndexBuffer(const IndexBuffer& tex) = delete;

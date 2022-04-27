@@ -85,29 +85,39 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Rectangle</b> (float x, float y, float width, float height)</td></tr>
 <tr class="separator:a21fe19879df1c7e56dfa18d3d8e75425"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fb2a739c36b4a47003426825372cae8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rectangle.html#a7fb2a739c36b4a47003426825372cae8">setScale</a> (float xScale, float yScale, float zScale) override</td></tr>
+<tr class="memdesc:a7fb2a739c36b4a47003426825372cae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scale for the shape.  <a href="class_rectangle.html#a7fb2a739c36b4a47003426825372cae8">More...</a><br /></td></tr>
 <tr class="separator:a7fb2a739c36b4a47003426825372cae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2360d5ed04c5dca8b957111ff67255"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rectangle.html#aed2360d5ed04c5dca8b957111ff67255">getVertices</a> () override</td></tr>
-<tr class="separator:aed2360d5ed04c5dca8b957111ff67255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114212e517c8c09ec5ef86d57b65ca3a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rectangle.html#a114212e517c8c09ec5ef86d57b65ca3a">getIndices</a> () const override</td></tr>
-<tr class="separator:a114212e517c8c09ec5ef86d57b65ca3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a726cc3c850e69b7a5c368fa24c72df1f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rectangle.html#a726cc3c850e69b7a5c368fa24c72df1f">getVertices</a> () override</td></tr>
+<tr class="memdesc:a726cc3c850e69b7a5c368fa24c72df1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a modifiable reference to the vertices of the shape.  <a href="class_rectangle.html#a726cc3c850e69b7a5c368fa24c72df1f">More...</a><br /></td></tr>
+<tr class="separator:a726cc3c850e69b7a5c368fa24c72df1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bd042f14822f4efdc8935c1fba1caa0"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rectangle.html#a1bd042f14822f4efdc8935c1fba1caa0">getIndices</a> () const override</td></tr>
+<tr class="memdesc:a1bd042f14822f4efdc8935c1fba1caa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const reference to the indices of the shape.  <a href="class_rectangle.html#a1bd042f14822f4efdc8935c1fba1caa0">More...</a><br /></td></tr>
+<tr class="separator:a1bd042f14822f4efdc8935c1fba1caa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6da0c5ea66abdd95e842459d4db6da33"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rectangle.html#a6da0c5ea66abdd95e842459d4db6da33">getUnitVertices</a> () const override</td></tr>
+<tr class="memdesc:a6da0c5ea66abdd95e842459d4db6da33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the vertices which describe the unit shape.  <a href="class_rectangle.html#a6da0c5ea66abdd95e842459d4db6da33">More...</a><br /></td></tr>
+<tr class="separator:a6da0c5ea66abdd95e842459d4db6da33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_shape"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_shape')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_shape.html">Shape</a></td></tr>
-<tr class="memitem:a571a82fe4536b94fce1df665f718c6fd inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a571a82fe4536b94fce1df665f718c6fd" name="a571a82fe4536b94fce1df665f718c6fd"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>recalculateVertices</b> ()=0</td></tr>
-<tr class="separator:a571a82fe4536b94fce1df665f718c6fd inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaae1c88897901dca0f6764485a0dec99 inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="aaae1c88897901dca0f6764485a0dec99" name="aaae1c88897901dca0f6764485a0dec99"></a>
-virtual std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getVertices</b> ()=0</td></tr>
-<tr class="separator:aaae1c88897901dca0f6764485a0dec99 inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a008dccf3c523a0e25257fb23538b1560 inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a008dccf3c523a0e25257fb23538b1560" name="a008dccf3c523a0e25257fb23538b1560"></a>
-virtual std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getIndices</b> () const =0</td></tr>
-<tr class="separator:a008dccf3c523a0e25257fb23538b1560 inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a519ae7aa4cba54330e2df01445b28aeb inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a519ae7aa4cba54330e2df01445b28aeb" name="a519ae7aa4cba54330e2df01445b28aeb"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setScale</b> (float xScale, float yScale, float zScale)=0</td></tr>
-<tr class="separator:a519ae7aa4cba54330e2df01445b28aeb inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40c0ed14ab98f70d222547cb10060a0b inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a40c0ed14ab98f70d222547cb10060a0b" name="a40c0ed14ab98f70d222547cb10060a0b"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setRotation</b> (float xRotation, float yRotation, float zRotation)</td></tr>
+<tr class="memitem:aacbb71467ce011f1acfeda4937961c8c inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="aacbb71467ce011f1acfeda4937961c8c" name="aacbb71467ce011f1acfeda4937961c8c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>recalculateVertices</b> ()</td></tr>
+<tr class="memdesc:aacbb71467ce011f1acfeda4937961c8c inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculates the positions of a shape's vertices using values from its m_Transform. <br /></td></tr>
+<tr class="separator:aacbb71467ce011f1acfeda4937961c8c inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d59a80c5dc93e19c358ec4510f3d052 inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shape.html#a8d59a80c5dc93e19c358ec4510f3d052">getUnitVertices</a> () const =0</td></tr>
+<tr class="memdesc:a8d59a80c5dc93e19c358ec4510f3d052 inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the vertices which describe the unit shape.  <a href="class_shape.html#a8d59a80c5dc93e19c358ec4510f3d052">More...</a><br /></td></tr>
+<tr class="separator:a8d59a80c5dc93e19c358ec4510f3d052 inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b7108d4da4d5fb99a917e9b9a2f3a36 inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shape.html#a1b7108d4da4d5fb99a917e9b9a2f3a36">getVertices</a> ()=0</td></tr>
+<tr class="memdesc:a1b7108d4da4d5fb99a917e9b9a2f3a36 inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a modifiable reference to the vertices of the shape.  <a href="class_shape.html#a1b7108d4da4d5fb99a917e9b9a2f3a36">More...</a><br /></td></tr>
+<tr class="separator:a1b7108d4da4d5fb99a917e9b9a2f3a36 inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39b8f9de4991bf507a4faceff2c5794e inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shape.html#a39b8f9de4991bf507a4faceff2c5794e">getIndices</a> () const =0</td></tr>
+<tr class="memdesc:a39b8f9de4991bf507a4faceff2c5794e inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const reference to the indices of the shape.  <a href="class_shape.html#a39b8f9de4991bf507a4faceff2c5794e">More...</a><br /></td></tr>
+<tr class="separator:a39b8f9de4991bf507a4faceff2c5794e inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f73f6bd9c5dc82c620488fa35db885b inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shape.html#a5f73f6bd9c5dc82c620488fa35db885b">setScale</a> (float xScale, float yScale, float zScale)</td></tr>
+<tr class="memdesc:a5f73f6bd9c5dc82c620488fa35db885b inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scale for the shape.  <a href="class_shape.html#a5f73f6bd9c5dc82c620488fa35db885b">More...</a><br /></td></tr>
+<tr class="separator:a5f73f6bd9c5dc82c620488fa35db885b inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c0ed14ab98f70d222547cb10060a0b inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shape.html#a40c0ed14ab98f70d222547cb10060a0b">setRotation</a> (float xRotation, float yRotation, float zRotation)</td></tr>
+<tr class="memdesc:a40c0ed14ab98f70d222547cb10060a0b inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the rotation for the shape about the centre of mass of the shape.  <a href="class_shape.html#a40c0ed14ab98f70d222547cb10060a0b">More...</a><br /></td></tr>
 <tr class="separator:a40c0ed14ab98f70d222547cb10060a0b inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7264eaad353bb5f07a64a5c5fcdc2c01 inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a7264eaad353bb5f07a64a5c5fcdc2c01" name="a7264eaad353bb5f07a64a5c5fcdc2c01"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setTranslation</b> (float xTranslate, float yTranslate, float zTranslate)</td></tr>
+<tr class="memitem:a7264eaad353bb5f07a64a5c5fcdc2c01 inherit pub_methods_class_shape"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shape.html#a7264eaad353bb5f07a64a5c5fcdc2c01">setTranslation</a> (float xTranslate, float yTranslate, float zTranslate)</td></tr>
+<tr class="memdesc:a7264eaad353bb5f07a64a5c5fcdc2c01 inherit pub_methods_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the translation for the shape about the origin.  <a href="class_shape.html#a7264eaad353bb5f07a64a5c5fcdc2c01">More...</a><br /></td></tr>
 <tr class="separator:a7264eaad353bb5f07a64a5c5fcdc2c01 inherit pub_methods_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
@@ -115,14 +125,16 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_shape"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_shape')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_shape.html">Shape</a></td></tr>
 <tr class="memitem:a5dfabd59fb228c91715797ca18009279 inherit pro_attribs_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a5dfabd59fb228c91715797ca18009279" name="a5dfabd59fb228c91715797ca18009279"></a>
 <a class="el" href="struct_transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_Transform</b></td></tr>
+<tr class="memdesc:a5dfabd59fb228c91715797ca18009279 inherit pro_attribs_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current transform from the unit shape. <br /></td></tr>
 <tr class="separator:a5dfabd59fb228c91715797ca18009279 inherit pro_attribs_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a326e0de335a62f75d04b754b24b26703 inherit pro_attribs_class_shape"><td class="memItemLeft" align="right" valign="top"><a id="a326e0de335a62f75d04b754b24b26703" name="a326e0de335a62f75d04b754b24b26703"></a>
 std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_Vertices</b></td></tr>
+<tr class="memdesc:a326e0de335a62f75d04b754b24b26703 inherit pro_attribs_class_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">All vertices that the shape comprises of. <br /></td></tr>
 <tr class="separator:a326e0de335a62f75d04b754b24b26703 inherit pro_attribs_class_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a114212e517c8c09ec5ef86d57b65ca3a" name="a114212e517c8c09ec5ef86d57b65ca3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a114212e517c8c09ec5ef86d57b65ca3a">&#9670;&nbsp;</a></span>getIndices()</h2>
+<a id="a1bd042f14822f4efdc8935c1fba1caa0" name="a1bd042f14822f4efdc8935c1fba1caa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bd042f14822f4efdc8935c1fba1caa0">&#9670;&nbsp;</a></span>getIndices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,7 +143,7 @@ std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; unsigned int &gt; Rectangle::getIndices </td>
+          <td class="memname">const std::vector&lt; unsigned int &gt; &amp; Rectangle::getIndices </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -144,12 +156,15 @@ std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</t
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_shape.html">Shape</a>.</p>
+<p>Get a const reference to the indices of the shape. </p>
+<dl class="section return"><dt>Returns</dt><dd>A const reference to a vector of the shape's indices. </dd></dl>
+
+<p>Implements <a class="el" href="class_shape.html#a39b8f9de4991bf507a4faceff2c5794e">Shape</a>.</p>
 
 </div>
 </div>
-<a id="aed2360d5ed04c5dca8b957111ff67255" name="aed2360d5ed04c5dca8b957111ff67255"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed2360d5ed04c5dca8b957111ff67255">&#9670;&nbsp;</a></span>getVertices()</h2>
+<a id="a6da0c5ea66abdd95e842459d4db6da33" name="a6da0c5ea66abdd95e842459d4db6da33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6da0c5ea66abdd95e842459d4db6da33">&#9670;&nbsp;</a></span>getUnitVertices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -158,7 +173,40 @@ std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; Rectangle::getVertices </td>
+          <td class="memname">const std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; &amp; Rectangle::getUnitVertices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get all the vertices which describe the unit shape. </p>
+<dl class="section return"><dt>Returns</dt><dd>A vector of vertices which describe the unit shape. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_cube.html#a3ed0c83cea07bfbf27c7af78e8ca082b" title="Get all the vertices which describe the unit shape.">Cube::getUnitVertices()</a> </dd>
+<dd>
+<a class="el" href="class_rectangle.html#a6da0c5ea66abdd95e842459d4db6da33" title="Get all the vertices which describe the unit shape.">Rectangle::getUnitVertices()</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_shape.html#a8d59a80c5dc93e19c358ec4510f3d052">Shape</a>.</p>
+
+</div>
+</div>
+<a id="a726cc3c850e69b7a5c368fa24c72df1f" name="a726cc3c850e69b7a5c368fa24c72df1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a726cc3c850e69b7a5c368fa24c72df1f">&#9670;&nbsp;</a></span>getVertices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt; &amp; Rectangle::getVertices </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -171,7 +219,10 @@ std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</t
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_shape.html">Shape</a>.</p>
+<p>Get a modifiable reference to the vertices of the shape. </p>
+<dl class="section return"><dt>Returns</dt><dd>A modifiable reference to a vector of the shape's vertices. </dd></dl>
+
+<p>Implements <a class="el" href="class_shape.html#a1b7108d4da4d5fb99a917e9b9a2f3a36">Shape</a>.</p>
 
 </div>
 </div>
@@ -215,7 +266,17 @@ std::vector&lt; <a class="el" href="struct_vertex.html">Vertex</a> &gt;&#160;</t
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_shape.html">Shape</a>.</p>
+<p>Set the scale for the shape. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xScale</td><td>The scale on the x axis </td></tr>
+    <tr><td class="paramname">yScale</td><td>The scale on the y axis </td></tr>
+    <tr><td class="paramname">zScale</td><td>The scale on the z axis </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_shape.html#a5f73f6bd9c5dc82c620488fa35db885b">Shape</a>.</p>
 
 </div>
 </div>

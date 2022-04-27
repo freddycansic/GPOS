@@ -46,11 +46,11 @@ public:
 	);
 
 	/**
-	 * @brief Constructs a 4x4 matrix using 4 arrays of length 4.
-	 * @param row1 Values for the first row.
-	 * @param row2 Values for the second row.
-	 * @param row3 Values for the third row.
-	 * @param row4 Values for the fourth row.
+	 * @brief Constructs a 4x4 matrix using 4 float arrays of length 4.
+	 * @param row1 Float array of length 4 for the first row.
+	 * @param row2 Float array of length 4 for the second row.
+	 * @param row3 Float array of length 4 for the third row.
+	 * @param row4 Float array of length 4 for the fourth row.
 	*/
 	Mat4(
 		const MATRIX_ROW& row1,
@@ -60,47 +60,154 @@ public:
 	);
 	
 	/**
-	 * @brief Constructs a
-	 * @param data 
+	 * @brief Constructs a matrix using a single float array of length 16.
+	 * @param data Float array of length 16.
 	*/
 	Mat4(const MATRIX_DATA& data) : m_Data(data) {
 	}
 
+	/**
+	 * @brief Default contructor. Initialises all values in 4x4 matrix with 0.
+	 * @see Mat4::identity
+	*/
 	Mat4() : m_Data({0}) {}
 
-	// copy constructor
+	/**
+	 * @brief Copy constructor.
+	 * @param other Matrix to copy from.
+	*/
 	Mat4(const Mat4& other) : m_Data(other.m_Data) {}
 
-	// move constructors (pog)
-	Mat4(MATRIX_DATA&& data) noexcept : m_Data(std::move(data)) {}
-
-	// not sure if i need to set other.m_Data to null or not
+	/**
+	 * @brief Move constructor.
+	 * @param other R value matrix to move data from.
+	*/
 	Mat4(Mat4&& other) noexcept : m_Data(std::move(other.m_Data)) {}
 
+	/**
+	 * @brief 4x4 identity matrix.
+	*/
 	const static Mat4 identity;
 
-	// functional operators
-	Mat4& operator=(Mat4&& other) noexcept; // move assignment operator
-	const MATRIX_ROW& operator[](int index) const;
-	MATRIX_ROW& operator[](int index);
+	/**
+	 * @brief Move assignment operator.
+	 * @param other R value matrix to move data from.
+	 * @return New matrix.
+	*/
+	Mat4& operator=(Mat4&& other) noexcept;
+
+	/**
+	 * @brief Constant subscript operator. Indexes into the underlying data structure.
+	 * @param Unsigned index of data to return.
+	 * @return Constant reference to float at provided index.
+	*/
+	const MATRIX_ROW& operator[](unsigned int index) const;
+
+	/**
+	 * @brief Subscript operator. Indexes into the underlying data structure.
+	 * @param Unsigned index of data to return.
+	 * @return Modifiable reference to float at provided index.
+	*/
+	MATRIX_ROW& operator[](unsigned int index);
+
+	/**
+	 * @brief Assignment operator.
+	 * @param mat Matrix to assign to.
+	 * @return Assigned matrix.
+	*/
 	Mat4& operator=(const Mat4& mat);
 
-	// mathematical operations
-	Mat4 operator*(float scalar) const; // scalar multiplication
-	Mat4 operator*(const Mat4& other) const; // matrix matrix multiplication
-	Mat4 operator+(const Mat4& other) const; // matrix matrix addition
-	Mat4 operator+(Mat4&& other) const; // rvalue reference
+	/**
+	 * @brief Scalar matrix multiplication.
+	 * @param scalar Scalar to multiply with.
+	 * @return This matrix with all values multiplied with the scalar.
+	 * @see operator*(const Mat4& other)
+	*/
+	Mat4 operator*(float scalar) const;
 
-	// transformations
+	/**
+	 * @brief Matrix matrix multiplication.
+	 * @param other Matrix to multiply with.
+	 * @return This matrix multiplied with the other matrix.
+	 * @see operator*(float scalar)
+	*/
+	Mat4 operator*(const Mat4& other) const;
+
+	/**
+	 * @brief Matrix addition.
+	 * @param other Matrix to add.
+	 * @return This matrix with all values added from the other matrix.
+	*/
+	Mat4 operator+(const Mat4& other) const;
+
+	/**
+	 * @brief Move matrix addition.
+	 * @param other Matrix to add.
+	 * @return This matrix with all values added from the other matrix.
+	 * @see operator+(const Mat4& other)
+	*/
+	Mat4 operator+(Mat4&& other) const;
+
+	/**
+	 * @brief Scale operation.
+	 * @param xScale Magnitude to scale on the x axis.
+	 * @param yScale Magnitude to scale on the y axis.
+	 * @param zScale Magnitude to scale on the z axis.
+	 * @return New scaled matrix.
+	*/
 	Mat4 scale(float xScale, float yScale, float zScale) const;
+
+	/**
+	 * @brief Scale operation.
+	 * @param xyzScale Magnitude to scale on the x, y and z axis.
+	 * @return New scaled matrix.
+	*/
 	Mat4 scale(float xyzScale) const { return scale(xyzScale, xyzScale, xyzScale); }
+
+	/**
+	 * @brief Rotation operation.
+	 * @param xRotate Angle in degrees to rotate on the x axis.
+	 * @param yRotate Angle in degrees to rotate on the y axis.
+	 * @param zRotate Angle in degrees to rotate on the z axis.
+	 * @return New rotated matrix.
+	*/
 	Mat4 rotate(float xRotate, float yRotate, float zRotate) const;
+
+	/**
+	 * @brief Translation operation.
+	 * @param xTranslate Distance to translate on the x axis.
+	 * @param yTranslate Distance to translate on the y axis.
+	 * @param zTranslate Distance to translate on the z axis.
+	 * @return New translated matrix.
+	*/
 	Mat4 translate(float xTranslate, float yTranslate, float zTranslate) const;
 
-	// projection
+	/**
+	 * @brief Generates an orthographic projection matrix.
+	 * @param left Left plane.
+	 * @param right Right plane.
+	 * @param top Top plane.
+	 * @param bottom Bottom plane.
+	 * @param near Near plane. Default = -1.
+	 * @param far Far plane. Default = 1.
+	 * @return Orthographic projection matrix.
+	*/
 	static Mat4 ortho(float left, float right, float top, float bottom, float near = -1.0f, float far = 1.0f);
-	static Mat4 perspective(float fov, float aspect, float near, float far);
+	
+	/**
+	 * @brief Generates a perspective projection matrix.
+	 * @param fov Field of view.
+	 * @param aspect Aspect ratio of screen.
+	 * @param near Near plane. Default = -1.
+	 * @param far Far plane. Default = 1.
+	 * @return Perspective projection matrix.
+	*/
+	static Mat4 perspective(float fov, float aspect, float near = -1.0f, float far = 1.0f);
 
+	/**
+	 * @brief Pointer to the first element in the underlying data structure.
+	 * @return Pointer to the first element in the underlying data structure.
+	*/
 	const float* getPtr() const { return m_Data[0].data(); }
 
 	friend std::ostream& operator<<(std::ostream& os, const Mat4& matrix);

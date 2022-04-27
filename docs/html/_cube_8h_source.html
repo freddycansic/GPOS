@@ -81,27 +81,24 @@ $(function() {
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">const</span> <span class="keyword">static</span> std::vector&lt;unsigned int&gt; s_UnitIndices;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">const</span> <span class="keyword">static</span> std::vector&lt;Vertex&gt; s_UnitVertices;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_class" href="class_mat4.html">Mat4</a> transform;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordtype">float</span> m_Size = 0.0f;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordtype">float</span> m_Size = 0.0f;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_class" href="class_cube.html">Cube</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z, <span class="keywordtype">float</span> size);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_class" href="class_cube.html">Cube</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    std::vector&lt;Vertex&gt; getVertices() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    std::vector&lt;unsigned int&gt; getIndices() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> setScale(<span class="keywordtype">float</span> xScale, <span class="keywordtype">float</span> yScale, <span class="keywordtype">float</span> zScale) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_class" href="class_cube.html">Cube</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z, <span class="keywordtype">float</span> size);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_class" href="class_cube.html">Cube</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    std::vector&lt;Vertex&gt;&amp; <a class="code hl_function" href="class_cube.html#a5f71b2923fb59a41353390811e47a418">getVertices</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">const</span> std::vector&lt;Vertex&gt;&amp; <a class="code hl_function" href="class_cube.html#a3ed0c83cea07bfbf27c7af78e8ca082b">getUnitVertices</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">const</span> std::vector&lt;unsigned int&gt;&amp; <a class="code hl_function" href="class_cube.html#ac73fbfa26646453f498d93608068c7ff">getIndices</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_cube.html#ae2e6dd72293671b5f0cddb2348733d1e">setScale</a>(<span class="keywordtype">float</span> xScale, <span class="keywordtype">float</span> yScale, <span class="keywordtype">float</span> zScale) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="comment">// TODO TEMPORARY</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> setTransform(<span class="keyword">const</span> <a class="code hl_class" href="class_mat4.html">Mat4</a>&amp; mat);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">void</span> setScale(<span class="keywordtype">float</span> xScale, <span class="keywordtype">float</span> yScale, <span class="keywordtype">float</span> zScale);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">void</span> recalculateVertices() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>};</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="ttc" id="aclass_cube_html"><div class="ttname"><a href="class_cube.html">Cube</a></div><div class="ttdef"><b>Definition:</b> Cube.h:7</div></div>
-<div class="ttc" id="aclass_mat4_html"><div class="ttname"><a href="class_mat4.html">Mat4</a></div><div class="ttdef"><b>Definition:</b> Mat4.h:8</div></div>
+<div class="ttc" id="aclass_cube_html_a3ed0c83cea07bfbf27c7af78e8ca082b"><div class="ttname"><a href="class_cube.html#a3ed0c83cea07bfbf27c7af78e8ca082b">Cube::getUnitVertices</a></div><div class="ttdeci">const std::vector&lt; Vertex &gt; &amp; getUnitVertices() const override</div><div class="ttdoc">Get all the vertices which describe the unit shape.</div><div class="ttdef"><b>Definition:</b> Cube.cpp:47</div></div>
+<div class="ttc" id="aclass_cube_html_a5f71b2923fb59a41353390811e47a418"><div class="ttname"><a href="class_cube.html#a5f71b2923fb59a41353390811e47a418">Cube::getVertices</a></div><div class="ttdeci">std::vector&lt; Vertex &gt; &amp; getVertices() override</div><div class="ttdoc">Get a modifiable reference to the vertices of the shape.</div><div class="ttdef"><b>Definition:</b> Cube.cpp:51</div></div>
+<div class="ttc" id="aclass_cube_html_ac73fbfa26646453f498d93608068c7ff"><div class="ttname"><a href="class_cube.html#ac73fbfa26646453f498d93608068c7ff">Cube::getIndices</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; getIndices() const override</div><div class="ttdoc">Get a const reference to the indices of the shape.</div><div class="ttdef"><b>Definition:</b> Cube.cpp:56</div></div>
+<div class="ttc" id="aclass_cube_html_ae2e6dd72293671b5f0cddb2348733d1e"><div class="ttname"><a href="class_cube.html#ae2e6dd72293671b5f0cddb2348733d1e">Cube::setScale</a></div><div class="ttdeci">void setScale(float xScale, float yScale, float zScale) override</div><div class="ttdoc">Set the scale for the shape.</div><div class="ttdef"><b>Definition:</b> Cube.cpp:43</div></div>
 <div class="ttc" id="aclass_shape_html"><div class="ttname"><a href="class_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> Shape.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

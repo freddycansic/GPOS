@@ -22,7 +22,6 @@ private:
 
 public:
 	Shader(const std::string& vertexShaderSourceDir, const std::string& fragmentShaderSourceDir);
-	Shader();
 	~Shader();
 	
 	Shader(const Shader& tex) = delete;

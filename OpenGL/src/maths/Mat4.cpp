@@ -46,11 +46,11 @@ Mat4& Mat4::operator=(Mat4&& other) noexcept {
 	return *this;
 }
 
-const Mat4::MATRIX_ROW& Mat4::operator[](int index) const {
+const Mat4::MATRIX_ROW& Mat4::operator[](unsigned int index) const {
 	return m_Data[index];
 }
 
-Mat4::MATRIX_ROW& Mat4::operator[](int index) {
+Mat4::MATRIX_ROW& Mat4::operator[](unsigned int index) {
 	return m_Data[index];
 }
 

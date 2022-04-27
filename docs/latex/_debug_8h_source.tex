@@ -6,25 +6,25 @@
 \DoxyCodeLine{2 }
 \DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
 \DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#define DEBUG}}
-\DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#if \_WIN32}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{    \#include <Windows.h>}}
-\DoxyCodeLine{9 \textcolor{preprocessor}{    \#define HANDLE GetStdHandle(STD\_OUTPUT\_HANDLE)}}
-\DoxyCodeLine{10 \textcolor{preprocessor}{    \#define RED SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED)}}
-\DoxyCodeLine{11 \textcolor{preprocessor}{    \#define ORANGE SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN)}}
-\DoxyCodeLine{12 \textcolor{preprocessor}{    \#define YELLOW SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN | FOREGROUND\_INTENSITY)}}
-\DoxyCodeLine{13 \textcolor{preprocessor}{    \#define LIGHT\_BLUE SetConsoleTextAttribute(HANDLE, FOREGROUND\_BLUE  | FOREGROUND\_INTENSITY)}}
-\DoxyCodeLine{14 \textcolor{preprocessor}{    \#define CLEAR SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN | FOREGROUND\_BLUE)}}
-\DoxyCodeLine{15 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{16 \textcolor{preprocessor}{    \#define RED}}
-\DoxyCodeLine{17 \textcolor{preprocessor}{    \#define ORANGE}}
-\DoxyCodeLine{18 \textcolor{preprocessor}{    \#define YELLOW}}
-\DoxyCodeLine{19 \textcolor{preprocessor}{    \#define LIGHT\_BLUE}}
-\DoxyCodeLine{20 \textcolor{preprocessor}{    \#define CLEAR}}
-\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#if \_WIN32}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{    \#include <Windows.h>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{    \#define HANDLE GetStdHandle(STD\_OUTPUT\_HANDLE)}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{    \#define RED SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED)}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{    \#define ORANGE SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN)}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{    \#define YELLOW SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN | FOREGROUND\_INTENSITY)}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{    \#define LIGHT\_BLUE SetConsoleTextAttribute(HANDLE, FOREGROUND\_BLUE  | FOREGROUND\_INTENSITY)}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{    \#define CLEAR SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN | FOREGROUND\_BLUE)}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{    \#define RED}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{    \#define ORANGE}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{    \#define YELLOW}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{    \#define LIGHT\_BLUE}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{    \#define CLEAR}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define ASSERT(x) if (!(x)) \_\_debugbreak();}}
 \DoxyCodeLine{22 }
-\DoxyCodeLine{23 \textcolor{preprocessor}{\#define ASSERT(x) if (!(x)) \_\_debugbreak();}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define DEBUG}}
 \DoxyCodeLine{24 }
 \DoxyCodeLine{25 \textcolor{preprocessor}{\#ifdef DEBUG}}
 \DoxyCodeLine{26 \textcolor{preprocessor}{\#define GLAPI(x) Debug::clearGLError(); x; ASSERT(Debug::logGLFunc(\#x, \_\_FILE\_\_, \_\_LINE\_\_))}}

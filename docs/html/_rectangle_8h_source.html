@@ -82,20 +82,23 @@ $(function() {
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">const</span> <span class="keyword">static</span> std::vector&lt;Vertex&gt; s_UnitVertices;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">const</span> <span class="keyword">static</span> std::vector&lt;unsigned int&gt; s_UnitIndices;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="comment">// no need for indices field as they never change</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    std::vector&lt;Vertex&gt; m_Vertices;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">float</span> m_Width, m_Height;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_class" href="class_rectangle.html">Rectangle</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> width, <span class="keywordtype">float</span> height);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">void</span> setScale(<span class="keywordtype">float</span> xScale, <span class="keywordtype">float</span> yScale, <span class="keywordtype">float</span> zScale) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    std::vector&lt;Vertex&gt; getVertices() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    std::vector&lt;unsigned int&gt; getIndices() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordtype">float</span> m_Width = 0.0f, m_Height = 0.0f;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_class" href="class_rectangle.html">Rectangle</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> width, <span class="keywordtype">float</span> height);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_class" href="class_rectangle.html">Rectangle</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_rectangle.html#a7fb2a739c36b4a47003426825372cae8">setScale</a>(<span class="keywordtype">float</span> xScale, <span class="keywordtype">float</span> yScale, <span class="keywordtype">float</span> zScale) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    std::vector&lt;Vertex&gt;&amp; <a class="code hl_function" href="class_rectangle.html#a726cc3c850e69b7a5c368fa24c72df1f">getVertices</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">const</span> std::vector&lt;unsigned int&gt;&amp; <a class="code hl_function" href="class_rectangle.html#a1bd042f14822f4efdc8935c1fba1caa0">getIndices</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">const</span> std::vector&lt;Vertex&gt;&amp; <a class="code hl_function" href="class_rectangle.html#a6da0c5ea66abdd95e842459d4db6da33">getUnitVertices</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="ttc" id="aclass_rectangle_html"><div class="ttname"><a href="class_rectangle.html">Rectangle</a></div><div class="ttdef"><b>Definition:</b> Rectangle.h:8</div></div>
+<div class="ttc" id="aclass_rectangle_html_a1bd042f14822f4efdc8935c1fba1caa0"><div class="ttname"><a href="class_rectangle.html#a1bd042f14822f4efdc8935c1fba1caa0">Rectangle::getIndices</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; getIndices() const override</div><div class="ttdoc">Get a const reference to the indices of the shape.</div><div class="ttdef"><b>Definition:</b> Rectangle.cpp:40</div></div>
+<div class="ttc" id="aclass_rectangle_html_a6da0c5ea66abdd95e842459d4db6da33"><div class="ttname"><a href="class_rectangle.html#a6da0c5ea66abdd95e842459d4db6da33">Rectangle::getUnitVertices</a></div><div class="ttdeci">const std::vector&lt; Vertex &gt; &amp; getUnitVertices() const override</div><div class="ttdoc">Get all the vertices which describe the unit shape.</div><div class="ttdef"><b>Definition:</b> Rectangle.cpp:32</div></div>
+<div class="ttc" id="aclass_rectangle_html_a726cc3c850e69b7a5c368fa24c72df1f"><div class="ttname"><a href="class_rectangle.html#a726cc3c850e69b7a5c368fa24c72df1f">Rectangle::getVertices</a></div><div class="ttdeci">std::vector&lt; Vertex &gt; &amp; getVertices() override</div><div class="ttdoc">Get a modifiable reference to the vertices of the shape.</div><div class="ttdef"><b>Definition:</b> Rectangle.cpp:36</div></div>
+<div class="ttc" id="aclass_rectangle_html_a7fb2a739c36b4a47003426825372cae8"><div class="ttname"><a href="class_rectangle.html#a7fb2a739c36b4a47003426825372cae8">Rectangle::setScale</a></div><div class="ttdeci">void setScale(float xScale, float yScale, float zScale) override</div><div class="ttdoc">Set the scale for the shape.</div><div class="ttdef"><b>Definition:</b> Rectangle.cpp:28</div></div>
 <div class="ttc" id="aclass_shape_html"><div class="ttname"><a href="class_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> Shape.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

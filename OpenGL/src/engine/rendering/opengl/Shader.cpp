@@ -193,11 +193,6 @@ Shader::Shader(const std::string& vertexShaderSourceDir, const std::string& frag
 	findAndAddUniforms(fragmentShaderSource);
 }
 
-Shader::Shader() :
-	m_ID(0)
-{
-}
-
 void Shader::bind() const {
 	GLAPI(glUseProgram(m_ID));
 }
