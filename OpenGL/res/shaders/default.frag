@@ -12,7 +12,7 @@ void main() {
 
 	int index = int(v_TexID);
 
-	if (index < 0) { // if index < 0 do a texture
+	if (index < 0) { // if index < 0 do a color
 		color = v_Color;
 	}
 	else { // else do a texture

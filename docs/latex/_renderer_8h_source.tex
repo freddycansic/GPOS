@@ -1,0 +1,33 @@
+\hypertarget{_renderer_8h_source}{}\doxysection{Renderer.\+h}
+\label{_renderer_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/Renderer.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/Renderer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/VertexArray.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/IndexBuffer.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/Shader.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}engine/Window.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{class }\mbox{\hyperlink{class_renderer}{Renderer}}}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10 \textcolor{keyword}{private}:}
+\DoxyCodeLine{11     \mbox{\hyperlink{class_renderer}{Renderer}}();}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13     \textcolor{keyword}{static} \mbox{\hyperlink{class_mat4}{Mat4}} s\_Persp, s\_Ortho, s\_Proj, s\_View;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15     \textcolor{keyword}{static} \textcolor{keywordtype}{float} s\_WindowWidth, s\_WindowHeight;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{public}:}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keyword}{static} \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \mbox{\hyperlink{class_window}{Window}}\& window);}
+\DoxyCodeLine{20     \textcolor{keyword}{static} \textcolor{keywordtype}{void} clear(\textcolor{keywordtype}{float} r, \textcolor{keywordtype}{float} g, \textcolor{keywordtype}{float} b);}
+\DoxyCodeLine{21     }
+\DoxyCodeLine{22     \textcolor{keyword}{static} \textcolor{keywordtype}{void} draw(\textcolor{keyword}{const} \mbox{\hyperlink{class_vertex_array}{VertexArray}}\& vao, \textcolor{keyword}{const} \mbox{\hyperlink{class_index_buffer}{IndexBuffer}}\& ibo, \textcolor{keyword}{const} \mbox{\hyperlink{class_shader}{Shader}}\& shader);}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setProjectionMatrix(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& mat);}
+\DoxyCodeLine{25     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setViewMatrix(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& mat);}
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+
+\end{DoxyCode}

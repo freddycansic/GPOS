@@ -160,11 +160,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationLauncher.cpp" />
     <ClCompile Include="src\engine\Debug.cpp" />
     <ClCompile Include="src\engine\Files.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
     <ClCompile Include="src\engine\rendering\Vertex.cpp" />
+    <ClCompile Include="src\maths\Maths.cpp" />
+    <ClCompile Include="src\maths\Transform.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Rectangle.cpp" />
     <ClCompile Include="src\engine\rendering\ShapeRenderer.cpp" />
@@ -187,6 +191,7 @@
     <ClCompile Include="src\engine\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ApplicationLauncher.h" />
     <ClInclude Include="src\engine\rendering\Vertex.h" />
@@ -214,6 +219,8 @@
     <ClInclude Include="src\engine\rendering\opengl\VertexBufferLayout.h" />
     <ClInclude Include="src\engine\rendering\opengl\Texture.h" />
     <ClInclude Include="src\engine\Window.h" />
+    <ClInclude Include="src\maths\Maths.h" />
+    <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Vectors.h" />
   </ItemGroup>
   <ItemGroup>
@@ -221,8 +228,8 @@
     <None Include="res\shaders\default.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\hashinshin.png" />
     <Image Include="res\textures\image.png" />
-    <Image Include="res\textures\kali.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

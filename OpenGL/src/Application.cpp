@@ -2,39 +2,73 @@
 
 void Application::init() {
 	ShapeRenderer::init();
-	
-	tex1 = std::make_unique<Texture>(Files::internal("textures/kali.png"));
 
-	proj = Mat4::ortho(0, windowWidth, 0, windowHeight); // TODO add perspective matrix
+	tex1 = std::make_unique<Texture>(Files::internal("textures/image.png"));
+	tex2 = std::make_unique<Texture>(Files::internal("textures/hashinshin.png"));
+
+	cube1 = Cube(-5, -5, 0, 10.0f);
+	cube2 = Cube(-5, 5, 0, 10.0f);
+	cube3 = Cube(-8, -5, 0, 2);
+
+	rect1 = Rectangle(5, 5, 5, 5);
+	rect2 = Rectangle(8, 9, 3, 10);
 }
 
 void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	// translation, rotation, scale function = scale, rotate, translate matrix
-	Mat4 model = Mat4::identity.translate(xTranslate, yTranslate, 0.0f);
-	Mat4 view = Mat4::identity; // TODO
-	Mat4 mvp = proj * view * model;
+	Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
-	// push mvp uniform to shader // TODO TEMPORARY
-	ShapeRenderer::s_Shader->bind();
-	ShapeRenderer::s_Shader->setUniformMat4("u_ModelViewProj", mvp);
-
-	Rectangle rect1(windowWidth / 2 - 100, windowHeight / 2 - 100, 200, 200);
-	Rectangle rect2(windowWidth / 2 + 200, windowHeight / 2 - 100, 200, 200);
+	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
+	cube1.setRotation(cubeTransform.rot.x, cubeTransform.rot.y, cubeTransform.rot.z);
+	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
 
 	ShapeRenderer::begin();
-	ShapeRenderer::draw(rect1, *tex1);
-	ShapeRenderer::draw(rect2, {0.0f, 0.0f, 1.0f, 1.0f});
+	ShapeRenderer::draw(cube1, *tex1);
+	ShapeRenderer::draw(cube2, *tex2);
+	ShapeRenderer::draw(cube3, {0, 1, 0, 1});
+	ShapeRenderer::draw(rect1, {1, 1, 0, 1});
 	ShapeRenderer::end();
 }
 
 void Application::imGuiRender() {
-  ImGui::SetNextWindowPos(ImVec2(10, 10));
+	ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 	
-	ImGui::SliderFloat("X", &xTranslate, windowWidth / -2, windowWidth / 2);
-	ImGui::SliderFloat("Y", &yTranslate, windowHeight / -2, windowHeight / 2);
+	ImGui::Text("Cube");
+
+	ImGui::Text("Translation");
+	ImGui::SliderFloat("##1", &cubeTransform.tra.x, -100.0f, 100.0f);
+	ImGui::SliderFloat("##2", &cubeTransform.tra.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("##3", &cubeTransform.tra.z, -100.0f, 100.0f);
+
+	ImGui::Text("Rotation");
+	ImGui::SliderFloat("##4", &cubeTransform.rot.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("##5", &cubeTransform.rot.z, -100.0f, 100.0f);
+	ImGui::SliderFloat("##6", &cubeTransform.rot.x, -100.0f, 100.0f);
+	
+	ImGui::Text("Scale");
+	ImGui::SliderFloat("##7", &cubeTransform.sca.x, -100.0f, 100.0f);
+	ImGui::SliderFloat("##8", &cubeTransform.sca.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("##9", &cubeTransform.sca.z, -100.0f, 100.0f);
+
+	ImGui::Text("View");
+	
+	ImGui::Text("Translation");
+	ImGui::SliderFloat("##10", &viewTransform.tra.x, -100.0f, 100.0f);
+	ImGui::SliderFloat("##11", &viewTransform.tra.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("##12", &viewTransform.tra.z, -100.0f, 100.0f);
+							
+	ImGui::Text("Rotation");
+	ImGui::SliderFloat("##13", &viewTransform.rot.x, -100.0f, 100.0f);
+	ImGui::SliderFloat("##14", &viewTransform.rot.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("##15", &viewTransform.rot.z, -100.0f, 100.0f);
+							
+	ImGui::Text("Scale");	
+	ImGui::SliderFloat("##16", &viewTransform.sca.x, -100.0f, 100.0f);
+	ImGui::SliderFloat("##17", &viewTransform.sca.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("##18", &viewTransform.sca.z, -100.0f, 100.0f);
+
 	ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
 	
 	ImGui::End();
@@ -43,4 +77,3 @@ void Application::imGuiRender() {
 void Application::destroy() {
 
 }
-

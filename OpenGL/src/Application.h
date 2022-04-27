@@ -10,12 +10,14 @@
 
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Rectangle.h"
+#include "engine/rendering/shapes/Cube.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
 #include "engine/Files.h"
 
 #include "maths/Mat4.h"
+#include "maths/Transform.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -24,15 +26,13 @@
 class Application
 {
 private:
-	// i really dont like this
-	std::unique_ptr<Texture> tex1;
+	// i really dont like this TODO make better
+	std::unique_ptr<Texture> tex1, tex2;
 	Mat4 proj;
+	Cube cube1, cube2, cube3;
+	Rectangle rect1, rect2;
 
-	float xTranslate = 0.0f, yTranslate = 0.0f;
-
-	// TODO fix this
-	const float windowWidth = 3 * 1920 / 4;
-	const float windowHeight = 3 * 1080 / 4;
+	Transform cubeTransform, viewTransform;
 
 public:
 	Application() = default;
@@ -41,4 +41,7 @@ public:
 	void render();
 	void imGuiRender();
 	void destroy();
+
+	// bad
+	float windowWidth = 0.0f, windowHeight = 0.0f;
 };

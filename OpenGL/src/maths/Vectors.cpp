@@ -22,6 +22,16 @@ Vec4::Vec4(const Vec3& vec3, float w) :
 {
 }
 
+Vec4 Vec4::operator*(const Mat4& mat) const {
+	// TODO make this a real algorithm
+	return Vec4(
+		mat[0][0] * x + mat[0][1] * y + mat[0][2] * z + mat[0][3] * w,
+		mat[1][0] * x + mat[1][1] * y + mat[1][2] * z + mat[1][3] * w,
+		mat[2][0] * x + mat[2][1] * y + mat[2][2] * z + mat[2][3] * w,
+		mat[3][0] * x + mat[3][1] * y + mat[3][2] * z + mat[3][3] * w
+	);
+}
+
 std::ostream& operator<<(std::ostream& os, const Vec4& vector) {
 	return os << "| " << vector.x << " |\n"
 		<< "| " << vector.y << " |\n"

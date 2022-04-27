@@ -1,0 +1,111 @@
+\hypertarget{class_rectangle}{}\doxysection{Rectangle Class Reference}
+\label{class_rectangle}\index{Rectangle@{Rectangle}}
+Inheritance diagram for Rectangle\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_rectangle}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_rectangle_a21fe19879df1c7e56dfa18d3d8e75425}\label{class_rectangle_a21fe19879df1c7e56dfa18d3d8e75425}} 
+{\bfseries Rectangle} (float x, float y, float width, float height)
+\item 
+void \mbox{\hyperlink{class_rectangle_a7fb2a739c36b4a47003426825372cae8}{set\+Scale}} (float x\+Scale, float y\+Scale, float z\+Scale) override
+\begin{DoxyCompactList}\small\item\em Set the scale for the shape. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& \mbox{\hyperlink{class_rectangle_a726cc3c850e69b7a5c368fa24c72df1f}{get\+Vertices}} () override
+\begin{DoxyCompactList}\small\item\em Get a modifiable reference to the vertices of the shape. \end{DoxyCompactList}\item 
+const std\+::vector$<$ unsigned int $>$ \& \mbox{\hyperlink{class_rectangle_a1bd042f14822f4efdc8935c1fba1caa0}{get\+Indices}} () const override
+\begin{DoxyCompactList}\small\item\em Get a const reference to the indices of the shape. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& \mbox{\hyperlink{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}{get\+Unit\+Vertices}} () const override
+\begin{DoxyCompactList}\small\item\em Get all the vertices which describe the unit shape. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_rectangle_a1bd042f14822f4efdc8935c1fba1caa0}\label{class_rectangle_a1bd042f14822f4efdc8935c1fba1caa0}} 
+\index{Rectangle@{Rectangle}!getIndices@{getIndices}}
+\index{getIndices@{getIndices}!Rectangle@{Rectangle}}
+\doxysubsubsection{\texorpdfstring{getIndices()}{getIndices()}}
+{\footnotesize\ttfamily const std\+::vector$<$ unsigned int $>$ \& Rectangle\+::get\+Indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get a const reference to the indices of the shape. 
+
+\begin{DoxyReturn}{Returns}
+A const reference to a vector of the shape\textquotesingle{}s indices. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_shape_a39b8f9de4991bf507a4faceff2c5794e}{Shape}}.
+
+\mbox{\Hypertarget{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}\label{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}} 
+\index{Rectangle@{Rectangle}!getUnitVertices@{getUnitVertices}}
+\index{getUnitVertices@{getUnitVertices}!Rectangle@{Rectangle}}
+\doxysubsubsection{\texorpdfstring{getUnitVertices()}{getUnitVertices()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& Rectangle\+::get\+Unit\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get all the vertices which describe the unit shape. 
+
+\begin{DoxyReturn}{Returns}
+A vector of vertices which describe the unit shape. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}{Cube\+::get\+Unit\+Vertices()}} 
+
+\mbox{\hyperlink{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}{Rectangle\+::get\+Unit\+Vertices()}} 
+\end{DoxySeeAlso}
+
+
+Implements \mbox{\hyperlink{class_shape_a8d59a80c5dc93e19c358ec4510f3d052}{Shape}}.
+
+\mbox{\Hypertarget{class_rectangle_a726cc3c850e69b7a5c368fa24c72df1f}\label{class_rectangle_a726cc3c850e69b7a5c368fa24c72df1f}} 
+\index{Rectangle@{Rectangle}!getVertices@{getVertices}}
+\index{getVertices@{getVertices}!Rectangle@{Rectangle}}
+\doxysubsubsection{\texorpdfstring{getVertices()}{getVertices()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& Rectangle\+::get\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get a modifiable reference to the vertices of the shape. 
+
+\begin{DoxyReturn}{Returns}
+A modifiable reference to a vector of the shape\textquotesingle{}s vertices. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_shape_a1b7108d4da4d5fb99a917e9b9a2f3a36}{Shape}}.
+
+\mbox{\Hypertarget{class_rectangle_a7fb2a739c36b4a47003426825372cae8}\label{class_rectangle_a7fb2a739c36b4a47003426825372cae8}} 
+\index{Rectangle@{Rectangle}!setScale@{setScale}}
+\index{setScale@{setScale}!Rectangle@{Rectangle}}
+\doxysubsubsection{\texorpdfstring{setScale()}{setScale()}}
+{\footnotesize\ttfamily void Rectangle\+::set\+Scale (\begin{DoxyParamCaption}\item[{float}]{x\+Scale,  }\item[{float}]{y\+Scale,  }\item[{float}]{z\+Scale }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Set the scale for the shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+Scale} & The scale on the x axis \\
+\hline
+{\em y\+Scale} & The scale on the y axis \\
+\hline
+{\em z\+Scale} & The scale on the z axis \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_shape_a5f73f6bd9c5dc82c620488fa35db885b}{Shape}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Rectangle.\+h\item 
+C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Rectangle.\+cpp\end{DoxyCompactItemize}

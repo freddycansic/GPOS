@@ -18,10 +18,10 @@ private:
 	std::unordered_map<std::string, int> m_Uniforms;
 
 	void findAndAddUniforms(const std::string& filepath);
+	void checkUniformInShader(const std::string& name) const;
 
 public:
 	Shader(const std::string& vertexShaderSourceDir, const std::string& fragmentShaderSourceDir);
-	Shader();
 	~Shader();
 	
 	Shader(const Shader& tex) = delete;

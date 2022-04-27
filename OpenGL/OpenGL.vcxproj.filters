@@ -26,6 +26,10 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationLauncher.cpp" />
     <ClCompile Include="src\engine\Debug.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
+    <ClCompile Include="src\maths\Transform.cpp" />
+    <ClCompile Include="src\maths\Maths.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
@@ -56,6 +60,9 @@
     <ClInclude Include="src\engine\rendering\Vertex.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ApplicationLauncher.h" />
+    <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
+    <ClInclude Include="src\maths\Transform.h" />
+    <ClInclude Include="src\maths\Maths.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -63,6 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\image.png" />
-    <Image Include="res\textures\kali.png" />
+    <Image Include="res\textures\hashinshin.png" />
   </ItemGroup>
 </Project>

@@ -35,9 +35,10 @@ private:
 	// keep track of which textures are being used
 	static std::array<const Texture*, 32> s_TextureSlots;
 
-	static std::shared_ptr<VertexArray> s_Vao;
-	static std::shared_ptr<VertexBuffer> s_Vbo;
-	static std::shared_ptr<IndexBuffer> s_Ibo;
+	static std::unique_ptr<VertexArray> s_Vao;
+	static std::unique_ptr<VertexBuffer> s_Vbo;
+	static std::unique_ptr<IndexBuffer> s_Ibo;
+	static std::unique_ptr<Shader> s_Shader;
 
 	ShapeRenderer()
 	{
@@ -51,12 +52,38 @@ private:
 	static void checkBatchBegun();
 
 public:
-	static std::shared_ptr<Shader> s_Shader; // TODO TEMPORARY
-
+	/**
+	 * Initialises batch rendering, must be called once before the first begin() call.
+	 * @brief Initialises batch rendering.
+	*/
 	static void init();
+
+	/**
+	 * Start batch rendering. Must be called after init() has been called once.
+	 * @brief Starts batch rendering.
+	**/
 	static void begin();
-	static void draw(const Shape& shape, const Vec4& color);
-	static void draw(const Shape& shape, const Texture& tex);
+
+	/**
+	 * Draw a shape using a solid color.
+	 *
+	 * @param shape Shape to use.
+	 * @param color Color to use as a Vec4.
+	**/
+	static void draw(Shape& shape, const Vec4& color);
+
+	/**
+	 * Draw a shape using a texture.
+	 *
+	 * @param shape Shape to use.
+	 * @param tex Texture to use.
+	**/
+	static void draw(Shape& shape, const Texture& tex);
+
+	/**
+	 * Ends the batch and draws to the screen.
+	 * @brief Ends the batch.
+	*/
 	static void end();
 };
 

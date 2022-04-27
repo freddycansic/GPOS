@@ -1,0 +1,70 @@
+\hypertarget{_vertex_buffer_layout_8h_source}{}\doxysection{Vertex\+Buffer\+Layout.\+h}
+\label{_vertex_buffer_layout_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/VertexBufferLayout.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/VertexBufferLayout.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <concepts>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{comment}{// i really just wanted to write concept}}
+\DoxyCodeLine{8 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{9 \textcolor{keyword}{concept }Numeric = std::integral<T> \&\& std::floating\_point<T>;}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{comment}{// each layout component contains these 3}}
+\DoxyCodeLine{12 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vertex_buffer_element}{VertexBufferElement}} \{}
+\DoxyCodeLine{13     GLenum type;}
+\DoxyCodeLine{14     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} count;}
+\DoxyCodeLine{15     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size;}
+\DoxyCodeLine{16     \textcolor{keywordtype}{bool} normalised;}
+\DoxyCodeLine{17 \};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{class_vertex_buffer_layout}{VertexBufferLayout}}}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{21 \textcolor{keyword}{private}:}
+\DoxyCodeLine{22     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_Stride; \textcolor{comment}{// stride = total size of each vertex in bytes}}
+\DoxyCodeLine{23     std::vector<VertexBufferElement> m\_Elements; \textcolor{comment}{// contents of the layout}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \mbox{\hyperlink{class_vertex_buffer_layout}{VertexBufferLayout}}() : m\_Stride(0) \{\}}
+\DoxyCodeLine{28     \mbox{\hyperlink{class_vertex_buffer_layout}{\string~VertexBufferLayout}}() \{ m\_Elements.clear(); m\_Elements.shrink\_to\_fit(); \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{31     \textcolor{keywordtype}{void} addElement(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} count, \textcolor{keywordtype}{bool} normalised) \{}
+\DoxyCodeLine{32         std::cout << \textcolor{stringliteral}{"{}VertexBufferLayout : Bad element type\(\backslash\)n"{}};}
+\DoxyCodeLine{33         \_\_debugbreak();}
+\DoxyCodeLine{34     \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{template}<>}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} addElement<GLfloat>(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} count, \textcolor{keywordtype}{bool} normalised) \{}
+\DoxyCodeLine{38         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = count * \textcolor{keyword}{sizeof}(GLfloat);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40         m\_Elements.push\_back(\{GL\_FLOAT, count, size, normalised\});}
+\DoxyCodeLine{41         m\_Stride += size; \textcolor{comment}{// increment stride by new component }}
+\DoxyCodeLine{42     \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keyword}{template}<>}
+\DoxyCodeLine{45     \textcolor{keywordtype}{void} addElement<GLuint>(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} count, \textcolor{keywordtype}{bool} normalised) \{}
+\DoxyCodeLine{46         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = count * \textcolor{keyword}{sizeof}(GLuint);}
+\DoxyCodeLine{47         }
+\DoxyCodeLine{48         m\_Elements.push\_back(\{ GL\_UNSIGNED\_INT, count, size, normalised\});}
+\DoxyCodeLine{49         m\_Stride += size;}
+\DoxyCodeLine{50     \}}
+\DoxyCodeLine{51     }
+\DoxyCodeLine{52     \textcolor{comment}{// rlly small uints}}
+\DoxyCodeLine{53     \textcolor{keyword}{template}<>}
+\DoxyCodeLine{54     \textcolor{keywordtype}{void} addElement<GLbyte>(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} count, \textcolor{keywordtype}{bool} normalised) \{}
+\DoxyCodeLine{55         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = count * \textcolor{keyword}{sizeof}(GLbyte);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57         m\_Elements.push\_back(\{ GL\_UNSIGNED\_BYTE, count, size, \textcolor{keyword}{true}\});}
+\DoxyCodeLine{58         m\_Stride += size;}
+\DoxyCodeLine{59     \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keyword}{const} std::vector<VertexBufferElement>\& getElements()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Elements; \}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} getStride()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Stride; \}}
+\DoxyCodeLine{63 \};}
+\DoxyCodeLine{64 }
+
+\end{DoxyCode}

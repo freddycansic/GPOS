@@ -10,7 +10,6 @@ private:
 
 public:
 	VertexBuffer(const void* data, size_t size);
-	VertexBuffer();
 	~VertexBuffer();
 
 	VertexBuffer(const VertexBuffer& tex) = delete;

@@ -1,0 +1,45 @@
+\hypertarget{_debug_8h_source}{}\doxysection{Debug.\+h}
+\label{_debug_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/Debug.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/Debug.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#if \_WIN32}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{    \#include <Windows.h>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{    \#define HANDLE GetStdHandle(STD\_OUTPUT\_HANDLE)}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{    \#define RED SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED)}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{    \#define ORANGE SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN)}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{    \#define YELLOW SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN | FOREGROUND\_INTENSITY)}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{    \#define LIGHT\_BLUE SetConsoleTextAttribute(HANDLE, FOREGROUND\_BLUE  | FOREGROUND\_INTENSITY)}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{    \#define CLEAR SetConsoleTextAttribute(HANDLE, FOREGROUND\_RED | FOREGROUND\_GREEN | FOREGROUND\_BLUE)}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{    \#define RED}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{    \#define ORANGE}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{    \#define YELLOW}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{    \#define LIGHT\_BLUE}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{    \#define CLEAR}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define ASSERT(x) if (!(x)) \_\_debugbreak();}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define DEBUG}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#ifdef DEBUG}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define GLAPI(x) Debug::clearGLError(); x; ASSERT(Debug::logGLFunc(\#x, \_\_FILE\_\_, \_\_LINE\_\_))}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{    \#define GLAPI(x) x}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{namespace }Debug \{}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{keywordtype}{void} clearGLError();}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{keywordtype}{bool} logGLFunc(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* functionName, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* fileName, \textcolor{keywordtype}{int} lineNum);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint \textcolor{keywordtype}{id}, GLenum severity, GLsizei length, \textcolor{keyword}{const} GLchar* message, \textcolor{keyword}{const} \textcolor{keywordtype}{void}* userParam);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \};}
+
+\end{DoxyCode}

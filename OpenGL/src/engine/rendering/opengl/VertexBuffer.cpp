@@ -8,11 +8,6 @@ VertexBuffer::VertexBuffer(const void* data, size_t size) {
 	GLAPI(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 }
 
-VertexBuffer::VertexBuffer() :
-	m_ID(0)
-{
-}
-
 void VertexBuffer::bind() const {
 	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, m_ID));
 }

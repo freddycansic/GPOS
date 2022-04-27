@@ -64,12 +64,13 @@ Window::Window(const WindowConfig& config)
 	}
 
 	// need to move this
-	glEnable(GL_DEBUG_OUTPUT);
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(Debug::GLDebugMessageCallback, 0);
+	GLAPI(glEnable(GL_DEBUG_OUTPUT));
+	GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
+	//GLAPI(glEnable(GL_DEPTH_TEST));
+	GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, 0));
 
 	// turn off notifications
-	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+	GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));
 }
 
 Window::~Window()
@@ -77,7 +78,6 @@ Window::~Window()
 	// clean up resources
 	glfwDestroyWindow(m_ID);
 	glfwTerminate();
-
 }
 
 float Window::getCurrentTime() {

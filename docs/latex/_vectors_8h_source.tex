@@ -1,0 +1,42 @@
+\hypertarget{_vectors_8h_source}{}\doxysection{Vectors.\+h}
+\label{_vectors_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/maths/Vectors.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/maths/Vectors.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Mat4.h"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec2}{Vec2}} \{}
+\DoxyCodeLine{7     \textcolor{keywordtype}{float} x = 0.0f, y = 0.0f;}
+\DoxyCodeLine{8 \};}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec4}{Vec4}}; \textcolor{comment}{// forward delaration for vec3 conversion}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec3}{Vec3}} \{}
+\DoxyCodeLine{13     \textcolor{keywordtype}{float} x = 0.0f, y = 0.0f, z = 0.0f;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15     \mbox{\hyperlink{struct_vec3}{Vec3}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \textcolor{comment}{// regular constructor}}
+\DoxyCodeLine{18     \mbox{\hyperlink{struct_vec3}{Vec3}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} z);}
+\DoxyCodeLine{19     }
+\DoxyCodeLine{20     \textcolor{comment}{// convert vec4 to vec3}}
+\DoxyCodeLine{21     \mbox{\hyperlink{struct_vec3}{Vec3}}(\textcolor{keyword}{const} \mbox{\hyperlink{struct_vec4}{Vec4}}\& vec4);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec4}{Vec4}} \{}
+\DoxyCodeLine{26     \textcolor{keywordtype}{float} x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f;}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \mbox{\hyperlink{struct_vec4}{Vec4}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{29     \mbox{\hyperlink{struct_vec4}{Vec4}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} z, \textcolor{keywordtype}{float} w);}
+\DoxyCodeLine{30     \mbox{\hyperlink{struct_vec4}{Vec4}}(\textcolor{keyword}{const} \mbox{\hyperlink{struct_vec3}{Vec3}}\& vec3, \textcolor{keywordtype}{float} w);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \mbox{\hyperlink{struct_vec4}{Vec4}} operator*(\textcolor{keyword}{const} \mbox{\hyperlink{class_mat4}{Mat4}}\& mat) \textcolor{keyword}{const};}
+\DoxyCodeLine{33 \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 std::ostream\& operator<<(std::ostream\& os, \textcolor{keyword}{const} \mbox{\hyperlink{struct_vec4}{Vec4}}\& vector);}
+\DoxyCodeLine{36 std::ostream\& operator<<(std::ostream\& os, \textcolor{keyword}{const} \mbox{\hyperlink{struct_vec3}{Vec3}}\& vector);}
+
+\end{DoxyCode}

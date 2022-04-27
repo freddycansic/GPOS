@@ -1,5 +1,7 @@
 #include "Mat4.h"
 
+#include "Maths.h"
+
 Mat4::Mat4(
 	float r1c1, float r1c2, float r1c3, float r1c4,
 	float r2c1, float r2c2, float r2c3, float r2c4,
@@ -44,18 +46,17 @@ Mat4& Mat4::operator=(Mat4&& other) noexcept {
 	return *this;
 }
 
-Mat4::Mat4(int element) {
-	for (int i = 0; i < ORDER; i++) {
-		memset(&m_Data[i], element, ORDER * sizeof(float));
-	}
-}
-
-const Mat4::MATRIX_ROW& Mat4::operator[](int index) const {
+const Mat4::MATRIX_ROW& Mat4::operator[](unsigned int index) const {
 	return m_Data[index];
 }
 
-Mat4::MATRIX_ROW& Mat4::operator[](int index) {
+Mat4::MATRIX_ROW& Mat4::operator[](unsigned int index) {
 	return m_Data[index];
+}
+
+Mat4& Mat4::operator=(const Mat4& mat) {
+	m_Data = mat.m_Data;
+	return *this;
 }
 
 Mat4 Mat4::operator+(const Mat4& other) const {
@@ -98,6 +99,10 @@ Mat4 Mat4::scale(float xScale, float yScale, float zScale) const
 
 Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 {
+	float xRadRotate = Maths::radians(xRotate);
+	float yRadRotate = Maths::radians(yRotate);
+	float zRadRotate = Maths::radians(zRotate);
+
 	return (
 		*this
 
@@ -105,24 +110,24 @@ Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 
 		Mat4 (
 		1, 0, 0, 0,
-		0, cos(xRotate), -sin(xRotate), 0,
-		0, sin(xRotate), cos(xRotate), 0,
+		0, cos(xRadRotate), -sin(xRadRotate), 0,
+		0, sin(xRadRotate), cos(xRadRotate), 0,
 		0, 0, 0, 1) 
 		
 		*
 		
 		Mat4 (
-		cos(yRotate), 0, sin(yRotate), 0,
+		cos(yRadRotate), 0, sin(yRadRotate), 0,
 		0, 1, 0, 0,
-		-sin(yRotate), 0, cos(yRotate), 0,
+		-sin(yRadRotate), 0, cos(yRadRotate), 0,
 		0, 0, 0, 1) 
 		
 		*
 		
 		Mat4 (
-		cos(zRotate), -sin(zRotate), 0, 0,
-		sin(zRotate), cos(zRotate), 0, 0,
-		0, 0, 1, 1,
+		cos(zRadRotate), -sin(zRadRotate), 0, 0,
+		sin(zRadRotate), cos(zRadRotate), 0, 0,
+		0, 0, 1, 0,
 		0, 0, 0, 1)
 	);
 }
@@ -157,7 +162,7 @@ Mat4 Mat4::operator*(float scalar) const {
 
 Mat4 Mat4::operator*(const Mat4& other) const {
 	
-	Mat4 result = Mat4(0);
+	Mat4 result;
 
 	// for each row in matrix A
 	for (int k = 0; k < Mat4::ORDER; k++) {
@@ -175,31 +180,24 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 	return result;
 }
 
-Vec4 Mat4::operator*(const Vec4& other) const {
-	float values[]{ other.x, other.y, other.z, other.w }; // put it into an array so i can subscript operator them
-
-	for (int row = 0; row < Mat4::ORDER; row++) { // for each row in matrix4
-		float total = 0; // running total
-		for (int element = 0; element < 4; element++) { // for each element in vector
-			total += m_Data[row][element] * values[element];
-		}
-		values[row] = total;
-	}
-
-	return Vec4(values[0], values[1], values[2], values[3]);
-
-}
-
-Vec3 Mat4::operator*(const Vec3& other) const {
-	return *this * Vec4(other, 1.0f); 
-}
-
 Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, float far) {
 	return Mat4(
 		2 / (right - left), 0, 0, -(right + left) / (right - left),
 		0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
 		0, 0, -2 / (far - near), -(far + near) / (far - near),
 		0, 0, 0, 1
+	);
+}
+
+Mat4 Mat4::perspective(float fovDeg, float aspect, float near, float far) {
+	float fov = Maths::radians(fovDeg);
+	float f = 1 / tan(fov/2);
+
+	return Mat4(
+		f/aspect, 0, 0, 0,
+		0, f, 0, 0,
+		0, 0, (far + near) / (near - far), (2 * far * near) / (near - far),
+		0, 0, -1, 0
 	);
 }
 
@@ -214,16 +212,3 @@ std::ostream& operator<<(std::ostream& os, const Mat4& matrix) {
 
 	return os;
 };
-
-Mat4::operator std::string() {
-	std::string output;
-	for (int row = 0; row < Mat4::ORDER; row++) {
-		output += "| ";
-		for (int col = 0; col < Mat4::ORDER; col++) {
-			output += std::to_string(m_Data[row][col]) + "\t";
-		}
-		output += "|\n";
-	}
-
-	return output;
-}

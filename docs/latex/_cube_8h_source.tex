@@ -1,0 +1,30 @@
+\hypertarget{_cube_8h_source}{}\doxysection{Cube.\+h}
+\label{_cube_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Cube.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/shapes/Cube.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Shape.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}maths/Mat4.h"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{class }\mbox{\hyperlink{class_cube}{Cube}} : \textcolor{keyword}{public} \mbox{\hyperlink{class_shape}{Shape}}}
+\DoxyCodeLine{7 \{}
+\DoxyCodeLine{8 \textcolor{keyword}{private}:}
+\DoxyCodeLine{9     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<unsigned int> s\_UnitIndices;}
+\DoxyCodeLine{10     \textcolor{keyword}{const} \textcolor{keyword}{static} std::vector<Vertex> s\_UnitVertices;}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12     \textcolor{keywordtype}{float} m\_Size = 0.0f;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{public}:}
+\DoxyCodeLine{15     \mbox{\hyperlink{class_cube}{Cube}}(\textcolor{keywordtype}{float} x, \textcolor{keywordtype}{float} y, \textcolor{keywordtype}{float} z, \textcolor{keywordtype}{float} size);}
+\DoxyCodeLine{16     \mbox{\hyperlink{class_cube}{Cube}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18     std::vector<Vertex>\& \mbox{\hyperlink{class_cube_a5f71b2923fb59a41353390811e47a418}{getVertices}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{19     \textcolor{keyword}{const} std::vector<Vertex>\& \mbox{\hyperlink{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}{getUnitVertices}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{20     \textcolor{keyword}{const} std::vector<unsigned int>\& \mbox{\hyperlink{class_cube_ac73fbfa26646453f498d93608068c7ff}{getIndices}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{21     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cube_ae2e6dd72293671b5f0cddb2348733d1e}{setScale}}(\textcolor{keywordtype}{float} xScale, \textcolor{keywordtype}{float} yScale, \textcolor{keywordtype}{float} zScale) \textcolor{keyword}{override};}
+\DoxyCodeLine{22 \};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+
+\end{DoxyCode}

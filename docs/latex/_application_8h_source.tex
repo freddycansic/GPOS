@@ -1,0 +1,53 @@
+\hypertarget{_application_8h_source}{}\doxysection{Application.\+h}
+\label{_application_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/Application.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/Application.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <GLFW/glfw3.h>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/Texture.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}engine/rendering/shapes/Rectangle.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}engine/rendering/shapes/Cube.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}engine/rendering/Renderer.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}engine/rendering/ShapeRenderer.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}engine/Window.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}engine/Files.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}maths/Mat4.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}maths/Transform.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}imgui/imgui.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}imgui/imgui\_impl\_glfw.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}imgui/imgui\_impl\_opengl3.h"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{class_application}{Application}}}
+\DoxyCodeLine{27 \{}
+\DoxyCodeLine{28 \textcolor{keyword}{private}:}
+\DoxyCodeLine{29     \textcolor{comment}{// i really dont like this TODO make better}}
+\DoxyCodeLine{30     std::unique\_ptr<Texture> tex1, tex2;}
+\DoxyCodeLine{31     \mbox{\hyperlink{class_mat4}{Mat4}} proj;}
+\DoxyCodeLine{32     \mbox{\hyperlink{class_cube}{Cube}} cube1, cube2, cube3;}
+\DoxyCodeLine{33     \mbox{\hyperlink{class_rectangle}{Rectangle}} rect1, rect2;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \mbox{\hyperlink{struct_transform}{Transform}} cubeTransform, viewTransform;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{public}:}
+\DoxyCodeLine{38     \mbox{\hyperlink{class_application}{Application}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{41     \textcolor{keywordtype}{void} render();}
+\DoxyCodeLine{42     \textcolor{keywordtype}{void} imGuiRender();}
+\DoxyCodeLine{43     \textcolor{keywordtype}{void} destroy();}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \textcolor{comment}{// bad}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{float} windowWidth = 0.0f, windowHeight = 0.0f;}
+\DoxyCodeLine{47 \};}
+
+\end{DoxyCode}

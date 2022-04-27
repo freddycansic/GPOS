@@ -1,0 +1,84 @@
+\hypertarget{class_shape_renderer}{}\doxysection{Shape\+Renderer Class Reference}
+\label{class_shape_renderer}\index{ShapeRenderer@{ShapeRenderer}}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_shape_renderer_a0d1f1de474979fc6565133709a895dd2}{init}} ()
+\begin{DoxyCompactList}\small\item\em Initialises batch rendering. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{class_shape_renderer_a559af61b3e02ee29979ee86616337ba6}{begin}} ()
+\begin{DoxyCompactList}\small\item\em Starts batch rendering. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{class_shape_renderer_a5f47b465584785b7f174ee079a0b82d8}{draw}} (\mbox{\hyperlink{class_shape}{Shape}} \&shape, const \mbox{\hyperlink{struct_vec4}{Vec4}} \&color)
+\item 
+static void \mbox{\hyperlink{class_shape_renderer_a87ea73aa850c2035a4d9b5a81e077d97}{draw}} (\mbox{\hyperlink{class_shape}{Shape}} \&shape, const \mbox{\hyperlink{class_texture}{Texture}} \&tex)
+\item 
+static void \mbox{\hyperlink{class_shape_renderer_a93751d98e270efbb92d3c8d5a711332c}{end}} ()
+\begin{DoxyCompactList}\small\item\em Ends the batch. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_shape_renderer_a559af61b3e02ee29979ee86616337ba6}\label{class_shape_renderer_a559af61b3e02ee29979ee86616337ba6}} 
+\index{ShapeRenderer@{ShapeRenderer}!begin@{begin}}
+\index{begin@{begin}!ShapeRenderer@{ShapeRenderer}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily void Shape\+Renderer\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Starts batch rendering. 
+
+Start batch rendering. Must be called after \mbox{\hyperlink{class_shape_renderer_a0d1f1de474979fc6565133709a895dd2}{init()}} has been called once. \mbox{\Hypertarget{class_shape_renderer_a87ea73aa850c2035a4d9b5a81e077d97}\label{class_shape_renderer_a87ea73aa850c2035a4d9b5a81e077d97}} 
+\index{ShapeRenderer@{ShapeRenderer}!draw@{draw}}
+\index{draw@{draw}!ShapeRenderer@{ShapeRenderer}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Shape\+Renderer\+::draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_shape}{Shape}} \&}]{shape,  }\item[{const \mbox{\hyperlink{class_texture}{Texture}} \&}]{tex }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Draw a shape using a texture.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shape} & \mbox{\hyperlink{class_shape}{Shape}} to use. \\
+\hline
+{\em tex} & \mbox{\hyperlink{class_texture}{Texture}} to use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shape_renderer_a5f47b465584785b7f174ee079a0b82d8}\label{class_shape_renderer_a5f47b465584785b7f174ee079a0b82d8}} 
+\index{ShapeRenderer@{ShapeRenderer}!draw@{draw}}
+\index{draw@{draw}!ShapeRenderer@{ShapeRenderer}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Shape\+Renderer\+::draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_shape}{Shape}} \&}]{shape,  }\item[{const \mbox{\hyperlink{struct_vec4}{Vec4}} \&}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Draw a shape using a solid color.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shape} & \mbox{\hyperlink{class_shape}{Shape}} to use. \\
+\hline
+{\em color} & Color to use as a \mbox{\hyperlink{struct_vec4}{Vec4}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shape_renderer_a93751d98e270efbb92d3c8d5a711332c}\label{class_shape_renderer_a93751d98e270efbb92d3c8d5a711332c}} 
+\index{ShapeRenderer@{ShapeRenderer}!end@{end}}
+\index{end@{end}!ShapeRenderer@{ShapeRenderer}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily void Shape\+Renderer\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Ends the batch. 
+
+Ends the batch and draws to the screen. \mbox{\Hypertarget{class_shape_renderer_a0d1f1de474979fc6565133709a895dd2}\label{class_shape_renderer_a0d1f1de474979fc6565133709a895dd2}} 
+\index{ShapeRenderer@{ShapeRenderer}!init@{init}}
+\index{init@{init}!ShapeRenderer@{ShapeRenderer}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void Shape\+Renderer\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Initialises batch rendering. 
+
+Initialises batch rendering, must be called once before the first \mbox{\hyperlink{class_shape_renderer_a559af61b3e02ee29979ee86616337ba6}{begin()}} call. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/engine/rendering/Shape\+Renderer.\+h\item 
+C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/engine/rendering/Shape\+Renderer.\+cpp\end{DoxyCompactItemize}
