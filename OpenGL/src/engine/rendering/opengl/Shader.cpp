@@ -112,7 +112,7 @@ unsigned int compileShader(unsigned int type, const std::string& source) {
 
 		// get length of the shader info log
 		int length;
-		GLAPI(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+		GLAPI(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
 
 		// allocate block of memory on the STACK dynamically, then cast to char pointer
 		char* message = (char*)alloca(length * sizeof(char));
@@ -129,7 +129,7 @@ unsigned int compileShader(unsigned int type, const std::string& source) {
 unsigned int createProgram(const std::string& vertexSource, const std::string& fragmentSource) {
 
 	// generate program
-	unsigned int program = glCreateProgram());
+	unsigned int program = glCreateProgram();
 
 	// generate shaders
 	unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);

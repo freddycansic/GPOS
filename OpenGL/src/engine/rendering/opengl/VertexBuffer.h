@@ -12,8 +12,8 @@ public:
 	VertexBuffer(const void* data, size_t size);
 	~VertexBuffer();
 
-	VertexBuffer(const VertexBuffer& tex) = delete;
-	VertexBuffer& operator=(const VertexBuffer& tex) = delete;
+	VertexBuffer(const VertexBuffer& buffer) = delete;
+	VertexBuffer& operator=(const VertexBuffer& buffer) = delete;
 
 	void bind() const;
 	void unbind() const;

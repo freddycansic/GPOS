@@ -5,7 +5,7 @@
 VertexBuffer::VertexBuffer(const void* data, size_t size) {
 	GLAPI(glGenBuffers(1, &m_ID));
 	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, m_ID));
-	GLAPI(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+	GLAPI(glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW));
 }
 
 void VertexBuffer::bind() const {
