@@ -26,13 +26,12 @@
 class Application
 {
 private:
-	// i really dont like this TODO make better
-	std::unique_ptr<Texture> tex1, tex2;
-	Mat4 proj;
-	Cube cube1, cube2, cube3;
-	Rectangle rect1, rect2;
+	Transform viewTransform;
+	std::vector<float> vertices;
+	std::vector<unsigned int> indices;
+	std::string fragmentStringSource, vertexStringSource;
 
-	Transform cubeTransform, viewTransform;
+	unsigned int vbo = 0, ibvo = 0, vao = 0, ibo = 0, program = 0;
 
 public:
 	Application() = default;

@@ -9,10 +9,11 @@ out vec4 v_Color;
 out vec2 v_TexCoord; // v = varying
 out float v_TexID;
 
-uniform mat4 u_ViewProj;
+//uniform mat4 u_ViewProj;
 
 void main() {
-	gl_Position = u_ViewProj * a_Position;  
+//	gl_Position = u_ViewProj * a_Position;  
+	gl_Position = a_Position;  
 
 	v_Color = a_Color;
 	v_TexCoord = a_TexCoord;
