@@ -3,8 +3,6 @@
 out vec4 color;
 
 in vec4 v_Color;
-in vec2 v_TexCoord;
-in float v_TexID;
 
 void main() {  
 

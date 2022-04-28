@@ -27,11 +27,11 @@ class Application
 {
 private:
 	Transform viewTransform;
-	std::vector<float> vertices;
+	std::vector<float> vertices, translations;
 	std::vector<unsigned int> indices;
 	std::string fragmentStringSource, vertexStringSource;
 
-	unsigned int vbo = 0, ibvo = 0, vao = 0, ibo = 0, program = 0;
+	unsigned int vbo = 0, ivbo = 0, vao = 0, ibo = 0, program = 0, u_VPLoc = 0;
 
 public:
 	Application() = default;
@@ -42,5 +42,5 @@ public:
 	void destroy();
 
 	// bad
-	float windowWidth = 0.0f, windowHeight = 0.0f;
+	float windowWidth = 1920.0f, windowHeight = 1080.0f;
 };
