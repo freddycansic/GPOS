@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "engine/Debug.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -28,10 +30,6 @@ void Application::init() {
 		}
 	}
 
-	for (unsigned int i = 0; i < translations.size(); i++) {
-		std::cout << translations[i] << " " << translations[++i] << std::endl;
-	}
-
 	indices = {
 		0, 1, 2,
 		0, 2, 3
@@ -46,52 +44,72 @@ void Application::init() {
 	const char* fragmentCharSource = fragmentSource.c_str();
 
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexCharSource, nullptr);
-	glCompileShader(vertexShader);
+	GLAPI(glShaderSource(vertexShader, 1, &vertexCharSource, nullptr));
+	GLAPI(glCompileShader(vertexShader));
 
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentCharSource, nullptr);
-	glCompileShader(fragmentShader);
+	GLAPI(glShaderSource(fragmentShader, 1, &fragmentCharSource, nullptr));
+	GLAPI(glCompileShader(fragmentShader));
 
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-	glLinkProgram(program);
-	glValidateProgram(program);
+	GLAPI(glAttachShader(program, vertexShader));
+	GLAPI(glAttachShader(program, fragmentShader));
+	GLAPI(glLinkProgram(program));
+	GLAPI(glValidateProgram(program));
 
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	GLAPI(glDeleteShader(vertexShader));
+	GLAPI(glDeleteShader(fragmentShader));
 
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	unsigned int texID;
+	uint64_t texHandle;
 
-	glGenBuffers(1, &ivbo);
-	glBindBuffer(GL_ARRAY_BUFFER, ivbo);
-	glBufferData(GL_ARRAY_BUFFER, translations.size() * sizeof(float), translations.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	GLAPI(glGenTextures(1, &texID));
+	GLAPI(glBindTexture(GL_TEXTURE_2D, texID));
 
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	GLAPI(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLAPI(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	GLAPI(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)); // horizontal wrap
+	GLAPI(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)); // vertical wrap
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)(3 * sizeof(float)));
+	texHandle = glGetTextureHandleARB(texID);
+	GLAPI(glMakeTextureHandleResidentARB(texHandle));
 
-	glBindBuffer(GL_ARRAY_BUFFER, ivbo);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0);
-	glVertexAttribDivisor(2, 1);
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)(2 * sizeof(float)));
-	glVertexAttribDivisor(3, 1);
+	unsigned int container;
+	GLAPI(glGenBuffers(1, &container));
+	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, container));
+	GLAPI(glBufferData(GL_UNIFORM_BUFFER, sizeof(uint64_t), &texHandle, GL_STATIC_DRAW));
+
+	GLAPI(glGenVertexArrays(1, &vao));
+	GLAPI(glBindVertexArray(vao));
+
+	GLAPI(glGenBuffers(1, &ivbo));
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, ivbo));
+	GLAPI(glBufferData(GL_ARRAY_BUFFER, translations.size() * sizeof(float), translations.data(), GL_STATIC_DRAW));
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
+	GLAPI(glGenBuffers(1, &vbo));
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+	GLAPI(glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW));
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
+	GLAPI(glGenBuffers(1, &ibo));
+	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+	GLAPI(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW));
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+	GLAPI(glEnableVertexAttribArray(0));
+	GLAPI(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)0));
+	GLAPI(glEnableVertexAttribArray(1));
+	GLAPI(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)(3 * sizeof(float))));
+
+	GLAPI(glBindBuffer(GL_ARRAY_BUFFER, ivbo));
+	GLAPI(glEnableVertexAttribArray(2));
+	GLAPI(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0));
+	GLAPI(glVertexAttribDivisor(2, 1));
+	GLAPI(glEnableVertexAttribArray(3));
+	GLAPI(glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)(2 * sizeof(float))));
+	GLAPI(glVertexAttribDivisor(3, 1));
 
 	// TODO uniform buffer
 
@@ -105,12 +123,12 @@ void Application::render() {
 
 	Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
-	glBindVertexArray(vao);
-	glUseProgram(program);
+	GLAPI(glBindVertexArray(vao));
+	GLAPI(glUseProgram(program));
 
-	glUniformMatrix4fv(u_VPLoc, 1, GL_TRUE, (persp * Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z)).getPtr());
+	GLAPI(glUniformMatrix4fv(u_VPLoc, 1, GL_TRUE, (persp * Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z)).getPtr()));
 
-	glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr, translations.size() / 2);
+	GLAPI(glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr, translations.size() / 2));
 }
 
 void Application::imGuiRender() {

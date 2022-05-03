@@ -9,12 +9,15 @@ in vec2 v_TexCoord;
 in float v_TexID;
 
 uniform u_TexSamplers {
-	uint64_t samplers[1024]; 
+	uvec2 samplers[1]; 
 };
 
-void main() {  
-
+void main() {
+	
 	int index = int(v_TexID);
-	color = texture(sampler2D(samplers[index]), v_TexCoord);
-
+//	color = texture(sampler2D(samplers[index]), v_TexCoord);
+	
+	sampler2D s = sampler2D(samplers[index]);
+	
+	color = texture(s, v_TexCoord);
 };

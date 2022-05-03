@@ -1,7 +1,7 @@
 #version 330 core  
   
-#extension GL_ARB_bindless_texture : require
-#extension GL_ARB_gpu_shader_int64 : require
+//#extension GL_ARB_bindless_texture : require
+//#extension GL_ARB_gpu_shader_int64 : require
 
 layout(location = 0) in vec4 a_Position;  
 layout(location = 1) in vec2 a_TexCoord;
