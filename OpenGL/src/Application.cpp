@@ -2,6 +2,8 @@
 
 #include "engine/Debug.h"
 
+#include "stb_image/stb_image.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -71,13 +73,22 @@ void Application::init() {
 	GLAPI(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)); // horizontal wrap
 	GLAPI(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)); // vertical wrap
 
+	int width, height;
+
+	stbi_set_flip_vertically_on_load(1);
+	auto imageBuffer = stbi_load(Files::internal("textures/hashinshin.png").c_str(), &width, &height, nullptr, 4);
+
+	GLAPI(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBuffer));
+
 	texHandle = glGetTextureHandleARB(texID);
 	GLAPI(glMakeTextureHandleResidentARB(texHandle));
 
 	unsigned int container;
-	GLAPI(glGenBuffers(1, &container));
-	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, container));
-	GLAPI(glBufferData(GL_UNIFORM_BUFFER, sizeof(uint64_t), &texHandle, GL_STATIC_DRAW));
+	glGenBuffers(1, &container);
+	glBindBuffer(GL_UNIFORM_BUFFER, container);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(uint64_t), NULL, GL_STATIC_DRAW);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, container, 0, sizeof(uint64_t));
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(uint64_t), &texHandle);
 
 	GLAPI(glGenVertexArrays(1, &vao));
 	GLAPI(glBindVertexArray(vao));
