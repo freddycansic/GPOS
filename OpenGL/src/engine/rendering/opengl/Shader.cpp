@@ -67,10 +67,12 @@ void Shader::findAndAddUniforms(const std::string& source) {
 }
 
 void Shader::checkUniformInShader(const std::string& name) const {
+#ifdef DEBUG
 	if (m_Uniforms.count(name) == 0) {
 		std::cout << "Uniform " << name << " not found in shader!" << std::endl;
 		ASSERT(false);
 	}
+#endif
 }
 
 void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const {
