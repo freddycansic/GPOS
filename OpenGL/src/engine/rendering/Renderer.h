@@ -12,7 +12,7 @@ private:
 
 	static Mat4 s_Persp, s_Ortho, s_Proj, s_View;
 
-	static float s_WindowWidth, s_WindowHeight;
+	static int s_WindowWidth, s_WindowHeight;
 
 public:
 

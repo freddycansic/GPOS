@@ -65,6 +65,7 @@
     <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Maths.h" />
     <ClInclude Include="src\engine\rendering\opengl\UniformBuffer.h" />
+    <ClInclude Include="src\engine\Input.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

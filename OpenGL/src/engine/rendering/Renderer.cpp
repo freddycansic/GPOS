@@ -2,7 +2,7 @@
 
 #include "engine/Debug.h"
 
-float Renderer::s_WindowWidth = 0.0f, Renderer::s_WindowHeight = 0.0f;
+int Renderer::s_WindowWidth = 0, Renderer::s_WindowHeight = 0;
 
 // init matrices
 Mat4 Renderer::s_Persp;
@@ -20,8 +20,8 @@ void Renderer::init(const Window& window) {
 	s_WindowWidth = window.getWidth();
 	s_WindowHeight = window.getHeight();
 
-	s_Persp = Mat4::perspective(45.0f, s_WindowWidth / s_WindowHeight, 1.0f, 1000.0f);
-	s_Ortho = Mat4::ortho(-s_WindowWidth / 2, s_WindowWidth / 2, -s_WindowHeight / 2, s_WindowHeight / 2, -1.0f, 1.0f);
+	s_Persp = Mat4::perspective(45.0f, (float) s_WindowWidth / (float) s_WindowHeight, 1.0f, 1000.0f);
+	s_Ortho = Mat4::ortho((float) -s_WindowWidth / 2, (float) s_WindowWidth / 2, (float) -s_WindowHeight / 2, (float) s_WindowHeight / 2, -1.0f, 1.0f);
 
 	// use persp projection by default
 	s_Proj = s_Persp;
