@@ -55,8 +55,8 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 			int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
 			
-			if (uniformLocation == -1) {
-				std::cout << "Uniform not in use." << std::endl;
+			if (uniformLocation == -1 && !uniformName.contains('{')) {
+				std::cout << "Uniform " << uniformName << " not in use." << std::endl;
 			}
 			
 			// insert the uniform into a map
