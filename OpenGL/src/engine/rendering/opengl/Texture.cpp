@@ -24,6 +24,9 @@ Texture::Texture(const std::string& path)
 
 	GLAPI(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_Buffer));
 
+	m_Handle = glGetTextureHandleARB(m_ID);
+	GLAPI(glMakeTextureHandleResidentARB(m_Handle));
+
 	GLAPI(glBindTexture(GL_TEXTURE_2D, 0));
 
 	if (m_Buffer) stbi_image_free(m_Buffer);

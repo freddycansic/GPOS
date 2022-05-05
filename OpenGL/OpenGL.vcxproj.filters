@@ -30,6 +30,7 @@
     <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
     <ClCompile Include="src\maths\Transform.cpp" />
     <ClCompile Include="src\maths\Maths.cpp" />
+    <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
@@ -63,6 +64,7 @@
     <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
     <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Maths.h" />
+    <ClInclude Include="src\engine\rendering\opengl\UniformBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

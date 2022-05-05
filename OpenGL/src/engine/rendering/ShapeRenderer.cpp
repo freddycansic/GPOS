@@ -7,13 +7,9 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/Debug.h"
 
-// little bit scared these magic numbers will come back to bite me
-const size_t ShapeRenderer::MAX_VERTICES = 50000;
-const size_t ShapeRenderer::MAX_INDICES = 75000;
-
 ShapeRenderer::State ShapeRenderer::state = ShapeRenderer::State::UNINITIALISED;
 
-std::array<const Texture*, 32> ShapeRenderer::s_TextureSlots = {nullptr};
+std::vector<uint64_t> ShapeRenderer::s_TextureHandles;
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -21,6 +17,7 @@ std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
 std::unique_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
+std::unique_ptr<UniformBuffer> ShapeRenderer::s_Ubo = nullptr;
 std::unique_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
 
 void ShapeRenderer::init()
@@ -37,6 +34,7 @@ void ShapeRenderer::init()
 	s_Vao = std::make_unique<VertexArray>();
 	s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 	s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
+	s_Ubo = std::make_unique<UniformBuffer>(nullptr, MAX_TEXTURES * sizeof(uint64_t));
 
 	VertexBufferLayout layout;
 	layout.addElement<GLfloat>(3, false);
@@ -81,36 +79,36 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	int textureSlot = -1;
+	//int textureSlot = -1;
 
-	// check if texture already has a slot 
-	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
-		
-		const auto& texture = s_TextureSlots[i];
-		if (texture == nullptr) continue;
-		
-		if (tex.getID() == texture->getID()) {
-			textureSlot = i;
-			break;
-		}
-	}
+	//// check if texture already has a slot 
+	//for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
+	//	
+	//	const auto& texture = s_TextureSlots[i];
+	//	if (texture == nullptr) continue;
+	//	
+	//	if (tex.getID() == texture->getID()) {
+	//		textureSlot = i;
+	//		break;
+	//	}
+	//}
 
-	// if it doesn't have a slot already then find a slot with id = 0 = empty and insert it there
-	if (textureSlot == -1) {
-		for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
-			const auto& texture = s_TextureSlots[i];
-			if (texture == nullptr) {
-				textureSlot = i;
-				s_TextureSlots[i] = &tex;
-				break;
-			}
-		}
-	}
+	//// if it doesn't have a slot already then find a slot with id = 0 = empty and insert it there
+	//if (textureSlot == -1) {
+	//	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
+	//		const auto& texture = s_TextureSlots[i];
+	//		if (texture == nullptr) {
+	//			textureSlot = i;
+	//			s_TextureSlots[i] = &tex;
+	//			break;
+	//		}
+	//	}
+	//}
 
-	// if the texture has no slot and there is no more available slots then throw exception
-	if (textureSlot == -1) {
-		throw std::runtime_error("No more available texture slots!");
-	}
+	//// if the texture has no slot and there is no more available slots then throw exception
+	//if (textureSlot == -1) {
+	//	throw std::runtime_error("No more available texture slots!");
+	//}
 
 	shape.recalculateVertices();
 

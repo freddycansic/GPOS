@@ -8,10 +8,16 @@
 #include "engine/rendering/opengl/VertexArray.h"
 #include "engine/rendering/opengl/VertexBuffer.h"
 #include "engine/rendering/opengl/IndexBuffer.h"
+#include "engine/rendering/opengl/UniformBuffer.h"
 #include "engine/rendering/opengl/Shader.h"
 #include "engine/rendering/Vertex.h"
 
 #include "shapes/Shape.h"
+
+struct TextureData {
+	unsigned int ID = 0;
+	uint64_t handle = 0;
+};
 
 class ShapeRenderer
 {
@@ -23,8 +29,10 @@ private:
 		BEGUN,
 	};
 
-	const static size_t MAX_VERTICES;
-	const static size_t MAX_INDICES;
+	// little bit scared these magic numbers will come back to bite me
+	constexpr static size_t MAX_VERTICES = 50000;
+	constexpr static size_t MAX_INDICES = 75000;
+	constexpr static size_t MAX_TEXTURES = 1024;
 	
 	static State state;
 
@@ -33,11 +41,12 @@ private:
 	static std::vector<unsigned int> s_IndexBatch;
 
 	// keep track of which textures are being used
-	static std::array<const Texture*, 32> s_TextureSlots;
+	static std::vector<TextureData> s_TextureData;
 
 	static std::unique_ptr<VertexArray> s_Vao;
 	static std::unique_ptr<VertexBuffer> s_Vbo;
 	static std::unique_ptr<IndexBuffer> s_Ibo;
+	static std::unique_ptr<UniformBuffer> s_Ubo;
 	static std::unique_ptr<Shader> s_Shader;
 
 	ShapeRenderer()

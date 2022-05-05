@@ -1,7 +1,6 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <vector>
 
 class VertexBuffer
 {
@@ -12,8 +11,8 @@ public:
 	VertexBuffer(const void* data, size_t size);
 	~VertexBuffer();
 
-	VertexBuffer(const VertexBuffer& tex) = delete;
-	VertexBuffer& operator=(const VertexBuffer& tex) = delete;
+	VertexBuffer(const VertexBuffer& vbo) = delete;
+	VertexBuffer& operator=(const VertexBuffer& vbo) = delete;
 
 	void bind() const;
 	void unbind() const;

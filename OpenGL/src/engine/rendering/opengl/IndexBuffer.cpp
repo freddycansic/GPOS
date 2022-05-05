@@ -7,7 +7,7 @@ IndexBuffer::IndexBuffer(const void* data, GLenum type, size_t count)
 {
 	GLAPI(glGenBuffers(1, &m_ID));
 	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
-	GLAPI(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_STATIC_DRAW));
+	GLAPI(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_DYNAMIC_DRAW));
 }
 	
 void IndexBuffer::setSubData(unsigned int offset, size_t count, const void* data) const

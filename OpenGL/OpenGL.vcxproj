@@ -189,6 +189,7 @@
     <ClCompile Include="src\engine\rendering\opengl\VertexArray.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\Texture.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
+    <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="src\maths\Maths.h" />
     <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Vectors.h" />
+    <ClInclude Include="src\engine\rendering\opengl\UniformBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.frag" />
