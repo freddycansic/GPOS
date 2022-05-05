@@ -9,7 +9,7 @@
 
 ShapeRenderer::State ShapeRenderer::state = ShapeRenderer::State::UNINITIALISED;
 
-std::vector<uint64_t> ShapeRenderer::s_TextureHandles;
+std::vector<TextureData> ShapeRenderer::s_TextureData;
 
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
@@ -25,10 +25,6 @@ void ShapeRenderer::init()
 	// TODO FIX ME DDDD:
 	s_Shader = std::make_unique<Shader>(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 	s_Shader->bind();
-
-	// setup index array for texture slots
-	std::array<int, 32> slots = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-	s_Shader->setUniform1iv("u_Textures", slots.size(), slots.data());
 
 	// init vao, allocate empty vbo + ibo
 	s_Vao = std::make_unique<VertexArray>();
@@ -79,36 +75,21 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 	checkBatchBegun();
 	addShapeIndices(shape);
 
-	//int textureSlot = -1;
+	int textureSlot = -1;
 
-	//// check if texture already has a slot 
-	//for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
-	//	
-	//	const auto& texture = s_TextureSlots[i];
-	//	if (texture == nullptr) continue;
-	//	
-	//	if (tex.getID() == texture->getID()) {
-	//		textureSlot = i;
-	//		break;
-	//	}
-	//}
+	// check if texture already in use
+	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
+		unsigned int textureID = s_TextureData.at(i).ID;
+		if (tex.getID() == textureID) {
+			textureSlot = textureID;
+			break;
+		}
+	}
 
-	//// if it doesn't have a slot already then find a slot with id = 0 = empty and insert it there
-	//if (textureSlot == -1) {
-	//	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
-	//		const auto& texture = s_TextureSlots[i];
-	//		if (texture == nullptr) {
-	//			textureSlot = i;
-	//			s_TextureSlots[i] = &tex;
-	//			break;
-	//		}
-	//	}
-	//}
-
-	//// if the texture has no slot and there is no more available slots then throw exception
-	//if (textureSlot == -1) {
-	//	throw std::runtime_error("No more available texture slots!");
-	//}
+	// if not then add it
+	if (textureSlot == -1) {
+		s_TextureData.emplace_back(tex.getID(), tex.getHandle());
+	}
 
 	shape.recalculateVertices();
 
@@ -126,16 +107,15 @@ void ShapeRenderer::end()
 	s_Vao->bind();
 	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
 	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
-
 	s_Shader->bind();
 	
-	for (unsigned int i = 0; i < s_TextureSlots.size(); i++) {
-		const auto& texture = s_TextureSlots[i];
-
-		if (texture == nullptr) continue;
-
-		texture->bindToSlot(i);
+	// add texture handles to uniform buffer
+	std::array<uint64_t, 1024> textureHandles = {0};
+	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
+		textureHandles[i] = s_TextureData.at(i).handle;
 	}
+	
+	s_Ubo->setSubData(0, sizeof(uint64_t) * textureHandles.size(), textureHandles.data());
 
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 
