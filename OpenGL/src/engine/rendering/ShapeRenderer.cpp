@@ -36,7 +36,7 @@ void ShapeRenderer::init()
 	layout.addElement<GLfloat>(3, false);
 	layout.addElement<GLfloat>(4, false);
 	layout.addElement<GLfloat>(2, false);
-	layout.addElement<GLfloat>(1, false);
+	layout.addElement<uint64_t>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
 	s_Vbo->unbind();
