@@ -29,9 +29,14 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 	// create vector of all tokens
 	std::string token;
-	unsigned int i = 0;
 	while (ss >> token) {
-		
+		tokens.push_back(token);
+	}
+
+	// iterate over tokens
+	for (unsigned int i = 0; i < tokens.size(); i++) {
+		const auto& token = tokens[i];
+
 		// if we find a uniform
 		if (token == "uniform") {
 			// then we know the identifier of that uniform will be 2 tokens after it
@@ -42,29 +47,26 @@ void Shader::findAndAddUniforms(const std::string& source) {
 			if (startBracketIndex != std::string::npos) {
 				uniformName = uniformName.substr(0, startBracketIndex);
 			}
-			
+
 			// remove semi colon at end
 			if (uniformName.at(uniformName.size() - 1) == ';')
 				uniformName = uniformName.substr(0, uniformName.size() - 1);
 
 			int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
-			
+
 			if (uniformLocation == -1 && !uniformName.contains('{')) {
 				std::cout << "Uniform " << uniformName << " not in use." << std::endl;
 			}
-			
+
 			// insert the uniform into a map
 			m_Uniforms[uniformName] = uniformLocation;
 		}
-
-		i++;
 	}
-
 }
 
 void Shader::checkUniformInShader(const std::string& name) const {
 #ifdef DEBUG
-	if (m_Uniforms.contains(name)) {
+	if (!m_Uniforms.contains(name)) {
 		std::cout << "Uniform " << name << " not found in shader!" << std::endl;
 		ASSERT(false);
 	}
