@@ -1,7 +1,5 @@
 #pragma once
 
-#include <array>
-#include <string>
 #include <memory>
 
 #include "engine/rendering/opengl/Texture.h"

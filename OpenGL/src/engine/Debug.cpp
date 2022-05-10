@@ -7,19 +7,15 @@ const char* severityEnumToString(GLenum severity) {
 	switch (severity) {
 	case GL_DEBUG_SEVERITY_HIGH:
 		return "HIGH SEVERITY";
-		break;
 
 	case GL_DEBUG_SEVERITY_MEDIUM:
 		return "MEDIUM SEVERITY";
-		break;
 
 	case GL_DEBUG_SEVERITY_LOW:
 		return "LOW SEVERITY";
-		break;
 
 	case GL_DEBUG_SEVERITY_NOTIFICATION:
 		return "NOTIFICATION";
-		break;
 
 	default:
 		return "UNKNOWN SEVERITY";
@@ -30,23 +26,18 @@ const char* sourceEnumToString(GLenum source) {
 	switch (source) {
 	case GL_DEBUG_SOURCE_API:
 		return "OPENGL API";
-		break;
 
 	case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
 		return "WINDOW";
-		break;
 
 	case GL_DEBUG_SOURCE_SHADER_COMPILER:
 		return "SHADER COMPILATION";
-		break;
 
 	case GL_DEBUG_SOURCE_THIRD_PARTY:
 		return "THIRD PARTY";
-		break;
 
 	case GL_DEBUG_SOURCE_APPLICATION:
 		return "APPLICATION";
-		break;
 
 		// GL_DEBUG_SOURCE_OTHER
 	default:
@@ -58,35 +49,27 @@ const char* typeEnumToString(GLenum type) {
 	switch (type) {
 	case GL_DEBUG_TYPE_ERROR:
 		return "ERROR";
-		break;
 
 	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
 		return "DEPRECATED BEHAVIOR";
-		break;
 
 	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
 		return "UNDEFINED BEHAVIOR";
-		break;
 
 	case GL_DEBUG_TYPE_PORTABILITY:
 		return "PORTABILITY";
-		break;
 
 	case GL_DEBUG_TYPE_PERFORMANCE:
 		return "PERFORMANCE";
-		break;
 
 	case GL_DEBUG_TYPE_MARKER:
 		return "MARKER";
-		break;
 
 	case GL_DEBUG_TYPE_PUSH_GROUP:
 		return "PUSH GROUP";
-		break;
 
 	case GL_DEBUG_TYPE_POP_GROUP:
 		return "POP GROUP";
-		break;
 
 		// GL_DEBUG_TYPE_OTHER
 	default:
@@ -101,11 +84,11 @@ namespace Debug {
 	}
 
 	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum) {
-		while (GLenum error = glGetError()) {
+		while (const GLenum error = glGetError()) {
 			std::string filePathFull(errorFile);
 			
-			std::string fileName = filePathFull.substr(filePathFull.find_last_of('\\')+1);
-			std::string filePath = filePathFull.substr(0, filePathFull.find(fileName));
+			const std::string fileName = filePathFull.substr(filePathFull.find_last_of('\\')+1);
+			const std::string filePath = filePathFull.substr(0, filePathFull.find(fileName));
 
 			std::cout << "(" << error << ") " << filePath;
 			YELLOW;

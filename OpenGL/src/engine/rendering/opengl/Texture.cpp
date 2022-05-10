@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "GL/glew.h"
+
 #include "stb_image/stb_image.h"
 #include "engine/Debug.h"
 

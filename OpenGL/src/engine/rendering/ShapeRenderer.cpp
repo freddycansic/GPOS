@@ -79,7 +79,8 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 
 	// check if texture already in use
 	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
-		unsigned int textureID = s_TextureData.at(i).ID;
+		const unsigned int textureID = s_TextureData.at(i).ID;
+
 		if (tex.getID() == textureID) {
 			textureSlot = textureID;
 			break;
@@ -136,11 +137,13 @@ void ShapeRenderer::checkBatchReady() {
 	switch (state) {
 	case State::STOPPED:
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
-		break;
 
 	case State::UNINITIALISED:
 		throw std::runtime_error("ShapeRenderer not initialised, did you call ShapeRenderer::init()?");
+
+	default:
 		break;
+
 	}
 }
 
@@ -148,12 +151,12 @@ void ShapeRenderer::addShapeIndices(const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
 	unsigned int maxIndex;
-	if (s_IndexBatch.size() == 0) {
+	if (s_IndexBatch.empty()) {
 		maxIndex = 0;
 	}
 	else {
 		// dereference to get value at iterator
-		maxIndex = *std::max_element(s_IndexBatch.begin(), s_IndexBatch.end()) + 1;
+		maxIndex = *std::ranges::max_element(s_IndexBatch.begin(), s_IndexBatch.end()) + 1;
 	}
 
 	for (unsigned int index : shape.getIndices()) {

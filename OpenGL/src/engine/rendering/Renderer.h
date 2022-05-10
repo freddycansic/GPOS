@@ -8,13 +8,12 @@
 class Renderer
 {
 private:
-	Renderer();
 
 	static Mat4 s_Persp, s_Ortho, s_Proj, s_View;
-
 	static int s_WindowWidth, s_WindowHeight;
 
 public:
+	Renderer() = delete;
 
 	static void init(const Window& window);
 	static void clear(float r, float g, float b);

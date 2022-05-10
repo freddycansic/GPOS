@@ -76,18 +76,7 @@ public:
 	 * @brief Copy constructor.
 	 * @param other Matrix to copy from.
 	*/
-	Mat4(const Mat4& other) : m_Data(other.m_Data) {}
-
-	/**
-	 * @brief Move constructor.
-	 * @param other R value matrix to move data from.
-	*/
-	Mat4(Mat4&& other) noexcept : m_Data(std::move(other.m_Data)) {}
-
-	/**
-	 * @brief 4x4 identity matrix.
-	*/
-	const static Mat4 identity;
+	Mat4(const Mat4& other) = default;
 
 	/**
 	 * @brief Move assignment operator.
@@ -98,14 +87,14 @@ public:
 
 	/**
 	 * @brief Constant subscript operator. Indexes into the underlying data structure.
-	 * @param Unsigned index of data to return.
+	 * @param index Unsigned index of data to return.
 	 * @return Constant reference to float at provided index.
 	*/
 	const MATRIX_ROW& operator[](unsigned int index) const;
 
 	/**
 	 * @brief Subscript operator. Indexes into the underlying data structure.
-	 * @param Unsigned index of data to return.
+	 * @param index Unsigned index of data to return.
 	 * @return Modifiable reference to float at provided index.
 	*/
 	MATRIX_ROW& operator[](unsigned int index);
@@ -155,14 +144,14 @@ public:
 	 * @param zScale Magnitude to scale on the z axis.
 	 * @return New scaled matrix.
 	*/
-	Mat4 scale(float xScale, float yScale, float zScale) const;
+	[[nodiscard]] Mat4 scale(float xScale, float yScale, float zScale) const;
 
 	/**
 	 * @brief Scale operation.
 	 * @param xyzScale Magnitude to scale on the x, y and z axis.
 	 * @return New scaled matrix.
 	*/
-	Mat4 scale(float xyzScale) const { return scale(xyzScale, xyzScale, xyzScale); }
+	[[nodiscard]] Mat4 scale(float xyzScale) const { return scale(xyzScale, xyzScale, xyzScale); }
 
 	/**
 	 * @brief Rotation operation.
@@ -171,7 +160,7 @@ public:
 	 * @param zRotate Angle in degrees to rotate on the z axis.
 	 * @return New rotated matrix.
 	*/
-	Mat4 rotate(float xRotate, float yRotate, float zRotate) const;
+	[[nodiscard]] Mat4 rotate(float xRotate, float yRotate, float zRotate) const;
 
 	/**
 	 * @brief Translation operation.
@@ -180,7 +169,7 @@ public:
 	 * @param zTranslate Distance to translate on the z axis.
 	 * @return New translated matrix.
 	*/
-	Mat4 translate(float xTranslate, float yTranslate, float zTranslate) const;
+	[[nodiscard]] Mat4 translate(float xTranslate, float yTranslate, float zTranslate) const;
 
 	/**
 	 * @brief Generates an orthographic projection matrix.
@@ -205,10 +194,15 @@ public:
 	static Mat4 perspective(float fov, float aspect, float near = -1.0f, float far = 1.0f);
 
 	/**
+	 * @brief 4x4 identity matrix.
+	*/
+	const static Mat4 identity;
+
+	/**
 	 * @brief Pointer to the first element in the underlying data structure.
 	 * @return Pointer to the first element in the underlying data structure.
 	*/
-	const float* getPtr() const { return m_Data[0].data(); }
+	[[nodiscard]] const float* getPtr() const { return m_Data[0].data(); }
 
 	friend std::ostream& operator<<(std::ostream& os, const Mat4& matrix);
 

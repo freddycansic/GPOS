@@ -1,7 +1,6 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <iostream>
 #include <vector>
 
 // each layout component contains these 3
@@ -26,7 +25,7 @@ public:
 	template<typename T>
 	void addElement(unsigned int count, bool normalised);
 
-	const std::vector<VertexBufferElement>& getElements() const { return m_Elements; }
-	unsigned int getStride() const { return m_Stride; }
+	[[nodiscard]] const std::vector<VertexBufferElement>& getElements() const { return m_Elements; }
+	[[nodiscard]] unsigned int getStride() const { return m_Stride; }
 };
 

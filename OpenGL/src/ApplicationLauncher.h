@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 #include "Application.h"
 #include "engine/Window.h"
 

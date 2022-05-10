@@ -1,5 +1,11 @@
 #include "Application.h"
 
+#include "imgui/imgui.h"
+
+#include "engine/Files.h"
+#include "engine/rendering/Renderer.h"
+#include "engine/rendering/ShapeRenderer.h"
+
 void Application::init() {
 	ShapeRenderer::init();
 
@@ -33,7 +39,7 @@ void Application::render() {
 
 void Application::imGuiRender() {
 	ImGui::SetNextWindowPos(ImVec2(10, 10));
-	ImGui::Begin("Debug", (bool*)1, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 	
 	ImGui::Text("Cube");
 

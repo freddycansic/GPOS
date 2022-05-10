@@ -2,14 +2,13 @@
 
 #include <fstream>
 #include <sstream>
+#include <vector>
+
 #include "engine/Debug.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& element : map) {
-		std::string key = element.first;
-		int value = element.second;
-
-		os << "Name = " << key << " Location = " << value << "\n";
+		os << "Name = " << element.first << " Location = " << element.second << "\n";
 	}
 	return os;
 }
@@ -30,14 +29,9 @@ void Shader::findAndAddUniforms(const std::string& source) {
 
 	// create vector of all tokens
 	std::string token;
+	unsigned int i = 0;
 	while (ss >> token) {
-		tokens.push_back(token);
-	}
-
-	// iterate over tokens
-	for (unsigned int i = 0; i < tokens.size(); i++) {
-		std::string token = tokens[i];
-
+		
 		// if we find a uniform
 		if (token == "uniform") {
 			// then we know the identifier of that uniform will be 2 tokens after it
@@ -62,13 +56,15 @@ void Shader::findAndAddUniforms(const std::string& source) {
 			// insert the uniform into a map
 			m_Uniforms[uniformName] = uniformLocation;
 		}
+
+		i++;
 	}
 
 }
 
 void Shader::checkUniformInShader(const std::string& name) const {
 #ifdef DEBUG
-	if (m_Uniforms.count(name) == 0) {
+	if (m_Uniforms.contains(name)) {
 		std::cout << "Uniform " << name << " not found in shader!" << std::endl;
 		ASSERT(false);
 	}
@@ -92,7 +88,7 @@ void Shader::setUniform1i(const std::string& name, int value) const {
 
 void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) const {
 	checkUniformInShader(name);
-	GLAPI(glUniform1iv(m_Uniforms.at(name), (GLsizei) count, value));
+	GLAPI(glUniform1iv(m_Uniforms.at(name), static_cast<GLsizei>(count), value));
 }
 
 unsigned int compileShader(unsigned int type, const std::string& source) {
@@ -117,7 +113,7 @@ unsigned int compileShader(unsigned int type, const std::string& source) {
 		GLAPI(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 
 		// allocate block of memory on the STACK dynamically, then cast to char pointer
-		char* message = (char*)alloca(length * sizeof(char));
+		char* message = static_cast<char*>(alloca(length * sizeof(char)));
 		GLAPI(glGetShaderInfoLog(id, length, &length, message));
 
 		std::cout << message << std::endl;
@@ -152,7 +148,7 @@ unsigned int createProgram(const std::string& vertexSource, const std::string& f
 		int length;
 		GLAPI(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
 
-		char* message = (char*)alloca(length * sizeof(char));
+		char* message = static_cast<char*>(alloca(length * sizeof(char)));
 		GLAPI(glGetProgramInfoLog(program, length, &length, message));
 
 		std::cout << message << std::endl;
@@ -170,7 +166,7 @@ unsigned int createProgram(const std::string& vertexSource, const std::string& f
 		int length;
 		GLAPI(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
 
-		char* message = (char*)alloca(length * sizeof(char));
+		char* message = static_cast<char*>(alloca(length * sizeof(char)));
 		GLAPI(glGetProgramInfoLog(program, length, &length, message));
 
 		std::cout << message << std::endl;

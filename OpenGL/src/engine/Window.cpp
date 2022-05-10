@@ -81,14 +81,14 @@ Window::~Window()
 }
 
 float Window::getCurrentTime() {
-	return (float) glfwGetTime();
+	return static_cast<float>(glfwGetTime());
 }
 
 float lastTime = Window::getCurrentTime();
 
 void Window::update() {
 	// calculate deltatime
-	float currentTime = getCurrentTime();
+	const float currentTime = getCurrentTime();
 	m_Delta = currentTime - lastTime;
 	lastTime = currentTime;
 

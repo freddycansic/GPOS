@@ -5,7 +5,7 @@
 class VertexBuffer
 {
 private:
-	unsigned int m_ID;
+	unsigned int m_ID = 0;
 
 public:
 	VertexBuffer(const void* data, size_t size);

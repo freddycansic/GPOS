@@ -1,7 +1,5 @@
 #include "Cube.h"
 
-#include "maths/Mat4.h"
-
 const std::vector<Vertex> Cube::s_UnitVertices =
 {
 	Vertex({ -0.5f, -0.5f,  0.5f }, {0.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, -1.0f), // 0 bottom front left

@@ -18,7 +18,7 @@ void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout
 		//std::cout << "index = " << index << " count = " << element.count << " normalised = " << element.normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
 	
 		GLAPI(glEnableVertexAttribArray(index));
-		GLAPI(glVertexAttribPointer(index++, element.count, element.type, element.normalised ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)offset));
+		GLAPI(glVertexAttribPointer(index++, element.count, element.type, element.normalised ? GL_TRUE : GL_FALSE, layout.getStride(), reinterpret_cast<const void*>(offset)));
 		
 		offset += element.size;
 	}

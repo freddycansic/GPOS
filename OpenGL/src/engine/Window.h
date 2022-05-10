@@ -37,7 +37,7 @@ public:
 	
 	// time
 	static float getCurrentTime();
-	float getDelta() const { return m_Delta; }
+	[[nodiscard]] float getDelta() const { return m_Delta; }
 
 	// getters
 	int getWidth() const { return m_Width; }

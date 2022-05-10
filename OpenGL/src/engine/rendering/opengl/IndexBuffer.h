@@ -16,12 +16,12 @@ public:
 	void bind() const;
 	void unbind() const;
 
-	size_t getCount() const { return m_Count; }
-	GLenum getType() const { return m_Type; }
+	[[nodiscard]] size_t getCount() const { return m_Count; }
+	[[nodiscard]] GLenum getType() const { return m_Type; }
 
 private:
-	unsigned int m_ID;
-	size_t m_Count;
-	GLenum m_Type;
+	unsigned int m_ID = 0;
+	size_t m_Count = 0;
+	GLenum m_Type = 0;
 };
 

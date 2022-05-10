@@ -1,14 +1,13 @@
 #include "Shape.h"
 
 #include "maths/Mat4.h"
-#include "maths/Maths.h"
 
 void Shape::recalculateVertices() {
 	if (m_Vertices.size() == 0) { // if recalculating from the constructor
 		m_Vertices = getUnitVertices(); // first fill vector with modifiable values for later
 	}
 
-	Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+	const Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
 	// TODO copy bad
 	const std::vector<Vertex>& unitVertices = getUnitVertices();

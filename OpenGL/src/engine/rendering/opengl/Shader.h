@@ -1,11 +1,8 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #include <string>
 #include <iostream>
 #include <unordered_map>
-#include <vector>
 
 #include "maths/Mat4.h"
 

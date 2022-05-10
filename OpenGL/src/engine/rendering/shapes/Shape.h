@@ -32,19 +32,19 @@ public:
 	 * @see Cube#getUnitVertices()
 	 * @see Rectangle#getUnitVertices()
 	*/
-	virtual const std::vector<Vertex>& getUnitVertices() const = 0;
+	[[nodiscard]] virtual const std::vector<Vertex>& getUnitVertices() const = 0;
 
 	/**
 	 * @brief Get a modifiable reference to the vertices of the shape.
 	 * @return A modifiable reference to a vector of the shape's vertices.
 	*/
-	virtual std::vector<Vertex>& getVertices() = 0;
+	[[nodiscard]] virtual std::vector<Vertex>& getVertices() = 0;
 
 	/**
 	 * @brief Get a const reference to the indices of the shape.
 	 * @return A const reference to a vector of the shape's indices.
 	*/
-	virtual const std::vector<unsigned int>& getIndices() const = 0;
+	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const = 0;
 
 	/**
 	 * @brief Set the scale for the shape.
@@ -56,17 +56,17 @@ public:
 	
 	/**
 	 * @brief Set the rotation for the shape about the centre of mass of the shape.
-	 * @param xScale The rotation on the x axis
-	 * @param yScale The rotation on the y axis
-	 * @param zScale The rotation on the z axis
+	 * @param xRotation The rotation on the x axis
+	 * @param yRotation The rotation on the y axis
+	 * @param zRotation The rotation on the z axis
 	*/
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
 	
 	/**
 	 * @brief Set the translation for the shape about the origin.
-	 * @param xScale The translation on the x axis
-	 * @param yScale The translation on the y axis
-	 * @param zScale The translation on the z axis
+	 * @param xTranslate The translation on the x axis
+	 * @param yTranslate The translation on the y axis
+	 * @param zTranslate The translation on the z axis
 	*/
 	virtual void setTranslation(float xTranslate, float yTranslate, float zTranslate);
 };

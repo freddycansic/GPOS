@@ -5,7 +5,7 @@
 class UniformBuffer
 {
 private:
-	unsigned int m_ID;
+	unsigned int m_ID = 0;
 
 public:
 	UniformBuffer(const void* data, size_t size);

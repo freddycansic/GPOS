@@ -18,7 +18,7 @@ public:
 
 	void setScale(float xScale, float yScale, float zScale) override;
 	std::vector<Vertex>& getVertices() override;
-	const std::vector<unsigned int>& getIndices() const override;
-	const std::vector<Vertex>& getUnitVertices() const override;
+	[[nodiscard]] const std::vector<unsigned int>& getIndices() const override;
+	[[nodiscard]] const std::vector<Vertex>& getUnitVertices() const override;
 };
 

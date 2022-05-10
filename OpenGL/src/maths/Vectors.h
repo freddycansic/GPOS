@@ -18,7 +18,7 @@ struct Vec3 {
 	Vec3(float x, float y, float z);
 	
 	// convert vec4 to vec3
-	Vec3(const Vec4& vec4);
+	explicit Vec3(const Vec4& vec4);
 
 };
 
@@ -27,7 +27,7 @@ struct Vec4 {
 
 	Vec4() = default;
 	Vec4(float x, float y, float z, float w);
-	Vec4(const Vec3& vec3, float w);
+	explicit Vec4(const Vec3& vec3, float w);
 
 	Vec4 operator*(const Mat4& mat) const;
 };

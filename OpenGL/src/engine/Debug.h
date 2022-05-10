@@ -32,7 +32,7 @@ namespace Debug {
 
 	void clearGLError();
 
-	bool logGLFunc(const char* functionName, const char* fileName, int lineNum);
+	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum);
 
 	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 

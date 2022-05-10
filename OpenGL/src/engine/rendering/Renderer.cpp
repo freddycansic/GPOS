@@ -20,8 +20,8 @@ void Renderer::init(const Window& window) {
 	s_WindowWidth = window.getWidth();
 	s_WindowHeight = window.getHeight();
 
-	s_Persp = Mat4::perspective(45.0f, (float) s_WindowWidth / (float) s_WindowHeight, 1.0f, 1000.0f);
-	s_Ortho = Mat4::ortho((float) -s_WindowWidth / 2, (float) s_WindowWidth / 2, (float) -s_WindowHeight / 2, (float) s_WindowHeight / 2, -1.0f, 1.0f);
+	s_Persp = Mat4::perspective(45.0f, static_cast<float>(s_WindowWidth) / static_cast<float>(s_WindowHeight), 1.0f, 1000.0f);
+	s_Ortho = Mat4::ortho(static_cast<float>(-s_WindowWidth) / 2, static_cast<float>(s_WindowWidth) / 2, static_cast<float>(-s_WindowHeight) / 2, static_cast<float>(s_WindowHeight) / 2, -1.0f, 1.0f);
 
 	// use persp projection by default
 	s_Proj = s_Persp;
@@ -36,7 +36,7 @@ void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader
 
 	vao.bind();
 
-	GLAPI(glDrawElements(GL_TRIANGLES, (GLsizei) ibo.getCount(), ibo.getType(), nullptr));
+	GLAPI(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo.getCount()), ibo.getType(), nullptr));
 }
 
 void Renderer::clear(float r, float g, float b)
