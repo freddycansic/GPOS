@@ -64,8 +64,7 @@ public:
 	/**
 	 * Initialises batch rendering, must be called once before the first begin() call.
 	 * @brief Initialises batch rendering.
-	*/
-	static void init();
+	*/	static void init();
 
 	/**
 	 * Start batch rendering. Must be called after init() has been called once.

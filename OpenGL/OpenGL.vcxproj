@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\rendering\opengl\VertexBufferLayout.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationLauncher.cpp" />

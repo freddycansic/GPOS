@@ -2,12 +2,7 @@
 
 #include <GL/glew.h>
 #include <iostream>
-#include <concepts>
 #include <vector>
-
-// i really just wanted to write concept
-template<typename T>
-concept Numeric = std::integral<T> && std::floating_point<T>;
 
 // each layout component contains these 3
 struct VertexBufferElement {
@@ -29,42 +24,7 @@ public:
 	~VertexBufferLayout() { m_Elements.clear(); m_Elements.shrink_to_fit(); }
 
 	template<typename T>
-	void addElement(unsigned int count, bool normalised) {
-		std::cout << "VertexBufferLayout : Bad element type\n";
-		__debugbreak();
-	}
-
-	template<>
-	void addElement<GLfloat>(unsigned int count, bool normalised) {
-		unsigned int size = count * sizeof(GLfloat);
-
-		m_Elements.push_back({GL_FLOAT, count, size, normalised});
-		m_Stride += size; // increment stride by new component 
-	}
-
-	template<>
-	void addElement<GLuint>(unsigned int count, bool normalised) {
-		unsigned int size = count * sizeof(GLuint);
-		
-		m_Elements.push_back({ GL_UNSIGNED_INT, count, size, normalised});
-		m_Stride += size;
-	}
-	
-	template<>
-	void addElement<uint64_t>(unsigned int count, bool normalised) {
-		unsigned int size = count * sizeof(uint64_t);
-
-		m_Elements.push_back({ GL_UNSIGNED_INT64_ARB, count, size, normalised });
-		m_Stride += size;
-	}
-	
-	template<>
-	void addElement<GLbyte>(unsigned int count, bool normalised) {
-		unsigned int size = count * sizeof(GLbyte);
-
-		m_Elements.push_back({ GL_UNSIGNED_BYTE, count, size, true});
-		m_Stride += size;
-	}
+	void addElement(unsigned int count, bool normalised);
 
 	const std::vector<VertexBufferElement>& getElements() const { return m_Elements; }
 	unsigned int getStride() const { return m_Stride; }
