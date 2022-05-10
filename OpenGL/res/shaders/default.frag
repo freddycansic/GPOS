@@ -15,12 +15,11 @@ uniform u_TexSamplers {
 
 void main() {  
 
-	int index = int(v_TexID);
-
-	if (index < 0) { // if index < 0 do a color
+	if (v_TexID < 0) { // if index < 0 do a color
 		color = v_Color;
 	}
 	else { // else do a texture
+		int index = int(v_TexID);
 		sampler2D s = sampler2D(samplers[index]);
 		color = texture(s, v_TexCoord);
 	}

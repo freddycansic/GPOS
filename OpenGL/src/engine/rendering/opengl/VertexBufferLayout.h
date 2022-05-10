@@ -54,11 +54,10 @@ public:
 	void addElement<uint64_t>(unsigned int count, bool normalised) {
 		unsigned int size = count * sizeof(uint64_t);
 
-		m_Elements.push_back({ GL_UNSIGNED_INT64_VEC2_ARB, count, size, normalised });
+		m_Elements.push_back({ GL_UNSIGNED_INT64_ARB, count, size, normalised });
 		m_Stride += size;
 	}
-
-	// rlly small uints
+	
 	template<>
 	void addElement<GLbyte>(unsigned int count, bool normalised) {
 		unsigned int size = count * sizeof(GLbyte);

@@ -13,7 +13,6 @@ void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout
 	this->bind();
 	buffer.bind();
 	
-	// for each element in the layout add it
 	unsigned int index = 0, offset = 0;
 	for (const auto& element : layout.getElements()) {
 		//std::cout << "index = " << index << " count = " << element.count << " normalised = " << element.normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
