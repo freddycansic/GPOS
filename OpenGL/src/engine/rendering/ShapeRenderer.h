@@ -58,7 +58,7 @@ private:
 	}
 	
 	static void addShapeIndices(const Shape& shape);
-	static void checkBatchBegun();
+	static void checkBatchReady();
 
 public:
 	/**

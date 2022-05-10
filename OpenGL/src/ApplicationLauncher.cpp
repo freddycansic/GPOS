@@ -12,6 +12,21 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	Window::init();
 	Window window(config.window);
 
+	int numExtensions;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
+
+	std::vector<const char*> usedExtensions = {"GL_ARB_bindless_texture"};
+
+	for (unsigned int i = 0; i < numExtensions; i++) {
+		const char* supportedExtension = (const char*)glGetStringi(GL_EXTENSIONS, i);
+		
+		for (const auto& extension : usedExtensions) {
+			if (strcmp(supportedExtension, extension) == 0) {
+				std::cout << "SUPPORTED : " << extension << std::endl;
+			}
+		}
+	}
+
 	Renderer::init(window);
 
 	ImGui::CreateContext();
@@ -23,6 +38,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	app.windowHeight = window.getDisplayHeight();
 	app.init();
 
+	unsigned int frame = 1;
 	while (!window.shouldClose()) {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -35,6 +51,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		window.update();
+		std::cout << frame++ << std::endl;
 	}
 
 	app.destroy();

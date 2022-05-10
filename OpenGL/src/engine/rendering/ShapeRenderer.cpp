@@ -36,7 +36,7 @@ void ShapeRenderer::init()
 	layout.addElement<GLfloat>(3, false);
 	layout.addElement<GLfloat>(4, false);
 	layout.addElement<GLfloat>(2, false);
-	layout.addElement<uint64_t>(1, false);
+	layout.addElement<GLfloat>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
 	s_Vbo->unbind();
@@ -56,7 +56,7 @@ void ShapeRenderer::begin()
 
 void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
-	checkBatchBegun();
+	checkBatchReady();
 	addShapeIndices(shape);
 
 	shape.recalculateVertices();
@@ -72,7 +72,7 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 
 void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
-	checkBatchBegun();
+	checkBatchReady();
 	addShapeIndices(shape);
 
 	int textureSlot = -1;
@@ -102,7 +102,7 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 
 void ShapeRenderer::end()
 {
-	checkBatchBegun();
+	checkBatchReady();
 
 	s_Vao->bind();
 	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
@@ -131,9 +131,16 @@ void ShapeRenderer::end()
 	state = State::STOPPED;
 }
 
-void ShapeRenderer::checkBatchBegun() {
-	if (state == State::STOPPED) {
+void ShapeRenderer::checkBatchReady() {
+
+	switch (state) {
+	case State::STOPPED:
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call ShapeRenderer::begin()?");
+		break;
+
+	case State::UNINITIALISED:
+		throw std::runtime_error("ShapeRenderer not initialised, did you call ShapeRenderer::init()?");
+		break;
 	}
 }
 
