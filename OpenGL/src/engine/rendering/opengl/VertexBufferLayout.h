@@ -14,7 +14,7 @@ struct VertexBufferElement {
 class VertexBufferLayout
 {
 private:
-	unsigned int m_Stride; // stride = total size of each vertex in bytes
+	size_t m_Stride; // stride = total size of each vertex in bytes
 	std::vector<VertexBufferElement> m_Elements; // contents of the layout
 
 public:

@@ -7,7 +7,7 @@ out vec4 color;
 
 in vec4 v_Color;
 in vec2 v_TexCoord;
-in float v_TexID;
+in int v_TexID;
 
 uniform u_TexSamplers {
 	uvec2 samplers[1024];
@@ -19,8 +19,8 @@ void main() {
 		color = v_Color;
 	}
 	else { // else do a texture
-		int index = int(v_TexID);
-		sampler2D s = sampler2D(samplers[index]);
+//		int index = int(v_TexID);
+		sampler2D s = sampler2D(samplers[v_TexID]);
 		color = texture(s, v_TexCoord);
 	}
 	

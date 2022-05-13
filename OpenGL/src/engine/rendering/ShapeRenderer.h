@@ -13,7 +13,7 @@
 #include "shapes/Shape.h"
 
 struct TextureData {
-	unsigned int ID = 0;
+	int ID = 0;
 	uint64_t handle = 0;
 };
 
@@ -47,18 +47,14 @@ private:
 	static std::unique_ptr<UniformBuffer> s_Ubo;
 	static std::unique_ptr<Shader> s_Shader;
 
-	ShapeRenderer()
-	{
-	}
-
-	~ShapeRenderer()
-	{
-	}
 	
 	static void addShapeIndices(const Shape& shape);
 	static void checkBatchReady();
 
 public:
+	ShapeRenderer() = delete;
+	~ShapeRenderer() = delete;
+
 	/**
 	 * Initialises batch rendering, must be called once before the first begin() call.
 	 * @brief Initialises batch rendering.

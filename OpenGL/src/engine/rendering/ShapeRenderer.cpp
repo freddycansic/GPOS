@@ -33,10 +33,10 @@ void ShapeRenderer::init()
 	s_Ubo = std::make_unique<UniformBuffer>(nullptr, MAX_TEXTURES * sizeof(uint64_t));
 
 	VertexBufferLayout layout;
-	layout.addElement<GLfloat>(3, false);
-	layout.addElement<GLfloat>(4, false);
-	layout.addElement<GLfloat>(2, false);
-	layout.addElement<GLfloat>(1, false);
+	layout.addElement<float>(3, false);
+	layout.addElement<float>(4, false);
+	layout.addElement<float>(2, false);
+	layout.addElement<int>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
 	s_Vbo->unbind();
@@ -79,7 +79,7 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 
 	// check if texture already in use
 	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
-		const unsigned int textureID = s_TextureData.at(i).ID;
+		int textureID = s_TextureData.at(i).ID;
 
 		if (tex.getID() == textureID) {
 			textureSlot = textureID;
@@ -96,7 +96,7 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 
 	// modify vertices
 	for (auto& vertex : shape.getVertices()) {
-		vertex.texID = textureSlot;
+		vertex.texID = static_cast<float>(textureSlot);
 		s_VertexBatch.push_back(vertex);
 	}
 }
