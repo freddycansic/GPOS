@@ -7,7 +7,7 @@ layout(location = 3) in int a_TexID;
 
 out vec4 v_Color;
 out vec2 v_TexCoord; // v = varying
-out int v_TexID;
+out flat int v_TexID;
 
 uniform mat4 u_ViewProj;
 
