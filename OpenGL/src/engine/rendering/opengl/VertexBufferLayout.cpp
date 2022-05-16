@@ -23,3 +23,11 @@ void VertexBufferLayout::addElement<int>(unsigned int count, bool normalised) {
 	m_Elements.emplace_back(GL_INT, count, size, normalised);
 	m_Stride += size;
 }
+
+template<>
+void VertexBufferLayout::addElement<uint64_t>(unsigned int count, bool normalised) {
+	size_t size = count * sizeof(GLuint64);
+
+	m_Elements.emplace_back(GL_UNSIGNED_INT64_ARB, count, size, normalised);
+	m_Stride += size;
+}

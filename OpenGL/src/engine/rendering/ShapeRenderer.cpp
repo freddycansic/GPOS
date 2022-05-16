@@ -9,8 +9,6 @@
 
 ShapeRenderer::State ShapeRenderer::state = ShapeRenderer::State::UNINITIALISED;
 
-std::vector<TextureData> ShapeRenderer::s_TextureData;
-
 std::vector<Vertex> ShapeRenderer::s_VertexBatch;
 std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
 
@@ -36,7 +34,7 @@ void ShapeRenderer::init()
 	layout.addElement<float>(3, false);
 	layout.addElement<float>(4, false);
 	layout.addElement<float>(2, false);
-	layout.addElement<int>(1, false);
+	layout.addElement<uint64_t>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
 	s_Vbo->unbind();
@@ -63,7 +61,7 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 
 	// modify vertices and add to buffer
 	for (auto& vertex : shape.getVertices()) {
-		vertex.texID = -1;
+		vertex.texHandle = 0;
 		vertex.color = color;
 	
 		s_VertexBatch.push_back(vertex);
@@ -75,28 +73,11 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 	checkBatchReady();
 	addShapeIndices(shape);
 
-	int textureSlot = -1;
-
-	// check if texture already in use
-	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
-		int textureID = s_TextureData.at(i).ID;
-
-		if (tex.getID() == textureID) {
-			textureSlot = textureID;
-			break;
-		}
-	}
-
-	// if not then add it
-	if (textureSlot == -1) {
-		s_TextureData.emplace_back(tex.getID(), tex.getHandle());
-	}
-
 	shape.recalculateVertices();
 
 	// modify vertices
 	for (auto& vertex : shape.getVertices()) {
-		vertex.texID = static_cast<float>(textureSlot);
+		vertex.texHandle = tex.getHandle();
 		s_VertexBatch.push_back(vertex);
 	}
 }
@@ -109,14 +90,6 @@ void ShapeRenderer::end()
 	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
 	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
 	s_Shader->bind();
-	
-	// add texture handles to uniform buffer
-	std::array<uint64_t, 1024> textureHandles = {0};
-	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
-		textureHandles[i] = s_TextureData.at(i).handle;
-	}
-	
-	s_Ubo->setSubData(0, sizeof(uint64_t) * textureHandles.size(), textureHandles.data());
 
 	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 

@@ -15,16 +15,14 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	int numExtensions;
 	glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
 
-	const std::vector<const char*> usedExtensions = {"GL_ARB_bindless_texture"};
+	const std::vector<const char*> usedExtensions = {
+		"GL_ARB_bindless_texture",
+		"GL_ARB_gpu_shader_int64",
+		"GL_EXT_vertex_attrib_64bit"
+	};
 
-	for (unsigned int i = 0; i < numExtensions; i++) {
-		const auto supportedExtension = reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i));
-		
-		for (const auto& extension : usedExtensions) {
-			if (strcmp(supportedExtension, extension) == 0) {
-				std::cout << "SUPPORTED : " << extension << std::endl;
-			}
-		}
+	for (const auto& extension : usedExtensions) {
+		std::cout << extension << " : " << (glfwExtensionSupported(extension) ? " " : " NOT ") << "SUPPORTED" << std::endl;
 	}
 
 	Renderer::init(window);

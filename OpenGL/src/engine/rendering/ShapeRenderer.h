@@ -38,15 +38,11 @@ private:
 	static std::vector<Vertex> s_VertexBatch;
 	static std::vector<unsigned int> s_IndexBatch;
 
-	// keep track of which textures are being used
-	static std::vector<TextureData> s_TextureData;
-
 	static std::unique_ptr<VertexArray> s_Vao;
 	static std::unique_ptr<VertexBuffer> s_Vbo;
 	static std::unique_ptr<IndexBuffer> s_Ibo;
 	static std::unique_ptr<UniformBuffer> s_Ubo;
 	static std::unique_ptr<Shader> s_Shader;
-
 	
 	static void addShapeIndices(const Shape& shape);
 	static void checkBatchReady();
