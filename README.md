@@ -6,7 +6,7 @@
   - Colour
   - Bindless textures
 - Semi-interactive GUI
-- Not compiling on specific hardware
+- Not running on specific hardware
 
 ---
 
