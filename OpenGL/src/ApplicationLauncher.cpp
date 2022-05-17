@@ -16,7 +16,6 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 
 	const std::vector<const char*> usedExtensions = {
 		"GL_ARB_bindless_texture",
-		"GL_ARB_gpu_shader_int64"
 	};
 
 	for (const auto& extension : usedExtensions) {
