@@ -9,8 +9,7 @@
 
 ShapeRenderer::State ShapeRenderer::state = State::UNINITIALISED;
 
-std::vector<Vertex> ShapeRenderer::s_VertexBatch;
-std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
+std::vector<RenderData> ShapeRenderer::s_RenderDataBatch;
 
 std::unique_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
@@ -56,10 +55,10 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchReady();
 
-	unsigned int colorBatchIndex = 0;
+	int colorBatchIndex = -1;
 
 	for (unsigned int i = 0; i < s_RenderDataBatch.size(); i++)
-		const auto& renderData = s_RenderDataBatch[i];
+		const auto& renderData = s_RenderDataBatch.at(i);
 
 		if (renderData.texHandle == 0) {
 			colorBatchIndex = i;
@@ -67,12 +66,14 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 		}
 	}
 
-	if (colorBatchIndex == 0) {
+	if (colorBatchIndex == -1) {
 		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
 		colorBatchIndex = s_RenderDataBatch.size();
 	}
 
-	addShapeIndices(s_RenderDataBatch[i].indices, shape);
+	auto& colorBatch = s_RenderDataBatch.at(colorBatchIndex);
+
+	addShapeIndices(colorBatch.indices, shape);
 
 	shape.recalculateVertices();
 
@@ -99,8 +100,7 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 	//}
 }
 
-void ShapeRenderer::end()
-{
+void ShapeRenderer::end() {
 	checkBatchReady();
 
 	s_Vao->bind();
@@ -110,7 +110,7 @@ void ShapeRenderer::end()
 		s_Ibo->setSubData(0, indices.size(), indices.data());
 
 		s_Shader->bind();
-		s_Shader->setUniform1i()
+		s_Shader->setUniform1ui64("u_TexHandle", texHandle);
 
 		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 	}
