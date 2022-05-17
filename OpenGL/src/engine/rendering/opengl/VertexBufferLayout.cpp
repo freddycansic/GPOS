@@ -25,7 +25,7 @@ void VertexBufferLayout::addElement<int>(unsigned int count, bool normalised) {
 }
 
 template<>
-void VertexBufferLayout::addElement<uint64_t>(unsigned int count, bool normalised) {
+void VertexBufferLayout::addElement<unsigned long long>(unsigned int count, bool normalised) {
 	size_t size = count * sizeof(GLuint64);
 
 	m_Elements.emplace_back(GL_UNSIGNED_INT64_ARB, count, size, normalised);
