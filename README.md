@@ -6,7 +6,6 @@
   - Colour
   - Bindless textures
 - Semi-interactive GUI
-- Undefined behaviour artefacts
 - Not compiling on specific hardware
 
 ---
