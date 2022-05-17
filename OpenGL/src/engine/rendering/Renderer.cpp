@@ -29,7 +29,7 @@ void Renderer::init(const Window& window) {
 }
 
 void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader) {
-	Mat4 vp = s_Proj * s_View;
+	const Mat4 vp = s_Proj * s_View;
 
 	shader.bind();
 	shader.setUniformMat4("u_ViewProj", vp);

@@ -14,18 +14,18 @@ struct VertexBufferElement {
 class VertexBufferLayout
 {
 private:
-	size_t m_Stride; // stride = total size of each vertex in bytes
+	size_t m_Stride = 0; // stride = total size of each vertex in bytes
 	std::vector<VertexBufferElement> m_Elements; // contents of the layout
 
 public:
 
-	VertexBufferLayout() : m_Stride(0) {}
-	~VertexBufferLayout() { m_Elements.clear(); m_Elements.shrink_to_fit(); }
+	VertexBufferLayout() = default;
+	~VertexBufferLayout() = default;
 
 	template<typename T>
 	void addElement(unsigned int count, bool normalised);
 
 	[[nodiscard]] const std::vector<VertexBufferElement>& getElements() const { return m_Elements; }
-	[[nodiscard]] unsigned int getStride() const { return m_Stride; }
+	[[nodiscard]] size_t getStride() const { return m_Stride; }
 };
 

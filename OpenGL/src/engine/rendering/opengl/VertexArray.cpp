@@ -14,11 +14,17 @@ void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout
 	buffer.bind();
 	
 	unsigned int index = 0, offset = 0;
-	for (auto& [type, count, size, normalised] : layout.getElements()) {
-		//std::cout << "index = " << index << " count = " << element.count << " normalised = " << element.normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
+	for (const auto& [type, count, size, normalised] : layout.getElements()) {
+		std::cout << "index = " << index << " count = " << count << " normalised = " << normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
 	
 		GLAPI(glEnableVertexAttribArray(index));
-		GLAPI(glVertexAttribPointer(index++, count, type, normalised ? GL_TRUE : GL_FALSE, layout.getStride(), reinterpret_cast<const void*>(offset)));
+
+		if (type == GL_UNSIGNED_INT64_ARB) {
+			GLAPI(glVertexAttribLPointer(index++, count, type, layout.getStride(), reinterpret_cast<const void*>(offset)));
+
+		} else {
+			GLAPI(glVertexAttribPointer(index++, count, type, normalised ? GL_TRUE : GL_FALSE, layout.getStride(), reinterpret_cast<const void*>(offset)));
+		}
 		
 		offset += size;
 	}

@@ -21,11 +21,11 @@ std::string getFileContents(const std::string& filepath) {
 	return stream.str();
 }
 
-void Shader::findAndAddUniforms(const std::string& source) {
+void Shader::findAndAddUniforms(const std::string& filepath) {
 	
 	// tokenize source
 	std::vector<std::string> tokens;
-	std::stringstream ss(source);
+	std::stringstream ss(filepath);
 
 	// create vector of all tokens
 	std::string token;
@@ -86,6 +86,11 @@ void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) const {
 void Shader::setUniform1i(const std::string& name, int value) const {
 	checkUniformInShader(name);
 	GLAPI(glUniform1i(m_Uniforms.at(name), value));
+}
+
+void Shader::setUniform1ui64(const std::string& name, uint64_t value) const {
+	checkUniformInShader(name);
+	GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
 }
 
 void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) const {

@@ -7,12 +7,9 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/Debug.h"
 
-ShapeRenderer::State ShapeRenderer::state = ShapeRenderer::State::UNINITIALISED;
+ShapeRenderer::State ShapeRenderer::state = State::UNINITIALISED;
 
-std::vector<TextureData> ShapeRenderer::s_TextureData;
-
-std::vector<Vertex> ShapeRenderer::s_VertexBatch;
-std::vector<unsigned int> ShapeRenderer::s_IndexBatch;
+std::vector<RenderData> ShapeRenderer::s_RenderDataBatch;
 
 std::unique_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
@@ -36,7 +33,6 @@ void ShapeRenderer::init()
 	layout.addElement<float>(3, false);
 	layout.addElement<float>(4, false);
 	layout.addElement<float>(2, false);
-	layout.addElement<int>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
 	s_Vbo->unbind();
@@ -57,73 +53,86 @@ void ShapeRenderer::begin()
 void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchReady();
-	addShapeIndices(shape);
 
+	RenderData* colorBatch = nullptr;
+
+	// if color batch data exists use it
+	for (auto& renderData : s_RenderDataBatch) {
+		if (renderData.texHandle == 0) {
+			colorBatch = &renderData;
+			break;
+		}
+	}
+
+	// otherwise make one
+	if (colorBatch == nullptr) {
+		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
+		colorBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
+	}
+
+	// add the indices
+	addShapeIndices(colorBatch->indices, shape);
+
+	// recaculate vertex positions using current transformation
 	shape.recalculateVertices();
 
 	// modify vertices and add to buffer
 	for (auto& vertex : shape.getVertices()) {
-		vertex.texID = -1;
 		vertex.color = color;
 	
-		s_VertexBatch.push_back(vertex);
+		colorBatch->vertices.push_back(vertex);
 	}
 }
 
 void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
 	checkBatchReady();
-	addShapeIndices(shape);
 
-	int textureSlot = -1;
+	RenderData* textureBatch = nullptr;
 
-	// check if texture already in use
-	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
-		int textureID = s_TextureData.at(i).ID;
-
-		if (tex.getID() == textureID) {
-			textureSlot = textureID;
+	for (auto& renderData : s_RenderDataBatch) {
+		if (renderData.texHandle == tex.getHandle()) {
+			textureBatch = &renderData;
 			break;
 		}
 	}
 
-	// if not then add it
-	if (textureSlot == -1) {
-		s_TextureData.emplace_back(tex.getID(), tex.getHandle());
+	if (textureBatch == nullptr) {
+		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
+		textureBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
 	}
+
+	addShapeIndices(textureBatch->indices, shape);
 
 	shape.recalculateVertices();
 
 	// modify vertices
 	for (auto& vertex : shape.getVertices()) {
-		vertex.texID = static_cast<float>(textureSlot);
-		s_VertexBatch.push_back(vertex);
+		textureBatch->vertices.push_back(vertex);
 	}
 }
 
-void ShapeRenderer::end()
-{
+void ShapeRenderer::end() {
 	checkBatchReady();
 
 	s_Vao->bind();
-	s_Vbo->setSubData(0, sizeof(Vertex) * s_VertexBatch.size(), s_VertexBatch.data());
-	s_Ibo->setSubData(0, s_IndexBatch.size(), s_IndexBatch.data());
-	s_Shader->bind();
-	
-	// add texture handles to uniform buffer
-	std::array<uint64_t, 1024> textureHandles = {0};
-	for (unsigned int i = 0; i < s_TextureData.size(); i++) {
-		textureHandles[i] = s_TextureData.at(i).handle;
-	}
-	
-	s_Ubo->setSubData(0, sizeof(uint64_t) * textureHandles.size(), textureHandles.data());
 
-	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+	for (const auto& [vertices, indices, texHandle] : s_RenderDataBatch) {
+		s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), vertices.data());
+		s_Ibo->setSubData(0, indices.size(), indices.data());
+
+		s_Shader->bind();
+		s_Shader->setUniform1ui64("u_TexHandle", texHandle);
+
+		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+
+		//s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), nullptr);
+		//s_Ibo->setSubData(0, indices.size(), nullptr);
+	}
 
 	// clear buffers
-	s_VertexBatch.clear();
-	s_IndexBatch.clear();
-
+	s_RenderDataBatch.clear();
+	
 	s_Vao->unbind();
 	s_Vbo->unbind();
 	s_Ibo->unbind();
@@ -147,19 +156,19 @@ void ShapeRenderer::checkBatchReady() {
 	}
 }
 
-void ShapeRenderer::addShapeIndices(const Shape& shape) {
+void ShapeRenderer::addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
 	unsigned int maxIndex;
-	if (s_IndexBatch.empty()) {
+	if (indexBuffer.empty()) {
 		maxIndex = 0;
 	}
 	else {
 		// dereference to get value at iterator
-		maxIndex = *std::ranges::max_element(s_IndexBatch.begin(), s_IndexBatch.end()) + 1;
+		maxIndex = *std::ranges::max_element(indexBuffer.begin(), indexBuffer.end()) + 1;
 	}
 
 	for (unsigned int index : shape.getIndices()) {
-		s_IndexBatch.push_back(index + maxIndex);
+		indexBuffer.push_back(index + maxIndex);
 	}
 }
