@@ -2,6 +2,7 @@
 
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
+#include "engine/Debug.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -14,13 +15,9 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	const std::vector<const char*> usedExtensions = {
-		"GL_ARB_bindless_texture",
-	};
-
-	for (const auto& extension : usedExtensions) {
-		std::cout << extension << " : " << (glfwExtensionSupported(extension) ? "" : "NOT ") << "SUPPORTED" << std::endl;
-	}
+	Debug::checkExtensionsSupported(
+		"GL_ARB_bindless_texture"
+	);
 
 	Renderer::init(window);
 

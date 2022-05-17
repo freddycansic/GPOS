@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include <GL/glew.h>
 
 #if _WIN32
@@ -28,11 +30,26 @@
 	#define GLAPI(x) x
 #endif
 
+
+
+
 namespace Debug {
 
 	void clearGLError();
-
 	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum);
+
+	void checkExtensionsSupported();
+
+	template<typename T>
+	void checkExtensionsSupported(const T& extension) {
+		std::cout << extension << " : " << (glfwExtensionSupported(extension) ? "" : "NOT ") << "SUPPORTED" << std::endl;
+	}
+
+	template<typename First, typename ...Rest>
+	void checkExtensionsSupported(const First& first, const Rest&... otherExtensions) {
+		checkExtensionsSupported(first);
+		checkExtensionsSupported(otherExtensions...);
+	}
 
 	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 

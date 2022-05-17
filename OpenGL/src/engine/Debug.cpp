@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include <GLFW/glfw3.h>
+
 const char* severityEnumToString(GLenum severity) {
 	switch (severity) {
 	case GL_DEBUG_SEVERITY_HIGH:
@@ -77,6 +79,7 @@ const char* typeEnumToString(GLenum type) {
 	}
 }
 
+
 namespace Debug {
 
 	void clearGLError() {
@@ -99,6 +102,8 @@ namespace Debug {
 		}
 		return true;
 	}
+
+	void checkExtensionsSupported() {}
 
 	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 		const char* severityStr = severityEnumToString(severity);
