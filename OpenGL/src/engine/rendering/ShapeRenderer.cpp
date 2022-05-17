@@ -33,7 +33,6 @@ void ShapeRenderer::init()
 	layout.addElement<float>(3, false);
 	layout.addElement<float>(4, false);
 	layout.addElement<float>(2, false);
-	layout.addElement<uint64_t>(1, false);
 
 	s_Vao->addBuffer(*s_Vbo, layout);
 	s_Vbo->unbind();
@@ -55,49 +54,62 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchReady();
 
-	int colorBatchIndex = -1;
+	RenderData* colorBatch = nullptr;
 
-	for (unsigned int i = 0; i < s_RenderDataBatch.size(); i++)
-		const auto& renderData = s_RenderDataBatch.at(i);
-
+	// if color batch data exists use it
+	for (auto& renderData : s_RenderDataBatch) {
 		if (renderData.texHandle == 0) {
-			colorBatchIndex = i;
+			colorBatch = &renderData;
 			break;
 		}
 	}
 
-	if (colorBatchIndex == -1) {
+	// otherwise make one
+	if (colorBatch == nullptr) {
 		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
-		colorBatchIndex = s_RenderDataBatch.size();
+		colorBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
 	}
 
-	auto& colorBatch = s_RenderDataBatch.at(colorBatchIndex);
+	// add the indices
+	addShapeIndices(colorBatch->indices, shape);
 
-	addShapeIndices(colorBatch.indices, shape);
-
+	// recaculate vertex positions using current transformation
 	shape.recalculateVertices();
 
 	// modify vertices and add to buffer
 	for (auto& vertex : shape.getVertices()) {
-		vertex.texHandle = 0;
 		vertex.color = color;
 	
-		s_VertexBatch.push_back(vertex);
+		colorBatch->vertices.push_back(vertex);
 	}
 }
 
 void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
-	//checkBatchReady();
-	//addShapeIndices(shape);
+	checkBatchReady();
 
-	//shape.recalculateVertices();
+	RenderData* textureBatch = nullptr;
 
-	//// modify vertices
-	//for (auto& vertex : shape.getVertices()) {
-	//	vertex.texHandle = tex.getHandle();
-	//	s_VertexBatch.push_back(vertex);
-	//}
+	for (auto& renderData : s_RenderDataBatch) {
+		if (renderData.texHandle == tex.getHandle()) {
+			textureBatch = &renderData;
+			break;
+		}
+	}
+
+	if (textureBatch == nullptr) {
+		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
+		textureBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
+	}
+
+	addShapeIndices(textureBatch->indices, shape);
+
+	shape.recalculateVertices();
+
+	// modify vertices
+	for (auto& vertex : shape.getVertices()) {
+		textureBatch->vertices.push_back(vertex);
+	}
 }
 
 void ShapeRenderer::end() {
@@ -113,6 +125,9 @@ void ShapeRenderer::end() {
 		s_Shader->setUniform1ui64("u_TexHandle", texHandle);
 
 		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+
+		//s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), nullptr);
+		//s_Ibo->setSubData(0, indices.size(), nullptr);
 	}
 
 	// clear buffers

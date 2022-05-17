@@ -18,8 +18,6 @@ void Application::init() {
 
 	rect1 = Rectangle(5, 5, 5, 5);
 	rect2 = Rectangle(8, 9, 3, 10);
-
-	//std::cout << ;
 }
 
 void Application::render() {
@@ -32,12 +30,11 @@ void Application::render() {
 	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
 
 	ShapeRenderer::begin();
-	ShapeRenderer::draw(cube1, {0, 1, 0, 1});
 
-	//ShapeRenderer::draw(cube1, *tex1);
-	//ShapeRenderer::draw(cube2, *tex2);
-	//ShapeRenderer::draw(cube3, {0, 1, 0, 1});
-	//ShapeRenderer::draw(rect1, {1, 1, 0, 1});
+	ShapeRenderer::draw(cube1, *tex1);
+	ShapeRenderer::draw(cube2, *tex2);
+	ShapeRenderer::draw(cube3, {0, 1, 0, 1});
+	ShapeRenderer::draw(rect1, {1, 1, 0, 1});
 
 	ShapeRenderer::end();
 }

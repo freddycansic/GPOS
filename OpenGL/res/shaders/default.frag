@@ -2,9 +2,6 @@
 
 #extension GL_ARB_bindless_texture : require
 #extension GL_ARB_gpu_shader_int64 : require
-#extension GL_ARB_gpu_shader_fp64 : require
-#extension GL_ARB_gpu_shader5 : require
-#extension GL_ARB_vertex_attrib_64bit : require
 
 out vec4 color;
 
