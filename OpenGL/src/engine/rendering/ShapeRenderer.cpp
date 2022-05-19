@@ -54,20 +54,25 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchReady();
 
-	RenderData* colorBatch = nullptr;
+	RenderData* colorBatch;
 
-	// if color batch data exists use it
-	for (auto& renderData : s_RenderDataBatch) {
-		if (renderData.texHandle == 0) {
-			colorBatch = &renderData;
-			break;
+	// search for colorBatch (texHandle of 0)
+	if (const auto& colorBatchIt = std::ranges::find_if(s_RenderDataBatch.begin(), s_RenderDataBatch.end(),
+		[](const auto& renderData) -> bool {
+			if (renderData.texHandle == 0) {
+				return true;
+			}
+			return false;
 		}
-	}
-
-	// otherwise make one
-	if (colorBatch == nullptr) {
+	
+		// if didnt find one make one (iterator at end = not found)
+	); colorBatchIt == s_RenderDataBatch.end()) {
 		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
 		colorBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
+
+		// if it did find one then use that
+	} else {
+		colorBatch = &*colorBatchIt;
 	}
 
 	// add the indices
@@ -82,13 +87,33 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	
 		colorBatch->vertices.push_back(vertex);
 	}
+
+	//std::transform(shape.getVertices().begin(), shape.getVertices().end(), colorBatch->vertices.end(), [&color](auto& vertex) { vertex.color = color; });
 }
 
 void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
 	checkBatchReady();
 
-	RenderData* textureBatch = nullptr;
+	RenderData* textureBatch;
+
+	if (const auto& textureBatchIt = std::ranges::find_if(s_RenderDataBatch.begin(), s_RenderDataBatch.end(),
+		[&tex](const auto& renderData) -> bool {
+			if (renderData.texHandle == tex.getHandle()) {
+				return true;
+			}
+
+			return false;
+		}
+		
+	); textureBatchIt == s_RenderDataBatch.end()) {
+
+		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
+		textureBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
+
+	} else {
+		textureBatch = &*textureBatchIt;
+	}
 
 	for (auto& renderData : s_RenderDataBatch) {
 		if (renderData.texHandle == tex.getHandle()) {
@@ -97,19 +122,12 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 		}
 	}
 
-	if (textureBatch == nullptr) {
-		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
-		textureBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
-	}
-
 	addShapeIndices(textureBatch->indices, shape);
 
 	shape.recalculateVertices();
 
-	// modify vertices
-	for (auto& vertex : shape.getVertices()) {
-		textureBatch->vertices.push_back(vertex);
-	}
+	// add vertices to batch to be rendered with this texture
+	textureBatch->vertices.insert(textureBatch->vertices.end(), shape.getVertices().begin(), shape.getVertices().end());
 }
 
 void ShapeRenderer::end() {
@@ -125,9 +143,6 @@ void ShapeRenderer::end() {
 		s_Shader->setUniform1ui64("u_TexHandle", texHandle);
 
 		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-
-		//s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), nullptr);
-		//s_Ibo->setSubData(0, indices.size(), nullptr);
 	}
 
 	// clear buffers
