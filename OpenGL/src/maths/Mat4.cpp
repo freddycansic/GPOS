@@ -39,7 +39,7 @@ const Mat4 Mat4::identity = {
 Mat4& Mat4::operator=(Mat4&& other) noexcept {
 	
 	if (this != &other) {
-		m_Data = std::move(other.m_Data);
+		m_Data = other.m_Data;
 		return *this;
 	}
 	

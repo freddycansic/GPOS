@@ -79,7 +79,6 @@ const char* typeEnumToString(GLenum type) {
 	}
 }
 
-
 namespace Debug {
 
 	void clearGLError() {

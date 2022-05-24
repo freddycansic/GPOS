@@ -9,7 +9,6 @@ void Shape::recalculateVertices() {
 
 	const Mat4 transformMatrix = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
-	// TODO copy bad
 	const std::vector<Vertex>& unitVertices = getUnitVertices();
 
 	for (unsigned int i = 0; i < unitVertices.size(); i++) {

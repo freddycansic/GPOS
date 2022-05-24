@@ -20,6 +20,7 @@ protected:
 
 public:
 	Shape() = default;
+	virtual ~Shape() = default;
 
 	/**
 	 * @brief Recalculates the positions of a shape's vertices using values from its m_Transform.
