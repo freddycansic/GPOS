@@ -9,12 +9,11 @@
 
 ShapeRenderer::State ShapeRenderer::state = State::UNINITIALISED;
 
-std::vector<RenderData> ShapeRenderer::s_RenderDataBatch;
+std::vector<Batch> ShapeRenderer::s_Batches;
 
 std::unique_ptr<VertexArray> ShapeRenderer::s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
-std::unique_ptr<UniformBuffer> ShapeRenderer::s_Ubo = nullptr;
 std::unique_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
 
 void ShapeRenderer::init()
@@ -27,7 +26,6 @@ void ShapeRenderer::init()
 	s_Vao = std::make_unique<VertexArray>();
 	s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 	s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
-	s_Ubo = std::make_unique<UniformBuffer>(nullptr, MAX_TEXTURES * sizeof(uint64_t));
 
 	VertexBufferLayout layout;
 	layout.addElement<float>(3, false);
@@ -54,20 +52,22 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 {
 	checkBatchReady();
 
-	RenderData* colorBatch = nullptr;
+	Batch* colorBatch;
 
-	// if color batch data exists use it
-	for (auto& renderData : s_RenderDataBatch) {
-		if (renderData.texHandle == 0) {
-			colorBatch = &renderData;
-			break;
+	// search for colorBatch (texHandle of 0)
+	if (const auto& colorBatchIt = std::ranges::find_if(s_Batches.begin(), s_Batches.end(),
+		[](const auto& renderData) -> bool {
+			return renderData.texHandle == 0;
 		}
-	}
+	
+		// if didnt find one make one (iterator at end = not found)
+	); colorBatchIt == s_Batches.end()) {
+		s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
+		colorBatch = &s_Batches.at(s_Batches.size() - 1);
 
-	// otherwise make one
-	if (colorBatch == nullptr) {
-		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
-		colorBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
+		// if it did find one then use that
+	} else {
+		colorBatch = &*colorBatchIt;
 	}
 
 	// add the indices
@@ -88,50 +88,54 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 {
 	checkBatchReady();
 
-	RenderData* textureBatch = nullptr;
+	Batch* textureBatch;
 
-	for (auto& renderData : s_RenderDataBatch) {
+	if (const auto& textureBatchIt = std::ranges::find_if(s_Batches.begin(), s_Batches.end(),
+		[&tex](const auto& renderData) -> bool {
+			return renderData.texHandle == tex.getHandle();
+		}
+		
+	); textureBatchIt == s_Batches.end()) {
+
+		s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
+		textureBatch = &s_Batches.at(s_Batches.size() - 1);
+
+	} else {
+		textureBatch = &*textureBatchIt;
+	}
+
+	for (auto& renderData : s_Batches) {
 		if (renderData.texHandle == tex.getHandle()) {
 			textureBatch = &renderData;
 			break;
 		}
 	}
 
-	if (textureBatch == nullptr) {
-		s_RenderDataBatch.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
-		textureBatch = &s_RenderDataBatch.at(s_RenderDataBatch.size() - 1);
-	}
-
 	addShapeIndices(textureBatch->indices, shape);
 
 	shape.recalculateVertices();
 
-	// modify vertices
-	for (auto& vertex : shape.getVertices()) {
-		textureBatch->vertices.push_back(vertex);
-	}
+	// add vertices to batch to be rendered with this texture
+	textureBatch->vertices.insert(textureBatch->vertices.end(), shape.getVertices().begin(), shape.getVertices().end());
 }
 
 void ShapeRenderer::end() {
 	checkBatchReady();
 
 	s_Vao->bind();
+	s_Shader->bind();
 
-	for (const auto& [vertices, indices, texHandle] : s_RenderDataBatch) {
+	for (const auto& [vertices, indices, texHandle] : s_Batches) {
 		s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), vertices.data());
 		s_Ibo->setSubData(0, indices.size(), indices.data());
 
-		s_Shader->bind();
 		s_Shader->setUniform1ui64("u_TexHandle", texHandle);
 
 		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-
-		//s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), nullptr);
-		//s_Ibo->setSubData(0, indices.size(), nullptr);
 	}
 
 	// clear buffers
-	s_RenderDataBatch.clear();
+	s_Batches.clear();
 	
 	s_Vao->unbind();
 	s_Vbo->unbind();
@@ -152,7 +156,6 @@ void ShapeRenderer::checkBatchReady() {
 
 	default:
 		break;
-
 	}
 }
 

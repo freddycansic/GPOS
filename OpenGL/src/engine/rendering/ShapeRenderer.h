@@ -6,13 +6,12 @@
 #include "engine/rendering/opengl/VertexArray.h"
 #include "engine/rendering/opengl/VertexBuffer.h"
 #include "engine/rendering/opengl/IndexBuffer.h"
-#include "engine/rendering/opengl/UniformBuffer.h"
 #include "engine/rendering/opengl/Shader.h"
 #include "engine/rendering/Vertex.h"
 
 #include "shapes/Shape.h"
 
-struct RenderData {
+struct Batch {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	uint64_t texHandle;
@@ -36,12 +35,11 @@ private:
 	static State state;
 
 	// vertex + index data
-	static std::vector<RenderData> s_RenderDataBatch;
+	static std::vector<Batch> s_Batches;
 
 	static std::unique_ptr<VertexArray> s_Vao;
 	static std::unique_ptr<VertexBuffer> s_Vbo;
 	static std::unique_ptr<IndexBuffer> s_Ibo;
-	static std::unique_ptr<UniformBuffer> s_Ubo;
 	static std::unique_ptr<Shader> s_Shader;
 	
 	static void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape);
