@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <unordered_map>
 
 #include <GL/glew.h>
 
@@ -30,10 +31,9 @@
 	#define GLAPI(x) x
 #endif
 
-
-
-
 namespace Debug {
+
+	inline std::unordered_map<const char*, bool> supportedExtensions;
 
 	void clearGLError();
 	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum);
@@ -42,7 +42,11 @@ namespace Debug {
 
 	template<typename T>
 	void checkExtensionsSupported(const T& extension) {
-		std::cout << extension << " : " << (glfwExtensionSupported(extension) ? "" : "NOT ") << "SUPPORTED" << std::endl;
+		const bool supported = glfwExtensionSupported(extension);
+
+		supportedExtensions[extension] = supported;
+
+		std::cout << extension << " : " << (supported ? "" : "NOT ") << "SUPPORTED" << std::endl;
 	}
 
 	template<typename First, typename ...Rest>

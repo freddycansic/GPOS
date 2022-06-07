@@ -81,7 +81,7 @@ const char* typeEnumToString(GLenum type) {
 
 
 namespace Debug {
-
+	
 	void clearGLError() {
 		while (glGetError() != GL_NO_ERROR);
 	}

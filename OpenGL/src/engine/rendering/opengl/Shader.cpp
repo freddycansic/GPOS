@@ -7,8 +7,8 @@
 #include "engine/Debug.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
-	for (const auto& element : map) {
-		os << "Name = " << element.first << " Location = " << element.second << "\n";
+	for (const auto& [name, location] : map) {
+		os << "Name = " << name << " Location = " << location << "\n";
 	}
 	return os;
 }
@@ -90,7 +90,12 @@ void Shader::setUniform1i(const std::string& name, int value) const {
 
 void Shader::setUniform1ui64(const std::string& name, uint64_t value) const {
 	checkUniformInShader(name);
-	GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
+
+	if (Debug::supportedExtensions.at("GL_ARB_gpu_shader_int64")) {
+		GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
+	} else {
+		GLAPI(glUniform2ui(m_Uniforms.at(name), static_cast<uint32_t>(value), static_cast<uint32_t>(value >> 32)));
+	}
 }
 
 void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) const {

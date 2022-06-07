@@ -16,7 +16,8 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	Debug::checkExtensionsSupported(
-		"GL_ARB_bindless_texture"
+		"GL_ARB_bindless_texture",
+		"GL_ARB_gpu_shader_int64"
 	);
 
 	Renderer::init(window);
