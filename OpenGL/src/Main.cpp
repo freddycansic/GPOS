@@ -4,9 +4,10 @@
 int main()
 {
 	ApplicationConfig config;
-	config.window.width = 1920 * 3 / 4;
-	config.window.height = 1080 * 3 / 4;
+	//config.window.width = 1920 * 3 / 4;
+	//config.window.height = 1080 * 3 / 4;
 	config.window.title = "Hi";
+	config.window.maxSize = true;
 
 	// all variables inside app must have a default constructor or have default values
 	Application app;

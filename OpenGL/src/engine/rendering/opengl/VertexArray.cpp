@@ -15,7 +15,7 @@ void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout
 	
 	unsigned int index = 0, offset = 0;
 	for (const auto& [type, count, size, normalised] : layout.getElements()) {
-		std::cout << "index = " << index << " count = " << count << " normalised = " << normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
+		//std::cout << "index = " << index << " count = " << count << " normalised = " << normalised << " stride = " << layout.getStride() << " offset = " << offset << std::endl;
 	
 		GLAPI(glEnableVertexAttribArray(index));
 

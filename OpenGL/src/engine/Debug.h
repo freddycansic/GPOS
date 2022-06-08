@@ -21,7 +21,12 @@
 	#define CLEAR
 #endif
 
-#define ASSERT(x) if (!(x)) __debugbreak()
+#ifdef _MSC_VER
+	#define ASSERT(x) if (!(x)) __debugbreak()
+#else
+	#include <cassert>
+	#define ASSERT(x) if (!(x)) assert(false)
+#endif
 
 #define DEBUG
 

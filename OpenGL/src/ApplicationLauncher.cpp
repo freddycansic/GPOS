@@ -27,8 +27,6 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
 
-	app.windowWidth = Window::getDisplayWidth();
-	app.windowHeight = Window::getDisplayHeight();
 	app.init();
 
 	while (!window.shouldClose()) {

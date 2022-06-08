@@ -27,7 +27,4 @@ public:
 	void render();
 	void imGuiRender();
 	void destroy();
-
-	// TODO bad
-	int windowWidth = 0.0f, windowHeight = 0.0f;
 };
