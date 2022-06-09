@@ -20,6 +20,13 @@ struct Vec3 {
 	// convert vec4 to vec3
 	explicit Vec3(const Vec4& vec4);
 
+	Vec3 operator+(const Vec3& other) const;
+	Vec3 operator-(const Vec3& other) const;
+	[[nodiscard]] Vec3 normalise() const;
+	[[nodiscard]] float magnitude() const;
+	[[nodiscard]] float dot(const Vec3& other) const;
+	[[nodiscard]] Vec3 cross(const Vec3& other) const;
+	[[nodiscard]] float angleBetween(const Vec3& other) const;
 };
 
 struct Vec4 {

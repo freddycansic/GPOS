@@ -23,7 +23,14 @@ void Application::init() {
 void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
+	const float radius = 10.0f;
+	const float camX = sin(Window::getCurrentTime()) * radius;
+	const float camZ = cos(Window::getCurrentTime()) * radius;
+	Mat4 view = Mat4::lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
+
+	//Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
+
+	Renderer::setViewMatrix(view);
 
 	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
 	cube1.setRotation(cubeTransform.rot.x, Window::getCurrentTime() * 50, Window::getCurrentTime() * 35);

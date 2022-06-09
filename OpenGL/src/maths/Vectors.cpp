@@ -12,6 +12,47 @@ Vec3::Vec3(const Vec4& vec4) :
 {
 }
 
+Vec3 Vec3::operator+(const Vec3& other) const
+{
+	return { x + other.x, y + other.y, z + other.z };
+}
+
+Vec3 Vec3::operator-(const Vec3& other) const
+{
+	return { x - other.x, y - other.y, z - other.z };
+}
+
+float Vec3::magnitude() const
+{
+	return sqrt(x * x + y * y + z * z);
+}
+
+float Vec3::dot(const Vec3& other) const
+{
+	return x * other.x + y * other.y + z * other.z;
+}
+
+Vec3 Vec3::cross(const Vec3& other) const
+{
+	return {
+		y * other.z - z * other.y,
+		z * other.x - x * other.z,
+		x * other.y - y * other.x
+	};
+}
+
+float Vec3::angleBetween(const Vec3& other) const
+{
+	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
+}
+
+
+Vec3 Vec3::normalise() const
+{
+	const auto mag = magnitude();
+	return { x / mag, y / mag, z / mag };
+}
+
 Vec4::Vec4(float x, float y, float z, float w) :
 	x(x), y(y), z(z), w(w)
 {

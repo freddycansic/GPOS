@@ -1,6 +1,7 @@
 #include "Mat4.h"
 
 #include "Maths.h"
+#include "Vectors.h"
 
 Mat4::Mat4(
 	float r1c1, float r1c2, float r1c3, float r1c4,
@@ -99,9 +100,9 @@ Mat4 Mat4::scale(float xScale, float yScale, float zScale) const
 
 Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 {
-	float xRadRotate = Maths::radians(xRotate);
-	float yRadRotate = Maths::radians(yRotate);
-	float zRadRotate = Maths::radians(zRotate);
+	const float xRadRotate = Maths::radians(xRotate);
+	const float yRadRotate = Maths::radians(yRotate);
+	const float zRadRotate = Maths::radians(zRotate);
 
 	return (
 		*this
@@ -181,23 +182,46 @@ Mat4 Mat4::operator*(const Mat4& other) const {
 }
 
 Mat4 Mat4::ortho(float left, float right, float top, float bottom, float near, float far) {
-	return Mat4(
+	return {
 		2 / (right - left), 0, 0, -(right + left) / (right - left),
 		0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
 		0, 0, -2 / (far - near), -(far + near) / (far - near),
 		0, 0, 0, 1
-	);
+	};
 }
 
 Mat4 Mat4::perspective(float fovDeg, float aspect, float near, float far) {
-	float fov = Maths::radians(fovDeg);
-	float f = 1 / tan(fov/2);
+	const float fov = Maths::radians(fovDeg);
+	const float f = 1 / tan(fov/2);
 
-	return Mat4(
-		f/aspect, 0, 0, 0,
+	return {
+		f / aspect, 0, 0, 0,
 		0, f, 0, 0,
 		0, 0, (far + near) / (near - far), (2 * far * near) / (near - far),
 		0, 0, -1, 0
+	};
+}
+
+Mat4 Mat4::lookAt(const Vec3& up, const Vec3& direction, const Vec3& position)
+{
+	const Vec3 right = up.cross(direction);
+
+	return
+
+	Mat4(
+		right.x, right.y, right.z, 0,
+		up.x, up.y, up.z, 0,
+		direction.x, direction.y, direction.z, 0,
+		0, 0, 0, 1
+	)
+
+	*
+
+	Mat4(
+		1, 0, 0, -position.x,
+		0, 1, 0, -position.y,
+		0, 0, 1, -position.z,
+		0, 0, 0, 1
 	);
 }
 

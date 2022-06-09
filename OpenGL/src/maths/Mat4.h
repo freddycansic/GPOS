@@ -2,7 +2,8 @@
 
 #include <array>
 #include <iostream>
-#include <string>
+
+struct Vec3;
 
 class Mat4
 {
@@ -192,6 +193,11 @@ public:
 	 * @return Perspective projection matrix.
 	*/
 	static Mat4 perspective(float fov, float aspect, float near = -1.0f, float far = 1.0f);
+
+	/**
+	 * @brief Generate a look at matrix.
+	 */
+	static Mat4 lookAt(const Vec3& up, const Vec3& direction, const Vec3& position);
 
 	/**
 	 * @brief 4x4 identity matrix.
