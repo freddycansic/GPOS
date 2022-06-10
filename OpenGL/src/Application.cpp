@@ -23,10 +23,10 @@ void Application::init() {
 void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	const float radius = 10.0f;
+	constexpr float radius = 30.0f;
 	const float camX = sin(Window::getCurrentTime()) * radius;
 	const float camZ = cos(Window::getCurrentTime()) * radius;
-	Mat4 view = Mat4::lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
+	const Mat4 view = Mat4::lookAt(Vec3(camX, 0.0f, camZ), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 
 	//Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 

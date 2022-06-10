@@ -202,16 +202,18 @@ Mat4 Mat4::perspective(float fovDeg, float aspect, float near, float far) {
 	};
 }
 
-Mat4 Mat4::lookAt(const Vec3& up, const Vec3& direction, const Vec3& position)
+Mat4 Mat4::lookAt(const Vec3& position, const Vec3& target, const Vec3& up)
 {
-	const Vec3 right = up.cross(direction);
+	const Vec3 camDir = (position - target).normalise(); // vector from cam pos to target
+	const Vec3 camRight = (camDir.cross(up)).normalise(); // vector pointing in right direction from camera
+	const Vec3 camUp = camDir.cross(camRight); // vector pointing in up direction from camera
 
 	return
 
 	Mat4(
-		right.x, right.y, right.z, 0,
-		up.x, up.y, up.z, 0,
-		direction.x, direction.y, direction.z, 0,
+		camRight.x, camRight.y, camRight.z, 0,
+		camUp.x, camUp.y, camUp.z, 0,
+		camDir.x, camDir.y, camDir.z, 0,
 		0, 0, 0, 1
 	)
 
