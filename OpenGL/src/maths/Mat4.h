@@ -197,7 +197,7 @@ public:
 	/**
 	 * @brief Generate a look at matrix.
 	 */
-	static Mat4 lookAt(const Vec3& up, const Vec3& direction, const Vec3& position);
+	static Mat4 lookAt(const Vec3& position, const Vec3& target, const Vec3& up);
 
 	/**
 	 * @brief 4x4 identity matrix.

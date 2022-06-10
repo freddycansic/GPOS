@@ -20,6 +20,10 @@ void Application::init() {
 	rect2 = Rectangle(8, 9, 3, 10);
 }
 
+Vec3 cameraPos = { 0.0f, 0.0f, 10.0f };
+Vec3 cameraFront = { 0.0f, 0.0f, -1.0f };
+Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
+
 void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
@@ -27,6 +31,12 @@ void Application::render() {
 	const float camX = sin(Window::getCurrentTime()) * radius;
 	const float camZ = cos(Window::getCurrentTime()) * radius;
 	const Mat4 view = Mat4::lookAt(Vec3(camX, 0.0f, camZ), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+
+	//if (glfwGetKey(GLFW_KEY_W) == GLFW_PRESS) {
+	//	
+	//}
+
+	//const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 	//Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
