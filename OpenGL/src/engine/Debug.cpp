@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 
-#include <GLFW/glfw3.h>
-
 const char* severityEnumToString(GLenum severity) {
 	switch (severity) {
 	case GL_DEBUG_SEVERITY_HIGH:

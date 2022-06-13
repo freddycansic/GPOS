@@ -1,8 +1,7 @@
 #include "Renderer.h"
 
 #include "engine/Debug.h"
-
-int Renderer::s_WindowWidth = 0, Renderer::s_WindowHeight = 0;
+#include "engine/Window.h"
 
 // init matrices
 Mat4 Renderer::s_Persp;
@@ -10,18 +9,15 @@ Mat4 Renderer::s_Ortho;
 Mat4 Renderer::s_Proj;
 Mat4 Renderer::s_View;
 
-void Renderer::init(const Window& window) {
+void Renderer::init() {
 	GLAPI(glEnable(GL_BLEND)); // enable alpha blending
 	GLAPI(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	//glBlendEquation(GL_FUNC_ADD); default
 	
 	GLAPI(glEnable(GL_DEPTH_TEST));
 
-	s_WindowWidth = window.getWidth();
-	s_WindowHeight = window.getHeight();
-
-	s_Persp = Mat4::perspective(45.0f, static_cast<float>(s_WindowWidth) / static_cast<float>(s_WindowHeight), 1.0f, 1000.0f);
-	s_Ortho = Mat4::ortho(static_cast<float>(-s_WindowWidth) / 2, static_cast<float>(s_WindowWidth) / 2, static_cast<float>(-s_WindowHeight) / 2, static_cast<float>(s_WindowHeight) / 2, -1.0f, 1.0f);
+	s_Persp = Mat4::perspective(45.0f, static_cast<float>(Window::width()) / static_cast<float>(Window::height()), 1.0f, 1000.0f);
+	s_Ortho = Mat4::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, -1.0f, 1.0f);
 
 	// use persp projection by default
 	s_Proj = s_Persp;

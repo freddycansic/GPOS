@@ -4,6 +4,8 @@
 #include <sstream>
 #include <vector>
 
+#include <GL/glew.h>
+
 #include "engine/Debug.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
@@ -95,7 +97,7 @@ void Shader::setUniform1ui64(const std::string& name, uint64_t value) const {
 		GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
 	} else {
 		// if we cant send 64 bits in one go send them in 2 halves by bit shifting
-		GLAPI(glUniform2ui(m_Uniforms.at(name), static_cast<uint32_t>(value), static_cast<uint32_t>(value >> 32)));
+		GLAPI(glUniform2ui(m_Uniforms.at(name), static_cast<GLuint>(value), static_cast<GLuint>(value >> 32)));
 	}
 }
 

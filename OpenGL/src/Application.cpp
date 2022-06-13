@@ -5,6 +5,7 @@
 #include "engine/Files.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
+#include "engine/Window.h"
 
 void Application::init() {
 	ShapeRenderer::init();
@@ -28,8 +29,8 @@ void Application::render() {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
 	constexpr float radius = 30.0f;
-	const float camX = sin(Window::getCurrentTime()) * radius;
-	const float camZ = cos(Window::getCurrentTime()) * radius;
+	const float camX = sin(Window::currentTime()) * radius;
+	const float camZ = cos(Window::currentTime()) * radius;
 	const Mat4 view = Mat4::lookAt(Vec3(camX, 0.0f, camZ), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 
 	//if (glfwGetKey(GLFW_KEY_W) == GLFW_PRESS) {
@@ -43,7 +44,7 @@ void Application::render() {
 	Renderer::setViewMatrix(view);
 
 	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
-	cube1.setRotation(cubeTransform.rot.x, Window::getCurrentTime() * 50, Window::getCurrentTime() * 35);
+	cube1.setRotation(cubeTransform.rot.x, Window::currentTime() * 50, Window::currentTime() * 35);
 	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
 
 	ShapeRenderer::begin();
