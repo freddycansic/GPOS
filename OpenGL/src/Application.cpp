@@ -3,11 +3,15 @@
 #include "imgui/imgui.h"
 
 #include "engine/Files.h"
+#include "engine/Input.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
 
-void Application::init() {
+#include "maths/Maths.h"
+
+void Application::init()
+{
 	ShapeRenderer::init();
 
 	tex1 = std::make_unique<Texture>(Files::internal("textures/image.png"));
@@ -19,25 +23,37 @@ void Application::init() {
 
 	rect1 = Rectangle(5, 5, 5, 5);
 	rect2 = Rectangle(8, 9, 3, 10);
+
+	Window::beginCursorCapture();
 }
 
-Vec3 cameraPos = { 0.0f, 0.0f, 10.0f };
-Vec3 cameraFront = { 0.0f, 0.0f, -1.0f };
+Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
+Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
 
-void Application::render() {
+void Application::render()
+{
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	constexpr float radius = 30.0f;
-	const float camX = sin(Window::currentTime()) * radius;
-	const float camZ = cos(Window::currentTime()) * radius;
-	const Mat4 view = Mat4::lookAt(Vec3(camX, 0.0f, camZ), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+	cameraFront = Input::getCameraDirection();
 
-	//if (glfwGetKey(GLFW_KEY_W) == GLFW_PRESS) {
-	//	
-	//}
+	// camera position movement
+	const float moveSpeed = 10.0f * (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT) ? 2.0f : 1.0f);
 
-	//const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	if (Input::isKeyDown(GLFW_KEY_W)) {
+		cameraPos += cameraFront * moveSpeed * Window::deltatime();
+	}
+	if (Input::isKeyDown(GLFW_KEY_S)) {
+		cameraPos -= cameraFront * moveSpeed * Window::deltatime();
+	}
+	if (Input::isKeyDown(GLFW_KEY_D)) {
+		cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+	}
+	if (Input::isKeyDown(GLFW_KEY_A)) {
+		cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+	}
+
+	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 	//Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
@@ -57,7 +73,8 @@ void Application::render() {
 	ShapeRenderer::end();
 }
 
-void Application::imGuiRender() {
+void Application::imGuiRender()
+{
 	ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 	
@@ -100,6 +117,7 @@ void Application::imGuiRender() {
 	ImGui::End();
 }
 
-void Application::destroy() {
+void Application::destroy()
+{
 
 }

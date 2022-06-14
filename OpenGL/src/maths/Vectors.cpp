@@ -22,6 +22,18 @@ Vec3 Vec3::operator-(const Vec3& other) const
 	return { x - other.x, y - other.y, z - other.z };
 }
 
+void Vec3::operator+=(const Vec3& other) {
+	x += other.x;
+	y += other.y;
+	z += other.z;
+}
+
+void Vec3::operator-=(const Vec3& other) {
+	x -= other.x;
+	y -= other.y;
+	z -= other.z;
+}
+
 float Vec3::magnitude() const
 {
 	return sqrt(x * x + y * y + z * z);

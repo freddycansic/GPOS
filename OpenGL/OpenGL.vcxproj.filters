@@ -32,6 +32,7 @@
     <ClCompile Include="src\maths\Maths.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBufferLayout.cpp" />
+    <ClCompile Include="src\engine\Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />

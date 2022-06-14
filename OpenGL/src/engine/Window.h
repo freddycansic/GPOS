@@ -21,6 +21,8 @@ namespace Window
 
 	void update();
 	[[nodiscard]] int shouldClose();
+	void beginCursorCapture();
+	void endCursorCapture();
 	
 	// time
 	[[nodiscard]] float currentTime();

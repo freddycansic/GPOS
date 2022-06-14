@@ -5,6 +5,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "engine/Debug.h"
+#include "engine/Input.h"
 #include "engine/rendering/Renderer.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
@@ -28,6 +29,10 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	app.init();
 
 	while (!Window::shouldClose()) {
+#ifdef DEBUG
+		if (Input::isKeyDown(GLFW_KEY_ESCAPE)) break;
+#endif
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();

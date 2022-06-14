@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <concepts>
+
 #include "Mat4.h"
 
 struct Vec2 {
@@ -22,6 +24,14 @@ struct Vec3 {
 
 	Vec3 operator+(const Vec3& other) const;
 	Vec3 operator-(const Vec3& other) const;
+	void operator+=(const Vec3& other);
+	void operator-=(const Vec3& other);
+
+	template <typename T> requires std::convertible_to<T, float>
+	Vec3 operator*(const T& scalar) {
+		return { x * scalar, y * scalar, z * scalar };
+	}
+
 	[[nodiscard]] Vec3 normalise() const;
 	[[nodiscard]] float magnitude() const;
 	[[nodiscard]] float dot(const Vec3& other) const;

@@ -3,6 +3,7 @@
 
 #include "Debug.h"
 #include "Window.h"
+#include "Input.h"
 
 GLFWwindow* m_ID;
 int m_Width, m_Height, s_DisplayWidth, s_DisplayHeight;
@@ -11,6 +12,7 @@ bool s_Initialised;
 
 namespace Window
 {
+	// setup window and opengl context
 	void init(const WindowConfig& config)
 	{
 		// initialise GLFW
@@ -23,7 +25,7 @@ namespace Window
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		// glfw core profile = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
+		// GLFW_OPENGL_CORE_PROFILE = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
 		const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		s_DisplayWidth = vidmode->width;
@@ -69,6 +71,7 @@ namespace Window
 		GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
 		//GLAPI(glEnable(GL_DEPTH_TEST));
 		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, 0));
+		GLAPI(glfwSetCursorPosCallback(Window::GLFWWindow(), Input::Callbacks::mouseCallback));
 
 		// turn off notifications
 		GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));
@@ -87,18 +90,18 @@ namespace Window
 		glfwPollEvents();
 	}
 
-	float currentTime() { return static_cast<float>(glfwGetTime()); }
-
-	float deltatime() { return m_Delta;  }
-
 	int shouldClose() { return glfwWindowShouldClose(m_ID); }
 
-	int displayHeight() { return s_DisplayHeight; }
+	void beginCursorCapture() { glfwSetInputMode(m_ID, GLFW_CURSOR, GLFW_CURSOR_DISABLED); }
+	void endCursorCapture() { glfwSetInputMode(m_ID, GLFW_CURSOR, GLFW_CURSOR_NORMAL); }
 
+	float currentTime() { return static_cast<float>(glfwGetTime()); }
+	float deltatime() { return m_Delta;  }
+
+	int displayHeight() { return s_DisplayHeight; }
 	int displayWidth() { return s_DisplayWidth; }
 
 	int height() { return m_Height; }
-
 	int width() { return m_Width; }
 
 	GLFWwindow* GLFWWindow() { return m_ID;  };

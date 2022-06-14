@@ -18,6 +18,8 @@ private:
 	Cube cube1, cube2, cube3;
 	Rectangle rect1, rect2;
 
+	float pitch = 0.0f, yaw = -90.0f;
+
 	Transform cubeTransform, viewTransform;
 
 public:
