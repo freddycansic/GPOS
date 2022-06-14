@@ -4,6 +4,7 @@
 
 #include "engine/Files.h"
 #include "engine/Input.h"
+#include "engine/Keys.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
@@ -35,29 +36,47 @@ void Application::render()
 {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	cameraFront = Input::getCameraDirection();
-
-	// camera position movement
-	const float moveSpeed = 10.0f * (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT) ? 2.0f : 1.0f);
-
-	if (Input::isKeyDown(GLFW_KEY_W)) {
-		cameraPos += cameraFront * moveSpeed * Window::deltatime();
-	}
-	if (Input::isKeyDown(GLFW_KEY_S)) {
-		cameraPos -= cameraFront * moveSpeed * Window::deltatime();
-	}
-	if (Input::isKeyDown(GLFW_KEY_D)) {
-		cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-	}
-	if (Input::isKeyDown(GLFW_KEY_A)) {
-		cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-	}
-
-	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	
 
 	//Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
-	Renderer::setViewMatrix(view);
+
+	if (Input::isKeyDown(Keys::SPACE)) {
+		constexpr float radius = 30.0f;
+		const float yawRad = Maths::radians(Input::getMouseYaw());
+		const float pitchRad = Maths::radians(Input::getMousePitch());
+
+		cameraPos = {
+			-sin(yawRad) * radius * cos(pitchRad),
+			-sin(pitchRad) * radius,
+			-cos(yawRad) * radius * cos(pitchRad)
+		};
+
+		const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		Renderer::setViewMatrix(view);
+
+	} else {
+		cameraFront = Input::getCameraDirection();
+
+		// camera position movement
+		const float moveSpeed = 10.0f * (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT) ? 2.0f : 1.0f);
+
+		if (Input::isKeyDown(Keys::W)) {
+			cameraPos += cameraFront * moveSpeed * Window::deltatime();
+		}
+		if (Input::isKeyDown(GLFW_KEY_S)) {
+			cameraPos -= cameraFront * moveSpeed * Window::deltatime();
+		}
+		if (Input::isKeyDown(GLFW_KEY_D)) {
+			cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+		}
+		if (Input::isKeyDown(GLFW_KEY_A)) {
+			cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+		}
+
+		const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		Renderer::setViewMatrix(view);
+	}
 
 	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
 	cube1.setRotation(cubeTransform.rot.x, Window::currentTime() * 50, Window::currentTime() * 35);
@@ -65,8 +84,13 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
+	std::cout << "POS " << cameraPos << std::endl;
+	std::cout << "FRONT " << cameraFront << std::endl;
+
 	ShapeRenderer::draw(cube1, *tex1);
 	ShapeRenderer::draw(cube2, *tex2);
+	Cube facing(cameraFront, 5.0f);
+	ShapeRenderer::draw(facing, { 1.0f, 0.0f, 0.0f, 1.0f });
 	ShapeRenderer::draw(cube3, {0, 1, 0, 1});
 	ShapeRenderer::draw(rect1, {1, 1, 0, 1});
 

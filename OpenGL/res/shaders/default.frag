@@ -14,11 +14,11 @@ in vec2 v_TexCoord;
 //	uniform uvec2 u_TexHandle;
 //#endif
 
-layout(bindless_sampler) uniform uvec2 u_TexHandle;
+layout(bindless_sampler) uniform sampler2D u_TexHandle;
 
 void main() {  
 	
-	if (u_TexHandle == uvec2(0)) { // if index < 0 do a color
+	if (uvec2(u_TexHandle) == uvec2(0)) { // if index < 0 do a color
 		color = v_Color;
 	}
 	else { // else do a texture

@@ -38,6 +38,10 @@ Cube::Cube(float x, float y, float z, float size)
 	recalculateVertices();
 }
 
+Cube::Cube(const Vec3& pos, float size) : Cube(pos.x, pos.y, pos.z, size)
+{
+}
+
 void Cube::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
 }

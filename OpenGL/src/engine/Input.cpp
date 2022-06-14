@@ -18,6 +18,7 @@ namespace Input
 	float lastY = static_cast<float>(Window::height()) / 2.0f;
 
 	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
+	Vec3 cameraDirection;
 
 	constexpr float sens = 0.1f;
 
@@ -25,7 +26,7 @@ namespace Input
 	{
 		const auto xPos = static_cast<float>(xpos);
 		const auto yPos = static_cast<float>(ypos);
-
+		
 		xOffset = (xPos - lastX) * sens;
 		yOffset = (lastY - yPos) * sens; // inverted as highest y pos is bottom of screen
 
@@ -36,6 +37,12 @@ namespace Input
 		pitch -= yOffset * sens;
 
 		pitch = std::clamp(pitch, -89.0f, 89.0f);
+
+		cameraDirection = Vec3(
+			cos(Maths::radians(yaw)) * cos(Maths::radians(pitch)),
+			sin(Maths::radians(pitch)),
+			sin(Maths::radians(yaw)) * cos(Maths::radians(pitch))
+		).normalise();
 	}
 
 	float getLastMouseOffsetX() { return xOffset; }
@@ -43,14 +50,6 @@ namespace Input
 	Vec2 getLastMouseOffset() { return { xOffset, yOffset }; }
 	float getMouseYaw() { return yaw; }
 	float getMousePitch() { return pitch; }
-
-	Vec3 getCameraDirection()
-	{
-		return Vec3(
-			cos(Maths::radians(yaw)) * cos(Maths::radians(pitch)),
-			sin(Maths::radians(pitch)),
-			sin(Maths::radians(yaw)) * cos(Maths::radians(pitch)))
-		.normalise();
-	}
+	Vec3 getCameraDirection() { return cameraDirection; }
 
 }

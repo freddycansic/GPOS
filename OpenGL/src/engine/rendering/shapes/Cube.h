@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Shape.h"
-#include "maths/Mat4.h"
 
 class Cube : public Shape
 {
@@ -13,6 +12,7 @@ private:
 
 public:
 	Cube(float x, float y, float z, float size);
+	Cube(const Vec3& pos, float size);
 	Cube() = default;
 
 	std::vector<Vertex>& getVertices() override;
