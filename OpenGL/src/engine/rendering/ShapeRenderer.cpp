@@ -16,6 +16,9 @@ std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
 std::unique_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
 
+unsigned int ShapeRenderer::maxIndex = 0;
+unsigned int ShapeRenderer::lastMaxShapeIndex = 0;
+
 void ShapeRenderer::init()
 {
 	// TODO FIX ME DDDD:
@@ -134,7 +137,7 @@ void ShapeRenderer::end() {
 
 		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 	}
-	std::cout << s_Batches.size() << std::endl;
+
 	// clear buffers
 	s_Batches.clear();
 	
@@ -163,16 +166,24 @@ void ShapeRenderer::checkBatchReady() {
 void ShapeRenderer::addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
-	unsigned int maxIndex;
+
+	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
+
 	if (indexBuffer.empty()) {
-		maxIndex = 0;
+		maxIndex = -1;
 	}
 	else {
-		// dereference to get value at iterator
-		maxIndex = *std::ranges::max_element(indexBuffer.begin(), indexBuffer.end()) + 1;
+		// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
+		//						cM = 4, lM = 4,		cM = 5, lM = 4
+
+		// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
+
+		maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
 	}
 
+	lastMaxShapeIndex = currentMaxShapeIndex;
+
 	for (unsigned int index : shape.getIndices()) {
-		indexBuffer.push_back(index + maxIndex);
+		indexBuffer.push_back(index + maxIndex + 1);
 	}
 }

@@ -20,7 +20,7 @@ namespace Input
 	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
 	Vec3 cameraDirection;
 
-	constexpr float sens = 0.1f;
+	constexpr float sens = 0.2f;
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
