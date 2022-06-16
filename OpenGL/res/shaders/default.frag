@@ -14,7 +14,7 @@ in vec2 v_TexCoord;
 //	uniform uvec2 u_TexHandle;
 //#endif
 
-layout(bindless_sampler) uniform sampler2D u_TexHandle;
+layout(bindless_sampler) uniform uvec2 u_TexHandle;
 
 void main() {  
 	

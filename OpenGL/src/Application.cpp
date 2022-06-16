@@ -31,18 +31,24 @@ void Application::init()
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
 Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
+Vec3 cameraOrbit, cameraTarget;
+Mat4 view;
+
+constexpr float radius = 30.0f;
 
 void Application::render()
 {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
-	
-
 	//Renderer::setViewMatrix(Mat4::identity.rotate(-viewTransform.rot.x, -viewTransform.rot.y, viewTransform.rot.z).translate(viewTransform.tra.x, viewTransform.tra.y, viewTransform.tra.z).scale(viewTransform.sca.x, viewTransform.sca.y, viewTransform.sca.z));
 
+	// lock orbit point
+	if (Input::isKeyDown(Keys::F)) cameraOrbit = cameraTarget;
 
+	// begin orbiting
 	if (Input::isKeyDown(Keys::SPACE)) {
-		constexpr float radius = 30.0f;
+		cameraTarget = cameraOrbit;
+
 		const float yawRad = Maths::radians(Input::getMouseYaw());
 		const float pitchRad = Maths::radians(Input::getMousePitch());
 
@@ -51,12 +57,12 @@ void Application::render()
 			-sin(pitchRad) * radius,
 			-cos(yawRad) * radius * cos(pitchRad)
 		};
-
-		const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		Renderer::setViewMatrix(view);
+		
+		view = Mat4::lookAt(cameraPos, cameraOrbit, cameraUp);
 
 	} else {
 		cameraFront = Input::getCameraDirection();
+		cameraTarget = cameraPos + cameraFront * radius;
 
 		// camera position movement
 		const float moveSpeed = 10.0f * (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT) ? 2.0f : 1.0f);
@@ -74,9 +80,10 @@ void Application::render()
 			cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
 		}
 
-		const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		Renderer::setViewMatrix(view);
+		view = Mat4::lookAt(cameraPos, cameraTarget, cameraUp);
 	}
+
+	Renderer::setViewMatrix(view);
 
 	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
 	cube1.setRotation(cubeTransform.rot.x, Window::currentTime() * 50, Window::currentTime() * 35);
@@ -84,12 +91,9 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	std::cout << "POS " << cameraPos << std::endl;
-	std::cout << "FRONT " << cameraFront << std::endl;
-
 	ShapeRenderer::draw(cube1, *tex1);
 	ShapeRenderer::draw(cube2, *tex2);
-	Cube facing(cameraFront, 5.0f);
+	Cube facing(cameraTarget, 0.5f);
 	ShapeRenderer::draw(facing, { 1.0f, 0.0f, 0.0f, 1.0f });
 	ShapeRenderer::draw(cube3, {0, 1, 0, 1});
 	ShapeRenderer::draw(rect1, {1, 1, 0, 1});
