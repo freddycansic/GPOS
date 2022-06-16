@@ -3,7 +3,7 @@
 #include "maths/Mat4.h"
 
 void Shape::recalculateVertices() {
-	if (m_Vertices.size() == 0) { // if recalculating from the constructor
+	if (m_Vertices.empty()) { // if recalculating from the constructor
 		m_Vertices = getUnitVertices(); // first fill vector with modifiable values for later
 	}
 
@@ -18,16 +18,26 @@ void Shape::recalculateVertices() {
 		// apply transformation to unit vertex and store in result vertex
 		resultPos = Vec3(Vec4(unitPos, 1.0f) * transformMatrix);
 	}
+
+	m_Moved = false;
+}
+
+bool Shape::hasMoved() const
+{
+	return m_Moved;
 }
 
 void Shape::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { xScale, yScale, zScale };
+	m_Moved = true;
 }
 
 void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
 	m_Transform.rot = { xRotation, yRotation, zRotation };
+	m_Moved = true;
 }
 
 void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
 	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
+	m_Moved = true;
 }

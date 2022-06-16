@@ -53,7 +53,7 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	checkBatchReady();
 
 	Batch* colorBatch;
-
+	
 	// search for colorBatch (texHandle of 0)
 	if (const auto& colorBatchIt = std::ranges::find_if(s_Batches.begin(), s_Batches.end(),
 		[](const auto& renderData) -> bool {
@@ -64,7 +64,6 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	); colorBatchIt == s_Batches.end()) {
 		s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
 		colorBatch = &s_Batches.at(s_Batches.size() - 1);
-
 		// if it did find one then use that
 	} else {
 		colorBatch = &*colorBatchIt;
@@ -74,7 +73,8 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	addShapeIndices(colorBatch->indices, shape);
 
 	// recaculate vertex positions using current transformation
-	shape.recalculateVertices();
+	if (shape.hasMoved())
+		shape.recalculateVertices();
 
 	// modify vertices and add to buffer
 	for (auto& vertex : shape.getVertices()) {
@@ -113,7 +113,8 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 
 	addShapeIndices(textureBatch->indices, shape);
 
-	shape.recalculateVertices();
+	if (shape.hasMoved())
+		shape.recalculateVertices();
 
 	// add vertices to batch to be rendered with this texture
 	textureBatch->vertices.insert(textureBatch->vertices.end(), shape.getVertices().begin(), shape.getVertices().end());
@@ -133,7 +134,7 @@ void ShapeRenderer::end() {
 
 		Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 	}
-
+	std::cout << s_Batches.size() << std::endl;
 	// clear buffers
 	s_Batches.clear();
 	
