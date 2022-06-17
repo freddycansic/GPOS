@@ -25,7 +25,7 @@ void Application::init()
 	rect1 = Rectangle(5, 5, 5, 5);
 	rect2 = Rectangle(8, 9, 3, 10);
 
-	const int numCubes = std::pow(12, 3);
+	const int numCubes = std::pow(75, 3);
 	const float sideLength = std::cbrt(numCubes);
 
 	for (float i = -sideLength; i < sideLength; i += 2) {

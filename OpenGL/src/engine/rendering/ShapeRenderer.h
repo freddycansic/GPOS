@@ -28,8 +28,8 @@ private:
 	};
 
 	// little bit scared these magic numbers will come back to bite me
-	constexpr static size_t MAX_VERTICES = 50000;
-	constexpr static size_t MAX_INDICES = 75000; // <-- INDICES LIMIT LIMITS TO ~1728 cubes
+	constexpr static size_t MAX_VERTICES = 12000000;
+	constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~1728 cubes
 	constexpr static size_t MAX_TEXTURES = 1024;
 	
 	static State state;
