@@ -25,6 +25,17 @@ void Application::init()
 	rect1 = Rectangle(5, 5, 5, 5);
 	rect2 = Rectangle(8, 9, 3, 10);
 
+	const int numCubes = std::pow(75, 3);
+	const float sideLength = std::cbrt(numCubes);
+
+	for (float i = -sideLength; i < sideLength; i += 2) {
+		for (float j = -sideLength; j < sideLength; j += 2) {
+			for (float k = -sideLength; k < sideLength; k += 2) {
+				cubes.push_back(std::pair<Cube, Vec4>({ i, j, k, 1.0f }, { static_cast <float> (rand()) / static_cast <float> (RAND_MAX), static_cast <float> (rand()) / static_cast <float> (RAND_MAX), static_cast <float> (rand()) / static_cast <float> (RAND_MAX), 1.0f }));
+			}
+		}
+	}
+
 	Window::beginCursorCapture();
 }
 
@@ -60,7 +71,8 @@ void Application::render()
 		
 		view = Mat4::lookAt(cameraPos, cameraOrbit, cameraUp);
 
-	} else {
+	}
+	else {
 		cameraFront = Input::getCameraDirection();
 		cameraTarget = cameraPos + cameraFront * radius;
 
@@ -91,12 +103,16 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	ShapeRenderer::draw(cube1, *tex1);
-	ShapeRenderer::draw(cube2, *tex2);
-	Cube facing(cameraTarget, 0.5f);
-	ShapeRenderer::draw(facing, { 1.0f, 0.0f, 0.0f, 1.0f });
-	ShapeRenderer::draw(cube3, {0, 1, 0, 1});
-	ShapeRenderer::draw(rect1, {1, 1, 0, 1});
+	//ShapeRenderer::draw(cube1, *tex1);
+	//ShapeRenderer::draw(cube2, *tex2);
+	//Cube facing(cameraFront, 5.0f);
+	//ShapeRenderer::draw(facing, { 1.0f, 0.0f, 0.0f, 1.0f });
+	//ShapeRenderer::draw(cube3, {0, 1, 0, 1});
+	//ShapeRenderer::draw(rect1, {1, 1, 0, 1});
+
+	for (auto& cube : cubes) {
+		ShapeRenderer::draw(cube.first, cube.second);
+	}
 
 	ShapeRenderer::end();
 }

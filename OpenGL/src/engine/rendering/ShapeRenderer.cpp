@@ -16,6 +16,9 @@ std::unique_ptr<VertexBuffer> ShapeRenderer::s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> ShapeRenderer::s_Ibo = nullptr;
 std::unique_ptr<Shader> ShapeRenderer::s_Shader = nullptr;
 
+unsigned int ShapeRenderer::maxIndex = 0;
+unsigned int ShapeRenderer::lastMaxShapeIndex = 0;
+
 void ShapeRenderer::init()
 {
 	// TODO FIX ME DDDD:
@@ -53,7 +56,7 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	checkBatchReady();
 
 	Batch* colorBatch;
-
+	
 	// search for colorBatch (texHandle of 0)
 	if (const auto& colorBatchIt = std::ranges::find_if(s_Batches.begin(), s_Batches.end(),
 		[](const auto& renderData) -> bool {
@@ -64,7 +67,6 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	); colorBatchIt == s_Batches.end()) {
 		s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
 		colorBatch = &s_Batches.at(s_Batches.size() - 1);
-
 		// if it did find one then use that
 	} else {
 		colorBatch = &*colorBatchIt;
@@ -74,7 +76,8 @@ void ShapeRenderer::draw(Shape& shape, const Vec4& color)
 	addShapeIndices(colorBatch->indices, shape);
 
 	// recaculate vertex positions using current transformation
-	shape.recalculateVertices();
+	if (shape.hasMoved())
+		shape.recalculateVertices();
 
 	// modify vertices and add to buffer
 	for (auto& vertex : shape.getVertices()) {
@@ -113,7 +116,8 @@ void ShapeRenderer::draw(Shape& shape, const Texture& tex)
 
 	addShapeIndices(textureBatch->indices, shape);
 
-	shape.recalculateVertices();
+	if (shape.hasMoved())
+		shape.recalculateVertices();
 
 	// add vertices to batch to be rendered with this texture
 	textureBatch->vertices.insert(textureBatch->vertices.end(), shape.getVertices().begin(), shape.getVertices().end());
@@ -162,16 +166,24 @@ void ShapeRenderer::checkBatchReady() {
 void ShapeRenderer::addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
-	unsigned int maxIndex;
+
+	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
+
 	if (indexBuffer.empty()) {
-		maxIndex = 0;
+		maxIndex = -1;
 	}
 	else {
-		// dereference to get value at iterator
-		maxIndex = *std::ranges::max_element(indexBuffer.begin(), indexBuffer.end()) + 1;
+		// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
+		//						cM = 4, lM = 4,		cM = 5, lM = 4
+
+		// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
+
+		maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
 	}
 
+	lastMaxShapeIndex = currentMaxShapeIndex;
+
 	for (unsigned int index : shape.getIndices()) {
-		indexBuffer.push_back(index + maxIndex);
+		indexBuffer.push_back(index + maxIndex + 1);
 	}
 }

@@ -18,6 +18,8 @@ protected:
 	*/
 	std::vector<Vertex> m_Vertices;
 
+	bool m_Moved = true;
+
 public:
 	Shape() = default;
 	virtual ~Shape() = default;
@@ -46,6 +48,8 @@ public:
 	 * @return A const reference to a vector of the shape's indices.
 	*/
 	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const = 0;
+
+	[[nodiscard]] bool hasMoved() const;
 
 	/**
 	 * @brief Set the scale for the shape.

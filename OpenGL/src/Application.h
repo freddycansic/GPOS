@@ -20,6 +20,8 @@ private:
 
 	float pitch = 0.0f, yaw = -90.0f;
 
+	std::vector<std::pair<Cube, Vec4>> cubes;
+
 	Transform cubeTransform, viewTransform;
 
 public:
