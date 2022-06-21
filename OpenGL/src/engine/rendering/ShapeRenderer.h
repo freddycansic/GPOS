@@ -25,6 +25,7 @@ namespace ShapeRenderer
 	 * @param color Color to use as a Vec4.
 	**/
 	void draw(Shape& shape, const Vec4& color);
+	void draw(Shape&& shape, const Vec4& color);
 
 	/**
 	 * Draw a shape using a texture.
@@ -33,6 +34,7 @@ namespace ShapeRenderer
 	 * @param tex Texture to use.
 	**/
 	void draw(Shape& shape, const Texture& tex);
+	void draw(Shape&& shape, const Texture& tex);
 
 	/**
 	 * Ends the batch and draws to the screen.

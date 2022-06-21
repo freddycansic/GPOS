@@ -8,4 +8,7 @@ namespace Maths {
 
 	float radians(float degrees);
 	float degrees(float radians);
+
+	float randf(float min, float max);
+	int randint(int min, int max);
 }

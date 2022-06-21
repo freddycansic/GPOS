@@ -36,6 +36,11 @@ void Application::init()
 		}
 	}
 
+	//for (int i = 0; i < 100; ++i) {
+	//	std::cout << Maths::randf(0.0f, 10.0f) << std::endl;
+	//	std::cout << Maths::randint(0, 10) << std::endl;
+	//}
+
 	Window::beginCursorCapture();
 }
 
@@ -58,7 +63,7 @@ void Application::render()
 
 	// begin orbiting
 	if (Input::isKeyDown(Keys::SPACE)) {
-		cameraTarget = cameraOrbit;
+		//cameraTarget = cameraOrbit;
 
 		const float yawRad = Maths::radians(Input::getMouseYaw());
 		const float pitchRad = Maths::radians(Input::getMousePitch());
@@ -77,18 +82,18 @@ void Application::render()
 		cameraTarget = cameraPos + cameraFront * radius;
 
 		// camera position movement
-		const float moveSpeed = 10.0f * (Input::isKeyDown(GLFW_KEY_LEFT_SHIFT) ? 2.0f : 1.0f);
+		const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
 
 		if (Input::isKeyDown(Keys::W)) {
 			cameraPos += cameraFront * moveSpeed * Window::deltatime();
 		}
-		if (Input::isKeyDown(GLFW_KEY_S)) {
+		if (Input::isKeyDown(Keys::S)) {
 			cameraPos -= cameraFront * moveSpeed * Window::deltatime();
 		}
-		if (Input::isKeyDown(GLFW_KEY_D)) {
+		if (Input::isKeyDown(Keys::D)) {
 			cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
 		}
-		if (Input::isKeyDown(GLFW_KEY_A)) {
+		if (Input::isKeyDown(Keys::A)) {
 			cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
 		}
 
@@ -113,6 +118,9 @@ void Application::render()
 	for (auto& cube : cubes) {
 		ShapeRenderer::draw(cube.first, cube.second);
 	}
+
+	//ShapeRenderer::draw(Cube(0, 0, 0, 1), { 1, 1, 0, 1 });
+	//ShapeRenderer::draw(Cube(0, 1, 4, 1), *tex1);
 
 	ShapeRenderer::end();
 }

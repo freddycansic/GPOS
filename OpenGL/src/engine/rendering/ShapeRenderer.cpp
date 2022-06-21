@@ -117,6 +117,11 @@ namespace ShapeRenderer {
 		}
 	}
 
+	void draw(Shape&& shape, const Vec4& color)
+	{
+		draw(shape, color);
+	}
+
 	void draw(Shape& shape, const Texture& tex)
 	{
 		checkBatchReady();
@@ -152,6 +157,11 @@ namespace ShapeRenderer {
 
 		// add vertices to batch to be rendered with this texture
 		textureBatch->vertices.insert(textureBatch->vertices.end(), shape.getVertices().begin(), shape.getVertices().end());
+	}
+
+	void draw(Shape&& shape, const Texture& tex)
+	{
+		draw(shape, tex);
 	}
 
 	void end() {
