@@ -2,31 +2,36 @@
 
 #include <algorithm>
 
+#include "Keys.h"
 #include "Window.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
+#define KEY_JUST_RELEASED 2
+
 namespace Input
 {
-	bool isKeyDown(int key)
-	{
-		return glfwGetKey(Window::GLFWWindow(), key) == GLFW_PRESS;
-	}
+	constexpr float sens = 0.2f;
 
 	// initial mouse pos = middle of the screen
 	float lastX = static_cast<float>(Window::width()) / 2.0f;
 	float lastY = static_cast<float>(Window::height()) / 2.0f;
+	bool firstMouseMove = true;
 
 	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
 	Vec3 cameraDirection;
-
-	constexpr float sens = 0.2f;
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
 		const auto xPos = static_cast<float>(xpos);
 		const auto yPos = static_cast<float>(ypos);
 		
+		if (firstMouseMove) {
+			lastX = xPos;
+			lastY = yPos;
+			firstMouseMove = false;
+		}
+
 		xOffset = (xPos - lastX) * sens;
 		yOffset = (lastY - yPos) * sens; // inverted as highest y pos is bottom of screen
 
@@ -52,4 +57,29 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
+	int keyStates[Keys::LAST];
+
+	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		// if the key was pressed and now we're releasing it
+		if (keyStates[key] == GLFW_PRESS && action == GLFW_RELEASE) {
+			// then it must have just been released
+			keyStates[key] = KEY_JUST_RELEASED;
+
+		} else {
+			keyStates[key] = action;
+		}
+
+		std::cout << key << " : " << action << std::endl;
+	}
+
+	bool isKeyDown(int key)
+	{
+		return keyStates[key] == GLFW_PRESS;
+	}
+
+	bool isKeyJustReleased(int key)
+	{
+		return keyStates[key] == KEY_JUST_RELEASED;
+	}
 }
