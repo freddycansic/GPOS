@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="src\engine\Input.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBufferLayout.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Line.h" />
     <ClInclude Include="src\engine\Input.h" />
     <ClInclude Include="src\engine\Keys.h" />
     <ClInclude Include="src\engine\rendering\shapes\Cube.h" />

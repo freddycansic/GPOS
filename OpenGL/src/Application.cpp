@@ -35,6 +35,8 @@ void Application::init()
 	//		}
 	//	}
 	//}
+
+	Window::beginCursorCapture();
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
@@ -52,7 +54,7 @@ void Application::render()
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
 	// lock orbit point
-	if (Input::isKeyDown(Keys::F)) cameraOrbit = cameraTarget;
+	//if (Input::isKeyDown(Keys::F)) cameraOrbit = cameraTarget;
 
 	// begin orbiting
 	//if (Input::isKeyDown(Keys::SPACE)) {
@@ -70,17 +72,17 @@ void Application::render()
 	//	view = Mat4::lookAt(cameraPos, cameraOrbit, cameraUp);
 
 	//}
-	if (Input::isKeyJustReleased(Keys::SPACE)) {
-		if (capture) {
-			Window::endCursorCapture();
-			capture = false;
-		} else {
-			Window::beginCursorCapture();
-			capture = true;
-		}
-	}
+	//if (Input::isKeyJustReleased(Keys::SPACE)) {
+	//	if (capture) {
+	//		Window::endCursorCapture();
+	//		capture = false;
+	//	} else {
+	//		Window::beginCursorCapture();
+	//		capture = true;
+	//	}
+	//}
 
-	if(capture) {
+	if(true) {
 		cameraFront = Input::getCameraDirection();
 		cameraTarget = cameraPos + cameraFront * radius;
 
@@ -111,19 +113,7 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	//ShapeRenderer::draw(cube1, *tex1);
-	//ShapeRenderer::draw(cube2, *tex2);
-	//Cube facing(cameraFront, 5.0f);
-	//ShapeRenderer::draw(facing, { 1.0f, 0.0f, 0.0f, 1.0f });
-	//ShapeRenderer::draw(cube3, {0, 1, 0, 1});
-	//ShapeRenderer::draw(rect1, {1, 1, 0, 1});
-
-	for (auto& cube : scene) {
-		ShapeRenderer::draw(cube, {1.0f, 1.0f, 0.0f, 1.0f});
-	}
-
-	//ShapeRenderer::draw(Cube(0, 0, 0, 1), { 1, 1, 0, 1 });
-	//ShapeRenderer::draw(Cube(0, 1, 4, 1), *tex1);
+	ShapeRenderer::draw(Cube(cameraOrbit.x, cameraOrbit.y, cameraOrbit.z, 0.5f), { 1.0f, 1.0f, 0.0f, 1.0f });
 
 	ShapeRenderer::end();
 }
@@ -132,10 +122,6 @@ void Application::imGuiRender()
 {
 	ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
-
-	if (ImGui::Button("H")) {
-		scene.push_back(Cube(0, 0, 0, 1));
-	}
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 	
