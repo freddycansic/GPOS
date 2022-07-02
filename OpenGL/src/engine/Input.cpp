@@ -7,8 +7,6 @@
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
-#define KEY_JUST_RELEASED 2
-
 namespace Input
 {
 	constexpr float sens = 0.2f;
@@ -57,20 +55,11 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	int keyStates[Keys::LAST];
+	int keyStates[Keys::LAST] = {-1};
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		// if the key was pressed and now we're releasing it
-		if (keyStates[key] == GLFW_PRESS && action == GLFW_RELEASE) {
-			// then it must have just been released
-			keyStates[key] = KEY_JUST_RELEASED;
-
-		} else {
-			keyStates[key] = action;
-		}
-
-		std::cout << key << " : " << action << std::endl;
+		keyStates[key] = action;
 	}
 
 	bool isKeyDown(int key)
@@ -80,6 +69,15 @@ namespace Input
 
 	bool isKeyJustReleased(int key)
 	{
-		return keyStates[key] == KEY_JUST_RELEASED;
+		return keyStates[key] == GLFW_RELEASE;
 	}
+
+	void Callbacks::resetKeyEvents()
+	{
+		for (auto& key : keyStates)
+		{
+			key = -1;
+		}
+	}
+
 }

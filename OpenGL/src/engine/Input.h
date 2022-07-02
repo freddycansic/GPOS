@@ -23,6 +23,7 @@ namespace Input
 		void GLAPIENTRY mouseCallback(GLFWwindow* window, double xpos, double ypos);
 
 		void GLAPIENTRY keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void resetKeyEvents();
 	}
 
 }
