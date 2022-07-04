@@ -50,6 +50,7 @@ bool capture = false;
 constexpr float radius = 30.0f;
 
 Vec2 a = { -3, -5 };
+float increment = 0.05f;
 
 void Application::render()
 {
@@ -108,21 +109,13 @@ void Application::render()
 	}
 
 	Renderer::setViewMatrix(view);
-
-	cube1.setTranslation(cubeTransform.tra.x, cubeTransform.tra.y, cubeTransform.tra.z);
-	cube1.setRotation(cubeTransform.rot.x, Window::currentTime() * 50, Window::currentTime() * 35);
-	cube1.setScale(cubeTransform.sca.x, cubeTransform.sca.y, cubeTransform.sca.z);
-
+	
 	ShapeRenderer::begin();
 
-	//ShapeRenderer::draw(Cube(cameraOrbit.x, cameraOrbit.y, cameraOrbit.z, 0.5f), { 1.0f, 1.0f, 0.0f, 1.0f });
-
-	float increment;
-
-	if (a.y > 3)
-		increment = -0.05f;
-	if (a.y > -3)
-		increment = 0.05f;
+	if (a.y > 3.0f)
+		increment = -0.01f;
+	if (a.y < -3.0f)
+		increment = 0.01f;
 
 	a.y += increment;
 
