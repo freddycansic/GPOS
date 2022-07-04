@@ -50,7 +50,7 @@ bool capture = false;
 constexpr float radius = 30.0f;
 
 Vec2 a = { -3, -5 };
-float increment = 0.05f;
+float increment = 3.0f;
 
 void Application::render()
 {
@@ -85,37 +85,36 @@ void Application::render()
 	//	}
 	//}
 
-	if(true) {
-		cameraFront = Input::getCameraDirection();
-		cameraTarget = cameraPos + cameraFront * radius;
+	cameraFront = Input::getCameraDirection();
+	cameraTarget = cameraPos + cameraFront;
 
-		// camera position movement
-		const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
+	// camera position movement
+	const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
 
-		if (Input::isKeyDown(Keys::W)) {
-			cameraPos += cameraFront * moveSpeed * Window::deltatime();
-		}
-		if (Input::isKeyDown(Keys::S)) {
-			cameraPos -= cameraFront * moveSpeed * Window::deltatime();
-		}
-		if (Input::isKeyDown(Keys::D)) {
-			cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-		}
-		if (Input::isKeyDown(Keys::A)) {
-			cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-		}
-
-		view = Mat4::lookAt(cameraPos, cameraTarget, cameraUp);
+	//if (Input::isKeyDown(Keys::W)) {
+	if (Input::isKeyDown(Keys::W)) {
+		cameraPos += cameraFront * moveSpeed * Window::deltatime();
 	}
+	if (Input::isKeyDown(Keys::S)) {
+		cameraPos -= cameraFront * moveSpeed * Window::deltatime();
+	}
+	if (Input::isKeyDown(Keys::D)) {
+		cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+	}
+	if (Input::isKeyDown(Keys::A)) {
+		cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+	}
+
+	view = Mat4::lookAt(cameraPos, cameraTarget, cameraUp);
 
 	Renderer::setViewMatrix(view);
 	
 	ShapeRenderer::begin();
 
 	if (a.y > 3.0f)
-		increment = -0.01f;
+		increment = -3.0f * Window::deltatime();
 	if (a.y < -3.0f)
-		increment = 0.01f;
+		increment = 3.0f * Window::deltatime();
 
 	a.y += increment;
 
@@ -124,10 +123,11 @@ void Application::render()
 	const Vec2 b = { 1, 2 };
 	ShapeRenderer::draw(Cube(b.x, b.y, 0, 0.3f), { 0.0f, 1.0f, 0.0f, 1.0f });
 
-	const float m = (a.y - b.y) / (a.x - b.x); // gradient of line ab
+	const float m = (a.y - b.y) / (a.x - b.x);
+	const float nm = -1 / m;
 
-	const float nm = -1 / m; // normal gradient of line ab
-	const float ac = (a.y - a.x * nm); // y intercept of norm ab at point a
+	// point a
+	const float ac = (a.y - a.x * nm);
 
 	constexpr float r = 0.3f;
 
@@ -138,7 +138,8 @@ void Application::render()
 	const float y1 = x1 * nm + ac;
 	const float y2 = x2 * nm + ac;
 
-	const float bc = (b.y - b.x * nm); // y intercept of norm ab at point a
+	// point b
+	const float bc = (b.y - b.x * nm);
 
 	const float x3 = (-nm * bc + nm * b.y + b.x + std::sqrt(std::pow(nm, 2) * std::pow(r, 2) - std::pow(nm, 2) * std::pow(b.x, 2) + 2 * nm * b.x * b.y - 2 * nm * bc * b.x + 2 * bc * b.y + std::pow(r, 2) - std::pow(bc, 2) - std::pow(b.y, 2))) / (std::pow(nm, 2) + 1);
 
