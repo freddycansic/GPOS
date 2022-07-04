@@ -27,7 +27,7 @@ public:
 	/**
 	 * @brief Recalculates the positions of a shape's vertices using values from its m_Transform.
 	*/
-	void recalculateVertices();
+	virtual void recalculateVertices();
 	
 	/**
 	 * @brief Get all the vertices which describe the unit shape.

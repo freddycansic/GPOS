@@ -49,6 +49,8 @@ bool capture = false;
 
 constexpr float radius = 30.0f;
 
+Vec2 a = { -3, -5 };
+
 void Application::render()
 {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
@@ -113,7 +115,49 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	ShapeRenderer::draw(Cube(cameraOrbit.x, cameraOrbit.y, cameraOrbit.z, 0.5f), { 1.0f, 1.0f, 0.0f, 1.0f });
+	//ShapeRenderer::draw(Cube(cameraOrbit.x, cameraOrbit.y, cameraOrbit.z, 0.5f), { 1.0f, 1.0f, 0.0f, 1.0f });
+
+	float increment;
+
+	if (a.y > 3)
+		increment = -0.05f;
+	if (a.y > -3)
+		increment = 0.05f;
+
+	a.y += increment;
+
+	ShapeRenderer::draw(Cube(a.x, a.y, 0, 0.3f), { 1.0f, 0.0f, 0.0f, 1.0f });
+
+	const Vec2 b = { 1, 2 };
+	ShapeRenderer::draw(Cube(b.x, b.y, 0, 0.3f), { 0.0f, 1.0f, 0.0f, 1.0f });
+
+	const float m = (a.y - b.y) / (a.x - b.x); // gradient of line ab
+
+	const float nm = -1 / m; // normal gradient of line ab
+	const float ac = (a.y - a.x * nm); // y intercept of norm ab at point a
+
+	constexpr float r = 0.3f;
+
+	const float x1 = (-nm*ac+nm*a.y+a.x+std::sqrt(std::pow(nm, 2) * std::pow(r, 2) - std::pow(nm, 2) * std::pow(a.x, 2) + 2*nm*a.x*a.y - 2*nm*ac*a.x + 2*ac*a.y + std::pow(r, 2) - std::pow(ac, 2) - std::pow(a.y, 2))) / (std::pow(nm, 2) + 1);
+
+	const float x2 = (-nm * ac + nm * a.y + a.x - std::sqrt(std::pow(nm, 2) * std::pow(r, 2) - std::pow(nm, 2) * std::pow(a.x, 2) + 2 * nm * a.x * a.y - 2 * nm * ac * a.x + 2 * ac * a.y + std::pow(r, 2) - std::pow(ac, 2) - std::pow(a.y, 2))) / (std::pow(nm, 2) + 1);
+	
+	const float y1 = x1 * nm + ac;
+	const float y2 = x2 * nm + ac;
+
+	const float bc = (b.y - b.x * nm); // y intercept of norm ab at point a
+
+	const float x3 = (-nm * bc + nm * b.y + b.x + std::sqrt(std::pow(nm, 2) * std::pow(r, 2) - std::pow(nm, 2) * std::pow(b.x, 2) + 2 * nm * b.x * b.y - 2 * nm * bc * b.x + 2 * bc * b.y + std::pow(r, 2) - std::pow(bc, 2) - std::pow(b.y, 2))) / (std::pow(nm, 2) + 1);
+
+	const float x4 = (-nm * bc + nm * b.y + b.x - std::sqrt(std::pow(nm, 2) * std::pow(r, 2) - std::pow(nm, 2) * std::pow(b.x, 2) + 2 * nm * b.x * b.y - 2 * nm * bc * b.x + 2 * bc * b.y + std::pow(r, 2) - std::pow(bc, 2) - std::pow(b.y, 2))) / (std::pow(nm, 2) + 1);
+
+	const float y3 = x3 * nm + bc;
+	const float y4 = x4 * nm + bc;
+
+	ShapeRenderer::draw(Cube(x1, y1, 0, 0.15f), { 0.0f, 1.0f, 1.0f, 1.0f });
+	ShapeRenderer::draw(Cube(x2, y2, 0, 0.15f), { 0.0f, 1.0f, 1.0f, 1.0f });
+	ShapeRenderer::draw(Cube(x3, y3, 0, 0.15f), { 0.0f, 1.0f, 1.0f, 1.0f });
+	ShapeRenderer::draw(Cube(x4, y4, 0, 0.15f), { 0.0f, 1.0f, 1.0f, 1.0f });
 
 	ShapeRenderer::end();
 }
