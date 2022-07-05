@@ -43,7 +43,6 @@ Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
 Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
 Vec3 cameraOrbit, cameraTarget;
-Mat4 view;
 
 bool capture = false;
 
@@ -86,7 +85,6 @@ void Application::render()
 	//}
 
 	cameraFront = Input::getCameraDirection();
-	cameraTarget = cameraPos + cameraFront;
 
 	// camera position movement
 	const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
@@ -105,7 +103,7 @@ void Application::render()
 		cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
 
-	view = Mat4::lookAt(cameraPos, cameraTarget, cameraUp);
+	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 	Renderer::setViewMatrix(view);
 	
