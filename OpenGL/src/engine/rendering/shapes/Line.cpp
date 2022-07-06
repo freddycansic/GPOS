@@ -1,21 +1,33 @@
 #include "Line.h"
 
-const std::vector<unsigned int> Line::s_UnitIndices;
+#include "Cube.h"
+#include "maths/Maths.h"
+
+const std::vector<unsigned int> Line::s_UnitIndices = Cube::s_UnitIndices;
 const std::vector<Vertex> Line::s_UnitVertices;
 
 Line::Line(float x1, float y1, float z1, float x2, float y2, float z2, float width)
 {
-	const float m = (y2 - y1) / (x2 - x1);
-	//const float yIntercept = (y1 - x1 * gradient);
+	const float dx = x1 - x2;
+	const float dy = y1 - y2;
+	const float dz = z1 - z2;
 
-	const float nm = -1 / m; // normal gradient to line between p1 and p2
-	const float p1c = (y1 - x1 * nm); // y intercept of line at p1
+	const float magxz = std::sqrt(std::pow(dx, 2) + std::pow(dz, 2));
+	const float magxy = std::sqrt(std::pow(dx, 2) + std::pow(dy, 2));
+	const float mag = std::sqrt(std::pow(dx, 2) + std::pow(dy, 2) + std::pow(dz, 2));
 
+	const float pitch = std::asin(dy / magxy);
+	const float yaw = std::asin(dz / magxz);
 
+	Cube c(0, 0, 0, width / 2);
+	c.setScale(mag, 1, 1);
+	c.setRotation(0, -Maths::degrees(yaw), Maths::degrees(pitch));
+	c.recalculateVertices();
 
+	m_Vertices = c.getVertices(); // TODO getVertices returns reference = could go wrong when out of scope
 }
 
-Line::Line(const Vec3& pos1, const Vec3& pos2, float size) : Line(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, size)
+Line::Line(const Vec3& pos1, const Vec3& pos2, float width) : Line(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, width)
 {
 }
 

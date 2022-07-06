@@ -12,7 +12,7 @@ private:
 
 public:
 	Line(float x1, float y1, float z1, float x2, float y2, float z2, float width);
-	Line(const Vec3& pos1, const Vec3& pos2, float size);
+	Line(const Vec3& pos1, const Vec3& pos2, float width);
 	Line() = default;
 
 	void recalculateVertices() override;
