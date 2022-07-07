@@ -5,9 +5,6 @@
 class Line : public Shape
 {
 private:
-	const static std::vector<unsigned int> s_UnitIndices;
-	const static std::vector<Vertex> s_UnitVertices;
-
 	float m_Width = 1.0f;
 
 public:

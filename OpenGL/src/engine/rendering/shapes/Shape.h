@@ -28,14 +28,6 @@ public:
 	 * @brief Recalculates the positions of a shape's vertices using values from its m_Transform.
 	*/
 	virtual void recalculateVertices();
-	
-	/**
-	 * @brief Get all the vertices which describe the unit shape.
-	 * @return A vector of vertices which describe the unit shape.
-	 * @see Cube#getUnitVertices()
-	 * @see Rectangle#getUnitVertices()
-	*/
-	[[nodiscard]] virtual const std::vector<Vertex>& getUnitVertices() const = 0;
 
 	/**
 	 * @brief Get a modifiable reference to the vertices of the shape.
@@ -47,7 +39,15 @@ public:
 	 * @brief Get a const reference to the indices of the shape.
 	 * @return A const reference to a vector of the shape's indices.
 	*/
-	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const = 0;
+	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const;
+
+	/**
+	 * @brief Get all the vertices which describe the unit shape.
+	 * @return A vector of vertices which describe the unit shape.
+	 * @see Cube#getUnitVertices()
+	 * @see Rectangle#getUnitVertices()
+	*/
+	[[nodiscard]] virtual const std::vector<Vertex>& getUnitVertices() const;
 
 	[[nodiscard]] bool hasMoved() const;
 

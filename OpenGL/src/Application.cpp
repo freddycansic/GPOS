@@ -75,7 +75,6 @@ void Application::render()
 
 	const Vec3 b = { -1, -2, -3 };
 
-
 	ShapeRenderer::draw(Line(a, b, 0.1f), {1.0f, 1.0f, 1.0f, 1.0f});
 	ShapeRenderer::draw(Cube(a.x, a.y, a.z, 0.3f), { 1.0f, 0.0f, 0.0f, 1.0f });
 	ShapeRenderer::draw(Cube(b.x, b.y, b.z, 0.3f), { 1.0f, 0.0f, 0.0f, 1.0f });

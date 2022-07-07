@@ -22,6 +22,16 @@ void Shape::recalculateVertices() {
 	m_Moved = false;
 }
 
+const std::vector<unsigned int>& Shape::getIndices() const
+{
+	
+}
+
+const std::vector<Vertex>& Shape::getUnitVertices() const
+{
+	
+}
+
 bool Shape::hasMoved() const
 {
 	return m_Moved;

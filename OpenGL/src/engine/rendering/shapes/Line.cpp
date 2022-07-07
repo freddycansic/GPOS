@@ -3,10 +3,7 @@
 #include "Cube.h"
 #include "maths/Maths.h"
 
-const std::vector<unsigned int> Line::s_UnitIndices = Cube::s_UnitIndices;
-const std::vector<Vertex> Line::s_UnitVertices;
-
-Line::Line(float x1, float y1, float z1, float x2, float y2, float z2, float width)
+Line::Line(float x1, float y1, float z1, float x2, float y2, float z2, float width) : m_Width(width)
 {
 	const float dx = x1 - x2;
 	const float dy = y1 - y2;
@@ -38,14 +35,4 @@ void Line::recalculateVertices()
 std::vector<Vertex>& Line::getVertices()
 {
 	return m_Vertices;
-}
-
-const std::vector<Vertex>& Line::getUnitVertices() const
-{
-	return m_Vertices;
-}
-
-const std::vector<unsigned int>& Line::getIndices() const
-{
-	return s_UnitIndices;
 }
