@@ -6,21 +6,14 @@
   - Colour
   - Bindless textures
 - Semi-interactive GUI
-- Not running on specific hardware
+- Keyboard input processing
+- FPS camera
 
 ---
 
 ### Future features:
-- Keyboard input processing
-- FPS camera
 - Basic lighting
 - Ico spheres
-
----
-
-### Future future features:
-- GJK collision detection
-- Some form of collision response
 
 ---
 
