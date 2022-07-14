@@ -29,13 +29,23 @@ public:
 	virtual void recalculatePositions();
 
 	/**
-	 * @brief Get a const reference to the indices of the shape.
 	 * @return A const reference to a vector of the shape's indices.
 	*/
 	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const = 0;
+
+	/**
+	 * @return A const reference to a vector of the shape's unit positions.
+	*/
 	[[nodiscard]] virtual const std::vector<Vec3>& getUnitPositions() const = 0;
+
+	/**
+	 * @return A const reference to a vector of the shape's texture coordinates.
+	*/
 	[[nodiscard]] virtual const std::vector<Vec2>& getTextureCoordinates() const = 0;
 
+	/**
+	 * @return A reference to a vector of the shape's positions.
+	*/
 	[[nodiscard]] virtual std::vector<Vec3> getPositions() const;
 
 	/**

@@ -110,11 +110,12 @@ namespace ShapeRenderer {
 
 		// modify vertices and add to buffer
 		for (unsigned int i = 0; i < shape.getPositions().size(); ++i) {
-
-			const auto& pos = shape.getPositions().at(i);
-			const auto& texPos = shape.getTextureCoordinates().at(i);
-
-			colorBatch->vertices.emplace_back(pos, color, texPos);
+			colorBatch->vertices.emplace_back
+			(
+				shape.getPositions().at(i), 
+				color, 
+				shape.getTextureCoordinates().at(i)
+			);
 		}
 	}
 
@@ -157,11 +158,12 @@ namespace ShapeRenderer {
 
 		// modify vertices and add to buffer
 		for (unsigned int i = 0; i < shape.getPositions().size(); ++i) {
-
-			const auto& pos = shape.getPositions().at(i);
-			const auto& texPos = shape.getTextureCoordinates().at(i);
-
-			textureBatch->vertices.emplace_back(pos, Vec4{0, 0, 0, 0}, texPos);
+			textureBatch->vertices.emplace_back
+			(
+				shape.getPositions().at(i),
+				Vec4{0, 0, 0, 0}, 
+				shape.getTextureCoordinates().at(i)
+			);
 		}
 	}
 
