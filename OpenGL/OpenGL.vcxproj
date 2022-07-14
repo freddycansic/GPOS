@@ -160,7 +160,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
     <ClCompile Include="src\engine\Input.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBufferLayout.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
@@ -173,7 +172,6 @@
     <ClCompile Include="src\maths\Maths.cpp" />
     <ClCompile Include="src\maths\Transform.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
-    <ClCompile Include="src\engine\rendering\shapes\Rectangle.cpp" />
     <ClCompile Include="src\engine\rendering\ShapeRenderer.cpp" />
     <ClCompile Include="src\libs\imgui\imgui.cpp" />
     <ClCompile Include="src\libs\imgui\imgui_demo.cpp" />
@@ -195,7 +193,6 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\rendering\shapes\Line.h" />
     <ClInclude Include="src\engine\Input.h" />
     <ClInclude Include="src\engine\Keys.h" />
     <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
@@ -203,7 +200,6 @@
     <ClInclude Include="src\ApplicationLauncher.h" />
     <ClInclude Include="src\engine\rendering\Vertex.h" />
     <ClInclude Include="src\engine\rendering\shapes\Shape.h" />
-    <ClInclude Include="src\engine\rendering\shapes\Rectangle.h" />
     <ClInclude Include="src\engine\rendering\ShapeRenderer.h" />
     <ClInclude Include="src\engine\Debug.h" />
     <ClInclude Include="src\engine\Files.h" />

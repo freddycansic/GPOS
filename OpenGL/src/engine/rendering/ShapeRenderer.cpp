@@ -106,14 +106,15 @@ namespace ShapeRenderer {
 		addShapeIndices(colorBatch->indices, shape);
 
 		// recaculate vertex positions using current transformation
-		if (shape.hasMoved())
-			shape.recalculateVertices();
+		shape.recalculatePositions();
 
 		// modify vertices and add to buffer
-		for (auto& vertex : shape.getVertices()) {
-			vertex.color = color;
+		for (unsigned int i = 0; i < shape.getPositions().size(); ++i) {
 
-			colorBatch->vertices.push_back(vertex);
+			const auto& pos = shape.getPositions().at(i);
+			const auto& texPos = shape.getTextureCoordinates().at(i);
+
+			colorBatch->vertices.emplace_back(pos, color, texPos);
 		}
 	}
 
@@ -152,11 +153,16 @@ namespace ShapeRenderer {
 
 		addShapeIndices(textureBatch->indices, shape);
 
-		if (shape.hasMoved())
-			shape.recalculateVertices();
+		shape.recalculatePositions();
 
-		// add vertices to batch to be rendered with this texture
-		textureBatch->vertices.insert(textureBatch->vertices.end(), shape.getVertices().begin(), shape.getVertices().end());
+		// modify vertices and add to buffer
+		for (unsigned int i = 0; i < shape.getPositions().size(); ++i) {
+
+			const auto& pos = shape.getPositions().at(i);
+			const auto& texPos = shape.getTextureCoordinates().at(i);
+
+			textureBatch->vertices.emplace_back(pos, Vec4{0, 0, 0, 0}, texPos);
+		}
 	}
 
 	void draw(Shape&& shape, const Texture& tex)
@@ -208,7 +214,6 @@ void checkBatchReady() {
 void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
-
 	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
 
 	if (indexBuffer.empty()) {

@@ -8,9 +8,6 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
-#include "engine/rendering/shapes/Line.h"
-
-#include "maths/Maths.h"
 
 void Application::init()
 {
@@ -19,13 +16,6 @@ void Application::init()
 	tex1 = std::make_unique<Texture>(Files::internal("textures/image.png"));
 	tex2 = std::make_unique<Texture>(Files::internal("textures/hashinshin.png"));
 
-	cube1 = Cube(0, 0, 0, 10.0f);
-	cube2 = Cube(-5, 5, 0, 10.0f);
-	cube3 = Cube(-8, -5, 0, 2);
-
-	rect1 = Rectangle(5, 5, 5, 5);
-	rect2 = Rectangle(8, 9, 3, 10);
-
 	Window::beginCursorCapture();
 }
 
@@ -33,8 +23,6 @@ Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
 Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
 Vec3 cameraOrbit, cameraTarget;
-Vec3 a = { 1, 2, 3 };
-float increment = 3.0f;
 
 void Application::render()
 {
@@ -65,21 +53,8 @@ void Application::render()
 	
 	ShapeRenderer::begin();
 
-	if (a.y > 3.0f)
-		increment = -3.0f * Window::deltatime();
-	if (a.y < -3.0f)
-		increment = 3.0f * Window::deltatime();
-
-	a.y += increment;
-	a.z += increment;
-
-	const Vec3 b = { -1, -2, -3 };
-
-	ShapeRenderer::draw(Line(a, b, 0.1f), {1.0f, 1.0f, 1.0f, 1.0f});
-	ShapeRenderer::draw(Cube(a.x, a.y, a.z, 0.3f), { 1.0f, 0.0f, 0.0f, 1.0f });
-	ShapeRenderer::draw(Cube(b.x, b.y, b.z, 0.3f), { 1.0f, 0.0f, 0.0f, 1.0f });
-
-	ShapeRenderer::draw(Cube(0, 2, 0, 0.3f), { 0.0f, 0.0f, 0.0f, 1.0f });
+	Cube c(0, 0, 0, 1.0f);
+	ShapeRenderer::draw(c, { 1.0f, 0.0f, 0.0f, 1.0f });
 
 	ShapeRenderer::end();
 }

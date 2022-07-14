@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "engine/rendering/Vertex.h"
 #include "maths/Transform.h"
 
 class Shape
@@ -16,7 +15,7 @@ protected:
 	/**
 	 * @brief All vertices that the shape comprises of.
 	*/
-	std::vector<Vertex> m_Vertices;
+	std::vector<Vec3> m_Positions;
 
 	bool m_Moved = true;
 
@@ -27,29 +26,17 @@ public:
 	/**
 	 * @brief Recalculates the positions of a shape's vertices using values from its m_Transform.
 	*/
-	virtual void recalculateVertices();
-
-	/**
-	 * @brief Get a modifiable reference to the vertices of the shape.
-	 * @return A modifiable reference to a vector of the shape's vertices.
-	*/
-	[[nodiscard]] virtual std::vector<Vertex>& getVertices() = 0;
+	virtual void recalculatePositions();
 
 	/**
 	 * @brief Get a const reference to the indices of the shape.
 	 * @return A const reference to a vector of the shape's indices.
 	*/
-	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const;
+	[[nodiscard]] virtual const std::vector<unsigned int>& getIndices() const = 0;
+	[[nodiscard]] virtual const std::vector<Vec3>& getUnitPositions() const = 0;
+	[[nodiscard]] virtual const std::vector<Vec2>& getTextureCoordinates() const = 0;
 
-	/**
-	 * @brief Get all the vertices which describe the unit shape.
-	 * @return A vector of vertices which describe the unit shape.
-	 * @see Cube#getUnitVertices()
-	 * @see Rectangle#getUnitVertices()
-	*/
-	[[nodiscard]] virtual const std::vector<Vertex>& getUnitVertices() const;
-
-	[[nodiscard]] bool hasMoved() const;
+	[[nodiscard]] virtual std::vector<Vec3> getPositions() const;
 
 	/**
 	 * @brief Set the scale for the shape.
