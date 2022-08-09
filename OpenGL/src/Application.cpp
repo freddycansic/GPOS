@@ -8,6 +8,7 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
+#include "engine/rendering/shapes/Line.h"
 
 void Application::init()
 {
@@ -52,9 +53,11 @@ void Application::render()
 	Renderer::setViewMatrix(view);
 	
 	ShapeRenderer::begin();
+	
+	ShapeRenderer::draw(Cube({ -0.5f, -0.5f, -0.5f }, 0.05f), { 1.0f, 0.0f, 0.0f, 1.0f });
+	ShapeRenderer::draw(Cube({ 0.1f, 0.4f, 0.6f }, 0.05f), { 1.0f, 0.0f, 0.0f, 1.0f });
 
-	Cube c(0, 0, 0, 1.0f);
-	ShapeRenderer::draw(c, { 1.0f, 0.0f, 0.0f, 1.0f });
+	ShapeRenderer::draw(Line(), { 1.0f, 1.0f, 0.0f, 1.0f });
 
 	ShapeRenderer::end();
 }
