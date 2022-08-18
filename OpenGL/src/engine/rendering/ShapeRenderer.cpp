@@ -116,6 +116,7 @@ namespace ShapeRenderer {
 				color, 
 				shape.getTextureCoordinates().at(i)
 			);
+
 		}
 	}
 

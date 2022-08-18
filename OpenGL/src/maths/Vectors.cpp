@@ -65,6 +65,27 @@ Vec3 Vec3::normalise() const
 	return { x / mag, y / mag, z / mag };
 }
 
+Vec2 Vec2::normalise() const
+{
+	const auto mag = magnitude();
+	return { x / mag, y / mag };
+}
+
+float Vec2::magnitude() const
+{
+	return sqrtf(x * x + y * y);
+}
+
+float Vec2::dot(const Vec2& other) const
+{
+	return x * other.x + y * other.y;
+}
+
+float Vec2::angleBetween(const Vec2& other) const
+{
+	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
+}
+
 Vec4::Vec4(float x, float y, float z, float w) :
 	x(x), y(y), z(z), w(w)
 {
@@ -95,4 +116,9 @@ std::ostream& operator<<(std::ostream& os, const Vec3& vector) {
 	return os << "| " << vector.x << " |\n"
 		<< "| " << vector.y << " |\n"
 		<< "| " << vector.z << " |\n";
+}
+
+std::ostream& operator<<(std::ostream& os, const Vec2& vector) {
+	return os << "| " << vector.x << " |\n"
+		<< "| " << vector.y << " |\n";
 }

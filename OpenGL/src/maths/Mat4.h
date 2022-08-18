@@ -163,6 +163,8 @@ public:
 	*/
 	[[nodiscard]] Mat4 rotate(float xRotate, float yRotate, float zRotate) const;
 
+	[[nodiscard]] Mat4 rotateAxis(float xAxis, float yAxis, float zAxis, float angle) const;
+
 	/**
 	 * @brief Translation operation.
 	 * @param xTranslate Distance to translate on the x axis.
