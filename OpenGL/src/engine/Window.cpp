@@ -72,6 +72,7 @@ namespace Window
 		//GLAPI(glEnable(GL_DEPTH_TEST));
 		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, 0));
 		GLAPI(glfwSetCursorPosCallback(Window::GLFWWindow(), Input::Callbacks::mouseCallback));
+		GLAPI(glfwSetKeyCallback(Window::GLFWWindow(), Input::Callbacks::keyCallback));
 
 		// turn off notifications
 		GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));

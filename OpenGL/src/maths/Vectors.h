@@ -7,6 +7,11 @@
 
 struct Vec2 {
 	float x = 0.0f, y = 0.0f;
+
+	[[nodiscard]] Vec2 normalise() const;
+	[[nodiscard]] float magnitude() const;
+	[[nodiscard]] float dot(const Vec2& other) const;
+	[[nodiscard]] float angleBetween(const Vec2& other) const;
 };
 
 struct Vec4; // forward delaration for vec3 conversion
@@ -51,3 +56,4 @@ struct Vec4 {
 
 std::ostream& operator<<(std::ostream& os, const Vec4& vector);
 std::ostream& operator<<(std::ostream& os, const Vec3& vector);
+std::ostream& operator<<(std::ostream& os, const Vec2& vector);

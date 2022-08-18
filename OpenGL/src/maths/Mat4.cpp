@@ -133,6 +133,23 @@ Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 	);
 }
 
+Mat4 Mat4::rotateAxis(float xAxis, float yAxis, float zAxis, float angle) const
+{
+	const float theta = Maths::radians(angle);
+
+	return (
+		*this
+
+		*
+
+		Mat4(
+			cos(theta) + xAxis*xAxis*(1-cos(theta)), xAxis*yAxis*(1-cos(theta))-zAxis*sin(theta), xAxis*zAxis*(1-cos(theta)) + yAxis*sin(theta), 0,
+			yAxis*xAxis*(1-cos(theta)) + zAxis*sin(theta), cos(theta) + yAxis*yAxis*(1-cos(theta)), yAxis*zAxis*(1-cos(theta))-xAxis*sin(theta), 0,
+			zAxis*xAxis*(1-cos(theta))-yAxis*sin(theta), zAxis*yAxis*(1-cos(theta)) + xAxis*sin(theta), cos(theta) + zAxis*zAxis*(1-cos(theta)), 0,
+			0, 0, 0, 1
+		));
+}
+
 Mat4 Mat4::translate(float xTranslate, float yTranslate, float zTranslate) const {
 	return 
 		*this 
