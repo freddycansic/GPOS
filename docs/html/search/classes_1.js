@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cube_0',['Cube',['../class_cube.html',1,'']]]
+  ['batch_0',['Batch',['../struct_batch.html',1,'']]]
 ];

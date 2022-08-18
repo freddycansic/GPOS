@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mat4_0',['Mat4',['../class_mat4.html',1,'']]]
+  ['indexbuffer_0',['IndexBuffer',['../class_index_buffer.html',1,'']]]
 ];

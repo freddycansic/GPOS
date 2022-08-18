@@ -1,0 +1,106 @@
+\hypertarget{class_line}{}\doxysection{Line Class Reference}
+\label{class_line}\index{Line@{Line}}
+Inheritance diagram for Line\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_line}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_line_add45c4651915e140ca68d7341a177385}\label{class_line_add45c4651915e140ca68d7341a177385}} 
+{\bfseries Line} (float x1, float y1, float z1, float x2, float y2, float z2, float width)
+\item 
+\mbox{\Hypertarget{class_line_a756769db3212a72cc911867002b98d70}\label{class_line_a756769db3212a72cc911867002b98d70}} 
+{\bfseries Line} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&p1, const \mbox{\hyperlink{struct_vec3}{Vec3}} \&p2, float width)
+\item 
+void \mbox{\hyperlink{class_line_aa8de681540392649f479acd8ca89dac9}{recalculate\+Positions}} () override
+\begin{DoxyCompactList}\small\item\em Recalculates the positions of a shape\textquotesingle{}s vertices using values from its m\+\_\+\+Transform. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_line_a1b7ccc5b6a431fac49c16f9fc30a57e3}\label{class_line_a1b7ccc5b6a431fac49c16f9fc30a57e3}} 
+void {\bfseries set\+P1} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{class_line_a7025c9a2793404654f7d482c79ff14ba}\label{class_line_a7025c9a2793404654f7d482c79ff14ba}} 
+void {\bfseries set\+P1} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&pos)
+\item 
+\mbox{\Hypertarget{class_line_a657b9466dc6424ffbbffa97641026d5d}\label{class_line_a657b9466dc6424ffbbffa97641026d5d}} 
+const \mbox{\hyperlink{struct_vec3}{Vec3}} \& {\bfseries get\+P1} () const
+\item 
+\mbox{\Hypertarget{class_line_acc27db2d7afd3140ebd5142ac1080966}\label{class_line_acc27db2d7afd3140ebd5142ac1080966}} 
+void {\bfseries set\+P2} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{class_line_a9f1e340f22b695ba637d8f6c6a67b792}\label{class_line_a9f1e340f22b695ba637d8f6c6a67b792}} 
+void {\bfseries set\+P2} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&pos)
+\item 
+\mbox{\Hypertarget{class_line_a4c5c77c3a8084e909d518c808c32b907}\label{class_line_a4c5c77c3a8084e909d518c808c32b907}} 
+const \mbox{\hyperlink{struct_vec3}{Vec3}} \& {\bfseries get\+P2} () const
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ \& \mbox{\hyperlink{class_line_a885b2f0511270e4992f424489583a5b7}{get\+Unit\+Positions}} () const override
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{struct_vec2}{Vec2}} $>$ \& \mbox{\hyperlink{class_line_a8a1ece564afb6ad3b44efc2ba43790d1}{get\+Texture\+Coordinates}} () const override
+\item 
+const std\+::vector$<$ unsigned int $>$ \& \mbox{\hyperlink{class_line_a9e379c241e34c48055c345d1a91d8bff}{get\+Indices}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_line_a9e379c241e34c48055c345d1a91d8bff}\label{class_line_a9e379c241e34c48055c345d1a91d8bff}} 
+\index{Line@{Line}!getIndices@{getIndices}}
+\index{getIndices@{getIndices}!Line@{Line}}
+\doxysubsubsection{\texorpdfstring{getIndices()}{getIndices()}}
+{\footnotesize\ttfamily const std\+::vector$<$ unsigned int $>$ \& Line\+::get\+Indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to a vector of the shape\textquotesingle{}s indices. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_shape_a39b8f9de4991bf507a4faceff2c5794e}{Shape}}.
+
+\mbox{\Hypertarget{class_line_a8a1ece564afb6ad3b44efc2ba43790d1}\label{class_line_a8a1ece564afb6ad3b44efc2ba43790d1}} 
+\index{Line@{Line}!getTextureCoordinates@{getTextureCoordinates}}
+\index{getTextureCoordinates@{getTextureCoordinates}!Line@{Line}}
+\doxysubsubsection{\texorpdfstring{getTextureCoordinates()}{getTextureCoordinates()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{struct_vec2}{Vec2}} $>$ \& Line\+::get\+Texture\+Coordinates (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to a vector of the shape\textquotesingle{}s texture coordinates. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_shape_ae87277fc052510a708b2b546f58d6dfa}{Shape}}.
+
+\mbox{\Hypertarget{class_line_a885b2f0511270e4992f424489583a5b7}\label{class_line_a885b2f0511270e4992f424489583a5b7}} 
+\index{Line@{Line}!getUnitPositions@{getUnitPositions}}
+\index{getUnitPositions@{getUnitPositions}!Line@{Line}}
+\doxysubsubsection{\texorpdfstring{getUnitPositions()}{getUnitPositions()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ \& Line\+::get\+Unit\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to a vector of the shape\textquotesingle{}s unit positions. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_shape_a1fa1126b479ed19cc3ab8c2792173703}{Shape}}.
+
+\mbox{\Hypertarget{class_line_aa8de681540392649f479acd8ca89dac9}\label{class_line_aa8de681540392649f479acd8ca89dac9}} 
+\index{Line@{Line}!recalculatePositions@{recalculatePositions}}
+\index{recalculatePositions@{recalculatePositions}!Line@{Line}}
+\doxysubsubsection{\texorpdfstring{recalculatePositions()}{recalculatePositions()}}
+{\footnotesize\ttfamily void Line\+::recalculate\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Recalculates the positions of a shape\textquotesingle{}s vertices using values from its m\+\_\+\+Transform. 
+
+
+
+Reimplemented from \mbox{\hyperlink{class_shape_a44216df15e0184b431a72c64da218c20}{Shape}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Line.\+h\item 
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Line.\+cpp\end{DoxyCompactItemize}

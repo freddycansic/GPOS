@@ -9,15 +9,16 @@ Inheritance diagram for Shape\+:\begin{figure}[H]
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_shape_aacbb71467ce011f1acfeda4937961c8c}\label{class_shape_aacbb71467ce011f1acfeda4937961c8c}} 
-void {\bfseries recalculate\+Vertices} ()
+virtual void \mbox{\hyperlink{class_shape_a44216df15e0184b431a72c64da218c20}{recalculate\+Positions}} ()
 \begin{DoxyCompactList}\small\item\em Recalculates the positions of a shape\textquotesingle{}s vertices using values from its m\+\_\+\+Transform. \end{DoxyCompactList}\item 
-virtual const std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& \mbox{\hyperlink{class_shape_a8d59a80c5dc93e19c358ec4510f3d052}{get\+Unit\+Vertices}} () const =0
-\begin{DoxyCompactList}\small\item\em Get all the vertices which describe the unit shape. \end{DoxyCompactList}\item 
-virtual std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& \mbox{\hyperlink{class_shape_a1b7108d4da4d5fb99a917e9b9a2f3a36}{get\+Vertices}} ()=0
-\begin{DoxyCompactList}\small\item\em Get a modifiable reference to the vertices of the shape. \end{DoxyCompactList}\item 
 virtual const std\+::vector$<$ unsigned int $>$ \& \mbox{\hyperlink{class_shape_a39b8f9de4991bf507a4faceff2c5794e}{get\+Indices}} () const =0
-\begin{DoxyCompactList}\small\item\em Get a const reference to the indices of the shape. \end{DoxyCompactList}\item 
+\item 
+virtual const std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ \& \mbox{\hyperlink{class_shape_a1fa1126b479ed19cc3ab8c2792173703}{get\+Unit\+Positions}} () const =0
+\item 
+virtual const std\+::vector$<$ \mbox{\hyperlink{struct_vec2}{Vec2}} $>$ \& \mbox{\hyperlink{class_shape_ae87277fc052510a708b2b546f58d6dfa}{get\+Texture\+Coordinates}} () const =0
+\item 
+virtual std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ \mbox{\hyperlink{class_shape_a4499659e63ff2c8d6576eab6a546f771}{get\+Positions}} () const
+\item 
 virtual void \mbox{\hyperlink{class_shape_a5f73f6bd9c5dc82c620488fa35db885b}{set\+Scale}} (float x\+Scale, float y\+Scale, float z\+Scale)
 \begin{DoxyCompactList}\small\item\em Set the scale for the shape. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{class_shape_a40c0ed14ab98f70d222547cb10060a0b}{set\+Rotation}} (float x\+Rotation, float y\+Rotation, float z\+Rotation)
@@ -30,9 +31,12 @@ virtual void \mbox{\hyperlink{class_shape_a7264eaad353bb5f07a64a5c5fcdc2c01}{set
 \mbox{\Hypertarget{class_shape_a5dfabd59fb228c91715797ca18009279}\label{class_shape_a5dfabd59fb228c91715797ca18009279}} 
 \mbox{\hyperlink{struct_transform}{Transform}} {\bfseries m\+\_\+\+Transform}
 \begin{DoxyCompactList}\small\item\em Current transform from the unit shape. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_shape_a326e0de335a62f75d04b754b24b26703}\label{class_shape_a326e0de335a62f75d04b754b24b26703}} 
-std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ {\bfseries m\+\_\+\+Vertices}
-\begin{DoxyCompactList}\small\item\em All vertices that the shape comprises of. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\mbox{\Hypertarget{class_shape_acfd783fe4e145600c8b57803ff97e031}\label{class_shape_acfd783fe4e145600c8b57803ff97e031}} 
+std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ {\bfseries m\+\_\+\+Positions}
+\begin{DoxyCompactList}\small\item\em All vertices that the shape comprises of. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_shape_a02c89f045107efc05744d21c3101064f}\label{class_shape_a02c89f045107efc05744d21c3101064f}} 
+bool {\bfseries m\+\_\+\+Moved} = true
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
@@ -42,55 +46,61 @@ std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ {\bfseries m\+\_\+
 \doxysubsubsection{\texorpdfstring{getIndices()}{getIndices()}}
 {\footnotesize\ttfamily virtual const std\+::vector$<$ unsigned int $>$ \& Shape\+::get\+Indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
-
-
-Get a const reference to the indices of the shape. 
-
 \begin{DoxyReturn}{Returns}
 A const reference to a vector of the shape\textquotesingle{}s indices. 
 \end{DoxyReturn}
 
 
-Implemented in \mbox{\hyperlink{class_cube_ac73fbfa26646453f498d93608068c7ff}{Cube}}, and \mbox{\hyperlink{class_rectangle_a1bd042f14822f4efdc8935c1fba1caa0}{Rectangle}}.
+Implemented in \mbox{\hyperlink{class_cube_ac73fbfa26646453f498d93608068c7ff}{Cube}}, and \mbox{\hyperlink{class_line_a9e379c241e34c48055c345d1a91d8bff}{Line}}.
 
-\mbox{\Hypertarget{class_shape_a8d59a80c5dc93e19c358ec4510f3d052}\label{class_shape_a8d59a80c5dc93e19c358ec4510f3d052}} 
-\index{Shape@{Shape}!getUnitVertices@{getUnitVertices}}
-\index{getUnitVertices@{getUnitVertices}!Shape@{Shape}}
-\doxysubsubsection{\texorpdfstring{getUnitVertices()}{getUnitVertices()}}
-{\footnotesize\ttfamily virtual const std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& Shape\+::get\+Unit\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
-
-
-
-Get all the vertices which describe the unit shape. 
+\mbox{\Hypertarget{class_shape_a4499659e63ff2c8d6576eab6a546f771}\label{class_shape_a4499659e63ff2c8d6576eab6a546f771}} 
+\index{Shape@{Shape}!getPositions@{getPositions}}
+\index{getPositions@{getPositions}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getPositions()}{getPositions()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ Shape\+::get\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 \begin{DoxyReturn}{Returns}
-A vector of vertices which describe the unit shape. 
+A reference to a vector of the shape\textquotesingle{}s positions. 
 \end{DoxyReturn}
-\begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}{Cube\+::get\+Unit\+Vertices()}} 
-
-\mbox{\hyperlink{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}{Rectangle\+::get\+Unit\+Vertices()}} 
-\end{DoxySeeAlso}
-
-
-Implemented in \mbox{\hyperlink{class_cube_a3ed0c83cea07bfbf27c7af78e8ca082b}{Cube}}, and \mbox{\hyperlink{class_rectangle_a6da0c5ea66abdd95e842459d4db6da33}{Rectangle}}.
-
-\mbox{\Hypertarget{class_shape_a1b7108d4da4d5fb99a917e9b9a2f3a36}\label{class_shape_a1b7108d4da4d5fb99a917e9b9a2f3a36}} 
-\index{Shape@{Shape}!getVertices@{getVertices}}
-\index{getVertices@{getVertices}!Shape@{Shape}}
-\doxysubsubsection{\texorpdfstring{getVertices()}{getVertices()}}
-{\footnotesize\ttfamily virtual std\+::vector$<$ \mbox{\hyperlink{struct_vertex}{Vertex}} $>$ \& Shape\+::get\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
-
-
-
-Get a modifiable reference to the vertices of the shape. 
+\mbox{\Hypertarget{class_shape_ae87277fc052510a708b2b546f58d6dfa}\label{class_shape_ae87277fc052510a708b2b546f58d6dfa}} 
+\index{Shape@{Shape}!getTextureCoordinates@{getTextureCoordinates}}
+\index{getTextureCoordinates@{getTextureCoordinates}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getTextureCoordinates()}{getTextureCoordinates()}}
+{\footnotesize\ttfamily virtual const std\+::vector$<$ \mbox{\hyperlink{struct_vec2}{Vec2}} $>$ \& Shape\+::get\+Texture\+Coordinates (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 \begin{DoxyReturn}{Returns}
-A modifiable reference to a vector of the shape\textquotesingle{}s vertices. 
+A const reference to a vector of the shape\textquotesingle{}s texture coordinates. 
 \end{DoxyReturn}
 
 
-Implemented in \mbox{\hyperlink{class_cube_a5f71b2923fb59a41353390811e47a418}{Cube}}, and \mbox{\hyperlink{class_rectangle_a726cc3c850e69b7a5c368fa24c72df1f}{Rectangle}}.
+Implemented in \mbox{\hyperlink{class_cube_ab6f89a740696e0c90a404163baf6d523}{Cube}}, and \mbox{\hyperlink{class_line_a8a1ece564afb6ad3b44efc2ba43790d1}{Line}}.
+
+\mbox{\Hypertarget{class_shape_a1fa1126b479ed19cc3ab8c2792173703}\label{class_shape_a1fa1126b479ed19cc3ab8c2792173703}} 
+\index{Shape@{Shape}!getUnitPositions@{getUnitPositions}}
+\index{getUnitPositions@{getUnitPositions}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getUnitPositions()}{getUnitPositions()}}
+{\footnotesize\ttfamily virtual const std\+::vector$<$ \mbox{\hyperlink{struct_vec3}{Vec3}} $>$ \& Shape\+::get\+Unit\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to a vector of the shape\textquotesingle{}s unit positions. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_cube_adcb4f958a5b4253f05057f9b9745558f}{Cube}}, and \mbox{\hyperlink{class_line_a885b2f0511270e4992f424489583a5b7}{Line}}.
+
+\mbox{\Hypertarget{class_shape_a44216df15e0184b431a72c64da218c20}\label{class_shape_a44216df15e0184b431a72c64da218c20}} 
+\index{Shape@{Shape}!recalculatePositions@{recalculatePositions}}
+\index{recalculatePositions@{recalculatePositions}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{recalculatePositions()}{recalculatePositions()}}
+{\footnotesize\ttfamily void Shape\+::recalculate\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Recalculates the positions of a shape\textquotesingle{}s vertices using values from its m\+\_\+\+Transform. 
+
+
+
+Reimplemented in \mbox{\hyperlink{class_line_aa8de681540392649f479acd8ca89dac9}{Line}}.
 
 \mbox{\Hypertarget{class_shape_a40c0ed14ab98f70d222547cb10060a0b}\label{class_shape_a40c0ed14ab98f70d222547cb10060a0b}} 
 \index{Shape@{Shape}!setRotation@{setRotation}}
@@ -104,11 +114,11 @@ Set the rotation for the shape about the centre of mass of the shape.
 
 
 \begin{DoxyParams}{Parameters}
-{\em x\+Scale} & The rotation on the x axis \\
+{\em x\+Rotation} & The rotation on the x axis \\
 \hline
-{\em y\+Scale} & The rotation on the y axis \\
+{\em y\+Rotation} & The rotation on the y axis \\
 \hline
-{\em z\+Scale} & The rotation on the z axis \\
+{\em z\+Rotation} & The rotation on the z axis \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_shape_a5f73f6bd9c5dc82c620488fa35db885b}\label{class_shape_a5f73f6bd9c5dc82c620488fa35db885b}} 
@@ -132,7 +142,7 @@ Set the scale for the shape.
 \end{DoxyParams}
 
 
-Reimplemented in \mbox{\hyperlink{class_cube_ae2e6dd72293671b5f0cddb2348733d1e}{Cube}}, and \mbox{\hyperlink{class_rectangle_a7fb2a739c36b4a47003426825372cae8}{Rectangle}}.
+Reimplemented in \mbox{\hyperlink{class_cube_ae2e6dd72293671b5f0cddb2348733d1e}{Cube}}.
 
 \mbox{\Hypertarget{class_shape_a7264eaad353bb5f07a64a5c5fcdc2c01}\label{class_shape_a7264eaad353bb5f07a64a5c5fcdc2c01}} 
 \index{Shape@{Shape}!setTranslation@{setTranslation}}
@@ -146,16 +156,16 @@ Set the translation for the shape about the origin.
 
 
 \begin{DoxyParams}{Parameters}
-{\em x\+Scale} & The translation on the x axis \\
+{\em x\+Translate} & The translation on the x axis \\
 \hline
-{\em y\+Scale} & The translation on the y axis \\
+{\em y\+Translate} & The translation on the y axis \\
 \hline
-{\em z\+Scale} & The translation on the z axis \\
+{\em z\+Translate} & The translation on the z axis \\
 \hline
 \end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Shape.\+h\item 
-C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Shape.\+cpp\end{DoxyCompactItemize}
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Shape.\+h\item 
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/engine/rendering/shapes/Shape.\+cpp\end{DoxyCompactItemize}

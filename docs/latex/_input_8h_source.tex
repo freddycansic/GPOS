@@ -1,0 +1,34 @@
+\hypertarget{_input_8h_source}{}\doxysection{Input.\+h}
+\label{_input_8h_source}\index{F:/dev/cpp/OpenGL/OpenGL/src/engine/Input.h@{F:/dev/cpp/OpenGL/OpenGL/src/engine/Input.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <GLFW/glfw3.h>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec2}{Vec2}};}
+\DoxyCodeLine{7 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec3}{Vec3}};}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }Input}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11     [[nodiscard]] \textcolor{keywordtype}{bool} isKeyDown(\textcolor{keywordtype}{int} key);}
+\DoxyCodeLine{12     [[nodiscard]] \textcolor{keywordtype}{bool} isKeyJustReleased(\textcolor{keywordtype}{int} key);}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14     [[nodiscard]] \textcolor{keywordtype}{float} getLastMouseOffsetX();}
+\DoxyCodeLine{15     [[nodiscard]] \textcolor{keywordtype}{float} getLastMouseOffsetY();}
+\DoxyCodeLine{16     [[nodiscard]] \mbox{\hyperlink{struct_vec2}{Vec2}} getLastMouseOffset();}
+\DoxyCodeLine{17     [[nodiscard]] \textcolor{keywordtype}{float} getMouseYaw();}
+\DoxyCodeLine{18     [[nodiscard]] \textcolor{keywordtype}{float} getMousePitch();}
+\DoxyCodeLine{19     [[nodiscard]] \mbox{\hyperlink{struct_vec3}{Vec3}} getCameraDirection();}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{keyword}{namespace }Callbacks}
+\DoxyCodeLine{22     \{}
+\DoxyCodeLine{23         \textcolor{keywordtype}{void} GLAPIENTRY mouseCallback(GLFWwindow* window, \textcolor{keywordtype}{double} xpos, \textcolor{keywordtype}{double} ypos);}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25         \textcolor{keywordtype}{void} GLAPIENTRY keyCallback(GLFWwindow* window, \textcolor{keywordtype}{int} key, \textcolor{keywordtype}{int} scancode, \textcolor{keywordtype}{int} action, \textcolor{keywordtype}{int} mods);}
+\DoxyCodeLine{26     \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \}}
+
+\end{DoxyCode}

@@ -1,71 +1,27 @@
 \hypertarget{_shape_renderer_8h_source}{}\doxysection{Shape\+Renderer.\+h}
-\label{_shape_renderer_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/ShapeRenderer.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/ShapeRenderer.h}}
+\label{_shape_renderer_8h_source}\index{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/ShapeRenderer.h@{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/ShapeRenderer.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
 \DoxyCodeLine{2 }
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <array>}}
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{3 \textcolor{keyword}{class }\mbox{\hyperlink{class_texture}{Texture}};}
+\DoxyCodeLine{4 \textcolor{keyword}{class }\mbox{\hyperlink{class_shape}{Shape}};}
+\DoxyCodeLine{5 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_vec4}{Vec4}};}
 \DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/Texture.h"{}}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/VertexArray.h"{}}}
-\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/VertexBuffer.h"{}}}
-\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/IndexBuffer.h"{}}}
-\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}engine/rendering/opengl/Shader.h"{}}}
-\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}engine/rendering/Vertex.h"{}}}
-\DoxyCodeLine{13 }
-\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}shapes/Shape.h"{}}}
-\DoxyCodeLine{15 }
-\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{class_shape_renderer}{ShapeRenderer}}}
-\DoxyCodeLine{17 \{}
-\DoxyCodeLine{18 }
-\DoxyCodeLine{19 \textcolor{keyword}{private}:}
-\DoxyCodeLine{20     \textcolor{keyword}{enum class} State \{}
-\DoxyCodeLine{21         UNINITIALISED,}
-\DoxyCodeLine{22         STOPPED,}
-\DoxyCodeLine{23         BEGUN,}
-\DoxyCodeLine{24     \};}
-\DoxyCodeLine{25 }
-\DoxyCodeLine{26     \textcolor{keyword}{const} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} MAX\_VERTICES;}
-\DoxyCodeLine{27     \textcolor{keyword}{const} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} MAX\_INDICES;}
-\DoxyCodeLine{28     }
-\DoxyCodeLine{29     \textcolor{keyword}{static} State state;}
-\DoxyCodeLine{30 }
-\DoxyCodeLine{31     \textcolor{comment}{// vertex + index data}}
-\DoxyCodeLine{32     \textcolor{keyword}{static} std::vector<Vertex> s\_VertexBatch;}
-\DoxyCodeLine{33     \textcolor{keyword}{static} std::vector<unsigned int> s\_IndexBatch;}
-\DoxyCodeLine{34 }
-\DoxyCodeLine{35     \textcolor{comment}{// keep track of which textures are being used}}
-\DoxyCodeLine{36     \textcolor{keyword}{static} std::array<const Texture*, 32> s\_TextureSlots;}
-\DoxyCodeLine{37 }
-\DoxyCodeLine{38     \textcolor{keyword}{static} std::unique\_ptr<VertexArray> s\_Vao;}
-\DoxyCodeLine{39     \textcolor{keyword}{static} std::unique\_ptr<VertexBuffer> s\_Vbo;}
-\DoxyCodeLine{40     \textcolor{keyword}{static} std::unique\_ptr<IndexBuffer> s\_Ibo;}
-\DoxyCodeLine{41     \textcolor{keyword}{static} std::unique\_ptr<Shader> s\_Shader;}
-\DoxyCodeLine{42 }
-\DoxyCodeLine{43     \mbox{\hyperlink{class_shape_renderer}{ShapeRenderer}}()}
-\DoxyCodeLine{44     \{}
-\DoxyCodeLine{45     \}}
-\DoxyCodeLine{46 }
-\DoxyCodeLine{47     \mbox{\hyperlink{class_shape_renderer}{\string~ShapeRenderer}}()}
-\DoxyCodeLine{48     \{}
-\DoxyCodeLine{49     \}}
-\DoxyCodeLine{50     }
-\DoxyCodeLine{51     \textcolor{keyword}{static} \textcolor{keywordtype}{void} addShapeIndices(\textcolor{keyword}{const} \mbox{\hyperlink{class_shape}{Shape}}\& shape);}
-\DoxyCodeLine{52     \textcolor{keyword}{static} \textcolor{keywordtype}{void} checkBatchBegun();}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54 \textcolor{keyword}{public}:}
-\DoxyCodeLine{59     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_shape_renderer_a0d1f1de474979fc6565133709a895dd2}{init}}();}
-\DoxyCodeLine{60 }
-\DoxyCodeLine{65     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_shape_renderer_a559af61b3e02ee29979ee86616337ba6}{begin}}();}
-\DoxyCodeLine{66 }
-\DoxyCodeLine{73     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_shape_renderer_a5f47b465584785b7f174ee079a0b82d8}{draw}}(\mbox{\hyperlink{class_shape}{Shape}}\& shape, \textcolor{keyword}{const} \mbox{\hyperlink{struct_vec4}{Vec4}}\& color);}
-\DoxyCodeLine{74 }
-\DoxyCodeLine{81     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_shape_renderer_a5f47b465584785b7f174ee079a0b82d8}{draw}}(\mbox{\hyperlink{class_shape}{Shape}}\& shape, \textcolor{keyword}{const} \mbox{\hyperlink{class_texture}{Texture}}\& tex);}
-\DoxyCodeLine{82 }
-\DoxyCodeLine{87     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_shape_renderer_a93751d98e270efbb92d3c8d5a711332c}{end}}();}
-\DoxyCodeLine{88 \};}
-\DoxyCodeLine{89 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }ShapeRenderer}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{13     \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} begin();}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{27     \textcolor{keywordtype}{void} draw(\mbox{\hyperlink{class_shape}{Shape}}\& shape, \textcolor{keyword}{const} \mbox{\hyperlink{struct_vec4}{Vec4}}\& color);}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} draw(\mbox{\hyperlink{class_shape}{Shape}}\&\& shape, \textcolor{keyword}{const} \mbox{\hyperlink{struct_vec4}{Vec4}}\& color);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} draw(\mbox{\hyperlink{class_shape}{Shape}}\& shape, \textcolor{keyword}{const} \mbox{\hyperlink{class_texture}{Texture}}\& tex);}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} draw(\mbox{\hyperlink{class_shape}{Shape}}\&\& shape, \textcolor{keyword}{const} \mbox{\hyperlink{class_texture}{Texture}}\& tex);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{43     \textcolor{keywordtype}{void} end();}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
 
 \end{DoxyCode}

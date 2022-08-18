@@ -1,0 +1,28 @@
+\hypertarget{_uniform_buffer_8h_source}{}\doxysection{Uniform\+Buffer.\+h}
+\label{_uniform_buffer_8h_source}\index{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/opengl/UniformBuffer.h@{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/opengl/UniformBuffer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{keyword}{class }\mbox{\hyperlink{class_uniform_buffer}{UniformBuffer}}}
+\DoxyCodeLine{6 \{}
+\DoxyCodeLine{7 \textcolor{keyword}{private}:}
+\DoxyCodeLine{8     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID = 0;}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{public}:}
+\DoxyCodeLine{11     \mbox{\hyperlink{class_uniform_buffer}{UniformBuffer}}(\textcolor{keyword}{const} \textcolor{keywordtype}{void}* data, \textcolor{keywordtype}{size\_t} size);}
+\DoxyCodeLine{12     \mbox{\hyperlink{class_uniform_buffer}{\string~UniformBuffer}}();}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14     \mbox{\hyperlink{class_uniform_buffer}{UniformBuffer}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_uniform_buffer}{UniformBuffer}}\& ubo) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{15     \mbox{\hyperlink{class_uniform_buffer}{UniformBuffer}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{class_uniform_buffer}{UniformBuffer}}\& ubo) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} bind();}
+\DoxyCodeLine{18     \textcolor{keywordtype}{void} unbind();}
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} setSubData(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} offset, \textcolor{keywordtype}{size\_t} dataSize, \textcolor{keyword}{const} \textcolor{keywordtype}{void}* data) \textcolor{keyword}{const};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \};}
+\DoxyCodeLine{22 }
+
+\end{DoxyCode}

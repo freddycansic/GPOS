@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['m_5ftransform_0',['m_Transform',['../class_shape.html#a5dfabd59fb228c91715797ca18009279',1,'Shape']]],
-  ['m_5fvertices_1',['m_Vertices',['../class_shape.html#a326e0de335a62f75d04b754b24b26703',1,'Shape']]],
-  ['mat4_2',['Mat4',['../class_mat4.html',1,'Mat4'],['../class_mat4.html#abe206a0e5bf5c5d94d1ecb1a8708764b',1,'Mat4::Mat4(float r1c1, float r1c2, float r1c3, float r1c4, float r2c1, float r2c2, float r2c3, float r2c4, float r3c1, float r3c2, float r3c3, float r3c4, float r4c1, float r4c2, float r4c3, float r4c4)'],['../class_mat4.html#a90c28db53937618fbf7d2abbac423bde',1,'Mat4::Mat4(const MATRIX_ROW &amp;row1, const MATRIX_ROW &amp;row2, const MATRIX_ROW &amp;row3, const MATRIX_ROW &amp;row4)'],['../class_mat4.html#a325903716fd416b4dbc8864c64d46e2c',1,'Mat4::Mat4(const MATRIX_DATA &amp;data)'],['../class_mat4.html#a53cb3c6c2a0b594345f0107b6c1fcc37',1,'Mat4::Mat4()'],['../class_mat4.html#a8f5c5e3d869b0f7bab6c4572cf8d3ead',1,'Mat4::Mat4(const Mat4 &amp;other)'],['../class_mat4.html#a8c579d353f5c44ee5713af0a6bbebd24',1,'Mat4::Mat4(Mat4 &amp;&amp;other) noexcept']]]
+  ['operator_2a_0',['operator*',['../class_mat4.html#a62d7095e1c57c73cd03bc5562c366aec',1,'Mat4::operator*(float scalar) const'],['../class_mat4.html#a0955284674ae82fe3a31f1d0a963ed99',1,'Mat4::operator*(const Mat4 &amp;other) const']]],
+  ['operator_2b_1',['operator+',['../class_mat4.html#ab5e89b45113983750675f4a25a1ff44e',1,'Mat4::operator+(const Mat4 &amp;other) const'],['../class_mat4.html#a65ccaa1f22914bb252919a6b6f3cb32e',1,'Mat4::operator+(Mat4 &amp;&amp;other) const']]],
+  ['operator_3d_2',['operator=',['../class_mat4.html#a3603a2b12694af2072a4f8a8cc4a0dd6',1,'Mat4::operator=(Mat4 &amp;&amp;other) noexcept'],['../class_mat4.html#a377ae73136203a260b89e6d3ce66be1a',1,'Mat4::operator=(const Mat4 &amp;mat)']]],
+  ['operator_5b_5d_3',['operator[]',['../class_mat4.html#a7802c838767e4705e59a4b99d60e9d66',1,'Mat4::operator[](unsigned int index) const'],['../class_mat4.html#a85506d1c2f806ecae10b7c062fcb0b4f',1,'Mat4::operator[](unsigned int index)']]],
+  ['ortho_4',['ortho',['../class_mat4.html#ac5f71a909ae3a4d86cbfdcff932c72e2',1,'Mat4']]]
 ];

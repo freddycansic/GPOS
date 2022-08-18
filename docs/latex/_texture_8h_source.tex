@@ -1,18 +1,18 @@
 \hypertarget{_texture_8h_source}{}\doxysection{Texture.\+h}
-\label{_texture_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/Texture.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/Texture.h}}
+\label{_texture_8h_source}\index{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/opengl/Texture.h@{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/opengl/Texture.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
 \DoxyCodeLine{2 }
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <GL/glew.h>}}
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
-\DoxyCodeLine{5 }
-\DoxyCodeLine{6 \textcolor{keyword}{class }\mbox{\hyperlink{class_texture}{Texture}}}
-\DoxyCodeLine{7 \{}
-\DoxyCodeLine{8 \textcolor{keyword}{private}:}
-\DoxyCodeLine{9     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID;}
-\DoxyCodeLine{10     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* m\_Buffer;}
-\DoxyCodeLine{11     \textcolor{keywordtype}{int} m\_Width, m\_Height, m\_ColorDepth;}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{keyword}{class }\mbox{\hyperlink{class_texture}{Texture}}}
+\DoxyCodeLine{6 \{}
+\DoxyCodeLine{7 \textcolor{keyword}{private}:}
+\DoxyCodeLine{8     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID;}
+\DoxyCodeLine{9     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* m\_Buffer;}
+\DoxyCodeLine{10     \textcolor{keywordtype}{int} m\_Width, m\_Height, m\_ColorDepth;}
+\DoxyCodeLine{11     uint64\_t m\_Handle;}
 \DoxyCodeLine{12 }
 \DoxyCodeLine{13 \textcolor{keyword}{public}:}
 \DoxyCodeLine{14     \mbox{\hyperlink{class_texture}{Texture}}(\textcolor{keyword}{const} std::string\& path);}
@@ -26,6 +26,7 @@
 \DoxyCodeLine{22     \textcolor{keywordtype}{void} unbind() \textcolor{keyword}{const};}
 \DoxyCodeLine{23 }
 \DoxyCodeLine{24     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} getID()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_ID; \}}
-\DoxyCodeLine{25 \};}
+\DoxyCodeLine{25     uint64\_t getHandle()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Handle; \}}
+\DoxyCodeLine{26 \};}
 
 \end{DoxyCode}

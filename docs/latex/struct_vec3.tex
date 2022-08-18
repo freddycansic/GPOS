@@ -8,6 +8,37 @@
 \item 
 \mbox{\Hypertarget{struct_vec3_a95e2c48a4a1a8093e5ea3360a4b2ca27}\label{struct_vec3_a95e2c48a4a1a8093e5ea3360a4b2ca27}} 
 {\bfseries Vec3} (const \mbox{\hyperlink{struct_vec4}{Vec4}} \&vec4)
+\item 
+\mbox{\Hypertarget{struct_vec3_ab0d4a419f44b59597674e0271efccdbe}\label{struct_vec3_ab0d4a419f44b59597674e0271efccdbe}} 
+\mbox{\hyperlink{struct_vec3}{Vec3}} {\bfseries operator+} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other) const
+\item 
+\mbox{\Hypertarget{struct_vec3_a6f462663ff836de8638c27185eb41b98}\label{struct_vec3_a6f462663ff836de8638c27185eb41b98}} 
+\mbox{\hyperlink{struct_vec3}{Vec3}} {\bfseries operator-\/} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other) const
+\item 
+\mbox{\Hypertarget{struct_vec3_abbe19b964ef7c729f9b2f9790b92a626}\label{struct_vec3_abbe19b964ef7c729f9b2f9790b92a626}} 
+void {\bfseries operator+=} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other)
+\item 
+\mbox{\Hypertarget{struct_vec3_ac80494da1d3d9ceb63833beeafbb67ce}\label{struct_vec3_ac80494da1d3d9ceb63833beeafbb67ce}} 
+void {\bfseries operator-\/=} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other)
+\item 
+\mbox{\Hypertarget{struct_vec3_a8486bd88baa4c13b8812fe3d4ced9967}\label{struct_vec3_a8486bd88baa4c13b8812fe3d4ced9967}} 
+{\footnotesize template$<$typename T $>$ \newline
+requires std\+::convertible\+\_\+to$<$T, float$>$}\\\mbox{\hyperlink{struct_vec3}{Vec3}} {\bfseries operator$\ast$} (const T \&scalar)
+\item 
+\mbox{\Hypertarget{struct_vec3_a3056e7f9ef0bd4ad523ca0e1a8d7042a}\label{struct_vec3_a3056e7f9ef0bd4ad523ca0e1a8d7042a}} 
+\mbox{\hyperlink{struct_vec3}{Vec3}} {\bfseries normalise} () const
+\item 
+\mbox{\Hypertarget{struct_vec3_ae4ba972fb732b7ced992cc2807e580cd}\label{struct_vec3_ae4ba972fb732b7ced992cc2807e580cd}} 
+float {\bfseries magnitude} () const
+\item 
+\mbox{\Hypertarget{struct_vec3_a6ed6e3f1e3aaf39951bd8c1beb73a264}\label{struct_vec3_a6ed6e3f1e3aaf39951bd8c1beb73a264}} 
+float {\bfseries dot} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other) const
+\item 
+\mbox{\Hypertarget{struct_vec3_aea5538c0faef0ef2135d4937266dd3ab}\label{struct_vec3_aea5538c0faef0ef2135d4937266dd3ab}} 
+\mbox{\hyperlink{struct_vec3}{Vec3}} {\bfseries cross} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other) const
+\item 
+\mbox{\Hypertarget{struct_vec3_a7c6d603a8d259c0d98920f693873420b}\label{struct_vec3_a7c6d603a8d259c0d98920f693873420b}} 
+float {\bfseries angle\+Between} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&other) const
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -25,5 +56,5 @@ float {\bfseries z} = 0.\+0f
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/maths/Vectors.\+h\item 
-C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/maths/Vectors.\+cpp\end{DoxyCompactItemize}
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/maths/Vectors.\+h\item 
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/maths/Vectors.\+cpp\end{DoxyCompactItemize}

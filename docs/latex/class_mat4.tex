@@ -20,10 +20,8 @@ using {\bfseries MATRIX\+\_\+\+DATA} = std\+::array$<$ MATRIX\+\_\+\+ROW, ORDER 
 \begin{DoxyCompactList}\small\item\em Constructs a matrix using a single float array of length 16. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_mat4_a53cb3c6c2a0b594345f0107b6c1fcc37}{Mat4}} ()
 \begin{DoxyCompactList}\small\item\em Default contructor. Initialises all values in 4x4 matrix with 0. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{class_mat4_a8f5c5e3d869b0f7bab6c4572cf8d3ead}{Mat4}} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\mbox{\hyperlink{class_mat4_a108c280b272909612baad7743a59a161}{Mat4}} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)=default
 \begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{class_mat4_a8c579d353f5c44ee5713af0a6bbebd24}{Mat4}} (\mbox{\hyperlink{class_mat4}{Mat4}} \&\&other) noexcept
-\begin{DoxyCompactList}\small\item\em Move constructor. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_mat4}{Mat4}} \& \mbox{\hyperlink{class_mat4_a3603a2b12694af2072a4f8a8cc4a0dd6}{operator=}} (\mbox{\hyperlink{class_mat4}{Mat4}} \&\&other) noexcept
 \begin{DoxyCompactList}\small\item\em Move assignment operator. \end{DoxyCompactList}\item 
 const MATRIX\+\_\+\+ROW \& \mbox{\hyperlink{class_mat4_a7802c838767e4705e59a4b99d60e9d66}{operator\mbox{[}$\,$\mbox{]}}} (unsigned int index) const
@@ -46,6 +44,9 @@ MATRIX\+\_\+\+ROW \& \mbox{\hyperlink{class_mat4_a85506d1c2f806ecae10b7c062fcb0b
 \begin{DoxyCompactList}\small\item\em Scale operation. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_mat4}{Mat4}} \mbox{\hyperlink{class_mat4_aa945d1970c5497cfcb0f977e608e9c4f}{rotate}} (float x\+Rotate, float y\+Rotate, float z\+Rotate) const
 \begin{DoxyCompactList}\small\item\em Rotation operation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_mat4_aa47c98cf0e3a0641f8bf511208561e56}\label{class_mat4_aa47c98cf0e3a0641f8bf511208561e56}} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries rotate\+Axis} (float x\+Axis, float y\+Axis, float z\+Axis, float angle) const
+\item 
 \mbox{\hyperlink{class_mat4}{Mat4}} \mbox{\hyperlink{class_mat4_a07d880f31c5fefdaa1b1d874d12c58e9}{translate}} (float x\+Translate, float y\+Translate, float z\+Translate) const
 \begin{DoxyCompactList}\small\item\em Translation operation. \end{DoxyCompactList}\item 
 const float $\ast$ \mbox{\hyperlink{class_mat4_abba6047592ed21971c459c992698ac35}{get\+Ptr}} () const
@@ -56,7 +57,10 @@ const float $\ast$ \mbox{\hyperlink{class_mat4_abba6047592ed21971c459c992698ac35
 static \mbox{\hyperlink{class_mat4}{Mat4}} \mbox{\hyperlink{class_mat4_ac5f71a909ae3a4d86cbfdcff932c72e2}{ortho}} (float left, float right, float top, float bottom, float near=-\/1.\+0f, float far=1.\+0f)
 \begin{DoxyCompactList}\small\item\em Generates an orthographic projection matrix. \end{DoxyCompactList}\item 
 static \mbox{\hyperlink{class_mat4}{Mat4}} \mbox{\hyperlink{class_mat4_ae1f1d282f22f12523659b3ae8d14fb46}{perspective}} (float fov, float aspect, float near=-\/1.\+0f, float far=1.\+0f)
-\begin{DoxyCompactList}\small\item\em Generates a perspective projection matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Generates a perspective projection matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_mat4_a55a52d04d4a7193268b30b43eca3000a}\label{class_mat4_a55a52d04d4a7193268b30b43eca3000a}} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries look\+At} (const \mbox{\hyperlink{struct_vec3}{Vec3}} \&position, const \mbox{\hyperlink{struct_vec3}{Vec3}} \&target, const \mbox{\hyperlink{struct_vec3}{Vec3}} \&up)
+\begin{DoxyCompactList}\small\item\em Generate a look at matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -77,7 +81,7 @@ std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\
 \mbox{\Hypertarget{class_mat4_abe206a0e5bf5c5d94d1ecb1a8708764b}\label{class_mat4_abe206a0e5bf5c5d94d1ecb1a8708764b}} 
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
-\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}\item[{float}]{r1c1,  }\item[{float}]{r1c2,  }\item[{float}]{r1c3,  }\item[{float}]{r1c4,  }\item[{float}]{r2c1,  }\item[{float}]{r2c2,  }\item[{float}]{r2c3,  }\item[{float}]{r2c4,  }\item[{float}]{r3c1,  }\item[{float}]{r3c2,  }\item[{float}]{r3c3,  }\item[{float}]{r3c4,  }\item[{float}]{r4c1,  }\item[{float}]{r4c2,  }\item[{float}]{r4c3,  }\item[{float}]{r4c4 }\end{DoxyParamCaption})}
 
 
@@ -122,7 +126,7 @@ Constructs a 4x4 matrix using 16 floats.
 \mbox{\Hypertarget{class_mat4_a90c28db53937618fbf7d2abbac423bde}\label{class_mat4_a90c28db53937618fbf7d2abbac423bde}} 
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
-\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
 {\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}\item[{const MATRIX\+\_\+\+ROW \&}]{row1,  }\item[{const MATRIX\+\_\+\+ROW \&}]{row2,  }\item[{const MATRIX\+\_\+\+ROW \&}]{row3,  }\item[{const MATRIX\+\_\+\+ROW \&}]{row4 }\end{DoxyParamCaption})}
 
 
@@ -143,7 +147,7 @@ Constructs a 4x4 matrix using 4 float arrays of length 4.
 \mbox{\Hypertarget{class_mat4_a325903716fd416b4dbc8864c64d46e2c}\label{class_mat4_a325903716fd416b4dbc8864c64d46e2c}} 
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
-\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
 {\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}\item[{const MATRIX\+\_\+\+DATA \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
@@ -158,7 +162,7 @@ Constructs a matrix using a single float array of length 16.
 \mbox{\Hypertarget{class_mat4_a53cb3c6c2a0b594345f0107b6c1fcc37}\label{class_mat4_a53cb3c6c2a0b594345f0107b6c1fcc37}} 
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
-\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
 {\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
@@ -168,11 +172,11 @@ Default contructor. Initialises all values in 4x4 matrix with 0.
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{class_mat4_a51b2c336d46f59e6583b02bd8ef1a7a0}{Mat4\+::identity}} 
 \end{DoxySeeAlso}
-\mbox{\Hypertarget{class_mat4_a8f5c5e3d869b0f7bab6c4572cf8d3ead}\label{class_mat4_a8f5c5e3d869b0f7bab6c4572cf8d3ead}} 
+\mbox{\Hypertarget{class_mat4_a108c280b272909612baad7743a59a161}\label{class_mat4_a108c280b272909612baad7743a59a161}} 
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
 \index{Mat4@{Mat4}!Mat4@{Mat4}}
-\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
-{\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_mat4}{Mat4}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_mat4}{Mat4}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
 
 
 
@@ -181,21 +185,6 @@ Copy constructor.
 
 \begin{DoxyParams}{Parameters}
 {\em other} & Matrix to copy from. \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{class_mat4_a8c579d353f5c44ee5713af0a6bbebd24}\label{class_mat4_a8c579d353f5c44ee5713af0a6bbebd24}} 
-\index{Mat4@{Mat4}!Mat4@{Mat4}}
-\index{Mat4@{Mat4}!Mat4@{Mat4}}
-\doxysubsubsection{\texorpdfstring{Mat4()}{Mat4()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
-{\footnotesize\ttfamily Mat4\+::\+Mat4 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_mat4}{Mat4}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
-
-
-
-Move constructor. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em other} & R value matrix to move data from. \\
 \hline
 \end{DoxyParams}
 
@@ -343,7 +332,7 @@ Subscript operator. Indexes into the underlying data structure.
 
 
 \begin{DoxyParams}{Parameters}
-{\em Unsigned} & index of data to return. \\
+{\em index} & Unsigned index of data to return. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -361,7 +350,7 @@ Constant subscript operator. Indexes into the underlying data structure.
 
 
 \begin{DoxyParams}{Parameters}
-{\em Unsigned} & index of data to return. \\
+{\em index} & Unsigned index of data to return. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -530,5 +519,5 @@ New translated matrix.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/maths/Mat4.\+h\item 
-C\+:/\+Users/fredd/source/repos/\+Open\+GL/\+Open\+GL/src/maths/Mat4.\+cpp\end{DoxyCompactItemize}
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/maths/Mat4.\+h\item 
+F\+:/dev/cpp/\+Open\+GL/\+Open\+GL/src/maths/Mat4.\+cpp\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
 \hypertarget{_index_buffer_8h_source}{}\doxysection{Index\+Buffer.\+h}
-\label{_index_buffer_8h_source}\index{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/IndexBuffer.h@{C:/Users/fredd/source/repos/OpenGL/OpenGL/src/engine/rendering/opengl/IndexBuffer.h}}
+\label{_index_buffer_8h_source}\index{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/opengl/IndexBuffer.h@{F:/dev/cpp/OpenGL/OpenGL/src/engine/rendering/opengl/IndexBuffer.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
@@ -20,13 +20,13 @@
 \DoxyCodeLine{16     \textcolor{keywordtype}{void} bind() \textcolor{keyword}{const};}
 \DoxyCodeLine{17     \textcolor{keywordtype}{void} unbind() \textcolor{keyword}{const};}
 \DoxyCodeLine{18 }
-\DoxyCodeLine{19     \textcolor{keywordtype}{size\_t} getCount()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Count; \}}
-\DoxyCodeLine{20     GLenum getType()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Type; \}}
+\DoxyCodeLine{19     [[nodiscard]] \textcolor{keywordtype}{size\_t} getCount()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Count; \}}
+\DoxyCodeLine{20     [[nodiscard]] GLenum getType()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_Type; \}}
 \DoxyCodeLine{21 }
 \DoxyCodeLine{22 \textcolor{keyword}{private}:}
-\DoxyCodeLine{23     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID;}
-\DoxyCodeLine{24     \textcolor{keywordtype}{size\_t} m\_Count;}
-\DoxyCodeLine{25     GLenum m\_Type;}
+\DoxyCodeLine{23     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} m\_ID = 0;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{size\_t} m\_Count = 0;}
+\DoxyCodeLine{25     GLenum m\_Type = 0;}
 \DoxyCodeLine{26 \};}
 \DoxyCodeLine{27 }
 
