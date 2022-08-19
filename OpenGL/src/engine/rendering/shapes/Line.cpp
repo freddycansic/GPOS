@@ -65,9 +65,12 @@ void Line::recalculatePositions()
 	const Vec3 diff = m_P1 - m_P2; // difference between the two points
 	const float mag = diff.magnitude(); // mag of diff
 
-	const Vec3 axis = (i.cross(diff)).normalise();
+	Vec3 axis = (i.cross(diff)).normalise();
+
+	if (std::isnan(axis.x)) axis = { 0, 0, 0 };
+
 	const float theta = i.angleBetween(diff);
-	
+
 	const Mat4 transformMatrix =
 		Mat4::identity.translate(
 			m_P2.x,

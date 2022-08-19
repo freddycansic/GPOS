@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <functional>
+#include <map>
 
 #include "Renderer.h"
 #include "Vertex.h"
@@ -14,6 +16,7 @@
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Shape.h"
 #include "engine/Files.h"
+#include "engine/Util.h"
 
 struct Batch {
 	std::vector<Vertex> vertices;
@@ -214,10 +217,18 @@ void checkBatchReady() {
 	}
 }
 
+unsigned int getMaxUInt(const std::vector<unsigned int>& vec)
+{
+	return *std::ranges::max_element(vec.begin(), vec.end());
+}
+
+const auto memoizedMaxUInt = Util::memoize(std::function(getMaxUInt));
+
 void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
-	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
+	//const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
+	const auto currentMaxShapeIndex = memoizedMaxUInt(shape.getIndices());
 
 	if (indexBuffer.empty()) {
 		maxIndex = -1;
@@ -233,7 +244,7 @@ void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape)
 
 	lastMaxShapeIndex = currentMaxShapeIndex;
 
-	for (unsigned int index : shape.getIndices()) {
+	for (const auto& index : shape.getIndices()) {
 		indexBuffer.push_back(index + maxIndex + 1);
 	}
 }

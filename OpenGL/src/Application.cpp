@@ -69,10 +69,9 @@ void Application::render()
 	ShapeRenderer::draw(Cube(p1, 0.05f), { 1.0f, 0.0f, 0.0f, 1.0f });
 	ShapeRenderer::draw(Cube(p2, 0.05f), { 1.0f, 0.0f, 0.0f, 1.0f });
 
-	//ShapeRenderer::draw(Line(), { 1.0f, 1.0f, 0.0f, 1.0f });
 	ShapeRenderer::draw(Line(p1, p2, 0.01f), {1.0f, 1.0f, 0.0f, 1.0f});
 
-	ShapeRenderer::draw(Line({ -100, 0.000001f, 0 }, { 100, 0, 0 }, 0.01f), { 1, 0, 0, 1 }); // X
+	ShapeRenderer::draw(Line({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f), { 1, 0, 0, 1 }); // X
 	ShapeRenderer::draw(Line({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f), { 0, 1, 0, 1 }); // Y
 	ShapeRenderer::draw(Line({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f), { 0, 0, 1, 1 }); // Z
 
@@ -85,7 +84,8 @@ void Application::imGuiRender()
 	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
-	
+
+
 	ImGui::End();
 }
 

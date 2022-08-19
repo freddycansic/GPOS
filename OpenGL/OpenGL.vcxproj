@@ -205,6 +205,7 @@
     <ClInclude Include="src\engine\rendering\ShapeRenderer.h" />
     <ClInclude Include="src\engine\Debug.h" />
     <ClInclude Include="src\engine\Files.h" />
+    <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\libs\imgui\imconfig.h" />
     <ClInclude Include="src\libs\imgui\imgui.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_glfw.h" />
