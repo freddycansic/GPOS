@@ -10,6 +10,16 @@
 #include "engine/Window.h"
 #include "engine/rendering/shapes/Line.h"
 
+void drawAxes()
+{
+	static Line x({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f);
+	static Line y({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f);
+	static Line z({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f);
+	ShapeRenderer::draw(x, { 1, 0, 0, 1 }); // X
+	ShapeRenderer::draw(y, { 0, 1, 0, 1 }); // Y
+	ShapeRenderer::draw(z, { 0, 0, 1, 1 }); // Z
+}
+
 void Application::init()
 {
 	ShapeRenderer::init();
@@ -25,9 +35,6 @@ Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
 Vec3 cameraOrbit, cameraTarget;
 
-float increment = 0.01f;
-const Vec3 p1 = { 0.1f, 0.4f, 0.6f };
-Vec3 p2 = { -0.5f, -0.5f, -0.5f };
 
 void Application::render()
 {
@@ -53,30 +60,31 @@ void Application::render()
 	}
 
 	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
 	Renderer::setViewMatrix(view);
-	
+
+	if (Input::isKeyDown(Keys::V))
+	{
+		Window::endCursorCapture();
+	}
+
+	if (Input::isKeyDown(Keys::C))
+	{
+		Window::beginCursorCapture();
+	}
+
 	ShapeRenderer::begin();
 
-	if (p2.y > 2.5f)
-		increment = -0.01f;
-	if (p2.y < -2.5f)
-		increment = 0.01f;
+	for (auto& gameObject : gameObjects)
+	{
+		ShapeRenderer::draw(*gameObject.first, gameObject.second);
+	}
 
-	p2.y += increment;
-	p2.z += increment;
-
-	ShapeRenderer::draw(Cube(p1, 0.05f), { 1.0f, 0.0f, 0.0f, 1.0f });
-	ShapeRenderer::draw(Cube(p2, 0.05f), { 1.0f, 0.0f, 0.0f, 1.0f });
-
-	ShapeRenderer::draw(Line(p1, p2, 0.01f), {1.0f, 1.0f, 0.0f, 1.0f});
-
-	ShapeRenderer::draw(Line({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f), { 1, 0, 0, 1 }); // X
-	ShapeRenderer::draw(Line({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f), { 0, 1, 0, 1 }); // Y
-	ShapeRenderer::draw(Line({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f), { 0, 0, 1, 1 }); // Z
+	drawAxes();
 
 	ShapeRenderer::end();
 }
+
+float colour[4];
 
 void Application::imGuiRender()
 {
@@ -85,6 +93,28 @@ void Application::imGuiRender()
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
+	ImGui::Text("Objects");
+
+	if (ImGui::Button("Cube"))
+	{
+		gameObjects.emplace_back(std::make_pair(std::make_unique<Cube>(0, 0, 0, 0.1f), Vec4(colour[0], colour[1], colour[2], 255)));
+	}
+
+	ImGui::SameLine();
+	ImGui::Text("%i", gameObjects.size());
+
+	ImGui::ColorPicker4("##picker", colour, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_DisplayRGB);
+
+	if (!gameObjects.empty())
+	{
+		auto& lastShape = gameObjects.at(gameObjects.size() - 1).first;
+
+		ImGui::Text("Transform");
+
+		ImGui::SliderFloat3("Translation", lastShape->translationPtr(), -10, 10); // gross writes directly into memory
+		ImGui::SliderFloat3("Rotation", lastShape->rotationPtr(), 0, 360); // gross writes directly into memory
+		ImGui::SliderFloat3("Scale", lastShape->scalePtr(), 0, 10); // gross writes directly into memory
+	}
 
 	ImGui::End();
 }

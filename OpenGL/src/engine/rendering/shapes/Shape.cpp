@@ -39,7 +39,28 @@ void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate)
 	m_Moved = true;
 }
 
-std::vector<Vec3> Shape::getPositions() const
+// FIX
+float* Shape::scalePtr()
+{
+	m_Moved = true;
+	return &m_Transform.sca.x;
+
+}
+
+float* Shape::rotationPtr()
+{
+	m_Moved = true;
+	return &m_Transform.rot.x;
+}
+
+float* Shape::translationPtr()
+{
+	m_Moved = true;
+	return &m_Transform.tra.x;
+}
+// PLZ
+
+const std::vector<Vec3>& Shape::getPositions() const
 {
 	return m_Positions;
 }

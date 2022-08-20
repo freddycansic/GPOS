@@ -36,6 +36,8 @@ namespace Input
 		lastX = xPos;
 		lastY = yPos;
 
+		if (!Window::capturingCursor()) return;
+
 		yaw -= xOffset * sens;
 		pitch -= yOffset * sens;
 

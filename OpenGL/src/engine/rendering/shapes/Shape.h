@@ -44,9 +44,9 @@ public:
 	[[nodiscard]] virtual const std::vector<Vec2>& getTextureCoordinates() const = 0;
 
 	/**
-	 * @return A reference to a vector of the shape's positions.
+	 * @return A const reference to a vector of the shape's positions.
 	*/
-	[[nodiscard]] virtual std::vector<Vec3> getPositions() const;
+	[[nodiscard]] virtual const std::vector<Vec3>& getPositions() const;
 
 	/**
 	 * @brief Set the scale for the shape.
@@ -55,7 +55,8 @@ public:
 	 * @param zScale The scale on the z axis
 	*/
 	virtual void setScale(float xScale, float yScale, float zScale);
-	
+	float* scalePtr();
+
 	/**
 	 * @brief Set the rotation for the shape about the centre of mass of the shape.
 	 * @param xRotation The rotation on the x axis
@@ -63,7 +64,8 @@ public:
 	 * @param zRotation The rotation on the z axis
 	*/
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
-	
+	float* rotationPtr();
+
 	/**
 	 * @brief Set the translation for the shape about the origin.
 	 * @param xTranslate The translation on the x axis
@@ -71,4 +73,5 @@ public:
 	 * @param zTranslate The translation on the z axis
 	*/
 	virtual void setTranslation(float xTranslate, float yTranslate, float zTranslate);
+	float* translationPtr();
 };

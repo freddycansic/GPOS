@@ -93,8 +93,21 @@ namespace Window
 
 	int shouldClose() { return glfwWindowShouldClose(m_ID); }
 
-	void beginCursorCapture() { glfwSetInputMode(m_ID, GLFW_CURSOR, GLFW_CURSOR_DISABLED); }
-	void endCursorCapture() { glfwSetInputMode(m_ID, GLFW_CURSOR, GLFW_CURSOR_NORMAL); }
+	bool m_Capturing = true;
+
+	void beginCursorCapture()
+	{
+		glfwSetInputMode(m_ID, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		m_Capturing = true;
+	}
+
+	void endCursorCapture()
+	{
+		glfwSetInputMode(m_ID, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		m_Capturing = false;
+	}
+
+	bool capturingCursor() { return m_Capturing; }
 
 	float currentTime() { return static_cast<float>(glfwGetTime()); }
 	float deltatime() { return m_Delta;  }

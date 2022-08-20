@@ -15,7 +15,6 @@ struct WindowConfig
 
 namespace Window
 {
-
 	void init(const WindowConfig& config);
 	void destroy();
 
@@ -33,6 +32,7 @@ namespace Window
 	[[nodiscard]] int height();
 	[[nodiscard]] int displayHeight();
 	[[nodiscard]] int displayWidth();
+	[[nodiscard]] bool capturingCursor();
 
 	[[nodiscard]] GLFWwindow* GLFWWindow();
 };

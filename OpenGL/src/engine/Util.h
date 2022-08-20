@@ -1,17 +1,19 @@
 #pragma once
 #include <functional>
 #include <map>
+#include <unordered_map>
 
 namespace Util
 {
+	// i stole this
 	template <typename ReturnType, typename... Args>
-	std::function<ReturnType(Args...)> memoize(std::function<ReturnType(Args...)> func)
+	std::function<ReturnType(Args...)> memoize(const std::function<ReturnType(Args...)>& func)
 	{
 		std::map<std::tuple<Args...>, ReturnType> cache;
 
 		return [cache, func](Args... args) mutable
 		{
-			std::tuple<Args...> t(args...);
+			const std::tuple<Args...> t(args...);
 
 			if (!cache.contains(t))
 			{

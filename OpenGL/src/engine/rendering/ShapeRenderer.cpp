@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
-#include <functional>
-#include <map>
 
 #include "Renderer.h"
 #include "Vertex.h"
@@ -228,7 +226,8 @@ void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape)
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
 	//const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
-	const auto currentMaxShapeIndex = memoizedMaxUInt(shape.getIndices());
+	//const auto currentMaxShapeIndex = memoizedMaxUInt(shape.getIndices());
+	const auto currentMaxShapeIndex = getMaxUInt(shape.getIndices());
 
 	if (indexBuffer.empty()) {
 		maxIndex = -1;
