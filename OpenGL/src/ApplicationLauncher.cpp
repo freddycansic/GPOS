@@ -29,9 +29,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	app.init();
 
 	while (!Window::shouldClose()) {
-#ifdef DEBUG
 		if (Input::isKeyDown(GLFW_KEY_ESCAPE)) break;
-#endif
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();

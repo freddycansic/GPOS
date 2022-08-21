@@ -45,15 +45,7 @@ namespace Debug {
 	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum);
 
 	void checkExtensionsSupported();
-
-	template<typename T>
-	void checkExtensionsSupported(const T& extension) {
-		const bool supported = glfwExtensionSupported(extension);
-
-		supportedExtensions[extension] = supported;
-
-		std::cout << extension << " : " << (supported ? "" : "NOT ") << "SUPPORTED" << std::endl;
-	}
+	void checkExtensionsSupported(const char* extension);
 
 	template<typename First, typename ...Rest>
 	void checkExtensionsSupported(const First& first, const Rest&... otherExtensions) {

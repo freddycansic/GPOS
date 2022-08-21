@@ -102,6 +102,14 @@ namespace Debug {
 
 	void checkExtensionsSupported() {}
 
+	void checkExtensionsSupported(const char* extension) {
+		const bool supported = glfwExtensionSupported(extension);
+
+		supportedExtensions[extension] = supported;
+
+		std::cout << extension << " : " << (supported ? "" : "NOT ") << "SUPPORTED" << std::endl;
+	}
+
 	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 		const char* severityStr = severityEnumToString(severity);
 		const char* sourceStr = sourceEnumToString(source);
