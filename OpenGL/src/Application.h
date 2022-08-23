@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "engine/rendering/Material.h"
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Cube.h"
 
@@ -10,12 +11,11 @@
 class Application
 {
 private:
-	// i really dont like this TODO make better, move semantics
-	std::unique_ptr<Texture> tex1, tex2;
+	Texture tex1, tex2;
+
+	Material mat1;
 
 	std::vector<std::pair<std::unique_ptr<Shape>, Vec4>> gameObjects;
-
-	Transform cubeTransform, viewTransform;
 
 public:
 	Application() = default;

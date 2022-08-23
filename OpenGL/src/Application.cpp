@@ -12,9 +12,9 @@
 
 void drawAxes()
 {
-	static Line x({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f);
-	static Line y({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f);
-	static Line z({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f);
+	const static Line x({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f);
+	const static Line y({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f);
+	const static Line z({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f);
 	ShapeRenderer::draw(x, { 1, 0, 0, 1 }); // X
 	ShapeRenderer::draw(y, { 0, 1, 0, 1 }); // Y
 	ShapeRenderer::draw(z, { 0, 0, 1, 1 }); // Z
@@ -24,8 +24,10 @@ void Application::init()
 {
 	ShapeRenderer::init();
 
-	tex1 = std::make_unique<Texture>(Files::internal("textures/image.png"));
-	tex2 = std::make_unique<Texture>(Files::internal("textures/hashinshin.png"));
+	tex1 = Texture(Files::internal("textures/image.png"));
+	tex2 = Texture(Files::internal("textures/hashinshin.png"));
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	Window::beginCursorCapture();
 }
@@ -34,7 +36,6 @@ Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
 Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
 Vec3 cameraOrbit, cameraTarget;
-
 
 void Application::render()
 {
@@ -78,6 +79,9 @@ void Application::render()
 	{
 		ShapeRenderer::draw(*gameObject.first, gameObject.second);
 	}
+
+	ShapeRenderer::draw(Cube(0, 0, 0, 2), tex2);
+	ShapeRenderer::draw(Cube(3, 1, 1, 0.5f), tex1);
 
 	drawAxes();
 

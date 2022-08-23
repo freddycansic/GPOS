@@ -1,4 +1,4 @@
-#version 430 core  
+#version 430 core
 
 #extension GL_ARB_bindless_texture : require
 #extension GL_ARB_gpu_shader_int64 : enable
@@ -14,7 +14,7 @@ in vec2 v_TexCoord;
 	uniform uvec2 u_TexHandle;
 #endif
 
-void main() {  
+void main() {
 	
 	if (uvec2(u_TexHandle) == uvec2(0)) { // if index < 0 do a color
 		color = v_Color;

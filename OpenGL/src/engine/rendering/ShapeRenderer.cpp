@@ -40,17 +40,17 @@ std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
-unsigned int maxIndex = 0;
-unsigned int lastMaxShapeIndex = 0;
-
 void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape);
-void checkBatchReady();
+void checkRendererReady(const State& state);
+Batch* createBatch(std::vector<Batch>& batches, size_t handle);
+Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle);
+void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Vec4& colour, size_t handle);
 
 namespace ShapeRenderer {
 
 	void init()
 	{
-		// TODO FIX ME DDDD:
+		// TODO FIX ME DDDD: = do move semantics for opengl objects
 		s_Shader = std::make_unique<Shader>(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 		s_Shader->bind();
 
@@ -80,77 +80,18 @@ namespace ShapeRenderer {
 		state = State::BEGUN;
 	}
 
-	Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle)
-	{
-		Batch* batch;
-
-		// search for colorBatch (texHandle of 0)
-		if (const auto& batchIt = std::ranges::find_if(batches.begin(), batches.end(),
-			[handle](const auto& renderData) -> bool {
-				return renderData.texHandle == handle;
-			}
-
-			// if didnt find one make one (iterator at end = not found)
-		); batchIt == s_Batches.end()) {
-			s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
-			batch = &s_Batches.at(s_Batches.size() - 1);
-			// if it did find one then use that
-		}
-		else {
-			batch = & *batchIt;
-		}
-
-		return batch;
-	}
-
-	// TODO DRY!
 	void draw(const Shape& shape, const Vec4& color)
 	{
-		checkBatchReady();
-
-		Batch* colorBatch = getBatchFromHandle(s_Batches, 0);
-
-		// add the indices
-		addShapeIndices(colorBatch->indices, shape);
-
-		// recaculate vertex positions using current transformation
-		const auto& newPositions = shape.getMesh().recalculatePositions(shape.getTransformMatrix());
-
-		for (unsigned int i = 0; i < newPositions.size(); ++i)
-		{
-			colorBatch->vertices.emplace_back
-			(
-				newPositions.at(i),
-				color,
-				shape.getMesh().textureCoordinates.at(i)
-			);
-		}
-
+		addShapeToBatches(s_Batches, shape, color, 0);
 	}
 
 	void draw(const Shape& shape, const Texture& tex)
 	{
-		checkBatchReady();
-
-		Batch* textureBatch = getBatchFromHandle(s_Batches, tex.getHandle());
-
-		addShapeIndices(textureBatch->indices, shape);
-
-		const auto& newPositions = shape.getMesh().recalculatePositions(shape.getTransformMatrix());
-
-		for (unsigned int i = 0; i < newPositions.size(); ++i)
-		{
-			textureBatch->vertices.emplace_back
-			(
-				newPositions.at(i),
-				Vec4(0, 0, 0, 0),
-				shape.getMesh().textureCoordinates.at(i)
-			);
-		}
+		addShapeToBatches(s_Batches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
 
 	void end() {
-		checkBatchReady();
+		checkRendererReady(state);
 
 		s_Vao->bind();
 		s_Shader->bind();
@@ -176,7 +117,7 @@ namespace ShapeRenderer {
 	}
 }
 
-void checkBatchReady() {
+void checkRendererReady(const State& state) {
 
 	switch (state) {
 	case State::STOPPED:
@@ -189,6 +130,9 @@ void checkBatchReady() {
 		break;
 	}
 }
+
+unsigned int maxIndex = 0;
+unsigned int lastMaxShapeIndex = 0;
 
 void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
@@ -212,4 +156,52 @@ void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape)
 	for (const auto& index : shape.getMesh().indices) {
 		indexBuffer.push_back(index + maxIndex + 1);
 	}
+}
+
+void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Vec4& colour, size_t handle)
+{
+	checkRendererReady(state);
+
+	Batch* batch = getBatchFromHandle(batches, handle);
+
+	// add the indices
+	addShapeIndices(batch->indices, shape);
+
+	// recaculate vertex positions using current transformation
+	const auto& newPositions = shape.getMesh().recalculatePositions(shape.getTransformMatrix());
+
+	for (unsigned int i = 0; i < newPositions.size(); ++i)
+	{
+		batch->vertices.emplace_back
+		(
+			newPositions.at(i),
+			colour,
+			shape.getMesh().textureCoordinates.at(i)
+		);
+	}
+}
+
+Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle)
+{
+	Batch* batch;
+
+	if (const auto& batchIt = std::ranges::find_if(batches,
+		[handle](const auto& batch) -> bool {
+			return batch.texHandle == handle;
+		}
+
+	); batchIt == s_Batches.end()) {
+		batch = createBatch(batches, handle);
+	}
+	else {
+		batch = &*batchIt;
+	}
+
+	return batch;
+}
+
+Batch* createBatch(std::vector<Batch>& batches, size_t handle)
+{
+	batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, handle);
+	return &batches.at(batches.size() - 1);
 }

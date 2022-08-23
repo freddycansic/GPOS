@@ -20,8 +20,6 @@ struct Vec3 {
 	float x = 0.0f, y = 0.0f, z = 0.0f;
 
 	Vec3() = default;
-
-	// regular constructor
 	Vec3(float x, float y, float z);
 	
 	// convert vec4 to vec3
@@ -49,7 +47,9 @@ struct Vec4 {
 
 	Vec4() = default;
 	Vec4(float x, float y, float z, float w);
+
 	explicit Vec4(const Vec3& vec3, float w);
+	explicit Vec4(const Vec3& vec3);
 
 	Vec4 operator*(const Mat4& mat) const;
 };

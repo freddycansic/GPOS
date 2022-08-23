@@ -96,6 +96,11 @@ Vec4::Vec4(const Vec3& vec3, float w) :
 {
 }
 
+Vec4::Vec4(const Vec3& vec3) :
+	x(vec3.x), y(vec3.y), z(vec3.z), w(1.0f)
+{
+}
+
 Vec4 Vec4::operator*(const Mat4& mat) const {
 	return {
 		mat[0][0] * x + mat[0][1] * y + mat[0][2] * z + mat[0][3] * w,

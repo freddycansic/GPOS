@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
     <ClCompile Include="src\engine\Input.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\shapes\Line.h" />
     <ClInclude Include="src\engine\Input.h" />
