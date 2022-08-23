@@ -74,7 +74,7 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	for (auto& gameObject : gameObjects)
+	for (const auto& gameObject : gameObjects)
 	{
 		ShapeRenderer::draw(*gameObject.first, gameObject.second);
 	}
@@ -107,7 +107,7 @@ void Application::imGuiRender()
 
 	if (!gameObjects.empty())
 	{
-		auto& lastShape = gameObjects.at(gameObjects.size() - 1).first;
+		const auto& lastShape = gameObjects.at(gameObjects.size() - 1).first;
 
 		ImGui::Text("Transform");
 

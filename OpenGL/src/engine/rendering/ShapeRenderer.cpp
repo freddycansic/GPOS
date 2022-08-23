@@ -14,7 +14,6 @@
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Shape.h"
 #include "engine/Files.h"
-#include "engine/Util.h"
 
 struct Batch {
 	std::vector<Vertex> vertices;
@@ -81,97 +80,73 @@ namespace ShapeRenderer {
 		state = State::BEGUN;
 	}
 
-	void draw(Shape& shape, const Vec4& color)
+	Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle)
 	{
-		checkBatchReady();
-
-		Batch* colorBatch;
+		Batch* batch;
 
 		// search for colorBatch (texHandle of 0)
-		if (const auto& colorBatchIt = std::ranges::find_if(s_Batches.begin(), s_Batches.end(),
-			[](const auto& renderData) -> bool {
-				return renderData.texHandle == 0;
+		if (const auto& batchIt = std::ranges::find_if(batches.begin(), batches.end(),
+			[handle](const auto& renderData) -> bool {
+				return renderData.texHandle == handle;
 			}
 
 			// if didnt find one make one (iterator at end = not found)
-		); colorBatchIt == s_Batches.end()) {
+		); batchIt == s_Batches.end()) {
 			s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, 0);
-			colorBatch = &s_Batches.at(s_Batches.size() - 1);
+			batch = &s_Batches.at(s_Batches.size() - 1);
 			// if it did find one then use that
 		}
 		else {
-			colorBatch = &*colorBatchIt;
+			batch = & *batchIt;
 		}
+
+		return batch;
+	}
+
+	// TODO DRY!
+	void draw(const Shape& shape, const Vec4& color)
+	{
+		checkBatchReady();
+
+		Batch* colorBatch = getBatchFromHandle(s_Batches, 0);
 
 		// add the indices
 		addShapeIndices(colorBatch->indices, shape);
 
 		// recaculate vertex positions using current transformation
-		shape.recalculatePositions();
+		const auto& newPositions = shape.getMesh().recalculatePositions(shape.getTransformMatrix());
 
-		// modify vertices and add to buffer
-		for (unsigned int i = 0; i < shape.getPositions().size(); ++i) {
+		for (unsigned int i = 0; i < newPositions.size(); ++i)
+		{
 			colorBatch->vertices.emplace_back
 			(
-				shape.getPositions().at(i), 
-				color, 
-				shape.getTextureCoordinates().at(i)
+				newPositions.at(i),
+				color,
+				shape.getMesh().textureCoordinates.at(i)
 			);
-
 		}
+
 	}
 
-	void draw(Shape&& shape, const Vec4& color)
-	{
-		draw(shape, color);
-	}
-
-	void draw(Shape& shape, const Texture& tex)
+	void draw(const Shape& shape, const Texture& tex)
 	{
 		checkBatchReady();
 
-		Batch* textureBatch;
-
-		if (const auto& textureBatchIt = std::ranges::find_if(s_Batches.begin(), s_Batches.end(),
-			[&tex](const auto& renderData) -> bool {
-				return renderData.texHandle == tex.getHandle();
-			}
-
-		); textureBatchIt == s_Batches.end()) {
-
-			s_Batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, tex.getHandle());
-			textureBatch = &s_Batches.at(s_Batches.size() - 1);
-
-		}
-		else {
-			textureBatch = &*textureBatchIt;
-		}
-
-		for (auto& renderData : s_Batches) {
-			if (renderData.texHandle == tex.getHandle()) {
-				textureBatch = &renderData;
-				break;
-			}
-		}
+		Batch* textureBatch = getBatchFromHandle(s_Batches, tex.getHandle());
 
 		addShapeIndices(textureBatch->indices, shape);
 
-		shape.recalculatePositions();
+		const auto& newPositions = shape.getMesh().recalculatePositions(shape.getTransformMatrix());
 
-		// modify vertices and add to buffer
-		for (unsigned int i = 0; i < shape.getPositions().size(); ++i) {
+		for (unsigned int i = 0; i < newPositions.size(); ++i)
+		{
 			textureBatch->vertices.emplace_back
 			(
-				shape.getPositions().at(i),
-				Vec4{0, 0, 0, 0}, 
-				shape.getTextureCoordinates().at(i)
+				newPositions.at(i),
+				Vec4(0, 0, 0, 0),
+				shape.getMesh().textureCoordinates.at(i)
 			);
 		}
-	}
-
-	void draw(Shape&& shape, const Texture& tex)
-	{
-		draw(shape, tex);
 	}
 
 	void end() {
@@ -215,19 +190,10 @@ void checkBatchReady() {
 	}
 }
 
-unsigned int getMaxUInt(const std::vector<unsigned int>& vec)
-{
-	return *std::ranges::max_element(vec.begin(), vec.end());
-}
-
-const auto memoizedMaxUInt = Util::memoize(std::function(getMaxUInt));
-
 void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
-	//const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getIndices().begin(), shape.getIndices().end());
-	//const auto currentMaxShapeIndex = memoizedMaxUInt(shape.getIndices());
-	const auto currentMaxShapeIndex = getMaxUInt(shape.getIndices());
+	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getMesh().indices.begin(), shape.getMesh().indices.end());
 
 	if (indexBuffer.empty()) {
 		maxIndex = -1;
@@ -243,7 +209,7 @@ void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape)
 
 	lastMaxShapeIndex = currentMaxShapeIndex;
 
-	for (const auto& index : shape.getIndices()) {
+	for (const auto& index : shape.getMesh().indices) {
 		indexBuffer.push_back(index + maxIndex + 1);
 	}
 }
