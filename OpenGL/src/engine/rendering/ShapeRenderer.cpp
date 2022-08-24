@@ -90,6 +90,8 @@ namespace ShapeRenderer {
 		addShapeToBatches(s_Batches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
 
+	unsigned int drawCalls = 0;
+
 	void end() {
 		checkRendererReady(state);
 

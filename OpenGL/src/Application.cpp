@@ -75,13 +75,13 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	for (const auto& gameObject : gameObjects)
+	for (const auto& [shape, colour] : gameObjects)
 	{
-		ShapeRenderer::draw(*gameObject.first, gameObject.second);
+		ShapeRenderer::draw(*shape, colour);
 	}
 
 	ShapeRenderer::draw(Cube(0, 0, 0, 2), tex2);
-	ShapeRenderer::draw(Cube(3, 1, 1, 0.5f), tex1);
+	//ShapeRenderer::draw(Cube(3, 1, 1, 0.5f), tex1);
 
 	drawAxes();
 
@@ -115,6 +115,7 @@ void Application::imGuiRender()
 
 		ImGui::Text("Transform");
 
+		// TODO
 		ImGui::SliderFloat3("Translation", lastShape->translationPtr(), -10, 10); // gross writes directly into memory
 		ImGui::SliderFloat3("Rotation", lastShape->rotationPtr(), 0, 360); // gross writes directly into memory
 		ImGui::SliderFloat3("Scale", lastShape->scalePtr(), 0, 10); // gross writes directly into memory

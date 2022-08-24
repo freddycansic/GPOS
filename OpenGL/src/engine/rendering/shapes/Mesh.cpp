@@ -16,7 +16,12 @@ std::vector<Vec3> Mesh::recalculatePositions(const Mat4& transformMatrix) const 
 	for (unsigned int i = 0; i < positions.size(); ++i)
 	{
 		newPositions[i] = Vec3(Vec4(positions[i], 1.0f) * transformMatrix);
+
+		//std::cout << "OLD POS " << positions[i] << std::endl;
+		//std::cout << "NEW POS " << newPositions[i] << std::endl;
 	}
+
+	//std::cout << std::endl;
 
 	return newPositions;
 }

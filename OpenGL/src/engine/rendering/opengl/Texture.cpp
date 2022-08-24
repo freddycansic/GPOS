@@ -48,10 +48,10 @@ Texture& Texture::operator=(Texture&& tex) noexcept
 	this->m_Width = tex.m_Width;
 	this->m_Height = tex.m_Height;
 	this->m_ColorDepth = tex.m_ColorDepth;
-	this->m_Handle = tex.m_Height;
+	this->m_Handle = tex.m_Handle;
 
-	tex.m_ID = 0;
 	tex.m_Handle = 0;
+	tex.m_ID = 0;
 
 	return *this;
 }
