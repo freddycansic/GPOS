@@ -15,12 +15,12 @@ namespace Maths {
 	}
 
 	float randf(float min, float max) {
-		const std::uniform_real_distribution<float> dist(min, max);
+		std::uniform_real_distribution<float> dist(min, max);
 		return dist(mersenne);
 	}
 
 	int randint(int min, int max) {
-		const std::uniform_int_distribution<int> dist(min, max);
+		std::uniform_int_distribution<int> dist(min, max);
 		return dist(mersenne);
 	}
 
