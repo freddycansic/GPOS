@@ -99,6 +99,7 @@ namespace ShapeRenderer {
 		s_Shader->bind();
 
 		for (const auto& [vertices, indices, texHandle] : s_Batches) {
+
 			s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), vertices.data());
 			s_Ibo->setSubData(0, indices.size(), indices.data());
 
@@ -165,7 +166,7 @@ void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Ve
 	checkRendererReady(state);
 
 	Batch* batch = getBatchFromHandle(batches, handle);
-
+	std::cout << batch->texHandle << std::endl;
 	// add the indices
 	addShapeIndices(batch->indices, shape);
 
@@ -185,7 +186,7 @@ void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Ve
 
 Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle)
 {
-	Batch* batch;
+	Batch* newBatch;
 
 	if (const auto& batchIt = std::ranges::find_if(batches,
 		[handle](const auto& batch) -> bool {
@@ -193,13 +194,13 @@ Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle)
 		}
 
 	); batchIt == s_Batches.end()) {
-		batch = createBatch(batches, handle);
+		newBatch = createBatch(batches, handle);
 	}
 	else {
-		batch = &*batchIt;
+		newBatch = &*batchIt;
 	}
 
-	return batch;
+	return newBatch;
 }
 
 Batch* createBatch(std::vector<Batch>& batches, size_t handle)

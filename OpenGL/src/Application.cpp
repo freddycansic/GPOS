@@ -80,10 +80,9 @@ void Application::render()
 		ShapeRenderer::draw(*shape, colour);
 	}
 
-	ShapeRenderer::draw(Cube(0, 0, 0, 2), tex2);
-	//ShapeRenderer::draw(Cube(3, 1, 1, 0.5f), tex1);
-
 	drawAxes();
+
+	ShapeRenderer::draw(Cube(0, 0, 0, 2), tex2);
 
 	ShapeRenderer::end();
 }

@@ -9,6 +9,22 @@ VertexArray::VertexArray() {
 	GLAPI(glBindVertexArray(m_ID));
 }
 
+VertexArray::VertexArray(VertexArray&& vao) noexcept :
+	m_ID(vao.m_ID)
+{
+	vao.m_ID = 0;
+}
+
+VertexArray& VertexArray::operator=(VertexArray&& vao) noexcept
+{
+	this->m_ID = vao.m_ID;
+	
+	vao.m_ID = 0;
+
+	return *this;
+}
+
+
 void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) const {
 	this->bind();
 	buffer.bind();
