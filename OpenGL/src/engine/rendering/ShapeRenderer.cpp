@@ -40,11 +40,11 @@ std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
-void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape);
+void addShapeIndices(std::vector<unsigned int>& indexBuffer, Shape& shape);
 void checkRendererReady(const State& state);
 Batch* createBatch(std::vector<Batch>& batches, size_t handle);
 Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle);
-void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Vec4& colour, size_t handle);
+void addShapeToBatches(std::vector<Batch>& batches, Shape& shape, const Vec4& colour, size_t handle);
 
 namespace ShapeRenderer {
 
@@ -80,12 +80,22 @@ namespace ShapeRenderer {
 		state = State::BEGUN;
 	}
 
-	void draw(const Shape& shape, const Vec4& color)
+	void draw(Shape& shape, const Vec4& color)
 	{
 		addShapeToBatches(s_Batches, shape, color, 0);
 	}
 
-	void draw(const Shape& shape, const Texture& tex)
+	void draw(Shape&& shape, const Vec4& color)
+	{
+		addShapeToBatches(s_Batches, shape, color, 0);
+	}
+
+	void draw(Shape& shape, const Texture& tex)
+	{
+		addShapeToBatches(s_Batches, shape, { 0, 0, 0, 0 }, tex.getHandle());
+	}
+
+	void draw(Shape&& shape, const Texture& tex)
 	{
 		addShapeToBatches(s_Batches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
@@ -137,7 +147,7 @@ void checkRendererReady(const State& state) {
 unsigned int maxIndex = 0;
 unsigned int lastMaxShapeIndex = 0;
 
-void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
+void addShapeIndices(std::vector<unsigned int>& indexBuffer, Shape& shape) {
 
 	// find maxIndex to offset next indices so they dont reference any previous ones
 	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getMesh().indices.begin(), shape.getMesh().indices.end());
@@ -161,7 +171,8 @@ void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape)
 	}
 }
 
-void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Vec4& colour, size_t handle)
+
+void addShapeToBatches(std::vector<Batch>& batches, Shape& shape, const Vec4& colour, size_t handle)
 {
 	checkRendererReady(state);
 
@@ -171,13 +182,19 @@ void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Ve
 	addShapeIndices(batch->indices, shape);
 
 	// recaculate vertex positions using current transformation
-	const auto& newPositions = shape.getMesh().recalculatePositions(shape.getTransformMatrix());
+	if (shape.moved())
+	{
+		shape.setPositions(shape.getMesh().recalculatePositions(shape.getTransformMatrix()));
+		shape.setMoved(false);
+	}
 
-	for (unsigned int i = 0; i < newPositions.size(); ++i)
+	const auto& positions = shape.getPositions();
+
+	for (unsigned int i = 0; i < positions.size(); ++i)
 	{
 		batch->vertices.emplace_back
 		(
-			newPositions.at(i),
+			positions.at(i),
 			colour,
 			shape.getMesh().textureCoordinates.at(i)
 		);

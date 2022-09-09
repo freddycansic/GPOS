@@ -12,9 +12,9 @@
 
 void drawAxes()
 {
-	const static Line x({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f);
-	const static Line y({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f);
-	const static Line z({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f);
+	static Line x({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f);
+	static Line y({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f);
+	static Line z({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f);
 	ShapeRenderer::draw(x, { 1, 0, 0, 1 }); // X
 	ShapeRenderer::draw(y, { 0, 1, 0, 1 }); // Y
 	ShapeRenderer::draw(z, { 0, 0, 1, 1 }); // Z
@@ -33,6 +33,20 @@ void Application::init(char* projectDir)
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	Window::beginCursorCapture();
+
+	constexpr float numCubesSide = 15;
+	constexpr float numCubesSideHalf = numCubesSide / 2.0f;
+
+	for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
+	{
+		for (float y = -numCubesSideHalf; y < numCubesSideHalf; ++y)
+		{
+			for (float z = -numCubesSideHalf; z < numCubesSideHalf; ++z)
+			{
+				gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(x/10.0f, y/10.0f, z/10.0f, 1.0f));
+			}
+		}
+	}
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
@@ -78,14 +92,14 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	for (const auto& [shape, colour] : gameObjects)
+	for (auto& [cube, colour] : gameObjects)
 	{
-		ShapeRenderer::draw(*shape, colour);
+		cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+		ShapeRenderer::draw(cube, colour);
 	}
-
+	
+	
 	drawAxes();
-
-	ShapeRenderer::draw(Cube(0, 0, 0, 2), tex2);
 
 	ShapeRenderer::end();
 }
@@ -101,27 +115,27 @@ void Application::imGuiRender()
 
 	ImGui::Text("Objects");
 
-	if (ImGui::Button("Cube"))
-	{
-		gameObjects.emplace_back(std::make_pair(std::make_unique<Cube>(0, 0, 0, 0.1f), Vec4(colour[0], colour[1], colour[2], 255)));
-	}
+	//if (ImGui::Button("Cube"))
+	//{
+	//	gameObjects.emplace_back(std::make_pair(std::make_unique<Cube>(0, 0, 0, 0.1f), Vec4(colour[0], colour[1], colour[2], 255)));
+	//}
 
-	ImGui::SameLine();
-	ImGui::Text("%i", gameObjects.size());
+	//ImGui::SameLine();
+	//ImGui::Text("%i", gameObjects.size());
 
-	ImGui::ColorPicker4("##picker", colour, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_DisplayRGB);
+	//ImGui::ColorPicker4("##picker", colour, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_DisplayRGB);
 
-	if (!gameObjects.empty())
-	{
-		const auto& lastShape = gameObjects.at(gameObjects.size() - 1).first;
+	//if (!gameObjects.empty())
+	//{
+	//	const auto& lastShape = gameObjects.at(gameObjects.size() - 1).first;
 
-		ImGui::Text("Transform");
+	//	ImGui::Text("Transform");
 
-		// TODO
-		ImGui::SliderFloat3("Translation", lastShape->translationPtr(), -10, 10); // gross writes directly into memory
-		ImGui::SliderFloat3("Rotation", lastShape->rotationPtr(), 0, 360); // gross writes directly into memory
-		ImGui::SliderFloat3("Scale", lastShape->scalePtr(), 0, 10); // gross writes directly into memory
-	}
+	//	// TODO
+	//	ImGui::SliderFloat3("Translation", lastShape->translationPtr(), -10, 10); // gross writes directly into memory
+	//	ImGui::SliderFloat3("Rotation", lastShape->rotationPtr(), 0, 360); // gross writes directly into memory
+	//	ImGui::SliderFloat3("Scale", lastShape->scalePtr(), 0, 10); // gross writes directly into memory
+	//}
 
 	ImGui::End();
 }

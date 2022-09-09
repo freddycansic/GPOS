@@ -14,7 +14,11 @@ largeFont = QFont("Arial", 30)
 
 def runMainApplication(projectPath: str) -> None:
     print(APPLICATION_FILE, projectPath)
-    subprocess.run([APPLICATION_FILE, projectPath])
+    
+    if len(projectPath):
+        subprocess.run([APPLICATION_FILE, projectPath])
+    else:
+        subprocess.run([APPLICATION_FILE])
 
 def main():
     # preliminary checks
@@ -27,6 +31,7 @@ def main():
         os.mkdir(PROJECT_DIR)
     
     app = QApplication([])
+    
     size = app.primaryScreen().size()
 
     window = QWidget()

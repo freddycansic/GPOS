@@ -13,7 +13,7 @@ class Application
 private:
 	Texture tex1, tex2;
 
-	std::vector<std::pair<std::unique_ptr<Shape>, Vec4>> gameObjects;
+	std::vector<std::pair<Cube, Vec4>> gameObjects;
 
 	char* openedProject = nullptr;
 

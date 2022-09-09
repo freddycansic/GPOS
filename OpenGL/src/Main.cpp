@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 	//config.window.height = 1080 * 3 / 4;
 	config.window.title = "Hi";
 	config.window.maxSize = true;
-	config.window.vsync = true;
+	config.window.vsync = false;
 
 	// all variables inside app must have a default constructor or have default values
 
