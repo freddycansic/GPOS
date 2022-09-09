@@ -13,14 +13,14 @@ class Application
 private:
 	Texture tex1, tex2;
 
-	Material mat1;
-
 	std::vector<std::pair<std::unique_ptr<Shape>, Vec4>> gameObjects;
+
+	char* openedProject = nullptr;
 
 public:
 	Application() = default;
 
-	void init();
+	void init(char* projectDir = nullptr);
 	void render();
 	void imGuiRender();
 	void destroy();

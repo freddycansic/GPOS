@@ -20,8 +20,11 @@ void drawAxes()
 	ShapeRenderer::draw(z, { 0, 0, 1, 1 }); // Z
 }
 
-void Application::init()
+void Application::init(char* projectDir)
 {
+	openedProject = projectDir;
+	std::cout << "Project " << (openedProject == nullptr ? "NO_PROJECT" : openedProject) << " loaded." << std::endl;
+
 	ShapeRenderer::init();
 
 	tex1 = Texture(Files::internal("textures/image.png"));

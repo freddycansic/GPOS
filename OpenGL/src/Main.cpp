@@ -12,13 +12,15 @@ int main(int argc, char* argv[])
 
 	// all variables inside app must have a default constructor or have default values
 
-	if (argc > 2)
+	Application app;
+
+	if (argc > 1)
 	{
-		Application app(argv[0]);
-		ApplicationLauncher appHandler(app, config);
-	} else
+		ApplicationLauncher appHandler(app, config, argv[1]);
+	}
+	else
 	{
-		Application app;
+		std::cout << "no" << std::endl;
 		ApplicationLauncher appHandler(app, config);
 	}
 

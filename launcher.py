@@ -13,6 +13,7 @@ PROJECT_DIR = "projects"
 largeFont = QFont("Arial", 30)
 
 def runMainApplication(projectPath: str) -> None:
+    print(APPLICATION_FILE, projectPath)
     subprocess.run([APPLICATION_FILE, projectPath])
 
 def main():

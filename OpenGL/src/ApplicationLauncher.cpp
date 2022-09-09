@@ -8,7 +8,7 @@
 #include "engine/Input.h"
 #include "engine/rendering/Renderer.h"
 
-ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
+ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir)
 {
 	Window::init(config.window);
 	
@@ -26,7 +26,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
 
-	app.init();
+	app.init(projectDir);
 
 	while (!Window::shouldClose()) {
 		if (Input::isKeyDown(GLFW_KEY_ESCAPE)) break;

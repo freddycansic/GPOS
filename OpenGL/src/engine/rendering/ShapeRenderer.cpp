@@ -166,7 +166,7 @@ void addShapeToBatches(std::vector<Batch>& batches, const Shape& shape, const Ve
 	checkRendererReady(state);
 
 	Batch* batch = getBatchFromHandle(batches, handle);
-	std::cout << batch->texHandle << std::endl;
+	//std::cout << batch->texHandle << std::endl;
 	// add the indices
 	addShapeIndices(batch->indices, shape);
 
