@@ -1,3 +1,2 @@
-cd OpenGL/src
-cloc * --exclude-dir=libs
+cloc launcher.py OpenGL/src --exclude-dir=libs 
 pause
