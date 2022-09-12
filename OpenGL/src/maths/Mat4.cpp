@@ -100,37 +100,50 @@ Mat4 Mat4::scale(float xScale, float yScale, float zScale) const
 
 Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 {
-	const float xRadRotate = Maths::radians(xRotate);
-	const float yRadRotate = Maths::radians(yRotate);
-	const float zRadRotate = Maths::radians(zRotate);
+	const float x = Maths::radians(xRotate);
+	const float y = Maths::radians(yRotate);
+	const float z = Maths::radians(zRotate);
 
 	return (
 		*this
 
 		*
 
-		Mat4 (
-		1, 0, 0, 0,
-		0, cos(xRadRotate), -sin(xRadRotate), 0,
-		0, sin(xRadRotate), cos(xRadRotate), 0,
-		0, 0, 0, 1) 
-		
-		*
-		
-		Mat4 (
-		cos(yRadRotate), 0, sin(yRadRotate), 0,
-		0, 1, 0, 0,
-		-sin(yRadRotate), 0, cos(yRadRotate), 0,
-		0, 0, 0, 1) 
-		
-		*
-		
-		Mat4 (
-		cos(zRadRotate), -sin(zRadRotate), 0, 0,
-		sin(zRadRotate), cos(zRadRotate), 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1)
-	);
+		Mat4(
+			cos(y)*cos(z), -cos(y)*sin(z), sin(y), 0,
+			sin(x)*sin(y)*cos(z)+cos(x)*sin(z), cos(x)*cos(z)-sin(x)*sin(y)*sin(z), -sin(x)*cos(y), 0,
+			sin(x)*sin(z)-cos(x)*sin(y)*cos(z), cos(x)*sin(y)*sin(z)+sin(x)*cos(z), cos(x)*cos(y), 0,
+			0, 0, 0, 1
+		)
+		);
+
+	//return (
+	//	*this
+
+	//	*
+
+	//	Mat4 (
+	//	1, 0, 0, 0,
+	//	0, cos(xRadRotate), -sin(xRadRotate), 0,
+	//	0, sin(xRadRotate), cos(xRadRotate), 0,
+	//	0, 0, 0, 1) 
+	//	
+	//	*
+	//	
+	//	Mat4 (
+	//	cos(yRadRotate), 0, sin(yRadRotate), 0,
+	//	0, 1, 0, 0,
+	//	-sin(yRadRotate), 0, cos(yRadRotate), 0,
+	//	0, 0, 0, 1) 
+	//	
+	//	*
+	//	
+	//	Mat4 (
+	//	cos(zRadRotate), -sin(zRadRotate), 0, 0,
+	//	sin(zRadRotate), cos(zRadRotate), 0, 0,
+	//	0, 0, 1, 0,
+	//	0, 0, 0, 1)
+	//);
 }
 
 Mat4 Mat4::rotateAxis(float xAxis, float yAxis, float zAxis, float angle) const

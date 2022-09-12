@@ -32,6 +32,13 @@ float* Shape::translationPtr()
 
 Mat4 Shape::getTransformMatrix() const
 {
+	// WRONG ORDER DONT USE
+	//const auto& translated = Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
+	//const auto& rotated = translated.rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
+	//const auto& scaled = rotated.scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+
+	//return scaled;
+
 	return Mat4::identity.translate(m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z).rotate(m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z).scale(m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 }
 

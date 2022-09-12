@@ -34,7 +34,7 @@ void Application::init(char* projectDir)
 
 	Window::beginCursorCapture();
 
-	constexpr float numCubesSide = 5;
+	constexpr float numCubesSide = 15;
 	constexpr float numCubesSideHalf = numCubesSide / 2.0f;
 
 	for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
