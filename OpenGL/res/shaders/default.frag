@@ -9,9 +9,9 @@ in vec4 v_Color;
 in vec2 v_TexCoord;
 
 //#ifdef GL_ARB_gpu_shader_int64
-//	layout(bindless_sampler) uniform sampler2D u_TexHandle;
+	layout(bindless_sampler) uniform sampler2D u_TexHandle;
 //#else
-	uniform uvec2 u_TexHandle;
+//	uniform uvec2 u_TexHandle;
 //#endif
 
 void main() {

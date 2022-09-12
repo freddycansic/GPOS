@@ -5,7 +5,7 @@
 class Cube : public Shape
 {
 private:
-	const static Mesh s_Mesh;
+	static Mesh s_Mesh;
 	float m_Size = 0.0f;
 
 public:
@@ -13,7 +13,7 @@ public:
 	Cube(const Vec3& pos, float size);
 	Cube() = default;
 
-	[[nodiscard]] const Mesh& getMesh() const override;
+	[[nodiscard]] Mesh& getMesh() const override;
 
 	void setScale(float xScale, float yScale, float zScale) override;
 };

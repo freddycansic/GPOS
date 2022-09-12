@@ -108,8 +108,10 @@ void Application::render()
 
 		ShapeRenderer::draw(cube, colour);
 	}
-	
-	drawAxes();
+
+	//ShapeRenderer::draw(Cube(0, 0, 0, 0.5f), { 1.0f, 0.0f, 0.4f, 1.0f });
+
+	//drawAxes();
 
 	ShapeRenderer::end();
 }

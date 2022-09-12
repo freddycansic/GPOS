@@ -1,6 +1,6 @@
 #include "Cube.h"
 
-const Mesh Cube::s_Mesh = 
+Mesh Cube::s_Mesh = 
 {
 	{
 		{-0.5f, -0.5f,  0.5f}, // 0 bottom front left
@@ -54,6 +54,6 @@ void Cube::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
 }
 
-const Mesh& Cube::getMesh() const {
+Mesh& Cube::getMesh() const {
 	return s_Mesh;
 }

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
-#include <unordered_map>
+#include <map>
 
 #include "Renderer.h"
 #include "Vertex.h"
@@ -16,10 +16,10 @@
 #include "engine/rendering/shapes/Shape.h"
 #include "engine/Files.h"
 
-struct Batch {
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	uint64_t texHandle;
+struct ShapeData
+{
+	Shape* shape;
+	Vec4 colour;
 };
 
 enum class State {
@@ -34,19 +34,16 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 
 State state = State::UNINITIALISED;
 
-std::vector<Batch> s_Batches;
-std::unordered_map<size_t, std::vector<Shape*>> batchedDrawnShapes; // TODO make name better
+using BatchData = std::map<size_t, std::vector<ShapeData>>;
+BatchData shapeBatches; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
-void addShapeIndices(std::vector<unsigned int>& indexBuffer, Shape& shape);
 void checkRendererReady(const State& state);
-Batch* createBatch(std::vector<Batch>& batches, size_t handle);
-Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle);
-void addShapeToBatches(std::vector<Batch>& batches, Shape& shape, const Vec4& colour, size_t handle);
+void addShapeToBatches(BatchData& batches, Shape& shape, const Vec4& colour, size_t handle);
 
 namespace ShapeRenderer {
 
@@ -84,25 +81,26 @@ namespace ShapeRenderer {
 
 	void draw(Shape& shape, const Vec4& color)
 	{
-		addShapeToBatches(s_Batches, shape, color, 0);
+		addShapeToBatches(shapeBatches, shape, color, 0);
 	}
 
 	void draw(Shape&& shape, const Vec4& color)
 	{
-		addShapeToBatches(s_Batches, shape, color, 0);
+		addShapeToBatches(shapeBatches, shape, color, 0);
 	}
 
 	void draw(Shape& shape, const Texture& tex)
 	{
-		addShapeToBatches(s_Batches, shape, { 0, 0, 0, 0 }, tex.getHandle());
+		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
 
 	void draw(Shape&& shape, const Texture& tex)
 	{
-		addShapeToBatches(s_Batches, shape, { 0, 0, 0, 0 }, tex.getHandle());
+		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
-
-	unsigned int drawCalls = 0;
+	
+	unsigned int maxIndex = 0;
+	unsigned int lastMaxShapeIndex = 0;
 
 	void end() {
 		checkRendererReady(state);
@@ -110,15 +108,83 @@ namespace ShapeRenderer {
 		s_Vao->bind();
 		s_Shader->bind();
 
-		for (auto& [vertices, indices, texHandle] : s_Batches) {
+		// for every batch
+		for (auto& [texHandle, shapeData]: shapeBatches) {
 
-			indexShapes
-
-			for (const auto& shape : batchedDrawnShapes.at(texHandle))
+			// tally up number of vertices and indices in batch
+			size_t numVerticesInBatch = 0;
+			size_t numIndicesInBatch = 0;
+			for (const auto& [shape, colour] : shapeData)
 			{
-				indices.reserve(batchedDrawnShapes.at(texHandle).size());
+				numVerticesInBatch += shape->getMesh().positions.size();
+				numIndicesInBatch += shape->getMesh().indices.size();
+			}
 
-				addShapeIndices(indices, *shape);
+			//std::vector<Vertex> vertices(numVerticesInBatch);
+			//std::vector<unsigned int> indices(numIndicesInBatch);
+
+			std::vector<Vertex> vertices;
+			vertices.reserve(numVerticesInBatch);
+
+			std::vector<unsigned int> indices;
+			indices.reserve(numIndicesInBatch);
+
+			for (auto& [shape, colour] : shapeData)
+			{
+				auto& mesh = shape->getMesh();
+
+				// indices
+				const auto currentMaxShapeIndex = mesh.getMaxInt();
+
+				if (indices.empty()) {
+					maxIndex = -1;
+				}
+				else {
+					// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
+					//						cM = 4, lM = 4,		cM = 5, lM = 4
+
+					// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
+
+					maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
+				}
+
+				lastMaxShapeIndex = currentMaxShapeIndex;
+
+				const auto& shapeIndices = mesh.indices;
+
+				for (const auto& index : shapeIndices)
+				{
+					indices.push_back(index + maxIndex + 1);
+				}
+
+				// vertices
+				if (shape->moved())
+				{
+					shape->setPositions(shape->getMesh().recalculatePositions(shape->getTransformMatrix()));
+					shape->setMoved(false);
+				}
+
+				const auto& newPositions = shape->getPositions();
+
+				for (unsigned int i = 0; i < newPositions.size(); ++i)
+				{
+					vertices.emplace_back
+					(
+						newPositions.at(i),
+						colour,
+						mesh.textureCoordinates.at(i)
+					);
+				}
+
+				//for (unsigned int i = 0; i < mesh.positions.size(); ++i)
+				//{
+				//	vertices.emplace_back
+				//	(
+				//		mesh.positions.at(i),
+				//		colour,
+				//		mesh.textureCoordinates.at(i)
+				//	);
+				//}
 			}
 
 			s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), vertices.data());
@@ -130,7 +196,7 @@ namespace ShapeRenderer {
 		}
 
 		// clear buffers
-		s_Batches.clear();
+		shapeBatches.clear();
 
 		s_Vao->unbind();
 		s_Vbo->unbind();
@@ -155,88 +221,36 @@ void checkRendererReady(const State& state) {
 	}
 }
 
-unsigned int maxIndex = 0;
-unsigned int lastMaxShapeIndex = 0;
-
-void addShapeIndices(std::vector<unsigned int>& indexBuffer, Shape& shape) {
-
-	// find maxIndex to offset next indices so they dont reference any previous ones
-	const auto currentMaxShapeIndex = *std::ranges::max_element(shape.getMesh().indices.begin(), shape.getMesh().indices.end());
-
-	if (indexBuffer.empty()) {
-		maxIndex = -1;
-	}
-	else {
-		// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
-		//						cM = 4, lM = 4,		cM = 5, lM = 4
-
-		// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
-
-		maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
-	}
-
-	lastMaxShapeIndex = currentMaxShapeIndex;
-
-	for (const auto& index : shape.getMesh().indices) {
-		indexBuffer.push_back(index + maxIndex + 1);
-	}
-}
+//void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
+//
+//	// find maxIndex to offset next indices so they dont reference any previous ones
+//	const auto currentMaxShapeIndex = shape.getMesh().getMaxInt();
+//
+//	if (indexBuffer.empty()) {
+//		maxIndex = -1;
+//	}
+//	else {
+//		// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
+//		//						cM = 4, lM = 4,		cM = 5, lM = 4
+//
+//		// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
+//
+//		maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
+//	}
+//
+//	lastMaxShapeIndex = currentMaxShapeIndex;
+//
+//	for (const auto& index : shape.getMesh().indices) {
+//		indexBuffer.push_back(index + maxIndex + 1);
+//	}
+//}
 
 
-void addShapeToBatches(std::vector<Batch>& batches, Shape& shape, const Vec4& colour, size_t handle)
+void addShapeToBatches(BatchData& batches, Shape& shape, const Vec4& colour, size_t handle)
 {
 	checkRendererReady(state);
 
-	Batch* batch = getBatchFromHandle(batches, handle);
-	//std::cout << batch->texHandle << std::endl;
-	// add the indices
-	//addShapeIndices(batch->indices, shape);
+	auto& batch = batches[handle];
 
-	auto& drawnShapes = batchedDrawnShapes[handle];
-
-	drawnShapes.push_back(&shape);
-
-	// recaculate vertex positions using current transformation
-	if (shape.moved())
-	{
-		shape.setPositions(shape.getMesh().recalculatePositions(shape.getTransformMatrix()));
-		shape.setMoved(false);
-	}
-
-	const auto& positions = shape.getPositions();
-
-	for (unsigned int i = 0; i < positions.size(); ++i)
-	{
-		batch->vertices.emplace_back
-		(
-			positions.at(i),
-			colour,
-			shape.getMesh().textureCoordinates.at(i)
-		);
-	}
-}
-
-Batch* getBatchFromHandle(std::vector<Batch>& batches, size_t handle)
-{
-	Batch* newBatch;
-
-	if (const auto& batchIt = std::ranges::find_if(batches,
-		[handle](const auto& batch) -> bool {
-			return batch.texHandle == handle;
-		}
-
-	); batchIt == s_Batches.end()) {
-		newBatch = createBatch(batches, handle);
-	}
-	else {
-		newBatch = &*batchIt;
-	}
-
-	return newBatch;
-}
-
-Batch* createBatch(std::vector<Batch>& batches, size_t handle)
-{
-	batches.emplace_back(std::vector<Vertex>{}, std::vector<unsigned int>{}, handle);
-	return &batches.at(batches.size() - 1);
+	batch.emplace_back(&shape, colour);
 }

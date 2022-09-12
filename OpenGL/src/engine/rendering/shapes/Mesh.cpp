@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include <algorithm>
+
 #include "maths/Mat4.h"
 #include "maths/Vectors.h"
 #include "maths/Transform.h"
@@ -26,3 +28,11 @@ std::vector<Vec3> Mesh::recalculatePositions(const Transform& transform) const
 	return recalculatePositions(Mat4::identity.translate(transform.tra.x, transform.tra.y, transform.tra.z).rotate(transform.rot.x, transform.rot.y, transform.rot.z).scale(transform.sca.x, transform.sca.y, transform.sca.z));
 }
 
+unsigned int Mesh::getMaxInt()
+{
+	if (m_MaxInt != std::numeric_limits<unsigned int>::max()) return m_MaxInt;
+
+	m_MaxInt = *std::ranges::max_element(indices);
+
+	return m_MaxInt;
+}

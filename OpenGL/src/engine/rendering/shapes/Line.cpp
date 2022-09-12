@@ -4,7 +4,7 @@
 
 constexpr float PI_OVER_3 = static_cast<float>(Maths::PI) / 3.0f;
 
-const Mesh Line::s_Mesh =
+Mesh Line::s_Mesh =
 {
 	{
 		{0, sinf(0 * PI_OVER_3), cosf(0 * PI_OVER_3)},
@@ -75,7 +75,7 @@ Mat4 Line::getTransformMatrix() const
 
 }
 
-const Mesh& Line::getMesh() const
+Mesh& Line::getMesh() const
 {
 	return s_Mesh;
 }

@@ -26,7 +26,7 @@ public:
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] std::vector<Vec3> getPositions() const;
 
-	[[nodiscard]] virtual const Mesh& getMesh() const = 0; // should to point to static Mesh in child class
+	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
 	[[nodiscard]] virtual Mat4 getTransformMatrix() const;
 
 	// TODO TEMPORARY

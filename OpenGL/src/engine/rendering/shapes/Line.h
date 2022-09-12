@@ -3,7 +3,7 @@
 
 class Line : public Shape
 {
-	const static Mesh s_Mesh;
+	static Mesh s_Mesh;
 	Vec3 m_P1, m_P2;
 
 public:
@@ -11,7 +11,7 @@ public:
 	Line(const Vec3& p1, const Vec3& p2, float width);
 	Line() = default;
 	
-	[[nodiscard]] const Mesh& getMesh() const override;
+	[[nodiscard]] Mesh& getMesh() const override;
 	[[nodiscard]] Mat4 getTransformMatrix() const override;
 
 	void setP1(float x, float y, float z);
