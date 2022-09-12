@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 #include "Renderer.h"
 #include "Vertex.h"
@@ -34,6 +35,7 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 State state = State::UNINITIALISED;
 
 std::vector<Batch> s_Batches;
+std::unordered_map<size_t, std::vector<Shape*>> batchedDrawnShapes; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
@@ -108,7 +110,16 @@ namespace ShapeRenderer {
 		s_Vao->bind();
 		s_Shader->bind();
 
-		for (const auto& [vertices, indices, texHandle] : s_Batches) {
+		for (auto& [vertices, indices, texHandle] : s_Batches) {
+
+			indexShapes
+
+			for (const auto& shape : batchedDrawnShapes.at(texHandle))
+			{
+				indices.reserve(batchedDrawnShapes.at(texHandle).size());
+
+				addShapeIndices(indices, *shape);
+			}
 
 			s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), vertices.data());
 			s_Ibo->setSubData(0, indices.size(), indices.data());
@@ -179,7 +190,11 @@ void addShapeToBatches(std::vector<Batch>& batches, Shape& shape, const Vec4& co
 	Batch* batch = getBatchFromHandle(batches, handle);
 	//std::cout << batch->texHandle << std::endl;
 	// add the indices
-	addShapeIndices(batch->indices, shape);
+	//addShapeIndices(batch->indices, shape);
+
+	auto& drawnShapes = batchedDrawnShapes[handle];
+
+	drawnShapes.push_back(&shape);
 
 	// recaculate vertex positions using current transformation
 	if (shape.moved())
