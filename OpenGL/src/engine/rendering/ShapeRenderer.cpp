@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 #include <map>
-#include <thread>
 #include <future>
 
 #include "Renderer.h"

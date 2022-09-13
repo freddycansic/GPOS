@@ -101,7 +101,7 @@ void Application::render()
 		ShapeRenderer::draw(cube, colour);
 	} 
 
-	for (unsigned int i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
+	for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
 	{
 		auto& cube = gameObjects.at(i).first;
 		const auto& colour = gameObjects.at(i).second;
@@ -120,6 +120,7 @@ float colour[4];
 
 void Application::imGuiRender()
 {
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar);
 
 	if (ImGui::BeginMenuBar())
@@ -127,14 +128,37 @@ void Application::imGuiRender()
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-			if (ImGui::MenuItem("Close", "Ctrl+Q")) { exit(-1); }
+			if (ImGui::MenuItem("Close", "Ctrl+Q")) { abort(); }
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Edit"))
 		{
+			if (ImGui::MenuItem("Undo", "Ctrl+Z")) {}
+			if (ImGui::MenuItem("Redo", "Ctrl+Y")) {}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("New"))
+		{
+			if (ImGui::MenuItem("Cube")) {}
+			if (ImGui::MenuItem("Line")) {}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Select"))
+		{
 			if (ImGui::MenuItem("Select All", "Ctrl+A")) {}
 			if (ImGui::MenuItem("Deselect All", "Ctrl+D")) {}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("View"))
+		{
+			// TODO assign something to this to make it work
+			static const char* projectionTypes[2] = { "Perspective", "Orthographic" };
+			static int selectedProjection = 0;
+			ImGui::Combo("Projection", &selectedProjection, projectionTypes, 2);
 			ImGui::EndMenu();
 		}
 
