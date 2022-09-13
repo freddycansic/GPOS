@@ -93,12 +93,12 @@ void Shader::setUniform1i(const std::string& name, int value) const {
 void Shader::setUniform1ui64(const std::string& name, uint64_t value) const {
 	checkUniformInShader(name);
 
-	if (Debug::supportedExtensions.at("GL_ARB_gpu_shader_int64")) {
-		GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
-	} else {
+	//if (Debug::supportedExtensions.at("GL_ARB_gpu_shader_int64")) {
+	//	GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
+	//} else {
 		// if we cant send 64 bits in one go send them in 2 halves by bit shifting
 		GLAPI(glUniform2ui(m_Uniforms.at(name), static_cast<GLuint>(value), static_cast<GLuint>(value >> 32)));
-	}
+	//}
 }
 
 void Shader::setUniform1iv(const std::string& name, size_t count, const int* value) const {

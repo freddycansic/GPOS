@@ -15,12 +15,10 @@ in vec2 v_TexCoord;
 //#endif
 
 void main() {
-	
 	if (uvec2(u_TexHandle) == uvec2(0)) { // if index < 0 do a color
 		color = v_Color;
 	}
 	else { // else do a texture
 		color = texture(sampler2D(u_TexHandle), v_TexCoord);
 	}
-
 };
