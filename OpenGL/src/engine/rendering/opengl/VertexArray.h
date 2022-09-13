@@ -12,8 +12,11 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	VertexArray(const VertexArray& tex) = delete;
-	VertexArray& operator=(const VertexArray& tex) = delete;
+	VertexArray(const VertexArray& vao) = delete;
+	VertexArray& operator=(const VertexArray& vao) = delete;
+
+	VertexArray(VertexArray&& vao) noexcept;
+	VertexArray& operator=(VertexArray&& vao) noexcept;
 
 	void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) const;
 	void bind() const;

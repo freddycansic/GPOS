@@ -42,4 +42,3 @@ namespace ShapeRenderer
 	*/
 	void end();
 };
-

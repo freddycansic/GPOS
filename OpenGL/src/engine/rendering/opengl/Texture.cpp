@@ -34,8 +34,26 @@ Texture::Texture(const std::string& path)
 	if (m_Buffer) stbi_image_free(m_Buffer);
 }
 
-Texture::~Texture() {
-	GLAPI(glDeleteTextures(1, &m_ID));
+Texture::Texture(Texture&& tex) noexcept :
+	m_ID(tex.m_ID), m_Buffer(tex.m_Buffer), m_Width(tex.m_Width), m_Height(tex.m_Height), m_ColorDepth(tex.m_ColorDepth), m_Handle(tex.m_Handle)
+{
+	tex.m_Handle = 0;
+	tex.m_ID = 0;
+}
+
+Texture& Texture::operator=(Texture&& tex) noexcept
+{
+	this->m_ID = tex.m_ID;
+	this->m_Buffer = tex.m_Buffer;
+	this->m_Width = tex.m_Width;
+	this->m_Height = tex.m_Height;
+	this->m_ColorDepth = tex.m_ColorDepth;
+	this->m_Handle = tex.m_Handle;
+
+	tex.m_Handle = 0;
+	tex.m_ID = 0;
+
+	return *this;
 }
 
 void Texture::bind() const {
@@ -49,4 +67,8 @@ void Texture::bindToSlot(unsigned int slot) const {
 void Texture::unbind() const
 {
 	GLAPI(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+Texture::~Texture() {
+	GLAPI(glDeleteTextures(1, &m_ID));
 }

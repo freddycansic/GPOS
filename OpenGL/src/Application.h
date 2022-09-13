@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "engine/rendering/Material.h"
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Cube.h"
 
@@ -10,17 +11,16 @@
 class Application
 {
 private:
-	// i really dont like this TODO make better
-	std::unique_ptr<Texture> tex1, tex2;
+	Texture tex1, tex2;
 
-	std::vector<std::pair<std::unique_ptr<Shape>, Vec4>> gameObjects;
+	std::vector<std::pair<Cube, Vec4>> gameObjects;
 
-	Transform cubeTransform, viewTransform;
+	char* openedProject = nullptr;
 
 public:
 	Application() = default;
 
-	void init();
+	void init(char* projectDir = nullptr);
 	void render();
 	void imGuiRender();
 	void destroy();
