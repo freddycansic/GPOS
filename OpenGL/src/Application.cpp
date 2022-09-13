@@ -34,7 +34,7 @@ void Application::init(char* projectDir)
 
 	Window::beginCursorCapture();
 
-	constexpr float numCubesSide = 30;
+	constexpr float numCubesSide = 15;
 	constexpr float numCubesSideHalf = numCubesSide / 2.0f;
 
 	for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
@@ -109,6 +109,8 @@ void Application::render()
 		ShapeRenderer::draw(cube, colour);
 	}
 
+	ShapeRenderer::draw(Cube(0, 0, 0, 1), tex2);
+
 	drawAxes();
 
 	ShapeRenderer::end();
@@ -118,13 +120,31 @@ float colour[4];
 
 void Application::imGuiRender()
 {
-	ImGui::SetNextWindowPos(ImVec2(10, 10));
-	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar);
+
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+			if (ImGui::MenuItem("Close", "Ctrl+Q")) { exit(-1); }
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Select All", "Ctrl+A")) {}
+			if (ImGui::MenuItem("Deselect All", "Ctrl+D")) {}
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMenuBar();
+	}
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
-	ImGui::Text("Objects");
 
+	
 	//if (ImGui::Button("Cube"))
 	//{
 	//	gameObjects.emplace_back(std::make_pair(std::make_unique<Cube>(0, 0, 0, 0.1f), Vec4(colour[0], colour[1], colour[2], 255)));

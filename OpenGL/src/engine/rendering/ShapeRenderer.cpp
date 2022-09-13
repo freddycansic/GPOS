@@ -123,7 +123,6 @@ namespace ShapeRenderer {
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
 
-			unsigned int movedObjets = 0;
 			for (auto& [shape, colour] : batchData.shapesData)
 			{
 				auto& mesh = shape->getMesh();
@@ -131,7 +130,6 @@ namespace ShapeRenderer {
 				// vertices
 				if (shape->moved())
 				{
-					movedObjets++;
 					shape->setPositions(mesh.recalculatePositions(shape->getTransformMatrix()));
 					shape->setMoved(false);
 				}
@@ -148,8 +146,6 @@ namespace ShapeRenderer {
 					);
 				}
 			}
-
-			std::cout << movedObjets << " moved objects recalculated." << std::endl;
 
 			const auto& batchIndices = batchIndicesFuture.get();
 
