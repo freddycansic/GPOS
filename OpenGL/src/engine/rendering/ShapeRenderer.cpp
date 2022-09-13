@@ -1,10 +1,11 @@
 #include "ShapeRenderer.h"
 
 #include <stdexcept>
-#include <algorithm>
 #include <memory>
 #include <vector>
 #include <map>
+#include <thread>
+#include <future>
 
 #include "Renderer.h"
 #include "Vertex.h"
@@ -22,6 +23,13 @@ struct ShapeData
 	Vec4 colour;
 };
 
+struct BatchData
+{
+	std::vector<ShapeData> shapesData;
+	size_t indicesCount = 0;
+	size_t verticesCount = 0;
+};
+
 enum class State {
 	UNINITIALISED,
 	STOPPED,
@@ -34,8 +42,8 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 
 State state = State::UNINITIALISED;
 
-using BatchData = std::map<size_t, std::vector<ShapeData>>;
-BatchData shapeBatches; // TODO make name better
+using Batches = std::map<size_t, BatchData>;
+Batches shapeBatches; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
@@ -43,7 +51,8 @@ std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
-void addShapeToBatches(BatchData& batches, Shape& shape, const Vec4& colour, size_t handle);
+void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_t handle);
+std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData);
 
 namespace ShapeRenderer {
 
@@ -99,9 +108,7 @@ namespace ShapeRenderer {
 		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
 	
-	unsigned int maxIndex = 0;
-	unsigned int lastMaxShapeIndex = 0;
-
+	
 	void end() {
 		checkRendererReady(state);
 
@@ -109,58 +116,21 @@ namespace ShapeRenderer {
 		s_Shader->bind();
 
 		// for every batch
-		for (auto& [texHandle, shapeData]: shapeBatches) {
+		for (auto& [texHandle, batchData]: shapeBatches) {
 
-			// tally up number of vertices and indices in batch
-			size_t numVerticesInBatch = 0;
-			size_t numIndicesInBatch = 0;
-			for (const auto& [shape, colour] : shapeData)
-			{
-				numVerticesInBatch += shape->getMesh().positions.size();
-				numIndicesInBatch += shape->getMesh().indices.size();
-			}
+			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
-			//std::vector<Vertex> vertices(numVerticesInBatch);
-			//std::vector<unsigned int> indices(numIndicesInBatch);
+			std::vector<Vertex> batchVertices;
+			batchVertices.reserve(batchData.verticesCount);
 
-			std::vector<Vertex> vertices;
-			vertices.reserve(numVerticesInBatch);
-
-			std::vector<unsigned int> indices;
-			indices.reserve(numIndicesInBatch);
-
-			for (auto& [shape, colour] : shapeData)
+			for (auto& [shape, colour] : batchData.shapesData)
 			{
 				auto& mesh = shape->getMesh();
-
-				// indices
-				const auto currentMaxShapeIndex = mesh.getMaxInt();
-
-				if (indices.empty()) {
-					maxIndex = -1;
-				}
-				else {
-					// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
-					//						cM = 4, lM = 4,		cM = 5, lM = 4
-
-					// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
-
-					maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
-				}
-
-				lastMaxShapeIndex = currentMaxShapeIndex;
-
-				const auto& shapeIndices = mesh.indices;
-
-				for (const auto& index : shapeIndices)
-				{
-					indices.push_back(index + maxIndex + 1);
-				}
 
 				// vertices
 				if (shape->moved())
 				{
-					shape->setPositions(shape->getMesh().recalculatePositions(shape->getTransformMatrix()));
+					shape->setPositions(mesh.recalculatePositions(shape->getTransformMatrix()));
 					shape->setMoved(false);
 				}
 
@@ -168,27 +138,19 @@ namespace ShapeRenderer {
 
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
-					vertices.emplace_back
+					batchVertices.emplace_back
 					(
 						newPositions.at(i),
 						colour,
 						mesh.textureCoordinates.at(i)
 					);
 				}
-
-				//for (unsigned int i = 0; i < mesh.positions.size(); ++i)
-				//{
-				//	vertices.emplace_back
-				//	(
-				//		mesh.positions.at(i),
-				//		colour,
-				//		mesh.textureCoordinates.at(i)
-				//	);
-				//}
 			}
 
-			s_Vbo->setSubData(0, sizeof(Vertex) * vertices.size(), vertices.data());
-			s_Ibo->setSubData(0, indices.size(), indices.data());
+			const auto& batchIndices = batchIndicesFuture.get();
+
+			s_Vbo->setSubData(0, sizeof(Vertex) * batchVertices.size(), batchVertices.data());
+			s_Ibo->setSubData(0, batchIndices.size(), batchIndices.data());
 
 			s_Shader->setUniform1ui64("u_TexHandle", texHandle);
 
@@ -221,36 +183,55 @@ void checkRendererReady(const State& state) {
 	}
 }
 
-//void addShapeIndices(std::vector<unsigned int>& indexBuffer, const Shape& shape) {
-//
-//	// find maxIndex to offset next indices so they dont reference any previous ones
-//	const auto currentMaxShapeIndex = shape.getMesh().getMaxInt();
-//
-//	if (indexBuffer.empty()) {
-//		maxIndex = -1;
-//	}
-//	else {
-//		// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
-//		//						cM = 4, lM = 4,		cM = 5, lM = 4
-//
-//		// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
-//
-//		maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
-//	}
-//
-//	lastMaxShapeIndex = currentMaxShapeIndex;
-//
-//	for (const auto& index : shape.getMesh().indices) {
-//		indexBuffer.push_back(index + maxIndex + 1);
-//	}
-//}
-
-
-void addShapeToBatches(BatchData& batches, Shape& shape, const Vec4& colour, size_t handle)
+void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_t handle)
 {
 	checkRendererReady(state);
 
-	auto& batch = batches[handle];
+	auto& [shapesData, indicesCount, verticesCount] = batches[handle];
 
-	batch.emplace_back(&shape, colour);
+	shapesData.emplace_back(&shape, colour);
+
+	const auto& mesh = shape.getMesh();
+
+	indicesCount += mesh.indices.size();
+	verticesCount += mesh.positions.size();
+}
+
+
+std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
+{
+	static unsigned int maxIndex = 0;
+	static unsigned int lastMaxShapeIndex = 0;
+
+	std::vector<unsigned int> batchIndices;
+	batchIndices.reserve(batchData.indicesCount);
+
+	for (auto& [shape, colour] : batchData.shapesData)
+	{
+		auto& mesh = shape->getMesh();
+
+		// indices
+		const auto currentMaxShapeIndex = mesh.getMaxInt();
+
+		if (batchIndices.empty()) {
+			maxIndex = -1;
+		}
+		else {
+			// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
+			//						cM = 4, lM = 4,		cM = 5, lM = 4
+
+			// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
+
+			maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
+		}
+
+		lastMaxShapeIndex = currentMaxShapeIndex;
+
+		for (const auto& index : mesh.indices)
+		{
+			batchIndices.push_back(index + maxIndex + 1);
+		}
+	}
+
+	return batchIndices;
 }

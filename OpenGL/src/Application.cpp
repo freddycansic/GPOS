@@ -34,7 +34,7 @@ void Application::init(char* projectDir)
 
 	Window::beginCursorCapture();
 
-	constexpr float numCubesSide = 15;
+	constexpr float numCubesSide = 30;
 	constexpr float numCubesSideHalf = numCubesSide / 2.0f;
 
 	for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
@@ -109,9 +109,7 @@ void Application::render()
 		ShapeRenderer::draw(cube, colour);
 	}
 
-	//ShapeRenderer::draw(Cube(0, 0, 0, 0.5f), { 1.0f, 0.0f, 0.4f, 1.0f });
-
-	//drawAxes();
+	drawAxes();
 
 	ShapeRenderer::end();
 }
