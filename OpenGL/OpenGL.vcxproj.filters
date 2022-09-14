@@ -35,6 +35,7 @@
     <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
+    <ClCompile Include="src\engine\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />

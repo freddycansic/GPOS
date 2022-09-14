@@ -61,9 +61,17 @@ namespace Input
 	Vec3 getCameraDirection() { return cameraDirection; }
 
 	int keyStates[Keys::LAST];
-	
+	constexpr int JUST_RELEASED = 3;
+
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
+		std::cout << "KEY " << key << " " << action << std::endl;
+
+		if (keyStates[key] == GLFW_PRESS && action == GLFW_RELEASE)
+		{
+			keyStates[key] = JUST_RELEASED;
+		}
+
 		keyStates[key] = action;
 	}
 
@@ -72,13 +80,8 @@ namespace Input
 		return keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT;
 	}
 
-	bool isKeyDown()
-	{
-		return false;
-	}
-
 	bool isKeyJustReleased(int key)
 	{
-		return keyStates[key] == GLFW_RELEASE;
+		return keyStates[key] == JUST_RELEASED;
 	}
 }

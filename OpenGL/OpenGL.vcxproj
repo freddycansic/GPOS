@@ -172,6 +172,7 @@
     <ClCompile Include="src\engine\Files.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
     <ClCompile Include="src\engine\rendering\Vertex.cpp" />
+    <ClCompile Include="src\engine\Util.cpp" />
     <ClCompile Include="src\maths\Maths.cpp" />
     <ClCompile Include="src\maths\Transform.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />

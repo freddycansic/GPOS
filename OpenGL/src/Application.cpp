@@ -59,24 +59,27 @@ Vec3 cameraOrbit, cameraTarget;
 void Application::render()
 {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
-	
-	cameraFront = Input::getCameraDirection();
 
-	// camera position movement
-	const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
+	if (Window::capturingCursor())
+	{
+		cameraFront = Input::getCameraDirection();
 
-	//if (Input::isKeyDown(Keys::W)) {
-	if (Input::isKeyDown(Keys::W)) {
-		cameraPos += cameraFront * moveSpeed * Window::deltatime();
-	}
-	if (Input::isKeyDown(Keys::S)) {
-		cameraPos -= cameraFront * moveSpeed * Window::deltatime();
-	}
-	if (Input::isKeyDown(Keys::D)) {
-		cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-	}
-	if (Input::isKeyDown(Keys::A)) {
-		cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+		// camera position movement
+		const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
+
+		//if (Input::isKeyDown(Keys::W)) {
+		if (Input::isKeyDown(Keys::W)) {
+			cameraPos += cameraFront * moveSpeed * Window::deltatime();
+		}
+		if (Input::isKeyDown(Keys::S)) {
+			cameraPos -= cameraFront * moveSpeed * Window::deltatime();
+		}
+		if (Input::isKeyDown(Keys::D)) {
+			cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+		}
+		if (Input::isKeyDown(Keys::A)) {
+			cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
+		}
 	}
 
 	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -94,22 +97,22 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	for (unsigned int i = 0; i < gameObjects.size() / 2; ++i)
-	{
-		auto& cube = gameObjects.at(i).first;
-		const auto& colour = gameObjects.at(i).second;
+	//for (unsigned int i = 0; i < gameObjects.size() / 2; ++i)
+	//{
+	//	auto& cube = gameObjects.at(i).first;
+	//	const auto& colour = gameObjects.at(i).second;
 
-		cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
-		ShapeRenderer::draw(cube, colour);
-	} 
+	//	cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+	//	ShapeRenderer::draw(cube, colour);
+	//} 
 
-	for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
-	{
-		auto& cube = gameObjects.at(i).first;
-		const auto& colour = gameObjects.at(i).second;
+	//for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
+	//{
+	//	auto& cube = gameObjects.at(i).first;
+	//	const auto& colour = gameObjects.at(i).second;
 
-		ShapeRenderer::draw(cube, colour);
-	}
+	//	ShapeRenderer::draw(cube, colour);
+	//}
 
 	ShapeRenderer::draw(Cube(0, 0, 0, 1), tex2);
 
@@ -119,6 +122,7 @@ void Application::render()
 }
 
 float colour[4];
+bool showingNewObjectMenu = false;
 
 void Application::imGuiRender()
 {
@@ -167,19 +171,39 @@ void Application::imGuiRender()
 		ImGui::EndMenuBar();
 	}
 
-
 	ImGui::SetNextWindowPos(ImVec2(0, 50));
 	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
-	if (Input::isKeyDown(Keys::LEFT_SHIFT, Keys::A))
+	if (showingNewObjectMenu)
 	{
-		ImGui::SetNextWindowPos(ImVec2(Input::getMouseX(), Input::getMouseY()));
-		ImGui::Begin("Hello");
+		const auto& mousePos = ImGui::GetMousePos();
+
+		ImGui::SetNextWindowPos({mousePos.x - 5, mousePos.y - 5});
+		ImGui::Begin("New", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
+		ImGui::Button("Cube");
+		ImGui::Button("Line");
+
+		//const auto& windowPos = ImGui::GetWindowPos();
+		//const auto& windowSize = ImGui::GetWindowSize();
+
+		//if (!ImGui::IsMouseHoveringRect(windowPos, {windowPos.x + windowSize.x, windowPos.y + windowSize.y}))
+		if (!ImGui::IsWindowHovered())
+		{
+			showingNewObjectMenu = false;
+		}
+
+		ImGui::End();
+
+	} else
+	{
+		if (Input::isKeyDown(Keys::LEFT_SHIFT, Keys::A))
+		{
+			showingNewObjectMenu = true;
+		}
 	}
 
-	//ImGui::ShowDemoWindow();
 	ImGui::End();
 
 	//if (ImGui::Button("Cube"))
