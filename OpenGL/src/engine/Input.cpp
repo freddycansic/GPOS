@@ -18,11 +18,12 @@ namespace Input
 
 	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
 	Vec3 cameraDirection;
+	float xPos, yPos;
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
-		const auto xPos = static_cast<float>(xpos);
-		const auto yPos = static_cast<float>(ypos);
+		xPos = static_cast<float>(xpos);
+		yPos = static_cast<float>(ypos);
 		
 		if (firstMouseMove) {
 			lastX = xPos;
@@ -50,6 +51,8 @@ namespace Input
 		).normalise();
 	}
 
+	float getMouseX() { return xPos; }
+	float getMouseY() { return yPos; }
 	float getLastMouseOffsetX() { return xOffset; }
 	float getLastMouseOffsetY() { return yOffset; }
 	Vec2 getLastMouseOffset() { return { xOffset, yOffset }; }
@@ -57,19 +60,24 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	int keyStates[Keys::LAST];
+	unsigned int keyStates[Keys::LAST];
 	
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		keyStates[key] = action;
 	}
 
-	bool isKeyDown(int key)
+	bool isKeyDown(unsigned int key)
 	{
 		return keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT;
 	}
 
-	bool isKeyJustReleased(int key)
+	bool isKeyDown()
+	{
+		return false;
+	}
+
+	bool isKeyJustReleased(unsigned int key)
 	{
 		return keyStates[key] == GLFW_RELEASE;
 	}

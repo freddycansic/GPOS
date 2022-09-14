@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include <array>
+
 #include "imgui/imgui.h"
 
 #include "engine/Files.h"
@@ -121,7 +123,7 @@ float colour[4];
 void Application::imGuiRender()
 {
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("Debug", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar);
+	ImGui::Begin("#1", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
 
 	if (ImGui::BeginMenuBar())
 	{
@@ -156,19 +158,30 @@ void Application::imGuiRender()
 		if (ImGui::BeginMenu("View"))
 		{
 			// TODO assign something to this to make it work
-			static const char* projectionTypes[2] = { "Perspective", "Orthographic" };
+			static const std::array projectionTypes = { "Perspective", "Orthographic" };
 			static int selectedProjection = 0;
-			ImGui::Combo("Projection", &selectedProjection, projectionTypes, 2);
+			ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), projectionTypes.size());
 			ImGui::EndMenu();
 		}
 
 		ImGui::EndMenuBar();
 	}
 
+
+	ImGui::SetNextWindowPos(ImVec2(0, 50));
+	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
+	if (Input::isKeyDown(Keys::LEFT_SHIFT, Keys::A))
+	{
+		ImGui::SetNextWindowPos(ImVec2(Input::getMouseX(), Input::getMouseY()));
+		ImGui::Begin("Hello");
+	}
 
-	
+	ImGui::ShowDemoWindow();
+	ImGui::End();
+
 	//if (ImGui::Button("Cube"))
 	//{
 	//	gameObjects.emplace_back(std::make_pair(std::make_unique<Cube>(0, 0, 0, 0.1f), Vec4(colour[0], colour[1], colour[2], 255)));
