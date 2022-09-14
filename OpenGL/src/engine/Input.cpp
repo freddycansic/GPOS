@@ -60,14 +60,14 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	unsigned int keyStates[Keys::LAST];
+	int keyStates[Keys::LAST];
 	
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		keyStates[key] = action;
 	}
 
-	bool isKeyDown(unsigned int key)
+	bool isKeyDown(int key)
 	{
 		return keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT;
 	}
@@ -77,7 +77,7 @@ namespace Input
 		return false;
 	}
 
-	bool isKeyJustReleased(unsigned int key)
+	bool isKeyJustReleased(int key)
 	{
 		return keyStates[key] == GLFW_RELEASE;
 	}

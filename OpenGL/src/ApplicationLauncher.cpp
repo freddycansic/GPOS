@@ -6,7 +6,6 @@
 
 #include "engine/Debug.h"
 #include "engine/Input.h"
-#include "engine/Keys.h"
 #include "engine/rendering/Renderer.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir)
@@ -30,7 +29,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	app.init(projectDir);
 
 	while (!Window::shouldClose()) {
-		if (Input::isKeyDown(Keys::ESCAPE)) break;
+		if (Input::isKeyDown(GLFW_KEY_ESCAPE)) break;
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();

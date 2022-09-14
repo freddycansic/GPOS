@@ -179,7 +179,7 @@ void Application::imGuiRender()
 		ImGui::Begin("Hello");
 	}
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 	ImGui::End();
 
 	//if (ImGui::Button("Cube"))
