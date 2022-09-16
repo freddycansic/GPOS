@@ -11,6 +11,7 @@
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
 #include "engine/rendering/shapes/Line.h"
+#include "engine/Util.h"
 
 void drawAxes()
 {
@@ -85,12 +86,12 @@ void Application::render()
 	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	Renderer::setViewMatrix(view);
 
-	if (Input::isKeyDown(Keys::V))
+	if (Input::isKeyJustReleased(Keys::V))
 	{
 		Window::endCursorCapture();
 	}
 
-	if (Input::isKeyDown(Keys::C))
+	if (Input::isKeyJustReleased(Keys::C))
 	{
 		Window::beginCursorCapture();
 	}
@@ -123,6 +124,7 @@ void Application::render()
 
 float colour[4];
 bool showingNewObjectMenu = false;
+ImVec2 mousePosOnShowWindow;
 
 void Application::imGuiRender()
 {
@@ -176,20 +178,32 @@ void Application::imGuiRender()
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
+	ImGui::End();
+
 	if (showingNewObjectMenu)
 	{
-		const auto& mousePos = ImGui::GetMousePos();
+		//const auto& mousePos = ImGui::GetMousePos();
 
-		ImGui::SetNextWindowPos({mousePos.x - 5, mousePos.y - 5});
-		ImGui::Begin("New", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
-		ImGui::Button("Cube");
-		ImGui::Button("Line");
+		ImGui::SetNextWindowPos({mousePosOnShowWindow.x - 1, mousePosOnShowWindow.y - 1});
+		ImGui::Begin("New", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
 
-		//const auto& windowPos = ImGui::GetWindowPos();
-		//const auto& windowSize = ImGui::GetWindowSize();
+		if (ImGui::Button("Cube"))
+		{
+			showingNewObjectMenu = false;
+		}
+
+		if(ImGui::Button("Line"))
+		{
+			showingNewObjectMenu = false;
+		}
+
+		const auto& windowPos = ImGui::GetWindowPos();
+		const auto& windowSize = ImGui::GetWindowSize();
+		const auto& realtimeMousePos = ImGui::GetMousePos();
 
 		//if (!ImGui::IsMouseHoveringRect(windowPos, {windowPos.x + windowSize.x, windowPos.y + windowSize.y}))
-		if (!ImGui::IsWindowHovered())
+		//if (!ImGui::IsWindowHovered())
+		if (!Util::isMouseHoveredWindow(realtimeMousePos, windowPos, windowSize))
 		{
 			showingNewObjectMenu = false;
 		}
@@ -198,13 +212,13 @@ void Application::imGuiRender()
 
 	} else
 	{
-		if (Input::isKeyDown(Keys::LEFT_SHIFT, Keys::A))
+		if (Input::isKeyJustReleased(Keys::A))
 		{
 			showingNewObjectMenu = true;
+			mousePosOnShowWindow = ImGui::GetMousePos();
 		}
 	}
 
-	ImGui::End();
 
 	//if (ImGui::Button("Cube"))
 	//{

@@ -1,6 +1,11 @@
 #include "Util.h"
 
-ImVec2 Util::operator+(const ImVec2& self, const ImVec2& other)
+namespace Util
 {
-    return { self.x + other.x, self.y + other.y };
+	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize)
+	{
+		return (mousePos.x > windowPos.x && mousePos.x < windowPos.x + windowSize.x && mousePos.y > windowPos.y && mousePos.y < windowPos.y + windowSize.y);
+	}
 }
+
+

@@ -4,5 +4,5 @@
 
 namespace Util
 {
-	ImVec2 operator+(const ImVec2& self, const ImVec2& other);
+	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize);
 }

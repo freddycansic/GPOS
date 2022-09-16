@@ -65,11 +65,10 @@ namespace Input
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		std::cout << "KEY " << key << " " << action << std::endl;
-
-		if (keyStates[key] == GLFW_PRESS && action == GLFW_RELEASE)
+		if ((keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
 		{
 			keyStates[key] = JUST_RELEASED;
+			return;
 		}
 
 		keyStates[key] = action;
@@ -82,6 +81,12 @@ namespace Input
 
 	bool isKeyJustReleased(int key)
 	{
-		return keyStates[key] == JUST_RELEASED;
+		if (keyStates[key] == JUST_RELEASED)
+		{
+			keyStates[key] = GLFW_RELEASE;
+			return true;
+		}
+
+		return false;
 	}
 }
