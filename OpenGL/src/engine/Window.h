@@ -20,6 +20,10 @@ namespace Window
 
 	void update();
 	[[nodiscard]] int shouldClose();
+
+	void close();
+	bool closeCalled();
+
 	void beginCursorCapture();
 	void endCursorCapture();
 	

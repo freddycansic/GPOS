@@ -160,10 +160,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\rendering\gui\GUI.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
-    <ClCompile Include="src\engine\Input.cpp" />
+    <ClCompile Include="src\engine\input\Input.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBufferLayout.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Cube.cpp" />
     <ClCompile Include="src\Application.cpp" />
@@ -197,11 +198,12 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\rendering\gui\GUI.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\shapes\Line.h" />
-    <ClInclude Include="src\engine\Input.h" />
-    <ClInclude Include="src\engine\Keys.h" />
+    <ClInclude Include="src\engine\input\Input.h" />
+    <ClInclude Include="src\engine\input\Keys.h" />
     <ClInclude Include="src\engine\rendering\shapes\Cube.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ApplicationLauncher.h" />

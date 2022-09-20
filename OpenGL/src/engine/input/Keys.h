@@ -53,12 +53,12 @@ namespace Keys {
 	constexpr int GRAVE_ACCENT    =   96;  
 	constexpr int WORLD_1		   =   161;
 	constexpr int WORLD_2		   =   162;
-constexpr int ESCAPE		   =   256;
+	constexpr int ESCAPE		   =   256;
 	constexpr int ENTER           =   257;
 	constexpr int TAB             =   258;
 	constexpr int BACKSPACE       =   259;
 	constexpr int INSERT          =   260;
-	constexpr int DELETE          =   261;
+	//constexpr int DELETE          =   261; causes C2059 syntax error constant, TODO find where it is already defined
 	constexpr int RIGHT           =   262;
 	constexpr int LEFT            =   263;
 	constexpr int DOWN            =   264;

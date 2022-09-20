@@ -1,17 +1,16 @@
 #include "Application.h"
 
-#include <array>
-
 #include "imgui/imgui.h"
 
 #include "engine/Files.h"
-#include "engine/Input.h"
-#include "engine/Keys.h"
+#include "engine/input/Input.h"
+#include "engine/input/Keys.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
 #include "engine/rendering/shapes/Line.h"
 #include "engine/Util.h"
+#include "engine/rendering/gui/GUI.h"
 
 void drawAxes()
 {
@@ -122,56 +121,12 @@ void Application::render()
 	ShapeRenderer::end();
 }
 
-float colour[4];
 bool showingNewObjectMenu = false;
 ImVec2 mousePosOnShowWindow;
 
 void Application::imGuiRender()
 {
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("#1", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
-
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-			if (ImGui::MenuItem("Close", "Ctrl+Q")) { abort(); }
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo", "Ctrl+Z")) {}
-			if (ImGui::MenuItem("Redo", "Ctrl+Y")) {}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("New"))
-		{
-			if (ImGui::MenuItem("Cube")) {}
-			if (ImGui::MenuItem("Line")) {}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Select"))
-		{
-			if (ImGui::MenuItem("Select All", "Ctrl+A")) {}
-			if (ImGui::MenuItem("Deselect All", "Ctrl+D")) {}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("View"))
-		{
-			// TODO assign something to this to make it work
-			static const std::array projectionTypes = { "Perspective", "Orthographic" };
-			static int selectedProjection = 0;
-			ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), projectionTypes.size());
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMenuBar();
-	}
+	GUI::renderMenuBar();
 
 	ImGui::SetNextWindowPos(ImVec2(0, 50));
 	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
@@ -201,8 +156,6 @@ void Application::imGuiRender()
 		const auto& windowSize = ImGui::GetWindowSize();
 		const auto& realtimeMousePos = ImGui::GetMousePos();
 
-		//if (!ImGui::IsMouseHoveringRect(windowPos, {windowPos.x + windowSize.x, windowPos.y + windowSize.y}))
-		//if (!ImGui::IsWindowHovered())
 		if (!Util::isMouseHoveredWindow(realtimeMousePos, windowPos, windowSize))
 		{
 			showingNewObjectMenu = false;
@@ -219,30 +172,6 @@ void Application::imGuiRender()
 		}
 	}
 
-
-	//if (ImGui::Button("Cube"))
-	//{
-	//	gameObjects.emplace_back(std::make_pair(std::make_unique<Cube>(0, 0, 0, 0.1f), Vec4(colour[0], colour[1], colour[2], 255)));
-	//}
-
-	//ImGui::SameLine();
-	//ImGui::Text("%i", gameObjects.size());
-
-	//ImGui::ColorPicker4("##picker", colour, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_DisplayRGB);
-
-	//if (!gameObjects.empty())
-	//{
-	//	const auto& lastShape = gameObjects.at(gameObjects.size() - 1).first;
-
-	//	ImGui::Text("Transform");
-
-	//	// TODO
-	//	ImGui::SliderFloat3("Translation", lastShape->translationPtr(), -10, 10); // gross writes directly into memory
-	//	ImGui::SliderFloat3("Rotation", lastShape->rotationPtr(), 0, 360); // gross writes directly into memory
-	//	ImGui::SliderFloat3("Scale", lastShape->scalePtr(), 0, 10); // gross writes directly into memory
-	//}
-
-	ImGui::End();
 }
 
 void Application::destroy()

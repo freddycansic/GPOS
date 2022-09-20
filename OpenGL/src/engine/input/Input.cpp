@@ -1,9 +1,11 @@
 #include "Input.h"
 
 #include <algorithm>
+#include <any>
+#include <functional>
 
 #include "Keys.h"
-#include "Window.h"
+#include "engine/Window.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
@@ -90,3 +92,14 @@ namespace Input
 		return false;
 	}
 }
+
+//std::unordered_map <std::function<std::any>, std::array<int, 3>> keybinds =
+//{
+//	//{Scene::openScene, {Keys::LEFT_CONTROL, Keys::O, 0}},
+//	{Window::close, {Keys::LEFT_CONTROL, Keys::Q, 0}}
+//};
+
+//auto getKeybinds()
+//{
+//	return keybinds;
+//}

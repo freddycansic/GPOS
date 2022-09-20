@@ -5,7 +5,8 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "engine/Debug.h"
-#include "engine/Input.h"
+#include "engine/input/Input.h"
+#include "engine/input/Keys.h"
 #include "engine/rendering/Renderer.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir)
@@ -27,10 +28,9 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	ImGui::StyleColorsDark();
 
 	app.init(projectDir);
-
-	while (!Window::shouldClose()) {
-		if (Input::isKeyDown(GLFW_KEY_ESCAPE)) break;
-
+	
+	while (!Window::shouldClose() && !Input::isKeyDown(Keys::ESCAPE) && !Window::closeCalled()) 
+	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();

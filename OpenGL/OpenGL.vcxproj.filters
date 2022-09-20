@@ -31,11 +31,12 @@
     <ClCompile Include="src\maths\Maths.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBufferLayout.cpp" />
-    <ClCompile Include="src\engine\Input.cpp" />
+    <ClCompile Include="src\engine\input\Input.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\Util.cpp" />
+    <ClCompile Include="src\engine\rendering\gui\GUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
@@ -69,12 +70,13 @@
     <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Maths.h" />
     <ClInclude Include="src\engine\rendering\opengl\UniformBuffer.h" />
-    <ClInclude Include="src\engine\Input.h" />
-    <ClInclude Include="src\engine\Keys.h" />
+    <ClInclude Include="src\engine\input\Input.h" />
+    <ClInclude Include="src\engine\input\Keys.h" />
     <ClInclude Include="src\engine\rendering\shapes\Line.h" />
     <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
+    <ClInclude Include="src\engine\rendering\gui\GUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
