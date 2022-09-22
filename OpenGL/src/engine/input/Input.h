@@ -2,12 +2,11 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Keys.h"
 
 #define GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyPredicate)\
-[[nodiscard]] inline bool isKeyPredicate() {};\
-\
 template<typename... Args>\
-[[nodiscard]] bool isKeyPredicate(int first, Args... rest)\
+[[nodiscard]] bool isKeyPredicate(const Key& first, const Args&... rest)\
 {\
 	return isKeyPredicate(first) && isKeyPredicate(rest...);\
 }\
@@ -17,10 +16,10 @@ struct Vec3;
 
 namespace Input
 {
-	[[nodiscard]] bool isKeyDown(int key);
+	[[nodiscard]] bool isKeyDown(const Key& key);
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyDown);
 
-	[[nodiscard]] bool isKeyJustReleased(int key);
+	[[nodiscard]] bool isKeyJustReleased(const Key& key);
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyJustReleased);
 
 	[[nodiscard]] float getMouseX();

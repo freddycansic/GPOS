@@ -3,7 +3,7 @@
 
 #include "Debug.h"
 #include "Window.h"
-#include "Input.h"
+#include "engine/input/Input.h"
 
 GLFWwindow* m_ID;
 int m_Width, m_Height, s_DisplayWidth, s_DisplayHeight;

@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "Keys.h"
-#include "Window.h"
+#include "engine/Window.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
@@ -60,7 +60,7 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	int keyStates[Keys::LAST];
+	int keyStates[Keys::LAST.keyCode];
 	constexpr int JUST_RELEASED = 3;
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -74,16 +74,16 @@ namespace Input
 		keyStates[key] = action;
 	}
 
-	bool isKeyDown(int key)
+	bool isKeyDown(const Key& key)
 	{
-		return keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT;
+		return keyStates[key.keyCode] == GLFW_PRESS || keyStates[key.keyCode] == GLFW_REPEAT;
 	}
 
-	bool isKeyJustReleased(int key)
+	bool isKeyJustReleased(const Key& key)
 	{
-		if (keyStates[key] == JUST_RELEASED)
+		if (keyStates[key.keyCode] == JUST_RELEASED)
 		{
-			keyStates[key] = GLFW_RELEASE;
+			keyStates[key.keyCode] = GLFW_RELEASE;
 			return true;
 		}
 

@@ -1,0 +1,135 @@
+#pragma once
+
+#include <string_view>
+
+struct Key
+{
+	int keyCode;
+	std::string_view name;
+};
+
+// stolen from glfw3.h lines ~315 - ~518
+namespace Keys {
+
+	constexpr Key SPACE			  =   {32, "SPACE"};
+	constexpr Key APOSTROPHE	  =   {39, "'" };
+	constexpr Key COMMA           =   {44, ","};
+	constexpr Key MINUS           =   {45, "-"};
+	constexpr Key PERIOD          =   {46, "."};
+	constexpr Key SLASH           =   {47, "/"};
+	constexpr Key ZERO            =   {48, "0"};
+	constexpr Key ONE			   =  {49, "1"};
+	constexpr Key TWO			   =  {50, "2"};
+	constexpr Key THREE           =   {51, "3"};
+	constexpr Key FOUR			   =  {52, "4"};
+	constexpr Key FIVE			   =  {53, "5"};
+	constexpr Key SIX			   =  {54, "6"};
+	constexpr Key SEVEN		   =      {55, "7"};
+	constexpr Key EIGHT		   =      {56, "8"};
+	constexpr Key NINE			   =  {57, "9"};
+	constexpr Key SEMICOLON       =   {59, ";"};
+	constexpr Key EQUAL           =   {61, "="};
+	constexpr Key A               =   {65, "A"};
+	constexpr Key B               =   {66, "B"};
+	constexpr Key C               =   {67, "C"};
+	constexpr Key D               =   {68, "D"};
+	constexpr Key E               =   {69, "E"};
+	constexpr Key F               =   {70, "F"};
+	constexpr Key G               =   {71, "G"};
+	constexpr Key H               =   {72, "H"};
+	constexpr Key I               =   {73, "I"};
+	constexpr Key J               =   {74, "J"};
+	constexpr Key K               =   {75, "K"};
+	constexpr Key L               =   {76, "L"};
+	constexpr Key M               =   {77, "M"};
+	constexpr Key N               =   {78, "N"};
+	constexpr Key O               =   {79, "O"};
+	constexpr Key P               =   {80, "P"};
+	constexpr Key Q               =   {81, "Q"};
+	constexpr Key R               =   {82, "R"};
+	constexpr Key S               =   {83, "S"};
+	constexpr Key T               =   {84, "T"};
+	constexpr Key U               =   {85, "U"};
+	constexpr Key V               =   {86, "V"};
+	constexpr Key W               =   {87, "W"};
+	constexpr Key X               =   {88, "X"};
+	constexpr Key Y               =   {89, "Y"};
+	constexpr Key Z               =   {90, "Z"};
+	constexpr Key LEFT_BRACKET    =   {91, "("};  
+	constexpr Key BACKSLASH       =   {92, "\\"};  
+	constexpr Key RIGHT_BRACKET   =   {93, ")"};  
+	constexpr Key GRAVE_ACCENT    =   {96, "`"};  
+	constexpr Key WORLD_1		   =  {161, "UNKNOWN"};
+	constexpr Key WORLD_2		   =  {162, "UNKNOWN"};
+	constexpr Key ESCAPE		   =  {256, "ESC"};
+	constexpr Key ENTER           =   {257, "ENTER"};
+	constexpr Key TAB             =   {258, "TAB"};
+	constexpr Key BACKSPACE       =   {259, "BACKSPACE"};
+	constexpr Key INSERT          =   {260, "INSERT"};
+	constexpr Key DEL			  =   {261, "DELETE"}; // cannot name variable delete since it's a keyword
+	constexpr Key RIGHT           =   {262, "RIGHT"};
+	constexpr Key LEFT            =   {263, "LEFT"};
+	constexpr Key DOWN            =   {264, "DOWN"};
+	constexpr Key UP              =   {265, "UP"};
+	constexpr Key PAGE_UP         =   {266, "PAGE UP"};
+	constexpr Key PAGE_DOWN       =   {267, "PAGE DOWN"};
+	constexpr Key HOME            =   {268, "HOME"};
+	constexpr Key END             =   {269, "END"};
+	constexpr Key CAPS_LOCK       =   {280, "CAPS LOCK"};
+	constexpr Key SCROLL_LOCK     =   {281, "SCROLL LOCK"};
+	constexpr Key NUM_LOCK        =   {282, "NUM LOCK"};
+	constexpr Key PRINT_SCREEN    =   {283, "PRINT SCREEN"};
+	constexpr Key PAUSE           =   {284, "PAUSE"};
+	constexpr Key F1              =   {290, "F1"};
+	constexpr Key F2              =   {291, "F2"};
+	constexpr Key F3              =   {292, "F3"};
+	constexpr Key F4              =   {293, "F4"};
+	constexpr Key F5              =   {294, "F5"};
+	constexpr Key F6              =   {295, "F6"};
+	constexpr Key F7              =   {296, "F7"};
+	constexpr Key F8              =   {297, "F8"};
+	constexpr Key F9              =   {298, "F9"};
+	constexpr Key F10             =   {299, "F10"};
+	constexpr Key F11             =   {300, "F11"};
+	constexpr Key F12             =   {301, "F12"};
+	constexpr Key F13             =   {302, "F13"};
+	constexpr Key F14             =   {303, "F14"};
+	constexpr Key F15             =   {304, "F15"};
+	constexpr Key F16             =   {305, "F16"};
+	constexpr Key F17             =   {306, "F17"};
+	constexpr Key F18             =   {307, "F18"};
+	constexpr Key F19             =   {308, "F19"};
+	constexpr Key F20             =   {309, "F20"};
+	constexpr Key F21             =   {310, "F21"};
+	constexpr Key F22             =   {311, "F22"};
+	constexpr Key F23             =   {312, "F23"};
+	constexpr Key F24             =   {313, "F24"};
+	constexpr Key F25             =   {314, "F25"};
+	constexpr Key KP_0            =   {320, "KEYPAD 0"};
+	constexpr Key KP_1            =   {321, "KEYPAD 1"};
+	constexpr Key KP_2            =   {322, "KEYPAD 2"};
+	constexpr Key KP_3            =   {323, "KEYPAD 3"};
+	constexpr Key KP_4            =   {324, "KEYPAD 4"};
+	constexpr Key KP_5            =   {325, "KEYPAD 5"};
+	constexpr Key KP_6            =   {326, "KEYPAD 6"};
+	constexpr Key KP_7            =   {327, "KEYPAD 7"};
+	constexpr Key KP_8            =   {328, "KEYPAD 8"};
+	constexpr Key KP_9            =   {329, "KEYPAD 9"};
+	constexpr Key KP_DECIMAL      =   {330, "KEYPAD DECIMAL"};
+	constexpr Key KP_DIVIDE       =   {331, "KEYPAD DIVIDE"};
+	constexpr Key KP_MULTIPLY     =   {332, "KEYPAD MULTIPLY"};
+	constexpr Key KP_SUBTRACT     =   {333, "KEYPAD SUBTRACT"};
+	constexpr Key KP_ADD          =   {334, "KEYPAD ADD"};
+	constexpr Key KP_ENTER        =   {335, "KEYPAD ENTER"};
+	constexpr Key KP_EQUAL        =   {336, "KEYPAD EQUALS"};
+	constexpr Key LEFT_SHIFT      =   {340, "LEFT SHIFT"};
+	constexpr Key LEFT_CONTROL    =   {341, "LEFT CONTROL"};
+	constexpr Key LEFT_ALT        =   {342, "LEFT ALT"};
+	constexpr Key LEFT_SUPER      =   {343, "LEFT SUPER"};
+	constexpr Key RIGHT_SHIFT     =   {344, "RIGHT SHIFT"};
+	constexpr Key RIGHT_CONTROL   =   {345, "RIGHT CONTROL"};
+	constexpr Key RIGHT_ALT       =   {346, "RIGHT ALT"};
+	constexpr Key RIGHT_SUPER     =   {347, "RIGHT SUPER"};
+	constexpr Key MENU =			  {348, "MENU"};
+	constexpr Key LAST = MENU;
+}

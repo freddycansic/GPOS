@@ -2,11 +2,12 @@
 
 #include <array>
 
+#include "engine/GUI.h"
 #include "imgui/imgui.h"
 
-#include "engine/Files.h"
-#include "engine/Input.h"
-#include "engine/Keys.h"
+#include "engine/input/Files.h"
+#include "engine/input/Input.h"
+#include "engine/input/Keys.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
@@ -50,6 +51,7 @@ void Application::init(char* projectDir)
 			}
 		}
 	}
+
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
@@ -59,6 +61,11 @@ Vec3 cameraOrbit, cameraTarget;
 
 void Application::render()
 {
+	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
+	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
+	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
+	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
+
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
 	if (Window::capturingCursor())
@@ -128,50 +135,7 @@ ImVec2 mousePosOnShowWindow;
 
 void Application::imGuiRender()
 {
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("#1", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
-
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-			if (ImGui::MenuItem("Close", "Ctrl+Q")) { abort(); }
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo", "Ctrl+Z")) {}
-			if (ImGui::MenuItem("Redo", "Ctrl+Y")) {}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("New"))
-		{
-			if (ImGui::MenuItem("Cube")) {}
-			if (ImGui::MenuItem("Line")) {}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Select"))
-		{
-			if (ImGui::MenuItem("Select All", "Ctrl+A")) {}
-			if (ImGui::MenuItem("Deselect All", "Ctrl+D")) {}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("View"))
-		{
-			// TODO assign something to this to make it work
-			static const std::array projectionTypes = { "Perspective", "Orthographic" };
-			static int selectedProjection = 0;
-			ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), projectionTypes.size());
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMenuBar();
-	}
+	GUI::renderMenuBar();
 
 	ImGui::SetNextWindowPos(ImVec2(0, 50));
 	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
@@ -212,7 +176,7 @@ void Application::imGuiRender()
 
 	} else
 	{
-		if (Input::isKeyJustReleased(Keys::A))
+		if (Input::isKeyJustReleased(Keys::LEFT_SHIFT, Keys::A))
 		{
 			showingNewObjectMenu = true;
 			mousePosOnShowWindow = ImGui::GetMousePos();
@@ -242,7 +206,6 @@ void Application::imGuiRender()
 	//	ImGui::SliderFloat3("Scale", lastShape->scalePtr(), 0, 10); // gross writes directly into memory
 	//}
 
-	ImGui::End();
 }
 
 void Application::destroy()
