@@ -1,8 +1,10 @@
 #include "Input.h"
 
 #include <algorithm>
+#include <unordered_map>
 
 #include "Keys.h"
+#include "Keybind.h"
 #include "engine/Window.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
@@ -89,4 +91,47 @@ namespace Input
 
 		return false;
 	}
+
+	std::unordered_map<void(*)(), Keybind> keybinds =
+	{
+		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}}
+	};
+
+	Keybind getFunctionKeybind(void(*function)())
+	{
+		return keybinds.at(function);
+	}
+
+	bool isKeybindJustReleased(const Keybind& keybind)
+	{
+		unsigned int numKeysDown = 0, numKeysJustReleased = 0;
+		const auto& keys = keybind.getKeys();
+
+		for (const auto& key : keys)
+		{
+			if (isKeyDown(key))
+			{
+				++numKeysDown;
+				continue;
+			}
+
+			if (isKeyJustReleased(key))
+			{
+				++numKeysJustReleased;
+			}
+		}
+
+		if (numKeysDown >= keys.size()) return false;
+
+		return numKeysDown + numKeysJustReleased == keys.size();
+	}
+
+	void processFunctionKeybindPresses()
+	{
+		for (const auto& [function, keybind] : keybinds)
+		{
+			if (isKeybindJustReleased(keybind)) std::invoke(function);
+		}
+	}
+
 }

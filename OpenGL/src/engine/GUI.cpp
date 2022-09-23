@@ -2,7 +2,10 @@
 
 #include <array>
 
+#include "Window.h"
 #include "imgui/imgui.h"
+#include "input/Input.h"
+#include "engine/input/Keybind.h"
 
 void GUI::renderMenuBar()
 {
@@ -14,7 +17,7 @@ void GUI::renderMenuBar()
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-			if (ImGui::MenuItem("Close", "Ctrl+Q")) { abort(); }
+			if (ImGui::MenuItem("Close", Input::getFunctionKeybind(Window::close).toString().c_str())) { Window::close(); }
 			ImGui::EndMenu();
 		}
 

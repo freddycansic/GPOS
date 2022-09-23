@@ -1,6 +1,9 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Debug.h"
 #include "Window.h"
 #include "engine/input/Input.h"
@@ -92,6 +95,19 @@ namespace Window
 	}
 
 	int shouldClose() { return glfwWindowShouldClose(m_ID); }
+
+
+	bool userCalledClose = false;
+	bool closeCalled()
+	{
+		return userCalledClose;
+	}
+
+	void close()
+	{
+		userCalledClose = true;
+	}
+
 
 	bool m_Capturing = true;
 

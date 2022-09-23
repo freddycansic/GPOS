@@ -13,6 +13,7 @@ template<typename... Args>\
 
 struct Vec2;
 struct Vec3;
+struct Keybind;
 
 namespace Input
 {
@@ -21,6 +22,10 @@ namespace Input
 
 	[[nodiscard]] bool isKeyJustReleased(const Key& key);
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyJustReleased);
+
+	Keybind getFunctionKeybind(void(*function)());
+	bool isKeybindJustReleased(const Keybind& keybind);
+	void processFunctionKeybindPresses();
 
 	[[nodiscard]] float getMouseX();
 	[[nodiscard]] float getMouseY();

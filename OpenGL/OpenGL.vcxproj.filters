@@ -37,7 +37,7 @@
     <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\Util.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
-    <ClCompile Include="src\engine\input\Keybinds.cpp" />
+    <ClCompile Include="src\engine\input\Keybind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
@@ -78,7 +78,7 @@
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\GUI.h" />
-    <ClInclude Include="src\engine\input\Keybinds.h" />
+    <ClInclude Include="src\engine\input\Keybind.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

@@ -13,6 +13,7 @@
 #include "engine/Window.h"
 #include "engine/rendering/shapes/Line.h"
 #include "engine/Util.h"
+#include "engine/input/Keybind.h"
 
 void drawAxes()
 {
@@ -52,6 +53,8 @@ void Application::init(char* projectDir)
 		}
 	}
 
+	Keybind h = { Keys::W, Keys::LEFT_CONTROL };
+	std::cout << h << std::endl;
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
@@ -61,11 +64,6 @@ Vec3 cameraOrbit, cameraTarget;
 
 void Application::render()
 {
-	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
-	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
-	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
-	Keys::getStringRepr(Keys::W, Keys::ESCAPE);
-
 	Renderer::clear(0.42f, 0.42f, 0.42f);
 
 	if (Window::capturingCursor())

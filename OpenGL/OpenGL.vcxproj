@@ -160,8 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\input\Keybind.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
-    <ClCompile Include="src\engine\input\Keybinds.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
@@ -199,8 +199,8 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\input\Keybind.h" />
     <ClInclude Include="src\engine\GUI.h" />
-    <ClInclude Include="src\engine\input\Keybinds.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\shapes\Line.h" />

@@ -28,12 +28,13 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 
 	app.init(projectDir);
 
-	while (!Window::shouldClose()) {
-		if (Input::isKeyDown(Keys::ESCAPE)) break;
-
+	while (!Window::shouldClose() && !Window::closeCalled() && !Input::isKeyDown(Keys::ESCAPE))
+	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		Input::processFunctionKeybindPresses();
 
 		app.render();
 		app.imGuiRender();
