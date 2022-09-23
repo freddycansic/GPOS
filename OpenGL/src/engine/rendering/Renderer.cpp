@@ -48,3 +48,17 @@ void Renderer::setProjectionMatrix(const Mat4& mat) {
 void Renderer::setViewMatrix(const Mat4& mat) {
 	s_View = mat;
 }
+
+void Renderer::setRenderMode(RenderMode renderMode)
+{
+	switch (renderMode)
+	{
+	case RenderMode::Wireframe:
+		GLAPI(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+		break;
+
+	case RenderMode::Solid:
+		GLAPI(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+		break;
+	}
+}

@@ -5,6 +5,7 @@
 
 #include "Keys.h"
 #include "Keybind.h"
+#include "engine/GUI.h"
 #include "engine/Window.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
@@ -94,7 +95,8 @@ namespace Input
 
 	std::unordered_map<void(*)(), Keybind> keybinds =
 	{
-		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}}
+		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}},
+		{GUI::showNewObjectMenu, {Keys::LEFT_SHIFT, Keys::A}}
 	};
 
 	Keybind getFunctionKeybind(void(*function)())

@@ -2,10 +2,12 @@
 
 #include <array>
 
+#include "Util.h"
 #include "Window.h"
 #include "imgui/imgui.h"
 #include "input/Input.h"
 #include "engine/input/Keybind.h"
+#include "rendering/Renderer.h"
 
 void GUI::renderMenuBar()
 {
@@ -44,10 +46,29 @@ void GUI::renderMenuBar()
 
 		if (ImGui::BeginMenu("View"))
 		{
-			// TODO assign something to this to make it work
 			static const std::array projectionTypes = { "Perspective", "Orthographic" };
 			static int selectedProjection = 0;
 			ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), static_cast<int>(projectionTypes.size()));
+
+			static const std::array drawingModes = { "Solid", "Wireframe" };
+			static int selectedDrawingMode = 0;
+			if (ImGui::Combo("Drawing Mode", &selectedDrawingMode, drawingModes.data(), static_cast<int>(drawingModes.size())))
+			{
+				switch (selectedDrawingMode)
+				{
+				case 0:
+					Renderer::setRenderMode(RenderMode::Solid);
+					break;
+
+				case 1:
+					Renderer::setRenderMode(RenderMode::Wireframe);
+					break;
+
+				default:
+					break;
+				}
+			}
+
 			ImGui::EndMenu();
 		}
 
@@ -55,3 +76,52 @@ void GUI::renderMenuBar()
 	}
 	ImGui::End();
 }
+
+void GUI::renderToolbar()
+{
+	ImGui::SetNextWindowPos(ImVec2(0, 50));
+	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+
+	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
+
+	ImGui::End();
+}
+
+bool showingNewObjectMenu = false;
+ImVec2 mousePosOnShowWindow;
+
+void GUI::showNewObjectMenu()
+{
+	showingNewObjectMenu = true;
+	mousePosOnShowWindow = ImGui::GetMousePos();
+}
+
+void GUI::renderNewObjectMenu()
+{
+	if (!showingNewObjectMenu) return;
+	
+	ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - 1, mousePosOnShowWindow.y - 1 });
+	ImGui::Begin("New", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
+
+	if (ImGui::Button("Cube"))
+	{
+		showingNewObjectMenu = false;
+	}
+
+	if (ImGui::Button("Line"))
+	{
+		showingNewObjectMenu = false;
+	}
+
+	const auto& windowPos = ImGui::GetWindowPos();
+	const auto& windowSize = ImGui::GetWindowSize();
+	const auto& realtimeMousePos = ImGui::GetMousePos();
+	
+	if (!Util::isMouseHoveredWindow(realtimeMousePos, windowPos, windowSize))
+	{
+		showingNewObjectMenu = false;
+	}
+
+	ImGui::End();
+}
+

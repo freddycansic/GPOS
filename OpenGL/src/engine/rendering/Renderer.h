@@ -4,6 +4,12 @@
 #include "engine/rendering/opengl/IndexBuffer.h"
 #include "engine/rendering/opengl/Shader.h"
 
+enum class RenderMode
+{
+	Solid,
+	Wireframe
+};
+
 class Renderer
 {
 private:
@@ -20,5 +26,7 @@ public:
 
 	static void setProjectionMatrix(const Mat4& mat);
 	static void setViewMatrix(const Mat4& mat);
+
+	static void setRenderMode(RenderMode renderMode);
 };
 
