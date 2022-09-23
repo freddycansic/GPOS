@@ -3,8 +3,6 @@
 #include <iostream>
 #include <unordered_map>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #if _WIN32
 	#include <Windows.h>
@@ -21,6 +19,9 @@
 	#define LIGHT_BLUE
 	#define CLEAR
 #endif
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #ifdef _MSC_VER
 	#define ASSERT(x) if (!(x)) __debugbreak()

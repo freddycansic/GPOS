@@ -10,8 +10,6 @@ int main(int argc, char* argv[])
 	config.window.maxSize = true;
 	config.window.vsync = false;
 
-	// all variables inside app must have a default constructor or have default values
-
 	Application app;
 
 	if (argc > 1)
@@ -20,7 +18,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::cout << "no" << std::endl;
 		ApplicationLauncher appHandler(app, config);
 	}
 

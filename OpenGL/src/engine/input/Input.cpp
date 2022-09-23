@@ -1,9 +1,11 @@
 #include "Input.h"
 
 #include <algorithm>
+#include <unordered_map>
 
 #include "Keys.h"
-#include "Window.h"
+#include "Keybind.h"
+#include "engine/Window.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
@@ -18,11 +20,12 @@ namespace Input
 
 	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
 	Vec3 cameraDirection;
+	float xPos, yPos;
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
-		const auto xPos = static_cast<float>(xpos);
-		const auto yPos = static_cast<float>(ypos);
+		xPos = static_cast<float>(xpos);
+		yPos = static_cast<float>(ypos);
 		
 		if (firstMouseMove) {
 			lastX = xPos;
@@ -50,6 +53,8 @@ namespace Input
 		).normalise();
 	}
 
+	float getMouseX() { return xPos; }
+	float getMouseY() { return yPos; }
 	float getLastMouseOffsetX() { return xOffset; }
 	float getLastMouseOffsetY() { return yOffset; }
 	Vec2 getLastMouseOffset() { return { xOffset, yOffset }; }
@@ -57,20 +62,76 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	int keyStates[Keys::LAST];
-	
+	int keyStates[Keys::LAST.keyCode];
+	constexpr int JUST_RELEASED = 3;
+
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
+		if ((keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
+		{
+			keyStates[key] = JUST_RELEASED;
+			return;
+		}
+
 		keyStates[key] = action;
 	}
 
-	bool isKeyDown(int key)
+	bool isKeyDown(const Key& key)
 	{
-		return keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT;
+		return keyStates[key.keyCode] == GLFW_PRESS || keyStates[key.keyCode] == GLFW_REPEAT;
 	}
 
-	bool isKeyJustReleased(int key)
+	bool isKeyJustReleased(const Key& key)
 	{
-		return keyStates[key] == GLFW_RELEASE;
+		if (keyStates[key.keyCode] == JUST_RELEASED)
+		{
+			keyStates[key.keyCode] = GLFW_RELEASE;
+			return true;
+		}
+
+		return false;
 	}
+
+	std::unordered_map<void(*)(), Keybind> keybinds =
+	{
+		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}}
+	};
+
+	Keybind getFunctionKeybind(void(*function)())
+	{
+		return keybinds.at(function);
+	}
+
+	bool isKeybindJustReleased(const Keybind& keybind)
+	{
+		unsigned int numKeysDown = 0, numKeysJustReleased = 0;
+		const auto& keys = keybind.getKeys();
+
+		for (const auto& key : keys)
+		{
+			if (isKeyDown(key))
+			{
+				++numKeysDown;
+				continue;
+			}
+
+			if (isKeyJustReleased(key))
+			{
+				++numKeysJustReleased;
+			}
+		}
+
+		if (numKeysDown >= keys.size()) return false;
+
+		return numKeysDown + numKeysJustReleased == keys.size();
+	}
+
+	void processFunctionKeybindPresses()
+	{
+		for (const auto& [function, keybind] : keybinds)
+		{
+			if (isKeybindJustReleased(keybind)) std::invoke(function);
+		}
+	}
+
 }

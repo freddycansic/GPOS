@@ -2,8 +2,12 @@
 #include <stdexcept>
 
 #include "Debug.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Window.h"
-#include "Input.h"
+#include "engine/input/Input.h"
 
 GLFWwindow* m_ID;
 int m_Width, m_Height, s_DisplayWidth, s_DisplayHeight;
@@ -92,6 +96,19 @@ namespace Window
 	}
 
 	int shouldClose() { return glfwWindowShouldClose(m_ID); }
+
+
+	bool userCalledClose = false;
+	bool closeCalled()
+	{
+		return userCalledClose;
+	}
+
+	void close()
+	{
+		userCalledClose = true;
+	}
+
 
 	bool m_Capturing = true;
 

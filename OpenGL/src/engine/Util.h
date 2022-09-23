@@ -1,26 +1,8 @@
 #pragma once
-#include <functional>
-#include <map>
-#include <unordered_map>
+
+#include "imgui/imgui.h"
 
 namespace Util
 {
-	// i stole this
-	template <typename ReturnType, typename... Args>
-	std::function<ReturnType(Args...)> memoize(const std::function<ReturnType(Args...)>& func)
-	{
-		std::map<std::tuple<Args...>, ReturnType> cache;
-
-		return [cache, func](Args... args) mutable
-		{
-			const std::tuple<Args...> t(args...);
-
-			if (!cache.contains(t))
-			{
-				cache[t] = func(args...);
-			}
-
-			return cache.at(t);
-		};
-	}
+	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize);
 }
