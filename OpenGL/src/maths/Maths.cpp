@@ -1,8 +1,9 @@
 #include "Maths.h"
 
 #include <random>
+#include <chrono>
 
-std::mt19937 mersenne(time(nullptr));
+std::mt19937 mersenne(static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
 
 namespace Maths {
 

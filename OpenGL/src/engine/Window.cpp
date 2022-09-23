@@ -1,10 +1,11 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "Debug.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Debug.h"
 #include "Window.h"
 #include "engine/input/Input.h"
 

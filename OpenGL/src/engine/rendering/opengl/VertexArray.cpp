@@ -36,10 +36,10 @@ void VertexArray::addBuffer(const VertexBuffer& buffer, const VertexBufferLayout
 		GLAPI(glEnableVertexAttribArray(index));
 
 		if (type == GL_UNSIGNED_INT64_ARB) {
-			GLAPI(glVertexAttribLPointer(index++, count, type, layout.getStride(), reinterpret_cast<const void*>(offset)));
+			GLAPI(glVertexAttribLPointer(index++, count, type, static_cast<GLsizei>(layout.getStride()), reinterpret_cast<const void*>(offset)));
 
 		} else {
-			GLAPI(glVertexAttribPointer(index++, count, type, normalised ? GL_TRUE : GL_FALSE, layout.getStride(), reinterpret_cast<const void*>(offset)));
+			GLAPI(glVertexAttribPointer(index++, count, type, normalised ? GL_TRUE : GL_FALSE, static_cast<GLsizei>(layout.getStride()), reinterpret_cast<const void*>(offset)));
 		}
 		
 		offset += size;

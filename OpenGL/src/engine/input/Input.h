@@ -13,7 +13,7 @@ template<typename... Args>\
 
 struct Vec2;
 struct Vec3;
-struct Keybind;
+class Keybind;
 
 namespace Input
 {
@@ -39,7 +39,6 @@ namespace Input
 	namespace Callbacks
 	{
 		void GLAPIENTRY mouseCallback(GLFWwindow* window, double xpos, double ypos);
-
 		void GLAPIENTRY keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	}
 

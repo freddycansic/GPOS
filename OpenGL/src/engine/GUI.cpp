@@ -47,7 +47,7 @@ void GUI::renderMenuBar()
 			// TODO assign something to this to make it work
 			static const std::array projectionTypes = { "Perspective", "Orthographic" };
 			static int selectedProjection = 0;
-			ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), projectionTypes.size());
+			ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), static_cast<int>(projectionTypes.size()));
 			ImGui::EndMenu();
 		}
 
