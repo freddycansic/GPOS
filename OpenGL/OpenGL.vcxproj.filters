@@ -38,6 +38,7 @@
     <ClCompile Include="src\engine\Util.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\GUI.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
+    <ClInclude Include="src\engine\rendering\shapes\Circle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

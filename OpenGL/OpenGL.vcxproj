@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\rendering\shapes\Circle.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
     <ClInclude Include="src\engine\GUI.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
