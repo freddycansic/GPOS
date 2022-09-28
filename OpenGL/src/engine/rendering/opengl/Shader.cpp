@@ -7,6 +7,7 @@
 #include <GL/glew.h>
 
 #include "engine/Debug.h"
+#include "maths/Maths.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& [name, location] : map) {
@@ -80,9 +81,9 @@ void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3,
 	GLAPI(glUniform4f(m_Uniforms.at(name), v1, v2, v3, v4));
 }
 
-void Shader::setUniformMat4(const std::string& name, const Mat4& matrix) const {
+void Shader::setUniformMat4(const std::string& name, const Mat4x4& matrix) const {
 	checkUniformInShader(name);
-	GLAPI(glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_TRUE, matrix.getPtr()));
+	GLAPI(glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_TRUE, matrix.data()));
 }
 
 void Shader::setUniform1i(const std::string& name, int value) const {

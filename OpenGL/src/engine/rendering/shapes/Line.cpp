@@ -66,7 +66,7 @@ Mat4 Line::getTransformMatrix() const
 		axis.x,
 		axis.y,
 		axis.z,
-		Maths::degrees(theta)
+		theta
 	).scale(
 		mag,
 		m_Transform.sca.y,

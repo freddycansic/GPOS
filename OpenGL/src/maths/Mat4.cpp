@@ -116,40 +116,10 @@ Mat4 Mat4::rotate(float xRotate, float yRotate, float zRotate) const
 			0, 0, 0, 1
 		)
 		);
-
-	//return (
-	//	*this
-
-	//	*
-
-	//	Mat4 (
-	//	1, 0, 0, 0,
-	//	0, cos(xRadRotate), -sin(xRadRotate), 0,
-	//	0, sin(xRadRotate), cos(xRadRotate), 0,
-	//	0, 0, 0, 1) 
-	//	
-	//	*
-	//	
-	//	Mat4 (
-	//	cos(yRadRotate), 0, sin(yRadRotate), 0,
-	//	0, 1, 0, 0,
-	//	-sin(yRadRotate), 0, cos(yRadRotate), 0,
-	//	0, 0, 0, 1) 
-	//	
-	//	*
-	//	
-	//	Mat4 (
-	//	cos(zRadRotate), -sin(zRadRotate), 0, 0,
-	//	sin(zRadRotate), cos(zRadRotate), 0, 0,
-	//	0, 0, 1, 0,
-	//	0, 0, 0, 1)
-	//);
 }
 
-Mat4 Mat4::rotateAxis(float xAxis, float yAxis, float zAxis, float angle) const
+Mat4 Mat4::rotateAxis(float xAxis, float yAxis, float zAxis, float theta) const
 {
-	const float theta = Maths::radians(angle);
-
 	return (
 		*this
 

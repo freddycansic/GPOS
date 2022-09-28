@@ -14,6 +14,7 @@
 #include "engine/rendering/shapes/Line.h"
 #include "engine/Util.h"
 #include "engine/input/Keybind.h"
+#include "maths/Maths.h"
 
 void drawAxes()
 {
@@ -88,7 +89,7 @@ void Application::render()
 		}
 	}
 
-	const Mat4 view = Mat4::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	const Mat view = Maths::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	Renderer::setViewMatrix(view);
 
 	if (Input::isKeyJustReleased(Keys::V))

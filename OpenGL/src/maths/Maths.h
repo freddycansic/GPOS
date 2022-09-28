@@ -1,4 +1,9 @@
 #pragma once
+#include "Matrix.h"
+
+struct Vec3;
+
+using Mat4x4 = Mat<4, 4, float>;
 
 namespace Maths {
 
@@ -11,4 +16,8 @@ namespace Maths {
 
 	float randf(float min, float max);
 	int randint(int min, int max);
+
+	Mat4x4 lookAt(const Vec3& position, const Vec3& target, const Vec3& up);
+	Mat4x4 perspective(float fovDeg, float aspect, float near, float far);
+	Mat4x4 ortho(float left, float right, float top, float bottom, float near, float far);
 }

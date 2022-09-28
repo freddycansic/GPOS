@@ -79,6 +79,7 @@
     <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\GUI.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
+    <ClInclude Include="src\maths\Matrix.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
