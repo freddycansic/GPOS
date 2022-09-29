@@ -14,7 +14,6 @@
 #include "engine/rendering/shapes/Line.h"
 #include "engine/Util.h"
 #include "engine/input/Keybind.h"
-#include "maths/Maths.h"
 
 void drawAxes()
 {
@@ -53,9 +52,6 @@ void Application::init(char* projectDir)
 			}
 		}
 	}
-
-	Keybind h = { Keys::W, Keys::LEFT_CONTROL };
-	std::cout << h << std::endl;
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
@@ -121,7 +117,8 @@ void Application::render()
 	//	ShapeRenderer::draw(cube, colour);
 	//}
 
-	ShapeRenderer::draw(Cube(0, 0, 0, 1), tex2);
+	//ShapeRenderer::draw(Cube(0, 0, 0, 1), tex2);
+	ShapeRenderer::draw(Circle(0, 0, 10), { 1, 1, 0, 1 });
 
 	drawAxes();
 

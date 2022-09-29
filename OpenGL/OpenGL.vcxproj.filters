@@ -38,6 +38,7 @@
     <ClCompile Include="src\engine\Util.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\maths\Mat4.h" />
