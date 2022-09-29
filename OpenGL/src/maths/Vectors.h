@@ -18,7 +18,8 @@ struct Vec2 {
 struct Vec4; // forward delaration for vec3 conversion
 
 struct Vec3 {
-	float x = 0.0f, y = 0.0f, z = 0.0f;
+	union { float x, y, z; };
+	union { float r, g, b; };
 
 	Vec3() = default;
 	Vec3(float x, float y, float z);

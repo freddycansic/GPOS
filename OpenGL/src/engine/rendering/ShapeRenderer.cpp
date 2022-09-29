@@ -94,7 +94,7 @@ namespace ShapeRenderer {
 
 	void draw(Shape&& shape, const Vec4& color)
 	{
-		addShapeToBatches(shapeBatches, shape, color, 0);
+		draw(shape, color);
 	}
 
 	void draw(Shape& shape, const Texture& tex)
@@ -104,7 +104,7 @@ namespace ShapeRenderer {
 
 	void draw(Shape&& shape, const Texture& tex)
 	{
-		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
+		draw(shape, tex);
 	}
 	
 	void end() {
@@ -139,12 +139,7 @@ namespace ShapeRenderer {
 					if (shape->selected())
 					{
 						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
-
-						const auto maxComp = std::max({ colour.r, colour.g, colour.b, colour.a });
-						const auto minComp = std::min({ colour.r, colour.g, colour.b, colour.a });
-
-						const auto diff = maxComp - minComp;
-
+						
 						batchVertices.emplace_back
 						(
 							newPositions.at(i),
