@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "maths/Maths.h"
 #include "maths/Transform.h"
 
 struct Vec3;
@@ -27,10 +28,5 @@ public:
 	[[nodiscard]] std::vector<Vec3> getPositions() const;
 
 	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
-	[[nodiscard]] virtual Mat4 getTransformMatrix() const;
-
-	// TODO TEMPORARY
-	float* scalePtr();
-	float* rotationPtr();
-	float* translationPtr();
+	[[nodiscard]] virtual Mat4x4 getTransformMatrix() const;
 };

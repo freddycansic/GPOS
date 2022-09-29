@@ -16,7 +16,7 @@ void Renderer::init() {
 	
 	GLAPI(glEnable(GL_DEPTH_TEST));
 
-	s_Persp = Maths::perspective(45.0f, static_cast<float>(Window::width()) / static_cast<float>(Window::height()), 1.0f, 1000.0f);
+	s_Persp = Maths::perspective(Maths::radians(45.0f), static_cast<float>(Window::width()) / static_cast<float>(Window::height()), 1.0f, 1000.0f);
 	s_Ortho = Maths::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, -1.0f, 1.0f);
 
 	// use persp projection by default

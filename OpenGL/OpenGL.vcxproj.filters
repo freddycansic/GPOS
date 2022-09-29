@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\IndexBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexArray.cpp" />
@@ -41,7 +40,6 @@
     <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
     <ClInclude Include="src\engine\rendering\opengl\IndexBuffer.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexArray.h" />
@@ -81,6 +79,7 @@
     <ClInclude Include="src\engine\GUI.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
     <ClInclude Include="src\maths\Matrix.h" />
+    <ClInclude Include="src\engine\rendering\shapes\Circle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

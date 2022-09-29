@@ -190,7 +190,6 @@
     <ClCompile Include="src\engine\rendering\Renderer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\Shader.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\IndexBuffer.cpp" />
-    <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\libs\stb_image\stb_image.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBuffer.cpp" />
@@ -229,7 +228,6 @@
     <ClInclude Include="src\engine\rendering\Renderer.h" />
     <ClInclude Include="src\engine\rendering\opengl\Shader.h" />
     <ClInclude Include="src\engine\rendering\opengl\IndexBuffer.h" />
-    <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\libs\stb_image\stb_image.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexArray.h" />

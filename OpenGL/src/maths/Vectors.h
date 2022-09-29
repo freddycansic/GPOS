@@ -4,6 +4,7 @@
 #include <concepts>
 
 #include "Mat4.h"
+#include "Maths.h"
 
 struct Vec2 {
 	float x = 0.0f, y = 0.0f;
@@ -51,7 +52,7 @@ struct Vec4 {
 	explicit Vec4(const Vec3& vec3, float w);
 	explicit Vec4(const Vec3& vec3);
 
-	Vec4 operator*(const Mat4& mat) const;
+	Vec4 operator*(const Mat4x4& mat) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Vec4& vector);

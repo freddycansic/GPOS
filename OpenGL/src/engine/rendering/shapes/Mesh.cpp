@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-#include "maths/Mat4.h"
+#include "maths/Maths.h"
+#include "maths/Matrix.h"
 #include "maths/Vectors.h"
 #include "maths/Transform.h"
 
@@ -11,7 +12,7 @@ Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoord
 {
 }
 
-std::vector<Vec3> Mesh::recalculatePositions(const Mat4& transformMatrix) const
+std::vector<Vec3> Mesh::recalculatePositions(const Mat4x4& transformMatrix) const
 {
 	std::vector<Vec3> newPositions(positions.size());
 
@@ -23,10 +24,14 @@ std::vector<Vec3> Mesh::recalculatePositions(const Mat4& transformMatrix) const
 	return newPositions;
 }
 
-std::vector<Vec3> Mesh::recalculatePositions(const Transform& transform) const
-{
-	return recalculatePositions(Mat4::identity.translate(transform.tra.x, transform.tra.y, transform.tra.z).rotate(transform.rot.x, transform.rot.y, transform.rot.z).scale(transform.sca.x, transform.sca.y, transform.sca.z));
-}
+//std::vector<Vec3> Mesh::recalculatePositions(const Transform& transform) const
+//{
+//	auto transformMat = Maths::translate(Mat4x4::identity(), transform.tra.x, transform.tra.y, transform.tra.z);
+//	transformMat = Maths::rotate(transformMat, transform.rot.x, transform.rot.y, transform.rot.z);
+//	transformMat = Maths::scale(transformMat, transform.sca.x, transform.sca.y, transform.sca.z);
+//
+//	return recalculatePositions(transformMat);
+//}
 
 unsigned int Mesh::getMaxInt()
 {

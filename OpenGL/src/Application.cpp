@@ -70,7 +70,6 @@ void Application::render()
 		// camera position movement
 		const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
 
-		//if (Input::isKeyDown(Keys::W)) {
 		if (Input::isKeyDown(Keys::W)) {
 			cameraPos += cameraFront * moveSpeed * Window::deltatime();
 		}
@@ -100,25 +99,25 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	//for (unsigned int i = 0; i < gameObjects.size() / 2; ++i)
-	//{
-	//	auto& cube = gameObjects.at(i).first;
-	//	const auto& colour = gameObjects.at(i).second;
+	for (auto i = 0; i < gameObjects.size() / 2; ++i)
+	{
+		auto& cube = gameObjects.at(i).first;
+		const auto& colour = gameObjects.at(i).second;
 
-	//	cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
-	//	ShapeRenderer::draw(cube, colour);
-	//} 
+		cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+		ShapeRenderer::draw(cube, colour);
+	} 
 
-	//for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
-	//{
-	//	auto& cube = gameObjects.at(i).first;
-	//	const auto& colour = gameObjects.at(i).second;
+	for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
+	{
+		auto& cube = gameObjects.at(i).first;
+		const auto& colour = gameObjects.at(i).second;
 
-	//	ShapeRenderer::draw(cube, colour);
-	//}
+		ShapeRenderer::draw(cube, colour);
+	}
 
-	//ShapeRenderer::draw(Cube(0, 0, 0, 1), tex2);
-	ShapeRenderer::draw(Circle(0, 0, 10), { 1, 1, 0, 1 });
+	//ShapeRenderer::draw(Cube(0, 0, 0, 1), {1, 1, 0, 1});
+	//ShapeRenderer::draw(Circle(0, 0, 10), { 1, 1, 0, 1 });
 
 	drawAxes();
 

@@ -8,9 +8,12 @@
 #include <xmmintrin.h>
 #include <intrin.h>
 
+
 template<size_t rows, size_t columns, typename T = float> requires std::is_arithmetic_v<T>
 class Mat
 {
+	using Mat4x4 = Mat<4, 4, float>;
+
 	static_assert(rows > 0 && columns > 0, "Matrix must have positive dimensions.");
 
 	using MATRIX_ROW = std::array<T, columns>;
@@ -278,9 +281,17 @@ public:
 		static_assert(columns == rows, "Can only compute identity of square matrix!");
 
 		Mat<columns, rows> result;
-		for (size_t i = 0; i < rows; ++i)
+		for (size_t row = 0; row < rows; ++row)
 		{
-			result[i][i] = 1;
+			for (size_t col = 0; col < columns; ++col)
+			{
+				if (row == col) {
+					result[row][col] = 1;
+				} else
+				{
+					result[row][col] = 0;
+				}
+			}
 		}
 
 		return result;

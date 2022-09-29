@@ -34,17 +34,34 @@ namespace Maths {
 		const Vec3 camUp = camDir.cross(camRight); // vector pointing in up direction from camera
 
 		return
-		{
-			{camRight.x, camRight.y, camRight.z, -position.x*camRight.x-camRight.y*position.y-camRight.z*position.z},
-			{camUp.x, camUp.y, camUp.z, -position.z*camUp.z-camUp.x*position.x-camUp.y*position.x-camUp.y*position.y},
-			{camDir.x, camDir.y, camDir.z, -position.z*camDir.z-position.x*camDir.x-position.y*camDir.y},
+
+		Mat4x4{
+			{camRight.x, camRight.y, camRight.z, 0},
+			{camUp.x, camUp.y, camUp.z, 0},
+			{camDir.x, camDir.y, camDir.z, 0},
 			{0, 0, 0, 1}
+		}
+
+		*
+
+		Mat4x4{
+			{1, 0, 0, -position.x},
+			{ 0, 1, 0, -position.y },
+			{ 0, 0, 1, -position.z },
+			{ 0, 0, 0, 1 }
 		};
+
+		//return
+		//{
+		//	{camRight.x, camRight.y, camRight.z, -position.x*camRight.x-camRight.y*position.y-camRight.z*position.z},
+		//	{camUp.x, camUp.y, camUp.z, -position.z*camUp.z-camUp.x*position.x-camUp.y*position.x-camUp.y*position.y},
+		//	{camDir.x, camDir.y, camDir.z, -position.z*camDir.z-position.x*camDir.x-position.y*camDir.y},
+		//	{0, 0, 0, 1}
+		//};
 	}
 
-	Mat4x4 perspective(float fovDeg, float aspect, float near, float far) {
-		const float fov = Maths::radians(fovDeg);
-		const float f = 1 / tan(fov / 2);
+	Mat4x4 perspective(float fovRad, float aspect, float near, float far) {
+		const float f = 1 / tan(fovRad / 2);
 
 		return {
 			{f / aspect, 0, 0, 0},

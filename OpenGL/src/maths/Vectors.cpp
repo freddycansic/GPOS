@@ -101,7 +101,7 @@ Vec4::Vec4(const Vec3& vec3) :
 {
 }
 
-Vec4 Vec4::operator*(const Mat4& mat) const {
+Vec4 Vec4::operator*(const Mat4x4& mat) const {
 	return {
 		mat[0][0] * x + mat[0][1] * y + mat[0][2] * z + mat[0][3] * w,
 		mat[1][0] * x + mat[1][1] * y + mat[1][2] * z + mat[1][3] * w,
