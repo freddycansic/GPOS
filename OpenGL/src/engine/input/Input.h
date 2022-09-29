@@ -4,26 +4,30 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Keys.h"
 
 #define GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyPredicate)\
-[[nodiscard]] inline bool isKeyPredicate() {};\
-\
 template<typename... Args>\
-[[nodiscard]] bool isKeyPredicate(int first, Args... rest)\
+[[nodiscard]] bool isKeyPredicate(const Key& first, const Args&... rest)\
 {\
 	return isKeyPredicate(first) && isKeyPredicate(rest...);\
 }\
 
 struct Vec2;
 struct Vec3;
+class Keybind;
 
 namespace Input
 {
-	[[nodiscard]] bool isKeyDown(int key);
+	[[nodiscard]] bool isKeyDown(const Key& key);
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyDown);
 
-	[[nodiscard]] bool isKeyJustReleased(int key);
+	[[nodiscard]] bool isKeyJustReleased(const Key& key);
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyJustReleased);
+
+	Keybind getFunctionKeybind(void(*function)());
+	bool isKeybindJustReleased(const Keybind& keybind);
+	void processFunctionKeybindPresses();
 
 	[[nodiscard]] float getMouseX();
 	[[nodiscard]] float getMouseY();
@@ -37,7 +41,6 @@ namespace Input
 	namespace Callbacks
 	{
 		void GLAPIENTRY mouseCallback(GLFWwindow* window, double xpos, double ypos);
-
 		void GLAPIENTRY keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	}
 

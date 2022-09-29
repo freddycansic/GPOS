@@ -1,7 +1,8 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
 #include <string>
+
+struct GLFWwindow;
 
 struct WindowConfig
 {
@@ -26,6 +27,9 @@ namespace Window
 
 	void beginCursorCapture();
 	void endCursorCapture();
+
+	bool closeCalled();
+	void close();
 	
 	// time
 	[[nodiscard]] float currentTime();

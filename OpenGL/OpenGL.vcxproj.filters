@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\IndexBuffer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexArray.cpp" />
@@ -21,7 +20,7 @@
     <ClCompile Include="src\engine\rendering\ShapeRenderer.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
     <ClCompile Include="src\engine\rendering\Vertex.cpp" />
-    <ClCompile Include="src\engine\Files.cpp" />
+    <ClCompile Include="src\engine\input\Files.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationLauncher.cpp" />
     <ClCompile Include="src\engine\Debug.cpp" />
@@ -36,10 +35,11 @@
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\Util.cpp" />
-    <ClCompile Include="src\engine\rendering\gui\GUI.cpp" />
+    <ClCompile Include="src\engine\GUI.cpp" />
+    <ClCompile Include="src\engine\input\Keybind.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
     <ClInclude Include="src\engine\rendering\opengl\IndexBuffer.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexArray.h" />
@@ -60,7 +60,7 @@
     <ClInclude Include="src\libs\imgui\imstb_textedit.h" />
     <ClInclude Include="src\libs\imgui\imstb_truetype.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="src\engine\Files.h" />
+    <ClInclude Include="src\engine\input\Files.h" />
     <ClInclude Include="src\engine\rendering\ShapeRenderer.h" />
     <ClInclude Include="src\engine\rendering\shapes\Shape.h" />
     <ClInclude Include="src\engine\rendering\Vertex.h" />
@@ -76,7 +76,10 @@
     <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
-    <ClInclude Include="src\engine\rendering\gui\GUI.h" />
+    <ClInclude Include="src\engine\GUI.h" />
+    <ClInclude Include="src\engine\input\Keybind.h" />
+    <ClInclude Include="src\maths\Matrix.h" />
+    <ClInclude Include="src\engine\rendering\shapes\Circle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

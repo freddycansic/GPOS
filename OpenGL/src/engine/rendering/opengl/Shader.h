@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "maths/Mat4.h"
+#include "maths/Maths.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map);
 
@@ -28,7 +29,7 @@ public:
 	void setUniform1ui64(const std::string& name, uint64_t value) const;
 	void setUniform1iv(const std::string& name, size_t count, const int* value) const;
 	void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const;
-	void setUniformMat4(const std::string& name, const Mat4& matrix) const;
+	void setUniformMat4(const std::string& name, const Mat4x4& matrix) const;
 
 	void bind() const;
 	void unbind() const;

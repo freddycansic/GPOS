@@ -160,7 +160,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\rendering\gui\GUI.cpp" />
+    <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
+    <ClCompile Include="src\engine\input\Keybind.cpp" />
+    <ClCompile Include="src\engine\GUI.cpp" />
     <ClCompile Include="src\engine\rendering\Material.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Line.cpp" />
@@ -170,7 +172,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationLauncher.cpp" />
     <ClCompile Include="src\engine\Debug.cpp" />
-    <ClCompile Include="src\engine\Files.cpp" />
+    <ClCompile Include="src\engine\input\Files.cpp" />
     <ClCompile Include="src\engine\rendering\shapes\Shape.cpp" />
     <ClCompile Include="src\engine\rendering\Vertex.cpp" />
     <ClCompile Include="src\engine\Util.cpp" />
@@ -188,7 +190,6 @@
     <ClCompile Include="src\engine\rendering\Renderer.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\Shader.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\IndexBuffer.cpp" />
-    <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\libs\stb_image\stb_image.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\VertexBuffer.cpp" />
@@ -198,7 +199,9 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\rendering\gui\GUI.h" />
+    <ClInclude Include="src\engine\rendering\shapes\Circle.h" />
+    <ClInclude Include="src\engine\input\Keybind.h" />
+    <ClInclude Include="src\engine\GUI.h" />
     <ClInclude Include="src\engine\rendering\Material.h" />
     <ClInclude Include="src\engine\rendering\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\shapes\Line.h" />
@@ -211,7 +214,7 @@
     <ClInclude Include="src\engine\rendering\shapes\Shape.h" />
     <ClInclude Include="src\engine\rendering\ShapeRenderer.h" />
     <ClInclude Include="src\engine\Debug.h" />
-    <ClInclude Include="src\engine\Files.h" />
+    <ClInclude Include="src\engine\input\Files.h" />
     <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\libs\imgui\imconfig.h" />
     <ClInclude Include="src\libs\imgui\imgui.h" />
@@ -225,7 +228,6 @@
     <ClInclude Include="src\engine\rendering\Renderer.h" />
     <ClInclude Include="src\engine\rendering\opengl\Shader.h" />
     <ClInclude Include="src\engine\rendering\opengl\IndexBuffer.h" />
-    <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\libs\stb_image\stb_image.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
     <ClInclude Include="src\engine\rendering\opengl\VertexArray.h" />
@@ -233,6 +235,7 @@
     <ClInclude Include="src\engine\rendering\opengl\Texture.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\maths\Maths.h" />
+    <ClInclude Include="src\maths\Matrix.h" />
     <ClInclude Include="src\maths\Transform.h" />
     <ClInclude Include="src\maths\Vectors.h" />
     <ClInclude Include="src\engine\rendering\opengl\UniformBuffer.h" />

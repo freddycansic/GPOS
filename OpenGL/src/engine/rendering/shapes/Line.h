@@ -1,5 +1,6 @@
 #pragma once
 #include "Shape.h"
+#include "maths/Maths.h"
 
 class Line : public Shape
 {
@@ -12,7 +13,7 @@ public:
 	Line() = default;
 	
 	[[nodiscard]] Mesh& getMesh() const override;
-	[[nodiscard]] Mat4 getTransformMatrix() const override;
+	[[nodiscard]] Mat4x4 getTransformMatrix() const override;
 
 	void setP1(float x, float y, float z);
 	void setP1(const Vec3& pos);

@@ -6,7 +6,6 @@
 
 #include "engine/Debug.h"
 #include "engine/input/Input.h"
-#include "engine/input/Keys.h"
 #include "engine/rendering/Renderer.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir)
@@ -28,12 +27,14 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	ImGui::StyleColorsDark();
 
 	app.init(projectDir);
-	
-	while (!Window::shouldClose() && !Input::isKeyDown(Keys::ESCAPE) && !Window::closeCalled()) 
+
+	while (!Window::shouldClose() && !Window::closeCalled() && !Input::isKeyDown(Keys::ESCAPE))
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		Input::processFunctionKeybindPresses();
 
 		app.render();
 		app.imGuiRender();

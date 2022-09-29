@@ -47,7 +47,7 @@ Line::Line(const Vec3& p1, const Vec3& p2, float width) : Line(p1.x, p1.y, p1.z,
 
 const Vec3 i = { 1.0f, 0.0f, 0.0f };
 
-Mat4 Line::getTransformMatrix() const
+Mat4x4 Line::getTransformMatrix() const
 {
 	const Vec3 diff = m_P1 - m_P2; // difference between the two points
 	const float mag = diff.magnitude(); // mag of diff
@@ -58,21 +58,11 @@ Mat4 Line::getTransformMatrix() const
 
 	const float theta = i.angleBetween(diff);
 
-	return Mat4::identity.translate(
-		m_P2.x,
-		m_P2.y,
-		m_P2.z
-	).rotateAxis(
-		axis.x,
-		axis.y,
-		axis.z,
-		Maths::degrees(theta)
-	).scale(
-		mag,
-		m_Transform.sca.y,
-		m_Transform.sca.z
-	);
+	auto transform = Maths::scale(Mat4x4::identity(), mag, m_Transform.sca.y, m_Transform.sca.z);
+	transform = Maths::rotateAxis(transform, axis.x, axis.y, axis.z, theta);
+	transform = Maths::translate(transform, m_P2.x, m_P2.y, m_P2.z);
 
+	return transform;
 }
 
 Mesh& Line::getMesh() const

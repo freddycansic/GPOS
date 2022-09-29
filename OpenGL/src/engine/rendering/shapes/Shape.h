@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "maths/Maths.h"
 #include "maths/Transform.h"
 
 struct Vec3;
@@ -12,6 +13,7 @@ protected:
 	Transform m_Transform;
 	std::vector<Vec3> m_Positions;
 	bool m_Moved = true;
+	bool m_Selected = false;
 
 public:
 	virtual ~Shape() = default;
@@ -23,14 +25,12 @@ public:
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;
 
+	void setSelected(bool selected);
+	[[nodiscard]] bool selected() const;
+
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] std::vector<Vec3> getPositions() const;
 
 	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
-	[[nodiscard]] virtual Mat4 getTransformMatrix() const;
-
-	// TODO TEMPORARY
-	float* scalePtr();
-	float* rotationPtr();
-	float* translationPtr();
+	[[nodiscard]] virtual Mat4x4 getTransformMatrix() const;
 };

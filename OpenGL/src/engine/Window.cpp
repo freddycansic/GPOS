@@ -2,6 +2,10 @@
 #include <stdexcept>
 
 #include "Debug.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Window.h"
 #include "engine/input/Input.h"
 
@@ -98,6 +102,19 @@ namespace Window
 	bool closeCalled() { return wasCloseCalled; }
 	void close() { wasCloseCalled = true; }
 	//
+
+
+	bool userCalledClose = false;
+	bool closeCalled()
+	{
+		return userCalledClose;
+	}
+
+	void close()
+	{
+		userCalledClose = true;
+	}
+
 
 	bool m_Capturing = true;
 
