@@ -13,6 +13,7 @@ protected:
 	Transform m_Transform;
 	std::vector<Vec3> m_Positions;
 	bool m_Moved = true;
+	bool m_Selected = false;
 
 public:
 	virtual ~Shape() = default;
@@ -23,6 +24,9 @@ public:
 
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;
+
+	void setSelected(bool selected);
+	[[nodiscard]] bool selected() const;
 
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] std::vector<Vec3> getPositions() const;

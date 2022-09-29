@@ -44,7 +44,8 @@ struct Vec3 {
 };
 
 struct Vec4 {
-	float x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f;
+	union { float x, y, z, w; };
+	union { float r, g, b, a; };
 
 	Vec4() = default;
 	Vec4(float x, float y, float z, float w);
@@ -53,6 +54,13 @@ struct Vec4 {
 	explicit Vec4(const Vec3& vec3);
 
 	Vec4 operator*(const Mat4x4& mat) const;
+
+	// TODO move this somewhere else
+	[[nodiscard]] Vec4 mixColour(const Vec4& other)
+	{
+		static constexpr float f = 0.8f; // factor
+		return { r * f + other.r * f, g * f + other.g * f, b * f + other.b * f, a * f + other.a * f };
+	}
 };
 
 std::ostream& operator<<(std::ostream& os, const Vec4& vector);

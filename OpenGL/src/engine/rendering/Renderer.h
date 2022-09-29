@@ -5,6 +5,12 @@
 #include "engine/rendering/opengl/Shader.h"
 #include "maths/Maths.h"
 
+enum class RenderMode
+{
+	Solid,
+	Wireframe
+};
+
 class Renderer
 {
 private:
@@ -21,5 +27,7 @@ public:
 
 	static void setProjectionMatrix(const Mat4x4& mat);
 	static void setViewMatrix(const Mat4x4& mat);
+
+	static void setRenderMode(RenderMode renderMode);
 };
 

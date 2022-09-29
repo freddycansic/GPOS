@@ -4,6 +4,7 @@
 
 void Shape::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { xScale, yScale, zScale };
+	m_Moved = true;
 }
 
 void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
@@ -13,6 +14,7 @@ void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
 
 void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
 	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
+	m_Moved = true;
 }
 
 Mat4x4 Shape::getTransformMatrix() const
@@ -32,6 +34,16 @@ void Shape::setMoved(bool moved)
 bool Shape::moved() const
 {
 	return m_Moved;
+}
+
+void Shape::setSelected(bool selected)
+{
+	m_Selected = selected;
+}
+
+bool Shape::selected() const
+{
+	return m_Selected;
 }
 
 std::vector<Vec3> Shape::getPositions() const
