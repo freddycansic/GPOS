@@ -15,6 +15,7 @@
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Shape.h"
 #include "engine/input/Files.h"
+#include "engine/Util.h"
 
 struct ShapeData
 {
@@ -139,10 +140,11 @@ namespace ShapeRenderer {
 					if (shape->selected())
 					{
 						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
-						
+
 						batchVertices.emplace_back
 						(
 							newPositions.at(i),
+							//orange * Util::rgbToHue(colour),
 							orange,
 							mesh.textureCoordinates.at(i)
 						);

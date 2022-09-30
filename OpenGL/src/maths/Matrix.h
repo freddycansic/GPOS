@@ -152,21 +152,21 @@ public:
 		if constexpr (rows == 1) return m_Data[0][0];
 		if constexpr (rows == 2) return m_Data[0][0] * m_Data[1][1] - m_Data[1][0] * m_Data[0][1];
 
-		if constexpr (rows == 3)
-		{
-			std::array<T, 8> f1 = { m_Data[1][1], m_Data[1][2], m_Data[1][0], m_Data[1][2], m_Data[1][0], m_Data[1][1], 0, 0 };
-			std::array<T, 8> f2 = { m_Data[2][1], m_Data[2][0], m_Data[2][2], m_Data[2][0], m_Data[2][1], m_Data[2][0], 0, 0 };
+		//if constexpr (rows == 3)
+		//{
+		//	std::array<T, 8> f1 = { m_Data[1][1], m_Data[1][2], m_Data[1][0], m_Data[1][2], m_Data[1][0], m_Data[1][1], 0, 0 };
+		//	std::array<T, 8> f2 = { m_Data[2][1], m_Data[2][0], m_Data[2][2], m_Data[2][0], m_Data[2][1], m_Data[2][0], 0, 0 };
 
-			const auto multiply1 = _mm256_load_ps(reinterpret_cast<const float*>(f1.data()));
-			const auto multiply2 = _mm256_load_ps(reinterpret_cast<const float*>(f2.data()));
+		//	const auto multiply1 = _mm256_load_ps(reinterpret_cast<const float*>(f1.data()));
+		//	const auto multiply2 = _mm256_load_ps(reinterpret_cast<const float*>(f2.data()));
 
-			const auto multiplyRes = _mm256_mul_ps(multiply1, multiply2);
+		//	const auto multiplyRes = _mm256_mul_ps(multiply1, multiply2);
 
-			// now contains answers
-			_mm256_store_ps(f1.data(), multiplyRes);
+		//	// now contains answers
+		//	_mm256_store_ps(f1.data(), multiplyRes);
 
-			return (f1[0] - f1[1]) - (f1[2] - f1[3]) + (f1[4] - f1[5]);
-		}
+		//	return (f1[0] - f1[1]) - (f1[2] - f1[3]) + (f1[4] - f1[5]);
+		//}
 
 		T result = static_cast<T>(0);
 

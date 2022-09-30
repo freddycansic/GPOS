@@ -133,3 +133,19 @@ namespace Keys
 	constexpr Key MENU            =	  {348, "Menu"};
 	constexpr Key LAST            =   MENU;
 }
+
+namespace MouseButtons
+{
+	constexpr Key MOUSE_1         =   {0, "Left Click"};
+	constexpr Key MOUSE_2         =   {1, "Right Click"};
+	constexpr Key MOUSE_3         =   {2, "Middle Click"};
+	constexpr Key MOUSE_4         =   {3, "Mouse 4"};
+	constexpr Key MOUSE_5         =   {4, "Mouse 5"};
+	constexpr Key MOUSE_6         =   {5, "Mouse 6"};
+	constexpr Key MOUSE_7         =   {6, "Mouse 7"};
+	constexpr Key MOUSE_8         =   {7, "Mouse 8"};
+	constexpr Key LAST			  =   MOUSE_8;
+	constexpr Key LEFT      =   MOUSE_1;
+	constexpr Key RIGHT     =   MOUSE_2;
+	constexpr Key MIDDLE    =   MOUSE_3;
+}

@@ -33,22 +33,22 @@ void Application::init(char* projectDir)
 
 	Window::beginCursorCapture();
 
-	constexpr float numCubesSide = 3;
-	constexpr float numCubesSideHalf = numCubesSide / 2.0f;
+	//constexpr float numCubesSide = 3;
+	//constexpr float numCubesSideHalf = numCubesSide / 2.0f;
 
-	for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
-	{
-		for (float y = -numCubesSideHalf; y < numCubesSideHalf; ++y)
-		{
-			for (float z = -numCubesSideHalf; z < numCubesSideHalf; ++z)
-			{
-				//gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(x/10.0f, y/10.0f, z/10.0f, 1.0f));
-				gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(1, 1, 1, 1));
-			}
-		}
-	}
+	//for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
+	//{
+	//	for (float y = -numCubesSideHalf; y < numCubesSideHalf; ++y)
+	//	{
+	//		for (float z = -numCubesSideHalf; z < numCubesSideHalf; ++z)
+	//		{
+	//			//gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(1, 1, 0, 1.0f));
+	//			gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(1, 1, 1, 1));
+	//		}
+	//	}
+	//}
 
-	gameObjects.at(Maths::randint(0, gameObjects.size())).first.setSelected(true);
+	//gameObjects.at(Maths::randint(0, gameObjects.size())).first.setSelected(true);
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
@@ -96,21 +96,50 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	for (auto i = 0; i < gameObjects.size() / 2; ++i)
+	//for (auto i = 0; i < gameObjects.size() / 2; ++i)
+	//{
+	//	auto& cube = gameObjects.at(i).first;
+	//	const auto& colour = gameObjects.at(i).second;
+
+	//	cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+	//	ShapeRenderer::draw(cube, colour);
+	//} 
+
+	//for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
+	//{
+	//	auto& cube = gameObjects.at(i).first;
+	//	const auto& colour = gameObjects.at(i).second;
+
+	//	ShapeRenderer::draw(cube, colour);
+	//}
+
+	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		auto& cube = gameObjects.at(i).first;
-		const auto& colour = gameObjects.at(i).second;
+		const auto mousePos = Input::getMousePos();
 
-		cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
-		ShapeRenderer::draw(cube, colour);
-	} 
+		std::cout << mousePos << std::endl;
 
-	for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
+		// x and y in range -1 to 1
+		Vec2 NDCPos =
+		{
+			(2.0f * mousePos.x) / static_cast<float>(Window::width()) - 1.0f,
+			1.0f - (2.0f * mousePos.y) / static_cast<float>(Window::height())
+		};
+
+		auto unviewMat = (Renderer::getProjectionMatrix() * Renderer::getViewMatrix()).adjugateInverse();
+
+		auto nearPlanePoint = Vec3(Vec4(NDCPos.x, NDCPos.y, 0, 1) * unviewMat);
+
+		auto viewInv = Renderer::getViewMatrix().adjugateInverse();
+		auto rayOrigin = Vec3(viewInv[0][3], viewInv[1][3], viewInv[2][3]);
+
+		gameObjects.emplace_back(Line(rayOrigin, (rayOrigin - nearPlanePoint) * -100.0f, 0.05f), Vec4{ 1.0f, 0.5f, 0.7f, 1.0f });
+		//ShapeRenderer::draw(Line(cameraPos, cameraPos + worldRay * 10.0f, 0.05f), { 1.0f, 0.5f, 0.7f, 1.0f });
+	}
+
+	for (auto& [shape, colour] : gameObjects)
 	{
-		auto& cube = gameObjects.at(i).first;
-		const auto& colour = gameObjects.at(i).second;
-
-		ShapeRenderer::draw(cube, colour);
+		ShapeRenderer::draw(shape, colour);
 	}
 
 	drawAxes();

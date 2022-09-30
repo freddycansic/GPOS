@@ -25,12 +25,15 @@ namespace Input
 	[[nodiscard]] bool isKeyJustReleased(const Key& key);
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyJustReleased);
 
+	[[nodiscard]] bool isMouseButtonDown(const Key& button);
+
 	Keybind getFunctionKeybind(void(*function)());
 	bool isKeybindJustReleased(const Keybind& keybind);
 	void processFunctionKeybindPresses();
 
 	[[nodiscard]] float getMouseX();
 	[[nodiscard]] float getMouseY();
+	[[nodiscard]] Vec2 getMousePos();
 	[[nodiscard]] float getLastMouseOffsetX();
 	[[nodiscard]] float getLastMouseOffsetY();
 	[[nodiscard]] Vec2 getLastMouseOffset();
@@ -42,6 +45,7 @@ namespace Input
 	{
 		void GLAPIENTRY mouseCallback(GLFWwindow* window, double xpos, double ypos);
 		void GLAPIENTRY keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void GLAPIENTRY mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	}
 
 }

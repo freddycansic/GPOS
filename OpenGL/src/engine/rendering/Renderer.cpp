@@ -16,6 +16,10 @@ void Renderer::init() {
 	
 	GLAPI(glEnable(GL_DEPTH_TEST));
 
+	//GLAPI(glEnable(GL_STENCIL_TEST));
+	//GLAPI(glStencilMask(0x00));
+	//glStencilFunc(GL_EQUAL, 1, 0xFF);
+
 	s_Persp = Maths::perspective(Maths::radians(45.0f), static_cast<float>(Window::width()) / static_cast<float>(Window::height()), 1.0f, 1000.0f);
 	s_Ortho = Maths::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, -1.0f, 1.0f);
 
@@ -37,7 +41,7 @@ void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader
 
 void Renderer::clear(float r, float g, float b)
 {
-	GLAPI(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	GLAPI(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 	GLAPI(glClearColor(r, g, b, 1.0f));
 }
 
@@ -47,6 +51,16 @@ void Renderer::setProjectionMatrix(const Mat4x4& mat) {
 
 void Renderer::setViewMatrix(const Mat4x4& mat) {
 	s_View = mat;
+}
+
+Mat4x4 Renderer::getProjectionMatrix()
+{
+	return s_Proj;
+}
+
+Mat4x4 Renderer::getViewMatrix()
+{
+	return s_View;
 }
 
 void Renderer::setRenderMode(RenderMode renderMode)

@@ -18,8 +18,9 @@ struct Vec2 {
 struct Vec4; // forward delaration for vec3 conversion
 
 struct Vec3 {
-	union { float x, y, z; };
-	union { float r, g, b; };
+	union { float x = 0.0f, r; };
+	union { float y = 0.0f, g; };
+	union { float z = 0.0f, b; };
 
 	Vec3() = default;
 	Vec3(float x, float y, float z);
@@ -45,8 +46,10 @@ struct Vec3 {
 };
 
 struct Vec4 {
-	union { float x, y, z, w; };
-	union { float r, g, b, a; };
+	union { float x = 0.0f, r; };
+	union { float y = 0.0f, g; };
+	union { float z = 0.0f, b; };
+	union { float w = 0.0f, a; };
 
 	Vec4() = default;
 	Vec4(float x, float y, float z, float w);
@@ -55,13 +58,7 @@ struct Vec4 {
 	explicit Vec4(const Vec3& vec3);
 
 	Vec4 operator*(const Mat4x4& mat) const;
-
-	// TODO move this somewhere else
-	[[nodiscard]] Vec4 mixColour(const Vec4& other)
-	{
-		static constexpr float f = 0.8f; // factor
-		return { r * f + other.r * f, g * f + other.g * f, b * f + other.b * f, a * f + other.a * f };
-	}
+	Vec4 operator*(float multiplier) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Vec4& vector);

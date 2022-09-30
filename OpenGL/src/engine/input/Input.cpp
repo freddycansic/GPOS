@@ -56,6 +56,7 @@ namespace Input
 
 	float getMouseX() { return xPos; }
 	float getMouseY() { return yPos; }
+	Vec2 getMousePos() { return { xPos, yPos }; }
 	float getLastMouseOffsetX() { return xOffset; }
 	float getLastMouseOffsetY() { return yOffset; }
 	Vec2 getLastMouseOffset() { return { xOffset, yOffset }; }
@@ -63,7 +64,18 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	int keyStates[Keys::LAST.keyCode];
+	int mouseButtonStates[MouseButtons::LAST.keyCode + 1];
+	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+	{
+		mouseButtonStates[button] = action;
+	}
+
+	bool isMouseButtonDown(const Key& button)
+	{
+		return mouseButtonStates[button.keyCode] == GLFW_PRESS;
+	}
+
+	int keyStates[Keys::LAST.keyCode + 1];
 	constexpr int JUST_RELEASED = 3;
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

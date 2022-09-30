@@ -73,10 +73,12 @@ namespace Window
 		// need to move this
 		GLAPI(glEnable(GL_DEBUG_OUTPUT));
 		GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
+
 		//GLAPI(glEnable(GL_DEPTH_TEST));
 		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, 0));
 		GLAPI(glfwSetCursorPosCallback(Window::GLFWWindow(), Input::Callbacks::mouseCallback));
 		GLAPI(glfwSetKeyCallback(Window::GLFWWindow(), Input::Callbacks::keyCallback));
+		GLAPI(glfwSetMouseButtonCallback(Window::GLFWWindow(), Input::Callbacks::mouseButtonCallback));
 
 		// turn off notifications
 		GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));
@@ -102,19 +104,6 @@ namespace Window
 	bool closeCalled() { return wasCloseCalled; }
 	void close() { wasCloseCalled = true; }
 	//
-
-
-	bool userCalledClose = false;
-	bool closeCalled()
-	{
-		return userCalledClose;
-	}
-
-	void close()
-	{
-		userCalledClose = true;
-	}
-
 
 	bool m_Capturing = true;
 

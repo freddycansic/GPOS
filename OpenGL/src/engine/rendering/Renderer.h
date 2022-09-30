@@ -28,6 +28,9 @@ public:
 	static void setProjectionMatrix(const Mat4x4& mat);
 	static void setViewMatrix(const Mat4x4& mat);
 
+	static Mat4x4 getProjectionMatrix();
+	static Mat4x4 getViewMatrix();
+
 	static void setRenderMode(RenderMode renderMode);
 };
 

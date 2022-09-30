@@ -5,6 +5,7 @@
 #include "engine/rendering/Material.h"
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Cube.h"
+#include "engine/rendering/shapes/Line.h"
 
 #include "maths/Transform.h"
 
@@ -13,7 +14,7 @@ class Application
 private:
 	Texture tex1, tex2;
 
-	std::vector<std::pair<Cube, Vec4>> gameObjects;
+	std::vector<std::pair<Line, Vec4>> gameObjects;
 
 	char* openedProject = nullptr;
 
