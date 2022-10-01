@@ -1,9 +1,9 @@
 #pragma once
 
-class Shape;
+class Object;
 
 namespace Scene
 {
-	void addShape(const Shape& shape);
+	void addShape(const Object& object);
 	void render();
 }

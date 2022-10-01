@@ -13,18 +13,18 @@
 #include "engine/rendering/opengl/VertexArray.h"
 #include "engine/rendering/opengl/Shader.h"
 #include "engine/rendering/opengl/Texture.h"
-#include "engine/rendering/shapes/Shape.h"
+#include "engine/rendering/objects/Object.h"
 #include "engine/input/Files.h"
 
-struct ShapeData
+struct ObjectData
 {
-	Shape* shape;
+	Object* object;
 	Vec4 colour;
 };
 
 struct BatchData
 {
-	std::vector<ShapeData> shapesData;
+	std::vector<ObjectData> objectsData;
 	size_t indicesCount = 0;
 	size_t verticesCount = 0;
 };
@@ -42,7 +42,7 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 State state = State::UNINITIALISED;
 
 using Batches = std::map<size_t, BatchData>;
-Batches shapeBatches; // TODO make name better
+Batches objectBatches; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
@@ -50,10 +50,10 @@ std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
-void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_t handle);
+void addObjectToBatches(Batches& batches, Object& object, const Vec4& colour, size_t handle);
 std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData);
 
-namespace ShapeRenderer {
+namespace ObjectRenderer {
 
 	void init()
 	{
@@ -81,23 +81,23 @@ namespace ShapeRenderer {
 	void begin()
 	{
 		if (state == State::UNINITIALISED) {
-			throw std::runtime_error("ShapeRenderer not initialised, did you call init()?");
+			throw std::runtime_error("ObjectRenderer not initialised, did you call init()?");
 		}
 
 		state = State::BEGUN;
 	}
 
-	void draw(Shape& shape, const Vec4& color)
+	void draw(Object& object, const Vec4& color)
 	{
-		addShapeToBatches(shapeBatches, shape, color, 0);
+		addObjectToBatches(objectBatches, object, color, 0);
 	}
-	void draw(Shape&& shape, const Vec4& color) { draw(shape, color); }
+	void draw(Object&& object, const Vec4& color) { draw(object, color); }
 
-	void draw(Shape& shape, const Texture& tex)
+	void draw(Object& object, const Texture& tex)
 	{
-		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
+		addObjectToBatches(objectBatches, object, { 0, 0, 0, 0 }, tex.getHandle());
 	}
-	void draw(Shape&& shape, const Texture& tex) { draw(shape, tex); }
+	void draw(Object&& object, const Texture& tex) { draw(object, tex); }
 	
 	void end() {
 		checkRendererReady(state);
@@ -106,29 +106,29 @@ namespace ShapeRenderer {
 		s_Shader->bind();
 
 		// for every batch
-		for (auto& [texHandle, batchData]: shapeBatches) {
+		for (auto& [texHandle, batchData]: objectBatches) {
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
 
-			for (auto& [shape, colour] : batchData.shapesData)
+			for (auto& [object, colour] : batchData.objectsData)
 			{
-				auto& mesh = shape->getMesh();
+				auto& mesh = object->getMesh();
 
 				// vertices
-				if (shape->moved())
+				if (object->moved())
 				{
-					shape->setPositions(mesh.recalculatePositions(shape->getTransformMatrix()));
-					shape->setMoved(false);
+					object->setPositions(mesh.recalculatePositions(object->getTransformMatrix()));
+					object->setMoved(false);
 				}
 
-				const auto& newPositions = shape->getPositions();
+				const auto& newPositions = object->getPositions();
 
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
-					if (shape->selectable() && shape->selected())
+					if (object->selectable() && object->selected())
 					{
 						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
 
@@ -163,7 +163,7 @@ namespace ShapeRenderer {
 		}
 
 		// clear buffers
-		shapeBatches.clear();
+		objectBatches.clear();
 
 		s_Vao->unbind();
 		s_Vbo->unbind();
@@ -178,25 +178,25 @@ void checkRendererReady(const State& state) {
 
 	switch (state) {
 	case State::STOPPED:
-		throw std::runtime_error("ShapeRenderer batch not begun, did you call begin()?");
+		throw std::runtime_error("ObjectRenderer batch not begun, did you call begin()?");
 
 	case State::UNINITIALISED:
-		throw std::runtime_error("ShapeRenderer not initialised, did you call init()?");
+		throw std::runtime_error("ObjectRenderer not initialised, did you call init()?");
 
 	default:
 		break;
 	}
 }
 
-void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_t handle)
+void addObjectToBatches(Batches& batches, Object& object, const Vec4& colour, size_t handle)
 {
 	checkRendererReady(state);
 
-	auto& [shapesData, indicesCount, verticesCount] = batches[handle];
+	auto& [objectsData, indicesCount, verticesCount] = batches[handle];
 
-	shapesData.emplace_back(&shape, colour);
+	objectsData.emplace_back(&object, colour);
 
-	const auto& mesh = shape.getMesh();
+	const auto& mesh = object.getMesh();
 
 	indicesCount += mesh.indices.size();
 	verticesCount += mesh.positions.size();
@@ -205,17 +205,17 @@ void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_
 std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
 {
 	static unsigned int maxIndex = 0;
-	static unsigned int lastMaxShapeIndex = 0;
+	static unsigned int lastMaxObjectIndex = 0;
 
 	std::vector<unsigned int> batchIndices;
 	batchIndices.reserve(batchData.indicesCount);
 
-	for (auto& [shape, colour] : batchData.shapesData)
+	for (auto& [object, colour] : batchData.objectsData)
 	{
-		auto& mesh = shape->getMesh();
+		auto& mesh = object->getMesh();
 
 		// indices
-		const auto currentMaxShapeIndex = mesh.getMaxInt();
+		const auto currentMaxObjectIndex = mesh.getMaxInt();
 
 		if (batchIndices.empty()) {
 			maxIndex = -1;
@@ -226,10 +226,10 @@ std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
 
 			// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
 
-			maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex : lastMaxShapeIndex + 1;
+			maxIndex += (currentMaxObjectIndex > lastMaxObjectIndex) ? currentMaxObjectIndex : lastMaxObjectIndex + 1;
 		}
 
-		lastMaxShapeIndex = currentMaxShapeIndex;
+		lastMaxObjectIndex = currentMaxObjectIndex;
 
 		for (const auto& index : mesh.indices)
 		{

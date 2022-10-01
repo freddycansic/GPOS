@@ -7,7 +7,7 @@
 struct Vec3;
 struct Vec2;
 
-class Shape
+class Object
 {
 protected:
 	Transform m_Transform;
@@ -17,7 +17,7 @@ protected:
 	bool m_Selectable = true;
 
 public:
-	virtual ~Shape() = default;
+	virtual ~Object() = default;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);

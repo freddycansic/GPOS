@@ -4,8 +4,8 @@
 
 #include "engine/rendering/Material.h"
 #include "engine/rendering/opengl/Texture.h"
-#include "engine/rendering/shapes/Cube.h"
-#include "engine/rendering/shapes/Line.h"
+#include "engine/rendering/objects/Cube.h"
+#include "engine/rendering/objects/Line.h"
 
 #include "maths/Transform.h"
 

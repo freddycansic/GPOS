@@ -8,7 +8,7 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
-#include "engine/rendering/shapes/Line.h"
+#include "engine/rendering/objects/Line.h"
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"
 #include "imgui/imgui.h"

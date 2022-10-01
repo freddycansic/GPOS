@@ -1,8 +1,7 @@
 #pragma once
 
 class Texture;
-class Shape;
-struct Object;
+class Object;
 struct Vec4;
 
 namespace ShapeRenderer
@@ -18,24 +17,12 @@ namespace ShapeRenderer
 	 * @brief Starts batch rendering.
 	**/
 	void begin();
+	
+	void draw(Object& object, const Vec4& color);
+	void draw(Object&& object, const Vec4& color);
 
-	/**
-	 * Draw a shape using a solid color.
-	 *
-	 * @param shape Shape to use.
-	 * @param color Color to use as a Vec4.
-	**/
-	void draw(Shape& shape, const Vec4& color);
-	void draw(Shape&& shape, const Vec4& color);
-
-	/**
-	 * Draw a shape using a texture.
-	 *
-	 * @param shape Shape to use.
-	 * @param tex Texture to use.
-	**/
-	void draw(Shape& shape, const Texture& tex);
-	void draw(Shape&& shape, const Texture& tex);
+	void draw(Object& object, const Texture& tex);
+	void draw(Object&& object, const Texture& tex);
 
 	/**
 	 * Ends the batch and draws to the screen.
