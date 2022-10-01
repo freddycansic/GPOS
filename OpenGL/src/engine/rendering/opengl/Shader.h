@@ -4,7 +4,6 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "maths/Mat4.h"
 #include "maths/Maths.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map);

@@ -3,7 +3,6 @@
 #include <iostream>
 #include <concepts>
 
-#include "Mat4.h"
 #include "Maths.h"
 
 struct Vec2 {

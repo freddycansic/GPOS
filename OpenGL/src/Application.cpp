@@ -10,6 +10,7 @@
 #include "engine/Window.h"
 #include "engine/rendering/shapes/Line.h"
 #include "engine/input/Keybind.h"
+#include "engine/Camera.h"
 
 void drawAxes()
 {
@@ -114,29 +115,11 @@ void Application::render()
 
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		const auto mousePos = Input::getMousePos();
-
-		// x and y in range -1 to 1
-		Vec2 NDCPos =
-		{
-			mousePos.x / static_cast<float>(Window::width()) * 2.0f - 1.0f,
-			-mousePos.y / static_cast<float>(Window::height()) * 2.0f + 1.0f
-		};
-
-		Vec4 origin = Vec4{ NDCPos.x, NDCPos.y, -1.0f, 1.0 } * (Renderer::getProjectionMatrix() * Renderer::getViewMatrix()).adjugateInverse();
-
-		origin.w = 1.0f / origin.w;
-		origin.x *= origin.w;
-		origin.y *= origin.w;
-		origin.z *= origin.w;
-
-		Line line(Vec3(origin), Vec3(origin) + cameraFront * 50.0f, 0.05f);
+		auto dir = Camera::perspRayFromScreenPos(Input::getMousePos(), cameraPos);
+		Line line(cameraPos, cameraPos + dir * 50.0f, 0.01f);
 
 		gameObjects.emplace_back(line, Vec4{ 1.0f, 0.5f, 0.7f, 1.0f });
-		//ShapeRenderer::draw(line, {1.0f, 0.5f, 0.7f, 1.0f});
 	}
-
-		//ShapeRenderer::draw(Line({ 0, 0, 0 }, cameraFront, 0.05f), { 0.4f, 0.13f, 1.0f, 1.0f });
 
 	for (auto& [shape, colour] : gameObjects)
 	{
