@@ -7,6 +7,7 @@
 #include "engine/Debug.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/Renderer.h"
+#include "engine/rendering/ShapeRenderer.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir)
 {
@@ -20,6 +21,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	);
 
 	Renderer::init();
+	ShapeRenderer::init();
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(Window::GLFWWindow(), true);
@@ -28,7 +30,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 
 	app.init(projectDir);
 
-	while (!Window::shouldClose() && !Window::closeCalled() && !Input::isKeyDown(Keys::ESCAPE))
+	while (!Window::shouldClose() && !Window::closeCalled())
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();

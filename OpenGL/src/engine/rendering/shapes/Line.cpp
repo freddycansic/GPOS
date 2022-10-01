@@ -2,7 +2,7 @@
 
 #include "maths/Maths.h"
 
-constexpr float PI_OVER_3 = static_cast<float>(Maths::PI) / 3.0f;
+constexpr auto PI_OVER_3 = Maths::PI<float> / 3.0f;
 
 Mesh Line::s_Mesh =
 {
@@ -35,10 +35,11 @@ Mesh Line::s_Mesh =
 };
 
 Line::Line(float x1, float y1, float z1, float x2, float y2, float z2, float width)
+	:m_P1(x1, y1, z1), m_P2(x2, y2, z2)
 {
+	m_Selectable = false;
+
 	m_Transform.sca = { 1, width, width };
-	m_P1 = { x1, y1, z1 };
-	m_P2 = { x2, y2, z2 };
 }
 
 Line::Line(const Vec3& p1, const Vec3& p2, float width) : Line(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, width)

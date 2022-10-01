@@ -46,6 +46,16 @@ bool Shape::selected() const
 	return m_Selected;
 }
 
+void Shape::setSelectable(bool selectable)
+{
+	m_Selectable = selectable;
+}
+
+bool Shape::selectable() const
+{
+	return m_Selectable;
+}
+
 std::vector<Vec3> Shape::getPositions() const
 {
 	return m_Positions;

@@ -10,7 +10,8 @@
 #include "engine/Window.h"
 #include "engine/rendering/shapes/Line.h"
 #include "engine/input/Keybind.h"
-#include "engine/Camera.h"
+#include "engine/viewport/Camera.h"
+#include "imgui/imgui.h"
 
 void drawAxes()
 {
@@ -26,8 +27,6 @@ void Application::init(char* projectDir)
 {
 	openedProject = projectDir;
 	std::cout << "Project " << (openedProject == nullptr ? "NO_PROJECT" : openedProject) << " loaded." << std::endl;
-
-	ShapeRenderer::init();
 
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
@@ -52,9 +51,7 @@ void Application::init(char* projectDir)
 	//gameObjects.at(Maths::randint(0, gameObjects.size())).first.setSelected(true);
 }
 
-Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
-Vec3 cameraFront = { 0.0f, 0.0f, 1.0f }; // point forward
-Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
+unsigned int numLines = 0;
 
 void Application::render()
 {
@@ -62,28 +59,9 @@ void Application::render()
 
 	if (Window::capturingCursor())
 	{
-		cameraFront = Input::getCameraDirection();
-
-		// camera position movement
-		const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? 2.0f : 1.0f);
-
-		if (Input::isKeyDown(Keys::W)) {
-			cameraPos += cameraFront * moveSpeed * Window::deltatime();
-		}
-		if (Input::isKeyDown(Keys::S)) {
-			cameraPos -= cameraFront * moveSpeed * Window::deltatime();
-		}
-		if (Input::isKeyDown(Keys::D)) {
-			cameraPos -= cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-		}
-		if (Input::isKeyDown(Keys::A)) {
-			cameraPos += cameraFront.cross(cameraUp).normalise() * moveSpeed * Window::deltatime();
-		}
+		Camera::update();
 	}
-
-	const Mat view = Maths::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	Renderer::setViewMatrix(view);
-
+	
 	if (Input::isKeyJustReleased(Keys::V))
 	{
 		Window::endCursorCapture();
@@ -93,8 +71,6 @@ void Application::render()
 	{
 		Window::beginCursorCapture();
 	}
-
-	ShapeRenderer::begin();
 
 	//for (auto i = 0; i < gameObjects.size() / 2; ++i)
 	//{
@@ -115,15 +91,19 @@ void Application::render()
 
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		auto dir = Camera::perspRayFromScreenPos(Input::getMousePos(), cameraPos);
-		Line line(cameraPos, cameraPos + dir * 50.0f, 0.01f);
+		auto dir = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
+		Line line(Camera::getPos(), Camera::getPos() + dir * 50.0f, 0.01f);
 
-		gameObjects.emplace_back(line, Vec4{ 1.0f, 0.5f, 0.7f, 1.0f });
+		numLines++;
+
+		gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
 	}
 
-	for (auto& [shape, colour] : gameObjects)
+	ShapeRenderer::begin();
+
+	for (auto& [line, colour] : gameObjects)
 	{
-		ShapeRenderer::draw(shape, colour);
+		ShapeRenderer::draw(line, colour);
 	}
 
 	drawAxes();
@@ -133,6 +113,12 @@ void Application::render()
 
 void Application::imGuiRender()
 {
+	ImGui::Image(reinterpret_cast<ImTextureID>(tex1.getID()), ImVec2(100, 100));
+	ImGui::Image(reinterpret_cast<ImTextureID>(tex2.getID()), ImVec2(100, 100));
+
+	ImGui::Text("Num lines : %i", numLines);
+	ImGui::Text("Num verts : %i", numLines*6);
+
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
 	GUI::renderToolbar();

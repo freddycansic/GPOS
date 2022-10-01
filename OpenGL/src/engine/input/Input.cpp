@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "engine/Debug.h"
 #include "engine/GUI.h"
 #include "Keys.h"
 #include "Keybind.h"
@@ -46,6 +47,7 @@ namespace Input
 		pitch -= yOffset * sens;
 
 		pitch = std::clamp(pitch, -89.0f, 89.0f);
+		yaw = std::fmod(yaw, 360.0f);
 
 		cameraDirection = Vec3(
 			cos(Maths::radians(yaw)) * cos(Maths::radians(pitch)),
@@ -107,6 +109,9 @@ namespace Input
 
 	std::unordered_map<void(*)(), Keybind> keybinds =
 	{
+#ifdef DEBUG
+		{Window::close, {Keys::ESCAPE}},
+#endif
 		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}},
 		{GUI::showNewObjectMenu, {Keys::LEFT_SHIFT, Keys::A}}
 	};

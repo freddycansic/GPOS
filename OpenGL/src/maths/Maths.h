@@ -7,9 +7,11 @@ using Mat4x4 = Mat<4, 4, float>;
 
 namespace Maths {
 
-	constexpr double PI = 3.14159265358979323846;
-	constexpr double PI_OVER_ONE_EIGHTY = PI / 180;
-	constexpr double ONE_EIGHTY_OVER_PI = 180 / PI;
+	template<typename T>
+	constexpr T PI = static_cast<T>(3.14159265358979323846);
+
+	constexpr double PI_OVER_ONE_EIGHTY = PI<double> / 180;
+	constexpr double ONE_EIGHTY_OVER_PI = 180 / PI<double>;
 
 	float radians(float degrees);
 	float degrees(float radians);

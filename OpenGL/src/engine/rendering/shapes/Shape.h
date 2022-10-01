@@ -14,6 +14,7 @@ protected:
 	std::vector<Vec3> m_Positions;
 	bool m_Moved = true;
 	bool m_Selected = false;
+	bool m_Selectable = true;
 
 public:
 	virtual ~Shape() = default;
@@ -27,6 +28,9 @@ public:
 
 	void setSelected(bool selected);
 	[[nodiscard]] bool selected() const;
+
+	void setSelectable(bool selectable);
+	[[nodiscard]] bool selectable() const;
 
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] std::vector<Vec3> getPositions() const;

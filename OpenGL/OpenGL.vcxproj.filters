@@ -37,8 +37,8 @@
     <ClCompile Include="src\engine\Util.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
-    <ClCompile Include="src\engine\rendering\shapes\Circle.cpp" />
-    <ClCompile Include="src\engine\Camera.cpp" />
+    <ClCompile Include="src\engine\viewport\Camera.cpp" />
+    <ClCompile Include="src\engine\viewport\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
@@ -80,8 +80,8 @@
     <ClInclude Include="src\engine\GUI.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
     <ClInclude Include="src\maths\Matrix.h" />
-    <ClInclude Include="src\engine\rendering\shapes\Circle.h" />
-    <ClInclude Include="src\engine\Camera.h" />
+    <ClInclude Include="src\engine\viewport\Camera.h" />
+    <ClInclude Include="src\engine\viewport\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

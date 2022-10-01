@@ -11,7 +11,7 @@
 Texture::Texture(const std::string& path)
 {
 	// flips texture upside down as opengl expects first pixel to be bottom left as apposed to top left
-	stbi_set_flip_vertically_on_load(1);
+	stbi_set_flip_vertically_on_load(0);
 	m_Buffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_ColorDepth, 4);
 	if (!m_Buffer) throw std::runtime_error("Image failed to load!");
 

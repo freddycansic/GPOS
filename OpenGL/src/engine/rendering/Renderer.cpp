@@ -1,5 +1,6 @@
 #include "Renderer.h"
 
+#include "engine/viewport/Camera.h"
 #include "engine/Debug.h"
 #include "engine/Window.h"
 
@@ -7,7 +8,6 @@
 Mat4x4 Renderer::s_Persp;
 Mat4x4 Renderer::s_Ortho;
 Mat4x4 Renderer::s_Proj;
-Mat4x4 Renderer::s_View;
 
 void Renderer::init() {
 	GLAPI(glEnable(GL_BLEND)); // enable alpha blending
@@ -25,11 +25,10 @@ void Renderer::init() {
 
 	// use persp projection by default
 	s_Proj = s_Persp;
-	s_View = Mat4x4::identity();
 }
 
 void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader) {
-	const Mat4x4 vp = s_Proj * s_View;
+	const Mat4x4 vp = s_Proj * Camera::getViewMatrix();
 
 	shader.bind();
 	shader.setUniformMat4("u_ViewProj", vp);
@@ -49,18 +48,9 @@ void Renderer::setProjectionMatrix(const Mat4x4& mat) {
 	s_Proj = mat;
 }
 
-void Renderer::setViewMatrix(const Mat4x4& mat) {
-	s_View = mat;
-}
-
 Mat4x4 Renderer::getProjectionMatrix()
 {
 	return s_Proj;
-}
-
-Mat4x4 Renderer::getViewMatrix()
-{
-	return s_View;
 }
 
 void Renderer::setRenderMode(RenderMode renderMode)

@@ -15,7 +15,6 @@
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/shapes/Shape.h"
 #include "engine/input/Files.h"
-#include "engine/Util.h"
 
 struct ShapeData
 {
@@ -92,21 +91,13 @@ namespace ShapeRenderer {
 	{
 		addShapeToBatches(shapeBatches, shape, color, 0);
 	}
-
-	void draw(Shape&& shape, const Vec4& color)
-	{
-		draw(shape, color);
-	}
+	void draw(Shape&& shape, const Vec4& color) { draw(shape, color); }
 
 	void draw(Shape& shape, const Texture& tex)
 	{
 		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
-
-	void draw(Shape&& shape, const Texture& tex)
-	{
-		draw(shape, tex);
-	}
+	void draw(Shape&& shape, const Texture& tex) { draw(shape, tex); }
 	
 	void end() {
 		checkRendererReady(state);
@@ -137,7 +128,7 @@ namespace ShapeRenderer {
 
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
-					if (shape->selected())
+					if (shape->selectable() && shape->selected())
 					{
 						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
 
@@ -210,7 +201,6 @@ void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_
 	indicesCount += mesh.indices.size();
 	verticesCount += mesh.positions.size();
 }
-
 
 std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
 {

@@ -2,6 +2,7 @@
 
 class Texture;
 class Shape;
+struct Object;
 struct Vec4;
 
 namespace ShapeRenderer

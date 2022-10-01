@@ -1,22 +1,14 @@
 #pragma once
 
-#include "maths/Vectors.h"
 #include "opengl/Texture.h"
+#include "maths/Vectors.h"
 
-class Material
+struct Material
 {
-public:
-	Material() = default;
-	Material(Texture&& texture, const Vec4& colour);
+	Material(const Texture& texture, const Vec4& colour);
+	Material(const Texture& texture);
+	Material(const Vec4& colour);
 
-	void setColour(const Vec4& colour);
-	void setTexture(Texture&& texture);
-
-	[[nodiscard]] Vec4 getColour() const;
-	[[nodiscard]] const Texture& getTexture() const;
-
-private:
-	Texture m_Texture;
-	Vec4 m_Colour;
+	Vec4 colour = {1.0f, 1.0f, 1.0f, 1.0f};
+	size_t texHandle = 0;
 };
-
