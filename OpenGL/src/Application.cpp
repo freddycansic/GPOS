@@ -52,9 +52,8 @@ void Application::init(char* projectDir)
 }
 
 Vec3 cameraPos = { 0.0f, 0.0f, 30.0f };
-Vec3 cameraFront = { 0.0f, 0.0f, -1.0f }; // point forward
+Vec3 cameraFront = { 0.0f, 0.0f, 1.0f }; // point forward
 Vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
-Vec3 cameraOrbit, cameraTarget;
 
 void Application::render()
 {
@@ -117,25 +116,27 @@ void Application::render()
 	{
 		const auto mousePos = Input::getMousePos();
 
-		std::cout << mousePos << std::endl;
-
 		// x and y in range -1 to 1
 		Vec2 NDCPos =
 		{
-			(2.0f * mousePos.x) / static_cast<float>(Window::width()) - 1.0f,
-			1.0f - (2.0f * mousePos.y) / static_cast<float>(Window::height())
+			mousePos.x / static_cast<float>(Window::width()) * 2.0f - 1.0f,
+			-mousePos.y / static_cast<float>(Window::height()) * 2.0f + 1.0f
 		};
 
-		auto unviewMat = (Renderer::getProjectionMatrix() * Renderer::getViewMatrix()).adjugateInverse();
+		Vec4 origin = Vec4{ NDCPos.x, NDCPos.y, -1.0f, 1.0 } * (Renderer::getProjectionMatrix() * Renderer::getViewMatrix()).adjugateInverse();
 
-		auto nearPlanePoint = Vec3(Vec4(NDCPos.x, NDCPos.y, 0, 1) * unviewMat);
+		origin.w = 1.0f / origin.w;
+		origin.x *= origin.w;
+		origin.y *= origin.w;
+		origin.z *= origin.w;
 
-		auto viewInv = Renderer::getViewMatrix().adjugateInverse();
-		auto rayOrigin = Vec3(viewInv[0][3], viewInv[1][3], viewInv[2][3]);
+		Line line(Vec3(origin), Vec3(origin) + cameraFront * 50.0f, 0.05f);
 
-		gameObjects.emplace_back(Line(rayOrigin, (rayOrigin - nearPlanePoint) * -100.0f, 0.05f), Vec4{ 1.0f, 0.5f, 0.7f, 1.0f });
-		//ShapeRenderer::draw(Line(cameraPos, cameraPos + worldRay * 10.0f, 0.05f), { 1.0f, 0.5f, 0.7f, 1.0f });
+		gameObjects.emplace_back(line, Vec4{ 1.0f, 0.5f, 0.7f, 1.0f });
+		//ShapeRenderer::draw(line, {1.0f, 0.5f, 0.7f, 1.0f});
 	}
+
+		//ShapeRenderer::draw(Line({ 0, 0, 0 }, cameraFront, 0.05f), { 0.4f, 0.13f, 1.0f, 1.0f });
 
 	for (auto& [shape, colour] : gameObjects)
 	{
