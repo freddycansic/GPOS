@@ -204,8 +204,8 @@ void addObjectToBatches(Batches& batches, Object& object, const Vec4& colour, si
 
 std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
 {
-	static unsigned int maxIndex = 0;
-	static unsigned int lastMaxObjectIndex = 0;
+	unsigned int maxIndex = 0;
+	unsigned int lastMaxObjectIndex = 0;
 
 	std::vector<unsigned int> batchIndices;
 	batchIndices.reserve(batchData.indicesCount);
@@ -218,22 +218,24 @@ std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
 		const auto currentMaxObjectIndex = mesh.getMaxInt();
 
 		if (batchIndices.empty()) {
-			maxIndex = -1;
+			maxIndex = 0;
 		}
 		else {
 			// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
 			//						cM = 4, lM = 4,		cM = 5, lM = 4
 
+			// m = 4				m = 9				m = 
+
 			// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
 
-			maxIndex += (currentMaxObjectIndex > lastMaxObjectIndex) ? currentMaxObjectIndex : lastMaxObjectIndex + 1;
+			maxIndex += (currentMaxObjectIndex > lastMaxObjectIndex) ? currentMaxObjectIndex - 1 : lastMaxObjectIndex + 1;
 		}
 
 		lastMaxObjectIndex = currentMaxObjectIndex;
 
 		for (const auto& index : mesh.indices)
 		{
-			batchIndices.push_back(index + maxIndex + 1);
+			batchIndices.push_back(index + maxIndex);
 		}
 	}
 
