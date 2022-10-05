@@ -4,6 +4,7 @@
 #include "maths/Maths.h"
 #include "maths/Transform.h"
 
+class Cube;
 struct Vec3;
 struct Vec2;
 
@@ -34,6 +35,8 @@ public:
 
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] std::vector<Vec3> getPositions() const;
+
+	[[nodiscard]] Cube getAABB() const;
 
 	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
 	[[nodiscard]] virtual Mat4x4 getTransformMatrix() const;

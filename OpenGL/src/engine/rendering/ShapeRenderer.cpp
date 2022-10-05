@@ -53,7 +53,7 @@ void checkRendererReady(const State& state);
 void addObjectToBatches(Batches& batches, Object& object, const Vec4& colour, size_t handle);
 std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData);
 
-namespace ObjectRenderer {
+namespace ShapeRenderer {
 
 	void init()
 	{

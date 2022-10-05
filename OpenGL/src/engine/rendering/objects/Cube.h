@@ -6,7 +6,7 @@ class Cube : public Object
 {
 private:
 	static Mesh s_Mesh;
-	float m_Size = 0.0f;
+	float m_Size = 1.0f;
 
 public:
 	Cube(float x, float y, float z, float size);

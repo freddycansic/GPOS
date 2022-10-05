@@ -53,6 +53,40 @@ void Application::init(char* projectDir)
 
 unsigned int numLines = 0;
 
+Cube c1(0, 0, 0, 1.0f);
+
+//Cube getAABB(const Object& obj)
+//{
+//	float minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
+//	Vec3 avg;
+//
+//	for (const auto& pos : obj.getPositions())
+//	{
+//		minX = pos.x < minX ? pos.x : minX;
+//		minY = pos.y < minY ? pos.y : minY;
+//		minZ = pos.z < minZ ? pos.z : minZ;
+//		maxX = pos.x > maxX ? pos.x : maxX;
+//		maxY = pos.y > maxY ? pos.y : maxY;
+//		maxZ = pos.z > maxZ ? pos.z : maxZ;
+//
+//		avg.x += pos.x;
+//		avg.y += pos.y;
+//		avg.z += pos.z;
+//	}
+//
+//	const auto numPositions = static_cast<float>(obj.getPositions().size());
+//
+//	avg.x /= numPositions;
+//	avg.y /= numPositions;
+//	avg.z /= numPositions;
+//
+//	Cube AABB(avg, 1.0f);
+//	AABB.setScale(maxX - minX, maxY - minY, maxZ - minZ);
+//
+//	return AABB;
+//}
+
+
 void Application::render()
 {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
@@ -106,6 +140,12 @@ void Application::render()
 		ShapeRenderer::draw(line, colour);
 	}
 
+	c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+	ShapeRenderer::draw(c1, { 1, 1, 0, 1 });
+
+	//ShapeRenderer::draw(getAABB(c1), { 1.0f, 0, 0, 0.2f });
+	ShapeRenderer::draw(c1.getAABB(), { 1.0f, 0, 0, 0.2f });
+	
 	drawAxes();
 
 	ShapeRenderer::end();
@@ -115,9 +155,6 @@ void Application::imGuiRender()
 {
 	ImGui::Image(reinterpret_cast<ImTextureID>(tex1.getID()), ImVec2(100, 100));
 	ImGui::Image(reinterpret_cast<ImTextureID>(tex2.getID()), ImVec2(100, 100));
-
-	ImGui::Text("Num lines : %i", numLines);
-	ImGui::Text("Num verts : %i", numLines*6);
 
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
