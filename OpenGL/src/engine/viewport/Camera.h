@@ -1,10 +1,13 @@
 #pragma once
+
 #include "maths/Maths.h"
+#include "maths/Vectors.h"
 
-struct Vec3;
-struct Vec2;
-
-//class Mat4x4;
+struct Ray
+{
+	Vec3 origin;
+	Vec3 direction;
+};
 
 namespace Camera
 {
@@ -14,7 +17,7 @@ namespace Camera
 		ORBIT
 	};
 
-	Vec3 perspRayFromCameraScreenPos(const Vec2& screenCoord);
+	Ray perspRayFromCameraScreenPos(const Vec2& screenCoord);
 
 	void update();
 	void setMode(CameraMode mode);

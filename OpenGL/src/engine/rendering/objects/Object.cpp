@@ -2,6 +2,7 @@
 
 #include "maths/Matrix.h"
 #include "Cube.h"
+#include "engine/viewport/Camera.h"
 
 void Object::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { xScale, yScale, zScale };
@@ -58,7 +59,7 @@ Cube Object::getAABB() const
 	return AABB;
 }
 
-bool Object::isRayIntersecting(const Vec3& rayOrigin, const Vec3& rayDirection) const
+bool Object::isRayIntersecting(const Ray& ray) const
 {
 	const auto& mesh = this->getMesh();
 
@@ -79,15 +80,15 @@ bool Object::isRayIntersecting(const Vec3& rayOrigin, const Vec3& rayDirection) 
 
 		const auto d = -planeNormal.dot(v1); // distance from origin to plane
 
-		const auto planeNormalDotRayDirection = planeNormal.dot(rayDirection);
+		const auto planeNormalDotRayDirection = planeNormal.dot(ray.direction);
 
 		if (planeNormalDotRayDirection == 0) continue; // ray and triangle are parallel
 
-		const auto rayOriginToIntersectionDist = -(planeNormal.dot(rayOrigin) + d) / planeNormalDotRayDirection;
+		const auto rayOriginToIntersectionDist = -(planeNormal.dot(ray.origin) + d) / planeNormalDotRayDirection;
 
 		if (rayOriginToIntersectionDist < 0) continue; // ray direction is going away from the triangle
 
-		const auto intersection = rayOrigin + rayDirection * rayOriginToIntersectionDist;
+		const auto intersection = ray.origin + ray.direction * rayOriginToIntersectionDist;
 
 		const auto edge1 = v2 - v1;
 		const auto edge2 = v3 - v2;
@@ -104,7 +105,6 @@ bool Object::isRayIntersecting(const Vec3& rayOrigin, const Vec3& rayDirection) 
 
 	return false;
 }
-
 
 void Object::setMoved(bool moved)
 {
@@ -140,7 +140,6 @@ std::vector<Vec3> Object::getPositions() const
 {
 	return m_Positions;
 }
-
 
 void Object::setPositions(const std::vector<Vec3>& positions)
 {

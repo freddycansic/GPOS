@@ -7,6 +7,7 @@
 class Cube;
 struct Vec3;
 struct Vec2;
+struct Ray;
 
 class Object
 {
@@ -26,7 +27,7 @@ public:
 
 	[[nodiscard]] Cube getAABB() const;
 
-	[[nodiscard]] bool isRayIntersecting(const Vec3& rayOrigin, const Vec3& rayDirection) const;
+	[[nodiscard]] bool isRayIntersecting(const Ray& ray) const;
 
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;
