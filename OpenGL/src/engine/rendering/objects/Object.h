@@ -24,6 +24,10 @@ public:
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
 	virtual void setTranslation(float xTranslate, float yTranslate, float zTranslate);
 
+	[[nodiscard]] Cube getAABB() const;
+
+	[[nodiscard]] bool isRayIntersecting(const Vec3& rayOrigin, const Vec3& rayDirection) const;
+
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;
 
@@ -36,7 +40,6 @@ public:
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] std::vector<Vec3> getPositions() const;
 
-	[[nodiscard]] Cube getAABB() const;
 
 	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
 	[[nodiscard]] virtual Mat4x4 getTransformMatrix() const;

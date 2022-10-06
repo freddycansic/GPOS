@@ -33,7 +33,7 @@ struct Vec3 {
 	void operator-=(const Vec3& other);
 
 	template <typename T> requires std::convertible_to<T, float>
-	constexpr Vec3 operator*(const T& scalar) {
+	Vec3 operator*(T scalar) const {
 		return { x * scalar, y * scalar, z * scalar };
 	}
 

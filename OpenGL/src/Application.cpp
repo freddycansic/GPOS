@@ -91,30 +91,42 @@ void Application::render()
 	//	ShapeRenderer::draw(cube, colour);
 	//}
 
+	ShapeRenderer::begin();
+
+	c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+	ShapeRenderer::draw(c1, { 1, 1, 1, 1 });
+	
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		auto dir = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
-		Line line(Camera::getPos(), Camera::getPos() + dir * 50.0f, 0.01f);
+		const auto dir = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
+		//Line line(Camera::getPos(), Camera::getPos() + dir * 50.0f, 0.01f);
 
 		numLines++;
 
-		gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
+		//gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
+
+		if (c1.getAABB().isRayIntersecting(Camera::getPos(), dir))
+		{
+			std::cout << "INTERSECTING AABB" << std::endl;
+			if (c1.isRayIntersecting(Camera::getPos(), dir))
+			{
+				std::cout << "INTERSECTING CUBE" << std::endl;
+				c1.setSelected(true);
+			}
+		} else
+		{
+			c1.setSelected(false);
+		}
+
 	}
 
-	ShapeRenderer::begin();
-
-	drawAxes();
 
 	for (auto& [line, colour] : gameObjects)
 	{
 		ShapeRenderer::draw(line, colour);
 	}
-	ShapeRenderer::draw(c1, { 1, 1, 0, 1 });
-	//c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
 
-	//ShapeRenderer::draw(c1.getAABB(), { 1.0f, 0, 0, 0.2f });
-	
-
+	drawAxes();
 	ShapeRenderer::end();
 }
 

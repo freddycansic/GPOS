@@ -58,6 +58,53 @@ Cube Object::getAABB() const
 	return AABB;
 }
 
+bool Object::isRayIntersecting(const Vec3& rayOrigin, const Vec3& rayDirection) const
+{
+	const auto& mesh = this->getMesh();
+
+	for (size_t i = 0; i < mesh.indices.size(); i+=3)
+	{
+		const auto& i1 = mesh.indices.at(i);
+		const auto& i2 = mesh.indices.at(i + 1);
+		const auto& i3 = mesh.indices.at(i + 2);
+
+		const auto& v1 = mesh.positions.at(i1);
+		const auto& v2 = mesh.positions.at(i2);
+		const auto& v3 = mesh.positions.at(i3);
+
+		const auto v2MinusV1 = v2 - v1;
+		const auto v3MinusV1 = v3 - v1;
+
+		const auto planeNormal = v2MinusV1.cross(v3MinusV1);
+
+		const auto d = -planeNormal.dot(v1); // distance from origin to plane
+
+		const auto planeNormalDotRayDirection = planeNormal.dot(rayDirection);
+
+		if (planeNormalDotRayDirection == 0) continue; // ray and triangle are parallel
+
+		const auto rayOriginToIntersectionDist = -(planeNormal.dot(rayOrigin) + d) / planeNormalDotRayDirection;
+
+		if (rayOriginToIntersectionDist < 0) continue; // ray direction is going away from the triangle
+
+		const auto intersection = rayOrigin + rayDirection * rayOriginToIntersectionDist;
+
+		const auto edge1 = v2 - v1;
+		const auto edge2 = v3 - v2;
+		const auto edge3 = v1 - v3;
+
+		const auto c1 = intersection - v1;
+		const auto c2 = intersection - v2;
+		const auto c3 = intersection - v3;
+
+		if (planeNormal.dot(edge1.cross(c1)) > 0 &&
+			planeNormal.dot(edge2.cross(c2)) > 0 &&
+			planeNormal.dot(edge3.cross(c3)) > 0) return true;
+	}
+
+	return false;
+}
+
 
 void Object::setMoved(bool moved)
 {
