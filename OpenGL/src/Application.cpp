@@ -93,9 +93,9 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	c1.setRotation(50, 50, 0);
+	c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
 	ShapeRenderer::draw(c1, { 1, 1, 1, 1 });
-	ShapeRenderer::draw(c1.getAABB(), { 1, 0, 0, 0.1f });
+	//ShapeRenderer::draw(c1.getAABB(), { 1, 0, 0, 0.1f });
 
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
@@ -104,7 +104,7 @@ void Application::render()
 
 		numLines++;
 
-		gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
+		//gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
 
 		if (c1.getAABB().isRayIntersecting(mousePosRay))
 		{

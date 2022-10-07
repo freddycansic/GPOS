@@ -185,30 +185,6 @@ public:
 		return result;
 	}
 
-	[[nodiscard]] T determinantOld() const
-	{
-		static_assert(rows == columns, "Can only compute determinant of square matrix!");
-
-		if constexpr (rows == 1) return m_Data[0][0];
-		if constexpr (rows == 2) return m_Data[0][0] * m_Data[1][1] - m_Data[1][0] * m_Data[0][1];
-
-		T result = static_cast<T>(0);
-
-		// for each column make a minor
-		for (size_t col = 0; col < columns; ++col)
-		{
-			if constexpr (rows > 1) // TODO should compile without this because of the guard clauses at the start of func i think
-			{
-				// generate minor
-				auto minor = this->minor(0, col);
-
-				result += (col % 2 == 0 ? 1 : -1) * m_Data[0][col] * minor.determinantOld();
-			}
-		}
-
-		return result;
-	}
-
 	[[nodiscard]] Mat<rows, columns> gaussianInverse() const
 	{
 		static_assert(rows == columns, "Can only compute inverse of square matrix!");
