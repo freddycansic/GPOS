@@ -16,12 +16,7 @@ void Renderer::init() {
 	
 	GLAPI(glEnable(GL_DEPTH_TEST));
 
-	//GLAPI(glEnable(GL_STENCIL_TEST));
-	//GLAPI(glStencilMask(0x00));
-	//glStencilFunc(GL_EQUAL, 1, 0xFF);
-
-	s_Persp = Maths::perspective(Maths::radians(45.0f), static_cast<float>(Window::width()) / static_cast<float>(Window::height()), 1.0f, 1000.0f);
-	s_Ortho = Maths::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, -1.0f, 1.0f);
+	recalculateProjectionMatrices();
 
 	// use persp projection by default
 	s_Proj = s_Persp;
@@ -51,6 +46,12 @@ void Renderer::setProjectionMatrix(const Mat4x4& mat) {
 Mat4x4 Renderer::getProjectionMatrix()
 {
 	return s_Proj;
+}
+
+void Renderer::recalculateProjectionMatrices()
+{
+	s_Persp = Maths::perspective(Maths::radians(45.0f), static_cast<float>(Window::displayWidth()) / static_cast<float>(Window::displayHeight()), 1.0f, 1000.0f);
+	s_Ortho = Maths::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, -1.0f, 1.0f);
 }
 
 void Renderer::setRenderMode(RenderMode renderMode)

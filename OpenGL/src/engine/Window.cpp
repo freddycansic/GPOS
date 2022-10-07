@@ -28,7 +28,7 @@ namespace Window
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, config.resizable ? GLFW_TRUE : GLFW_FALSE);
 		// GLFW_OPENGL_CORE_PROFILE = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
 		const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -41,18 +41,11 @@ namespace Window
 			throw std::runtime_error("Window class not initialised! Did you call Window::init() first?");
 		}
 
-		// deduce window width and height
-		if (config.maxSize) {
-			m_Width = s_DisplayWidth;
-			m_Height = s_DisplayHeight;
-		}
-		else {
-			m_Width = config.width;
-			m_Height = config.height;
-		}
-
 		// init window
-		m_ID = glfwCreateWindow(m_Width, m_Height, config.title.c_str(), NULL, NULL);
+		glfwWindowHint(GLFW_MAXIMIZED, config.maximised ? GLFW_TRUE : GLFW_FALSE);
+		m_ID = glfwCreateWindow(config.width, config.height, config.title.c_str(), GLFW_FALSE, GLFW_FALSE);
+
+		glfwGetWindowSize(m_ID, &m_Width, &m_Height);
 
 		if (!m_ID) {
 			glfwTerminate();
@@ -62,7 +55,7 @@ namespace Window
 		// set opengl rendering context
 		glfwMakeContextCurrent(m_ID);
 
-		// vsync = true
+		// vsync
 		glfwSwapInterval(config.vsync);
 
 		// initialise GLEW, must be called after there is a opengl rendering context
@@ -70,24 +63,28 @@ namespace Window
 			throw std::runtime_error("GLEW initialisation failed!");
 		}
 
+		GLAPI(glViewport(0, 0, m_Width, m_Height));
+
 		// need to move this
 		GLAPI(glEnable(GL_DEBUG_OUTPUT));
 		GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
 
 		//GLAPI(glEnable(GL_DEPTH_TEST));
-		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, 0));
+		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, nullptr));
 		GLAPI(glfwSetCursorPosCallback(Window::GLFWWindow(), Input::Callbacks::mouseCallback));
 		GLAPI(glfwSetKeyCallback(Window::GLFWWindow(), Input::Callbacks::keyCallback));
 		GLAPI(glfwSetMouseButtonCallback(Window::GLFWWindow(), Input::Callbacks::mouseButtonCallback));
+		GLAPI(glfwSetFramebufferSizeCallback(Window::GLFWWindow(), Input::Callbacks::frameBufferSizeCallback));
 
 		// turn off notifications
 		GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));
 	}
 
-	float lastTime = currentTime();
 
 	void update()
 	{
+		static float lastTime = currentTime();
+
 		// calculate deltatime
 		const float current = currentTime();
 		m_Delta = current - lastTime;
@@ -127,6 +124,8 @@ namespace Window
 	int displayHeight() { return s_DisplayHeight; }
 	int displayWidth() { return s_DisplayWidth; }
 
+	void setHeight(int height) { m_Height = height; }
+	void setWidth(int width) { m_Width = width; }
 	int height() { return m_Height; }
 	int width() { return m_Width; }
 
@@ -134,7 +133,6 @@ namespace Window
 
 	void destroy()
 	{
-		// clean up resources
 		glfwDestroyWindow(m_ID);
 		glfwTerminate();
 	}

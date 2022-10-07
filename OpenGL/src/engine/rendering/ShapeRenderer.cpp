@@ -125,7 +125,7 @@ namespace ShapeRenderer {
 				}
 
 				const auto& newPositions = object->getPositions();
-
+				
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
 					if (object->selectable() && object->selected())

@@ -56,22 +56,25 @@ Cube Object::getAABB() const
 	Cube AABB(avg, 1.0f);
 	AABB.setScale(maxX - minX, maxY - minY, maxZ - minZ);
 
+	AABB.setPositions(AABB.getMesh().recalculatePositions(AABB.getTransformMatrix()));
+
 	return AABB;
 }
 
 bool Object::isRayIntersecting(const Ray& ray) const
 {
-	const auto& mesh = this->getMesh();
+	const auto& positions = this->getPositions();
+	const auto& indices = this->getMesh().indices;
 
-	for (size_t i = 0; i < mesh.indices.size(); i+=3)
+	for (size_t i = 0; i < indices.size(); i+=3)
 	{
-		const auto& i1 = mesh.indices.at(i);
-		const auto& i2 = mesh.indices.at(i + 1);
-		const auto& i3 = mesh.indices.at(i + 2);
+		const auto& i1 = indices.at(i);
+		const auto& i2 = indices.at(i + 1);
+		const auto& i3 = indices.at(i + 2);
 
-		const auto& v1 = mesh.positions.at(i1);
-		const auto& v2 = mesh.positions.at(i2);
-		const auto& v3 = mesh.positions.at(i3);
+		const auto& v1 = positions.at(i1);
+		const auto& v2 = positions.at(i2);
+		const auto& v3 = positions.at(i3);
 
 		const auto v2MinusV1 = v2 - v1;
 		const auto v3MinusV1 = v3 - v1;
@@ -136,7 +139,7 @@ bool Object::selectable() const
 	return m_Selectable;
 }
 
-std::vector<Vec3> Object::getPositions() const
+const std::vector<Vec3>& Object::getPositions() const
 {
 	return m_Positions;
 }

@@ -1,5 +1,6 @@
 #include "Line.h"
 
+#include "engine/viewport/Camera.h"
 #include "maths/Maths.h"
 
 constexpr auto PI_OVER_3 = Maths::PI<float> / 3.0f;
@@ -43,6 +44,10 @@ Line::Line(float x1, float y1, float z1, float x2, float y2, float z2, float wid
 }
 
 Line::Line(const Vec3& p1, const Vec3& p2, float width) : Line(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, width)
+{
+}
+
+Line::Line(const Ray& ray, float length, float width) : Line(ray.origin, ray.origin + ray.direction * length, width)
 {
 }
 

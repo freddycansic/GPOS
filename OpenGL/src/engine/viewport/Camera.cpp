@@ -26,8 +26,6 @@ namespace Camera
 		{
 			(2.0f * screenPos.x / w - 1.0f),
 			1.0f - 2.0f * screenPos.y / h
-			//(2 * screenPos.x - 1) * w/h,
-			//(1 - 2 * screenPos.y)
 		};
 
 		const Vec3 directionView = Vec3(Vec4(NDCPos.x, NDCPos.y, 0, 1) * Renderer::getProjectionMatrix().adjugateInverse()).normalise();

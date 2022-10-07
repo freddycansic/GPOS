@@ -93,31 +93,31 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	//c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+	c1.setRotation(50, 50, 0);
 	ShapeRenderer::draw(c1, { 1, 1, 1, 1 });
-	
+	ShapeRenderer::draw(c1.getAABB(), { 1, 0, 0, 0.1f });
+
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
 		const auto mousePosRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
-		//Line line(Camera::getPos(), Camera::getPos() + dir * 50.0f, 0.01f);
+		Line line(mousePosRay, 50.0f, 0.01f);
 
 		numLines++;
 
-		//gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
+		gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
 
 		if (c1.getAABB().isRayIntersecting(mousePosRay))
 		{
-			std::cout << "INTERSECTING AABB" << std::endl;
+			std::cout << "AABB" << std::endl;
 			if (c1.isRayIntersecting(mousePosRay))
 			{
-				std::cout << "INTERSECTING CUBE" << std::endl;
+				std::cout << "CUBE" << std::endl;
 				c1.setSelected(true);
 			}
 		} else
 		{
 			c1.setSelected(false);
 		}
-
 	}
 
 	for (auto& [line, colour] : gameObjects)

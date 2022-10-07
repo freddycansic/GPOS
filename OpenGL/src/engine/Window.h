@@ -9,9 +9,10 @@ struct WindowConfig
 	std::string title = "Hello, world!";
 	int width = 640;
 	int height = 400;
-	bool maxSize = false;
+	bool maximised = true;
 	bool fullscreen = false; // TODO make fullscreen a functionality
 	bool vsync = true;
+	bool resizable = true;
 };
 
 namespace Window
@@ -35,7 +36,8 @@ namespace Window
 	[[nodiscard]] float currentTime();
 	[[nodiscard]] float deltatime();
 
-	// getters
+	void setHeight(int height);
+	void setWidth(int width);
 	[[nodiscard]] int width();
 	[[nodiscard]] int height();
 	[[nodiscard]] int displayHeight();

@@ -4,11 +4,11 @@
 int main(int argc, char* argv[])
 {
 	ApplicationConfig config;
-	//config.window.width = 1920 * 3 / 4;
-	//config.window.height = 1080 * 3 / 4;
+	
 	config.window.title = "Hi";
-	config.window.maxSize = true;
+	config.window.maximised = true;
 	config.window.vsync = false;
+	config.window.resizable = true;
 
 	Application app;
 

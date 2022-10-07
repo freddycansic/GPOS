@@ -8,24 +8,24 @@
 #include "Keys.h"
 #include "Keybind.h"
 #include "engine/Window.h"
+#include "engine/rendering/Renderer.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
 namespace Input
 {
-	constexpr float sens = 0.2f;
-
 	// initial mouse pos = middle of the screen
-	float lastX = static_cast<float>(Window::width()) / 2.0f;
-	float lastY = static_cast<float>(Window::height()) / 2.0f;
-	bool firstMouseMove = true;
-
 	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
 	Vec3 cameraDirection;
 	float xPos, yPos;
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
+		static constexpr float sens = 0.2f;
+		static bool firstMouseMove = true;
+		static float lastX = static_cast<float>(Window::width()) / 2.0f;
+		static float lastY = static_cast<float>(Window::height()) / 2.0f;
+
 		xPos = static_cast<float>(xpos);
 		yPos = static_cast<float>(ypos);
 		
@@ -75,6 +75,14 @@ namespace Input
 	bool isMouseButtonDown(const Key& button)
 	{
 		return mouseButtonStates[button.keyCode] == GLFW_PRESS;
+	}
+
+	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
+	{
+		GLAPI(glViewport(0, 0, width, height));
+		Window::setWidth(width);
+		Window::setHeight(height);
+		Renderer::recalculateProjectionMatrices();
 	}
 
 	int keyStates[Keys::LAST.keyCode + 1];
