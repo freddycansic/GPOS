@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\rendering\object\Gizmo.cpp" />
+    <ClCompile Include="src\engine\rendering\object\Object.cpp" />
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
     <ClCompile Include="src\engine\GUI.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="src\engine\rendering\object\shapes\Shape.cpp" />
     <ClCompile Include="src\engine\rendering\object\shapes\Vertex.cpp" />
     <ClCompile Include="src\engine\Util.cpp" />
+    <ClCompile Include="src\engine\viewport\Scene.cpp" />
     <ClCompile Include="src\maths\Maths.cpp" />
     <ClCompile Include="src\maths\Transform.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
@@ -219,6 +221,7 @@
     <ClInclude Include="src\engine\Debug.h" />
     <ClInclude Include="src\engine\input\Files.h" />
     <ClInclude Include="src\engine\Util.h" />
+    <ClInclude Include="src\engine\viewport\Scene.h" />
     <ClInclude Include="src\libs\imgui\imconfig.h" />
     <ClInclude Include="src\libs\imgui\imgui.h" />
     <ClInclude Include="src\libs\imgui\imgui_impl_glfw.h" />

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "Mesh.h"
 #include "maths/Maths.h"
 #include "maths/Transform.h"
@@ -27,7 +29,7 @@ public:
 
 	[[nodiscard]] Cube getAABB() const;
 
-	[[nodiscard]] bool isRayIntersecting(const Ray& ray) const;
+	[[nodiscard]] std::optional<Vec4> isRayIntersecting(const Ray& ray) const;
 
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;

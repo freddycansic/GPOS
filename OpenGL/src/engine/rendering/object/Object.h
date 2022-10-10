@@ -7,6 +7,8 @@
 
 struct Object
 {
-	std::unique_ptr<Shape> shape = nullptr;
+	Object(std::unique_ptr<Shape>&& shapePtr, const Material& material);
+
+	std::unique_ptr<Shape> shapePtr;
 	Material material;
 };

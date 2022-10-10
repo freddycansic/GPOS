@@ -14,6 +14,7 @@
 #include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/object/shapes/Shape.h"
 #include "engine/input/Files.h"
+#include "object/Object.h"
 #include "object/shapes/Vertex.h"
 
 struct ShapeData
@@ -42,7 +43,7 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 State state = State::UNINITIALISED;
 
 using Batches = std::map<size_t, BatchData>;
-Batches ShapeBatches; // TODO make name better
+Batches shapeBatches; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
@@ -89,16 +90,21 @@ namespace ShapeRenderer {
 
 	void draw(Shape& shape, const Vec4& color)
 	{
-		addShapeToBatches(ShapeBatches, shape, color, 0);
+		addShapeToBatches(shapeBatches, shape, color, 0);
 	}
 	void draw(Shape&& shape, const Vec4& color) { draw(shape, color); }
 
 	void draw(Shape& shape, const Texture& tex)
 	{
-		addShapeToBatches(ShapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
+		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
 	}
 	void draw(Shape&& shape, const Texture& tex) { draw(shape, tex); }
-	
+
+	void draw(const Object& object)
+	{
+		addShapeToBatches(shapeBatches, *object.shapePtr, object.material.colour, object.material.texHandle);
+	}
+
 	void end() {
 		checkRendererReady(state);
 
@@ -106,7 +112,7 @@ namespace ShapeRenderer {
 		s_Shader->bind();
 
 		// for every batch
-		for (auto& [texHandle, batchData]: ShapeBatches) {
+		for (auto& [texHandle, batchData]: shapeBatches) {
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -163,7 +169,7 @@ namespace ShapeRenderer {
 		}
 
 		// clear buffers
-		ShapeBatches.clear();
+		shapeBatches.clear();
 
 		s_Vao->unbind();
 		s_Vbo->unbind();

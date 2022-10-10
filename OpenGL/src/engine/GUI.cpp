@@ -8,6 +8,10 @@
 #include "input/Input.h"
 #include "engine/input/Keybind.h"
 #include "rendering/Renderer.h"
+#include "engine/viewport/Scene.h"
+#include "rendering/object/Material.h"
+#include "rendering/object/shapes/Cube.h"
+#include "rendering/object/Object.h"
 
 void GUI::renderMenuBar()
 {
@@ -98,6 +102,8 @@ void GUI::showNewObjectMenu()
 
 void GUI::renderNewObjectMenu()
 {
+	static const Material defaultMaterial = Vec4{ 0.2f, 0.2f, 0.2f, 1 };
+
 	if (!showingNewObjectMenu) return;
 
 	ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - 1, mousePosOnShowWindow.y - 1 });
@@ -105,6 +111,7 @@ void GUI::renderNewObjectMenu()
 
 	if (ImGui::Button("Cube"))
 	{
+		Scene::addObject(Object(std::make_unique<Cube>(0, 0, 0, 1), defaultMaterial));
 		showingNewObjectMenu = false;
 	}
 

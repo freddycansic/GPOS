@@ -3,6 +3,7 @@
 class Texture;
 class Shape;
 struct Vec4;
+struct Object;
 
 namespace ShapeRenderer
 {
@@ -23,6 +24,9 @@ namespace ShapeRenderer
 
 	void draw(Shape& shape, const Texture& tex);
 	void draw(Shape&& shape, const Texture& tex);
+
+	void draw(const Object& object);
+
 
 	/**
 	 * Ends the batch and draws to the screen.

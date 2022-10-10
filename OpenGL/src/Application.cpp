@@ -4,14 +4,16 @@
 
 #include "engine/input/Files.h"
 #include "engine/input/Input.h"
-#include "engine/input/Keys.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
 #include "engine/rendering/object/shapes/Line.h"
 #include "engine/rendering/object/shapes/Cube.h"
+#include "engine/rendering/object/Object.h"
 #include "engine/input/Keybind.h"
+#include "engine/rendering/object/Material.h"
 #include "engine/viewport/Camera.h"
+#include "engine/viewport/Scene.h"
 #include "imgui/imgui.h"
 #include "maths/Vectors.h"
 
@@ -33,6 +35,12 @@ void Application::init(char* projectDir)
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
+	Material coloured = Vec4{ 1, 0, 0, 1 };
+	Material colouredTexture(tex1, {1, 0, 0, 1});
+
+	Scene::addObject(Object(std::make_unique<Cube>(0, 0, 0, 1), coloured));
+	Scene::addObject(Object(std::make_unique<Cube>(2, 0, 0, 1), colouredTexture));
+
 	Window::beginCursorCapture();
 }
 
@@ -45,8 +53,14 @@ void Application::render()
 		Camera::update();
 	}
 
+	if (Input::isMouseButtonDown(MouseButtons::LEFT))
+	{
+		for ()
+	}
+
 	ShapeRenderer::begin();
 
+	Scene::render();
 	drawAxes();
 
 	ShapeRenderer::end();

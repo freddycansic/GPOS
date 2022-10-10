@@ -1,5 +1,7 @@
 #include "Shape.h"
 
+#include <optional>
+
 #include "maths/Matrix.h"
 #include "Cube.h"
 #include "engine/viewport/Camera.h"
@@ -61,8 +63,10 @@ Cube Shape::getAABB() const
 	return AABB;
 }
 
-bool Shape::isRayIntersecting(const Ray& ray) const
+std::optional<Vec4> Shape::isRayIntersecting(const Ray& ray) const
 {
+	std::optional<Vec4> planeOfIntersection;
+
 	const auto& positions = this->getPositions();
 	const auto& indices = this->getMesh().indices;
 
@@ -101,12 +105,17 @@ bool Shape::isRayIntersecting(const Ray& ray) const
 		const auto c2 = intersection - v2;
 		const auto c3 = intersection - v3;
 
+		// TOOD return plane of intersection as optional
 		if (planeNormal.dot(edge1.cross(c1)) > 0 &&
 			planeNormal.dot(edge2.cross(c2)) > 0 &&
-			planeNormal.dot(edge3.cross(c3)) > 0) return true;
+			planeNormal.dot(edge3.cross(c3)) > 0) {
+
+			planeOfIntersection.emplace(PLANE OF INTERSECTION);
+			return planeOfIntersection;
+		}
 	}
 
-	return false;
+	return planeOfIntersection;
 }
 
 void Shape::setMoved(bool moved)

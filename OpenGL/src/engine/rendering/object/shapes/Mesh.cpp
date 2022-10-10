@@ -24,15 +24,6 @@ std::vector<Vec3> Mesh::recalculatePositions(const Mat4x4& transformMatrix) cons
 	return newPositions;
 }
 
-//std::vector<Vec3> Mesh::recalculatePositions(const Transform& transform) const
-//{
-//	auto transformMat = Maths::translate(Mat4x4::identity(), transform.tra.x, transform.tra.y, transform.tra.z);
-//	transformMat = Maths::rotate(transformMat, transform.rot.x, transform.rot.y, transform.rot.z);
-//	transformMat = Maths::scale(transformMat, transform.sca.x, transform.sca.y, transform.sca.z);
-//
-//	return recalculatePositions(transformMat);
-//}
-
 unsigned int Mesh::getMaxInt()
 {
 	if (m_MaxInt != std::numeric_limits<unsigned int>::max()) return m_MaxInt;

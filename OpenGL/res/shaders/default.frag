@@ -19,6 +19,6 @@ void main() {
 		color = v_Color;
 	}
 	else { // else do a texture
-		color = texture(sampler2D(u_TexHandle), v_TexCoord);
+		color = mix(v_Color, texture(sampler2D(u_TexHandle), v_TexCoord), 0.5);
 	}
 };
