@@ -9,7 +9,7 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 
-ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir)
+ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
 {
 	Window::init(config.window);
 	
@@ -28,7 +28,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
 
-	app.init(projectDir);
+	app.init(config.projectDir);
 
 	while (!Window::shouldClose() && !Window::closeCalled())
 	{

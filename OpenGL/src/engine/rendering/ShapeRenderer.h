@@ -1,7 +1,7 @@
 #pragma once
 
 class Texture;
-class Object;
+class Shape;
 struct Vec4;
 
 namespace ShapeRenderer
@@ -18,11 +18,11 @@ namespace ShapeRenderer
 	**/
 	void begin();
 	
-	void draw(Object& object, const Vec4& color);
-	void draw(Object&& object, const Vec4& color);
+	void draw(Shape& shape, const Vec4& color);
+	void draw(Shape&& shape, const Vec4& color);
 
-	void draw(Object& object, const Texture& tex);
-	void draw(Object&& object, const Texture& tex);
+	void draw(Shape& shape, const Texture& tex);
+	void draw(Shape&& shape, const Texture& tex);
 
 	/**
 	 * Ends the batch and draws to the screen.

@@ -8,11 +8,12 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/Window.h"
-#include "engine/rendering/objects/Line.h"
+#include "engine/rendering/object/shapes/Line.h"
+#include "engine/rendering/object/shapes/Cube.h"
 #include "engine/input/Keybind.h"
-#include "engine/rendering/Gizmo.h"
 #include "engine/viewport/Camera.h"
 #include "imgui/imgui.h"
+#include "maths/Vectors.h"
 
 void drawAxes()
 {
@@ -33,29 +34,7 @@ void Application::init(char* projectDir)
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
 	Window::beginCursorCapture();
-
-	//constexpr float numCubesSide = 3;
-	//constexpr float numCubesSideHalf = numCubesSide / 2.0f;
-
-	//for (float x = -numCubesSideHalf; x < numCubesSideHalf; ++x)
-	//{
-	//	for (float y = -numCubesSideHalf; y < numCubesSideHalf; ++y)
-	//	{
-	//		for (float z = -numCubesSideHalf; z < numCubesSideHalf; ++z)
-	//		{
-	//			//gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(1, 1, 0, 1.0f));
-	//			gameObjects.emplace_back(Cube(x, y, z, 0.5f), Vec4(1, 1, 1, 1));
-	//		}
-	//	}
-	//}
-
-	//gameObjects.at(Maths::randint(0, gameObjects.size())).first.setSelected(true);
 }
-
-unsigned int numLines = 0;
-
-Cube c1(0, 0, 0, 1.0f);
-ScaleGizmo g(0, 0, 0);
 
 void Application::render()
 {
@@ -65,77 +44,11 @@ void Application::render()
 	{
 		Camera::update();
 	}
-	
-	if (Input::isKeyJustReleased(Keys::V))
-	{
-		Window::endCursorCapture();
-	}
-
-	if (Input::isKeyJustReleased(Keys::C))
-	{
-		Window::beginCursorCapture();
-	}
-
-	//for (auto i = 0; i < gameObjects.size() / 2; ++i)
-	//{
-	//	auto& cube = gameObjects.at(i).first;
-	//	const auto& colour = gameObjects.at(i).second;
-
-	//	cube.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
-	//	ShapeRenderer::draw(cube, colour);
-	//} 
-
-	//for (auto i = gameObjects.size() / 2; i < gameObjects.size(); ++i)
-	//{
-	//	auto& cube = gameObjects.at(i).first;
-	//	const auto& colour = gameObjects.at(i).second;
-
-	//	ShapeRenderer::draw(cube, colour);
-	//}
 
 	ShapeRenderer::begin();
 
-	for (auto& [shape, colour] : g.shapes)
-	{
-		ShapeRenderer::draw(*shape, colour);
-	}
-
-	if (Input::isMouseButtonDown(MouseButtons::LEFT))
-	{
-		
-	}
-
-	//c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
-	//ShapeRenderer::draw(c1, { 1, 1, 1, 1 });
-	//ShapeRenderer::draw(c1.getAABB(), { 1, 0, 0, 0.1f });
-
-	//if (Input::isMouseButtonDown(MouseButtons::LEFT))
-	//{
-	//	const auto mousePosRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
-	//	Line line(mousePosRay, 50.0f, 0.01f);
-
-	//	numLines++;
-
-	//	//gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
-
-	//	if (c1.getAABB().isRayIntersecting(mousePosRay))
-	//	{
-	//		if (c1.isRayIntersecting(mousePosRay))
-	//		{
-	//			c1.setSelected(true);
-	//		}
-	//	} else
-	//	{
-	//		c1.setSelected(false);
-	//	}
-	//}
-
-	for (auto& [line, colour] : gameObjects)
-	{
-		ShapeRenderer::draw(line, colour);
-	}
-
 	drawAxes();
+
 	ShapeRenderer::end();
 }
 

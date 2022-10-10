@@ -1,6 +1,6 @@
 #pragma once
 
-#include "opengl/Texture.h"
+#include "engine/rendering/opengl/Texture.h"
 #include "maths/Vectors.h"
 
 struct Material

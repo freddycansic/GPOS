@@ -1,4 +1,4 @@
-#include "engine/rendering/Vertex.h"
+#include "Vertex.h"
 
 std::ostream& operator<<(std::ostream& os, const Vertex& v)
 {

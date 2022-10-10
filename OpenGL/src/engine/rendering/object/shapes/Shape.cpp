@@ -1,25 +1,25 @@
-#include "Object.h"
+#include "Shape.h"
 
 #include "maths/Matrix.h"
 #include "Cube.h"
 #include "engine/viewport/Camera.h"
 
-void Object::setScale(float xScale, float yScale, float zScale) {
+void Shape::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { xScale, yScale, zScale };
 	m_Moved = true;
 }
 
-void Object::setRotation(float xRotation, float yRotation, float zRotation) {
+void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
 	m_Transform.rot = { xRotation, yRotation, zRotation };
 	m_Moved = true;
 }
 
-void Object::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
+void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
 	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
 	m_Moved = true;
 }
 
-Mat4x4 Object::getTransformMatrix() const
+Mat4x4 Shape::getTransformMatrix() const
 {
 	//auto transform = Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
 	//transform = Maths::rotate(transform, m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
@@ -28,7 +28,7 @@ Mat4x4 Object::getTransformMatrix() const
 	return Maths::scale(Maths::rotate(Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z), m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z), m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 }
 
-Cube Object::getAABB() const
+Cube Shape::getAABB() const
 {
 	float minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
 	Vec3 avg;
@@ -61,7 +61,7 @@ Cube Object::getAABB() const
 	return AABB;
 }
 
-bool Object::isRayIntersecting(const Ray& ray) const
+bool Shape::isRayIntersecting(const Ray& ray) const
 {
 	const auto& positions = this->getPositions();
 	const auto& indices = this->getMesh().indices;
@@ -109,42 +109,42 @@ bool Object::isRayIntersecting(const Ray& ray) const
 	return false;
 }
 
-void Object::setMoved(bool moved)
+void Shape::setMoved(bool moved)
 {
 	m_Moved = moved;
 }
 
-bool Object::moved() const
+bool Shape::moved() const
 {
 	return m_Moved;
 }
 
-void Object::setSelected(bool selected)
+void Shape::setSelected(bool selected)
 {
 	m_Selected = selected;
 }
 
-bool Object::selected() const
+bool Shape::selected() const
 {
 	return m_Selected;
 }
 
-void Object::setSelectable(bool selectable)
+void Shape::setSelectable(bool selectable)
 {
 	m_Selectable = selectable;
 }
 
-bool Object::selectable() const
+bool Shape::selectable() const
 {
 	return m_Selectable;
 }
 
-const std::vector<Vec3>& Object::getPositions() const
+const std::vector<Vec3>& Shape::getPositions() const
 {
 	return m_Positions;
 }
 
-void Object::setPositions(const std::vector<Vec3>& positions)
+void Shape::setPositions(const std::vector<Vec3>& positions)
 {
 	m_Positions = positions;
 }

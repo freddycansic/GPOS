@@ -9,17 +9,10 @@ int main(int argc, char* argv[])
 	config.window.maximised = true;
 	config.window.vsync = false;
 	config.window.resizable = true;
+	config.projectDir = (argc > 1) ? argv[1] : nullptr;
 
 	Application app;
-
-	if (argc > 1)
-	{
-		ApplicationLauncher appHandler(app, config, argv[1]);
-	}
-	else
-	{
-		ApplicationLauncher appHandler(app, config);
-	}
+	ApplicationLauncher appHandler(app, config);
 
 	return 0;
 }

@@ -9,7 +9,7 @@ struct Vec3;
 struct Vec2;
 struct Ray;
 
-class Object
+class Shape
 {
 protected:
 	Transform m_Transform;
@@ -19,7 +19,7 @@ protected:
 	bool m_Selectable = true;
 
 public:
-	virtual ~Object() = default;
+	virtual ~Shape() = default;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);

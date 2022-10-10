@@ -7,10 +7,11 @@
 
 struct ApplicationConfig {
 	WindowConfig window;
+	char* projectDir;
 };
 
 class ApplicationLauncher
 {
 public:
-	ApplicationLauncher(Application& app, const ApplicationConfig& config, char* projectDir = nullptr);
+	ApplicationLauncher(Application& app, const ApplicationConfig& config);
 };

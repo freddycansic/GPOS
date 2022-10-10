@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Object.h"
+#include "Shape.h"
 
-class Cube : public Object
+class Cube : public Shape
 {
 private:
 	static Mesh s_Mesh;

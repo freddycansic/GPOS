@@ -1,8 +1,8 @@
 #pragma once
-#include "Object.h"
+#include "Shape.h"
 #include "maths/Maths.h"
 
-class Line : public Object
+class Line : public Shape
 {
 	static Mesh s_Mesh;
 	Vec3 m_P1, m_P2;

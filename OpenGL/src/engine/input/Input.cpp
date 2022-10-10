@@ -121,7 +121,11 @@ namespace Input
 		{Window::close, {Keys::ESCAPE}},
 #endif
 		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}},
-		{GUI::showNewObjectMenu, {Keys::LEFT_SHIFT, Keys::A}}
+		{GUI::showNewObjectMenu, {Keys::LEFT_SHIFT, Keys::A}},
+
+		// TODO TEMP
+		{Window::beginCursorCapture, {Keys::C}},
+		{Window::endCursorCapture, {Keys::V}},
 	};
 
 	Keybind getFunctionKeybind(void(*function)())
