@@ -39,6 +39,7 @@
     <ClCompile Include="src\engine\input\Keybind.cpp" />
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
     <ClCompile Include="src\engine\viewport\Scene.cpp" />
+    <ClCompile Include="src\engine\rendering\Gizmo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="src\maths\Matrix.h" />
     <ClInclude Include="src\engine\viewport\Camera.h" />
     <ClInclude Include="src\engine\viewport\Scene.h" />
+    <ClInclude Include="src\engine\rendering\Gizmo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

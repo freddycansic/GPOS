@@ -12,6 +12,7 @@ public:
 	Cube(float x, float y, float z, float size);
 	Cube(const Vec3& pos, float size);
 	Cube() = default;
+	~Cube() override = default;
 
 	[[nodiscard]] Mesh& getMesh() const override;
 

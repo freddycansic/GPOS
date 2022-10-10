@@ -10,6 +10,7 @@
 #include "engine/Window.h"
 #include "engine/rendering/objects/Line.h"
 #include "engine/input/Keybind.h"
+#include "engine/rendering/Gizmo.h"
 #include "engine/viewport/Camera.h"
 #include "imgui/imgui.h"
 
@@ -54,6 +55,7 @@ void Application::init(char* projectDir)
 unsigned int numLines = 0;
 
 Cube c1(0, 0, 0, 1.0f);
+ScaleGizmo g(0, 0, 0);
 
 void Application::render()
 {
@@ -93,32 +95,40 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
-	ShapeRenderer::draw(c1, { 1, 1, 1, 1 });
-	//ShapeRenderer::draw(c1.getAABB(), { 1, 0, 0, 0.1f });
+	for (auto& [shape, colour] : g.shapes)
+	{
+		ShapeRenderer::draw(*shape, colour);
+	}
 
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		const auto mousePosRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
-		Line line(mousePosRay, 50.0f, 0.01f);
-
-		numLines++;
-
-		//gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
-
-		if (c1.getAABB().isRayIntersecting(mousePosRay))
-		{
-			std::cout << "AABB" << std::endl;
-			if (c1.isRayIntersecting(mousePosRay))
-			{
-				std::cout << "CUBE" << std::endl;
-				c1.setSelected(true);
-			}
-		} else
-		{
-			c1.setSelected(false);
-		}
+		
 	}
+
+	//c1.setRotation(Window::currentTime() * 50, Window::currentTime() * 50, 0);
+	//ShapeRenderer::draw(c1, { 1, 1, 1, 1 });
+	//ShapeRenderer::draw(c1.getAABB(), { 1, 0, 0, 0.1f });
+
+	//if (Input::isMouseButtonDown(MouseButtons::LEFT))
+	//{
+	//	const auto mousePosRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
+	//	Line line(mousePosRay, 50.0f, 0.01f);
+
+	//	numLines++;
+
+	//	//gameObjects.emplace_back(line, Vec4{1.0f, 0.4f, 0.7f, 1.0f});
+
+	//	if (c1.getAABB().isRayIntersecting(mousePosRay))
+	//	{
+	//		if (c1.isRayIntersecting(mousePosRay))
+	//		{
+	//			c1.setSelected(true);
+	//		}
+	//	} else
+	//	{
+	//		c1.setSelected(false);
+	//	}
+	//}
 
 	for (auto& [line, colour] : gameObjects)
 	{
