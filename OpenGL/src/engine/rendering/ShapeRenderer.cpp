@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <future>
+#include <ranges>
 
 #include "Renderer.h"
 #include "engine/rendering/opengl/IndexBuffer.h"
@@ -17,15 +18,10 @@
 #include "object/Object.h"
 #include "object/shapes/Vertex.h"
 
-struct ShapeData
-{
-	Shape* shape;
-	Vec4 colour;
-};
-
 struct BatchData
 {
-	std::vector<ShapeData> shapesData;
+	// pointer to constant OBJECT
+	std::vector<const Object*> objects;
 	size_t indicesCount = 0;
 	size_t verticesCount = 0;
 };
@@ -43,7 +39,7 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 State state = State::UNINITIALISED;
 
 using Batches = std::map<size_t, BatchData>;
-Batches shapeBatches; // TODO make name better
+Batches objectBatches; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
@@ -51,7 +47,7 @@ std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
-void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_t handle);
+void addObjectToBatches(Batches& batches, const Object& object);
 std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData);
 
 namespace ShapeRenderer {
@@ -90,7 +86,7 @@ namespace ShapeRenderer {
 
 	void draw(const Object& object, RenderingFlag flags)
 	{
-		addShapeToBatches(shapeBatches, *object.shapePtr, object.material.colour, object.material.texHandle);
+		addObjectToBatches(objectBatches, object);
 	}
 
 	void end() {
@@ -99,8 +95,11 @@ namespace ShapeRenderer {
 		s_Vao->bind();
 		s_Shader->bind();
 
-		// for every batch
-		for (auto& [texHandle, batchData]: shapeBatches) {
+		// TODO MERGE SORT ALL OBJECTS BY TEX handle = n log n
+		// compile index buffers per batch = nb where b = num batches
+
+		// for every batch 
+		for (auto& a : objectBatches | std::ranges::views::values) {
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -182,15 +181,15 @@ void checkRendererReady(const State& state) {
 	}
 }
 
-void addShapeToBatches(Batches& batches, Shape& shape, const Vec4& colour, size_t handle)
+void addObjectToBatches(Batches& batches, const Object& object)
 {
 	checkRendererReady(state);
 
-	auto& [shapesData, indicesCount, verticesCount] = batches[handle];
+	auto& [bathObjects, indicesCount, verticesCount] = batches[object.material.texHandle];
 
-	shapesData.emplace_back(&shape, colour);
+	bathObjects.emplace_back(&object);
 
-	const auto& mesh = shape.getMesh();
+	const auto& mesh = object.shapePtr->getMesh();
 
 	indicesCount += mesh.indices.size();
 	verticesCount += mesh.positions.size();
