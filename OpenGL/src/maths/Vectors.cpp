@@ -1,10 +1,32 @@
 #include <iostream>
 
 #include "maths/Vectors.h"
+#include "engine/Util.h"
 
-Vec3::Vec3(float x, float y, float z) :
-	x(x), y(y), z(z)
+Vec2::Vec2(float x, float y)
+	: x(x), y(y)
 {
+}
+
+Vec2 Vec2::normalise() const
+{
+	const auto mag = magnitude();
+	return { x / mag, y / mag };
+}
+
+float Vec2::magnitude() const
+{
+	return Util::sqrt(x * x + y * y);
+}
+
+float Vec2::dot(Vec2 other) const
+{
+	return x * other.x + y * other.y;
+}
+
+float Vec2::angleBetween(Vec2 other) const
+{
+	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
 }
 
 Vec3::Vec3(const Vec4& vec4) :
@@ -36,7 +58,7 @@ void Vec3::operator-=(const Vec3& other) {
 
 float Vec3::magnitude() const
 {
-	return sqrt(x * x + y * y + z * z);
+	return Util::sqrt(x * x + y * y + z * z);
 }
 
 float Vec3::dot(const Vec3& other) const
@@ -58,32 +80,10 @@ float Vec3::angleBetween(const Vec3& other) const
 	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
 }
 
-
 Vec3 Vec3::normalise() const
 {
 	const auto mag = magnitude();
 	return { x / mag, y / mag, z / mag };
-}
-
-Vec2 Vec2::normalise() const
-{
-	const auto mag = magnitude();
-	return { x / mag, y / mag };
-}
-
-float Vec2::magnitude() const
-{
-	return sqrtf(x * x + y * y);
-}
-
-float Vec2::dot(const Vec2& other) const
-{
-	return x * other.x + y * other.y;
-}
-
-float Vec2::angleBetween(const Vec2& other) const
-{
-	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
 }
 
 Vec4::Vec4(float x, float y, float z, float w) :

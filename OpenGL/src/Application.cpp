@@ -1,5 +1,6 @@
 #include "Application.h"
 
+#include "engine/Colours.h"
 #include "engine/GUI.h"
 
 #include "engine/input/Files.h"
@@ -11,6 +12,7 @@
 #include "engine/rendering/object/shapes/Cube.h"
 #include "engine/rendering/object/Object.h"
 #include "engine/input/Keybind.h"
+#include "engine/rendering/gui/Gizmo.h"
 #include "engine/rendering/object/Material.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
@@ -19,12 +21,13 @@
 
 void drawAxes()
 {
-	static Line x({ -100, 0, 0 }, { 100, 0, 0 }, 0.01f);
-	static Line y({ 0, -100, 0 }, { 0, 100, 0 }, 0.01f);
-	static Line z({ 0, 0, -100 }, { 0, 0, 100 }, 0.01f);
-	ShapeRenderer::draw(x, { 1, 0, 0, 1 }); // X
-	ShapeRenderer::draw(y, { 0, 1, 0, 1 }); // Y
-	ShapeRenderer::draw(z, { 0, 0, 1, 1 }); // Z
+	static constexpr float AXES_LINE_WIDTH = 0.01f;
+	static Object x(std::make_unique<Line>(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH), Colours::RED);
+	static Object y(std::make_unique<Line>(0, -100, 0 , 0, 100, 0, AXES_LINE_WIDTH), Colours::GREEN);
+	static Object z(std::make_unique<Line>(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH), Colours::BLUE);
+	ShapeRenderer::draw(x);
+	ShapeRenderer::draw(y);
+	ShapeRenderer::draw(z);
 }
 
 void Application::init(char* projectDir)
@@ -34,12 +37,6 @@ void Application::init(char* projectDir)
 
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
-
-	Material coloured = Vec4{ 1, 0, 0, 1 };
-	Material colouredTexture(tex1, {1, 0, 0, 1});
-
-	Scene::addObject(Object(std::make_unique<Cube>(0, 0, 0, 1), coloured));
-	Scene::addObject(Object(std::make_unique<Cube>(2, 0, 0, 1), colouredTexture));
 
 	Window::beginCursorCapture();
 }
@@ -55,10 +52,16 @@ void Application::render()
 
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		for ()
+		Scene::selectClosestIntersectingObject(Camera::perspRayFromCameraScreenPos(Input::getMousePos()), Camera::getPos());
 	}
 
 	ShapeRenderer::begin();
+
+	const auto& selected = Scene::getSelected();
+	if (!selected.empty())
+	{
+		ScaleGizmo(selected.at(0)->shapePtr->getPositions().at(0)).render();
+	}
 
 	Scene::render();
 	drawAxes();

@@ -5,8 +5,12 @@ class Shape;
 struct Vec4;
 struct Object;
 
+using RenderingFlag = size_t;
+
 namespace ShapeRenderer
 {
+	constexpr RenderingFlag NO_DEPTH_TEST = 1;
+
 	/**
 	 * Initialises batch rendering, must be called once before the first begin() call.
 	 * @brief Initialises batch rendering.
@@ -19,14 +23,7 @@ namespace ShapeRenderer
 	**/
 	void begin();
 	
-	void draw(Shape& shape, const Vec4& color);
-	void draw(Shape&& shape, const Vec4& color);
-
-	void draw(Shape& shape, const Texture& tex);
-	void draw(Shape&& shape, const Texture& tex);
-
-	void draw(const Object& object);
-
+	void draw(const Object& object, RenderingFlag flags = 0);
 
 	/**
 	 * Ends the batch and draws to the screen.

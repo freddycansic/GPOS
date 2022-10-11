@@ -11,4 +11,5 @@ struct Object
 
 	std::unique_ptr<Shape> shapePtr;
 	Material material;
+	bool selected = false;
 };

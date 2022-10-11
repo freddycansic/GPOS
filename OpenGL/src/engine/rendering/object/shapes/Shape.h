@@ -17,7 +17,6 @@ protected:
 	Transform m_Transform;
 	std::vector<Vec3> m_Positions;
 	bool m_Moved = true;
-	bool m_Selected = false;
 	bool m_Selectable = true;
 
 public:
@@ -33,12 +32,6 @@ public:
 
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;
-
-	void setSelected(bool selected);
-	[[nodiscard]] bool selected() const;
-
-	void setSelectable(bool selectable);
-	[[nodiscard]] bool selectable() const;
 
 	void setPositions(const std::vector<Vec3>& positions);
 	[[nodiscard]] const std::vector<Vec3>& getPositions() const;

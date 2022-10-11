@@ -14,3 +14,8 @@ Material::Material(const Vec4& colour)
 	: colour(colour)
 {
 }
+
+Material::Material(const Vec3& colour)
+	: colour(colour, 1.0f)
+{
+}

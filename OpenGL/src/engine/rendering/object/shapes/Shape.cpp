@@ -4,6 +4,7 @@
 
 #include "maths/Matrix.h"
 #include "Cube.h"
+#include "engine/Util.h"
 #include "engine/viewport/Camera.h"
 
 void Shape::setScale(float xScale, float yScale, float zScale) {
@@ -32,35 +33,7 @@ Mat4x4 Shape::getTransformMatrix() const
 
 Cube Shape::getAABB() const
 {
-	float minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
-	Vec3 avg;
-
-	for (const auto& pos : m_Positions)
-	{
-		minX = pos.x < minX ? pos.x : minX;
-		minY = pos.y < minY ? pos.y : minY;
-		minZ = pos.z < minZ ? pos.z : minZ;
-		maxX = pos.x > maxX ? pos.x : maxX;
-		maxY = pos.y > maxY ? pos.y : maxY;
-		maxZ = pos.z > maxZ ? pos.z : maxZ;
-
-		avg.x += pos.x;
-		avg.y += pos.y;
-		avg.z += pos.z;
-	}
-
-	const auto numPositions = static_cast<float>(m_Positions.size());
-
-	avg.x /= numPositions;
-	avg.y /= numPositions;
-	avg.z /= numPositions;
-
-	Cube AABB(avg, 1.0f);
-	AABB.setScale(maxX - minX, maxY - minY, maxZ - minZ);
-
-	AABB.setPositions(AABB.getMesh().recalculatePositions(AABB.getTransformMatrix()));
-
-	return AABB;
+	return Util::getAABBFromPoints(m_Positions);
 }
 
 std::optional<Vec4> Shape::isRayIntersecting(const Ray& ray) const
@@ -110,7 +83,7 @@ std::optional<Vec4> Shape::isRayIntersecting(const Ray& ray) const
 			planeNormal.dot(edge2.cross(c2)) > 0 &&
 			planeNormal.dot(edge3.cross(c3)) > 0) {
 
-			planeOfIntersection.emplace(PLANE OF INTERSECTION);
+			planeOfIntersection.emplace(planeNormal.x, planeNormal.y, planeNormal.z, d);
 			return planeOfIntersection;
 		}
 	}
@@ -126,26 +99,6 @@ void Shape::setMoved(bool moved)
 bool Shape::moved() const
 {
 	return m_Moved;
-}
-
-void Shape::setSelected(bool selected)
-{
-	m_Selected = selected;
-}
-
-bool Shape::selected() const
-{
-	return m_Selected;
-}
-
-void Shape::setSelectable(bool selectable)
-{
-	m_Selectable = selectable;
-}
-
-bool Shape::selectable() const
-{
-	return m_Selectable;
 }
 
 const std::vector<Vec3>& Shape::getPositions() const

@@ -111,7 +111,7 @@ void GUI::renderNewObjectMenu()
 
 	if (ImGui::Button("Cube"))
 	{
-		Scene::addObject(Object(std::make_unique<Cube>(0, 0, 0, 1), defaultMaterial));
+		Scene::addObject(Object(std::make_unique<Cube>(), defaultMaterial));
 		showingNewObjectMenu = false;
 	}
 

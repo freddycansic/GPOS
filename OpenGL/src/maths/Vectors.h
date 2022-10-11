@@ -8,10 +8,13 @@
 struct Vec2 {
 	float x = 0.0f, y = 0.0f;
 
+	Vec2() = default;
+	Vec2(float x, float y);
+
 	[[nodiscard]] Vec2 normalise() const;
 	[[nodiscard]] float magnitude() const;
-	[[nodiscard]] float dot(const Vec2& other) const;
-	[[nodiscard]] float angleBetween(const Vec2& other) const;
+	[[nodiscard]] float dot(Vec2 other) const;
+	[[nodiscard]] float angleBetween(Vec2 other) const;
 };
 
 struct Vec4; // forward delaration for vec3 conversion
@@ -21,8 +24,8 @@ struct Vec3 {
 	union { float y = 0.0f, g; };
 	union { float z = 0.0f, b; };
 
-	Vec3() = default;
-	Vec3(float x, float y, float z);
+	constexpr Vec3() = default;
+	constexpr Vec3(float x, float y, float z) : x(x), y(y), z(z) {} // only works for constexpr if defined in header
 	
 	// convert vec4 to vec3
 	explicit Vec3(const Vec4& vec4);

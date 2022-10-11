@@ -88,19 +88,7 @@ namespace ShapeRenderer {
 		state = State::BEGUN;
 	}
 
-	void draw(Shape& shape, const Vec4& color)
-	{
-		addShapeToBatches(shapeBatches, shape, color, 0);
-	}
-	void draw(Shape&& shape, const Vec4& color) { draw(shape, color); }
-
-	void draw(Shape& shape, const Texture& tex)
-	{
-		addShapeToBatches(shapeBatches, shape, { 0, 0, 0, 0 }, tex.getHandle());
-	}
-	void draw(Shape&& shape, const Texture& tex) { draw(shape, tex); }
-
-	void draw(const Object& object)
+	void draw(const Object& object, RenderingFlag flags)
 	{
 		addShapeToBatches(shapeBatches, *object.shapePtr, object.material.colour, object.material.texHandle);
 	}
@@ -134,26 +122,26 @@ namespace ShapeRenderer {
 				
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
-					if (shape->selectable() && shape->selected())
-					{
-						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
+					//if (shape->selectable() && shape->selected())
+					//{
+					//	static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
 
-						batchVertices.emplace_back
-						(
-							newPositions.at(i),
-							//orange * Util::rgbToHue(colour),
-							orange,
-							mesh.textureCoordinates.at(i)
-						);
-					} else
-					{
+					//	batchVertices.emplace_back
+					//	(
+					//		newPositions.at(i),
+					//		//orange * Util::rgbToHue(colour),
+					//		orange,
+					//		mesh.textureCoordinates.at(i)
+					//	);
+					//} else
+					//{
 						batchVertices.emplace_back
 						(
 							newPositions.at(i),
 							colour,
 							mesh.textureCoordinates.at(i)
 						);
-					}
+					//}
 
 				}
 			}

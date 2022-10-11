@@ -160,7 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\rendering\object\Gizmo.cpp" />
+    <ClCompile Include="src\engine\rendering\gui\Gizmo.cpp" />
     <ClCompile Include="src\engine\rendering\object\Object.cpp" />
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
@@ -202,7 +202,8 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\rendering\object\Gizmo.h" />
+    <ClInclude Include="src\engine\Colours.h" />
+    <ClInclude Include="src\engine\rendering\gui\Gizmo.h" />
     <ClInclude Include="src\engine\rendering\object\Object.h" />
     <ClInclude Include="src\engine\viewport\Camera.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
