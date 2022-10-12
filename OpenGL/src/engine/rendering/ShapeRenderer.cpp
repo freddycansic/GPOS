@@ -168,14 +168,14 @@ namespace ShapeRenderer {
 void checkRendererReady(const State& state) {
 
 	switch (state) {
+	case State::BEGUN:
+		return;
+
 	case State::STOPPED:
 		throw std::runtime_error("ShapeRenderer batch not begun, did you call begin()?");
 
 	case State::UNINITIALISED:
 		throw std::runtime_error("ShapeRenderer not initialised, did you call init()?");
-
-	default:
-		break;
 	}
 }
 

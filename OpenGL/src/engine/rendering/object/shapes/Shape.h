@@ -28,7 +28,7 @@ public:
 
 	[[nodiscard]] Cube getAABB() const;
 
-	[[nodiscard]] std::optional<Vec4> isRayIntersecting(const Ray& ray) const;
+	[[nodiscard]] std::optional<Vec3> isRayIntersecting(const Ray& ray) const;
 
 	void setMoved(bool moved);
 	[[nodiscard]] bool moved() const;

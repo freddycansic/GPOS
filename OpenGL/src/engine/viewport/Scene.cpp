@@ -30,22 +30,22 @@ namespace Scene
 
 		for (auto& object : objects)
 		{
-			//if (!object.shapePtr->selectable()) continue; // cannot select unselectable object
-
-			static float closestDistance = std::numeric_limits<float>::max();
+			float closestDistance = std::numeric_limits<float>::max();
 
 			if (object.shapePtr->getAABB().isRayIntersecting(ray))
 			{
 				const auto rayIntersection = object.shapePtr->isRayIntersecting(ray);
 				if (rayIntersection)
 				{
-					const auto& planeOfIntersection = rayIntersection.value();
+					const auto& pointOfIntersection = rayIntersection.value();
 
-					const auto distanceFromPointToPlane = std::abs(planeOfIntersection.x * position.x + planeOfIntersection.y * position.y + planeOfIntersection.z * position.z + planeOfIntersection.w) / std::sqrt(planeOfIntersection.x * planeOfIntersection.x + planeOfIntersection.y * planeOfIntersection.y + planeOfIntersection.z * planeOfIntersection.z);
+					//const auto distanceFromPointToPlane = std::abs(planeOfIntersection.x * position.x + planeOfIntersection.y * position.y + planeOfIntersection.z * position.z + planeOfIntersection.w) / std::sqrt(planeOfIntersection.x * planeOfIntersection.x + planeOfIntersection.y * planeOfIntersection.y + planeOfIntersection.z * planeOfIntersection.z);
 
-					if (distanceFromPointToPlane < closestDistance)
+					const auto distanceFromPointToIntersection = pointOfIntersection.x * pointOfIntersection.x + pointOfIntersection.y * pointOfIntersection.y + pointOfIntersection.z * pointOfIntersection.z;
+
+					if (distanceFromPointToIntersection < closestDistance)
 					{
-						closestDistance = distanceFromPointToPlane;
+						closestDistance = distanceFromPointToIntersection;
 						closest.emplace(&object);
 					}
 				}

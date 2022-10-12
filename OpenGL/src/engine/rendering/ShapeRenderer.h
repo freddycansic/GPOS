@@ -1,4 +1,5 @@
 #pragma once
+#include "gui/Gizmo.h"
 
 class Texture;
 class Shape;

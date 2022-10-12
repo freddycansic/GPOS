@@ -17,8 +17,6 @@ const std::array<Object, 3> Gizmo::s_Lines =
 
 void Gizmo::render() const
 {
-	std::cout << "RENDERING GIZMO" << std::endl;
-
 	for (const auto& line : s_Lines)
 	{
 		ShapeRenderer::draw(line);

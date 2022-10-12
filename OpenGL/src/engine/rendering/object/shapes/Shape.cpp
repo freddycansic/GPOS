@@ -36,9 +36,9 @@ Cube Shape::getAABB() const
 	return Util::getAABBFromPoints(m_Positions);
 }
 
-std::optional<Vec4> Shape::isRayIntersecting(const Ray& ray) const
+std::optional<Vec3> Shape::isRayIntersecting(const Ray& ray) const
 {
-	std::optional<Vec4> planeOfIntersection;
+	std::optional<Vec3> pointOfIntersection;
 
 	const auto& positions = this->getPositions();
 	const auto& indices = this->getMesh().indices;
@@ -78,17 +78,16 @@ std::optional<Vec4> Shape::isRayIntersecting(const Ray& ray) const
 		const auto c2 = intersection - v2;
 		const auto c3 = intersection - v3;
 
-		// TOOD return plane of intersection as optional
 		if (planeNormal.dot(edge1.cross(c1)) > 0 &&
 			planeNormal.dot(edge2.cross(c2)) > 0 &&
 			planeNormal.dot(edge3.cross(c3)) > 0) {
 
-			planeOfIntersection.emplace(planeNormal.x, planeNormal.y, planeNormal.z, d);
-			return planeOfIntersection;
+			pointOfIntersection.emplace(intersection);
+			return pointOfIntersection;
 		}
 	}
 
-	return planeOfIntersection;
+	return pointOfIntersection;
 }
 
 void Shape::setMoved(bool moved)
