@@ -36,7 +36,7 @@ enum class State {
 constexpr static size_t MAX_VERTICES = 12000000;
 constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~421875 cubes
 
-State state = State::UNINITIALISED;
+State s_State = State::UNINITIALISED;
 
 using Batches = std::map<size_t, BatchData>;
 Batches objectBatches; // TODO make name better
@@ -48,7 +48,7 @@ std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
 void addObjectToBatches(Batches& batches, const Object& object);
-std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData);
+std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
 
 namespace ShapeRenderer {
 
@@ -72,16 +72,16 @@ namespace ShapeRenderer {
 		s_Vbo->unbind();
 		s_Ibo->unbind();
 
-		state = State::STOPPED;
+		s_State = State::STOPPED;
 	}
 
 	void begin()
 	{
-		if (state == State::UNINITIALISED) {
+		if (s_State == State::UNINITIALISED) {
 			throw std::runtime_error("ShapeRenderer not initialised, did you call init()?");
 		}
 
-		state = State::BEGUN;
+		s_State = State::BEGUN;
 	}
 
 	void draw(const Object& object, RenderingFlag flags)
@@ -90,25 +90,23 @@ namespace ShapeRenderer {
 	}
 
 	void end() {
-		checkRendererReady(state);
+		checkRendererReady(s_State);
 
 		s_Vao->bind();
 		s_Shader->bind();
 
-		// TODO MERGE SORT ALL OBJECTS BY TEX handle = n log n
-		// compile index buffers per batch = nb where b = num batches
-
 		// for every batch 
-		for (auto& a : objectBatches | std::ranges::views::values) {
+		for (auto& [handle, batchData] : objectBatches) {
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
 
-			for (auto& [shape, colour] : batchData.shapesData)
+			for (const auto& object : batchData.objects)
 			{
-				auto& mesh = shape->getMesh();
+				auto& shape = object->shapePtr;
+				auto& mesh = object->shapePtr->getMesh();
 
 				// vertices
 				if (shape->moved())
@@ -121,26 +119,26 @@ namespace ShapeRenderer {
 				
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
-					//if (shape->selectable() && shape->selected())
-					//{
-					//	static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
+					if (object->selected)
+					{
+						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
 
-					//	batchVertices.emplace_back
-					//	(
-					//		newPositions.at(i),
-					//		//orange * Util::rgbToHue(colour),
-					//		orange,
-					//		mesh.textureCoordinates.at(i)
-					//	);
-					//} else
-					//{
 						batchVertices.emplace_back
 						(
 							newPositions.at(i),
-							colour,
+							//orange * Util::rgbToHue(colour),
+							orange,
 							mesh.textureCoordinates.at(i)
 						);
-					//}
+					} else
+					{
+						batchVertices.emplace_back
+						(
+							newPositions.at(i),
+							object->material.colour,
+							mesh.textureCoordinates.at(i)
+						);
+					}
 
 				}
 			}
@@ -150,20 +148,20 @@ namespace ShapeRenderer {
 			s_Vbo->setSubData(0, sizeof(Vertex) * batchVertices.size(), batchVertices.data());
 			s_Ibo->setSubData(0, batchIndices.size(), batchIndices.data());
 
-			s_Shader->setUniform1ui64("u_TexHandle", texHandle);
+			s_Shader->setUniform1ui64("u_TexHandle", handle);
 
 			Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 		}
 
 		// clear buffers
-		shapeBatches.clear();
+		objectBatches.clear();
 
 		s_Vao->unbind();
 		s_Vbo->unbind();
 		s_Ibo->unbind();
 		s_Shader->unbind();
 
-		state = State::STOPPED;
+		s_State = State::STOPPED;
 	}
 }
 
@@ -183,7 +181,7 @@ void checkRendererReady(const State& state) {
 
 void addObjectToBatches(Batches& batches, const Object& object)
 {
-	checkRendererReady(state);
+	checkRendererReady(s_State);
 
 	auto& [bathObjects, indicesCount, verticesCount] = batches[object.material.texHandle];
 
@@ -195,7 +193,7 @@ void addObjectToBatches(Batches& batches, const Object& object)
 	verticesCount += mesh.positions.size();
 }
 
-std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
+std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 {
 	unsigned int maxIndex = 0;
 	unsigned int lastMaxShapeIndex = 0;
@@ -203,9 +201,9 @@ std::vector<unsigned int> getCompiledIndexVector(BatchData& batchData)
 	std::vector<unsigned int> batchIndices;
 	batchIndices.reserve(batchData.indicesCount);
 
-	for (auto& [shape, colour] : batchData.shapesData)
+	for (const auto& object : batchData.objects)
 	{
-		auto& mesh = shape->getMesh();
+		auto& mesh = object->shapePtr->getMesh();
 
 		// indices
 		const auto currentMaxShapeIndex = mesh.getMaxInt();

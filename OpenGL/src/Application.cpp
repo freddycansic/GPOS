@@ -52,7 +52,9 @@ void Application::render()
 
 	if (Input::isMouseButtonDown(MouseButtons::LEFT))
 	{
-		Scene::selectClosestIntersectingObject(Camera::perspRayFromCameraScreenPos(Input::getMousePos()), Camera::getPos());
+		const auto selectedObject = Scene::selectClosestIntersectingObject(Camera::perspRayFromCameraScreenPos(Input::getMousePos()), Camera::getPos());
+
+		if (!selectedObject.has_value()) Scene::clearSelection();
 	}
 
 	ShapeRenderer::begin();
