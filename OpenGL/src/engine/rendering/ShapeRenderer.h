@@ -10,7 +10,7 @@ using RenderingFlag = size_t;
 
 namespace ShapeRenderer
 {
-	constexpr RenderingFlag NO_DEPTH_TEST = 1;
+	constexpr RenderingFlag NO_DEPTH_TEST = 1 << 0;
 
 	/**
 	 * Initialises batch rendering, must be called once before the first begin() call.

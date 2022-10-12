@@ -5,18 +5,17 @@
 #include <vector>
 #include <map>
 #include <future>
-#include <ranges>
 
 #include "Renderer.h"
 #include "engine/rendering/opengl/IndexBuffer.h"
 #include "engine/rendering/opengl/VertexBuffer.h"
 #include "engine/rendering/opengl/VertexArray.h"
 #include "engine/rendering/opengl/Shader.h"
-#include "engine/rendering/opengl/Texture.h"
 #include "engine/rendering/object/shapes/Shape.h"
 #include "engine/input/Files.h"
 #include "object/Object.h"
 #include "object/shapes/Vertex.h"
+#include <engine/Debug.h>
 
 struct BatchData
 {
@@ -38,8 +37,8 @@ constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~
 
 State s_State = State::UNINITIALISED;
 
-using Batches = std::map<size_t, BatchData>;
-Batches objectBatches; // TODO make name better
+using Batches = std::map<std::pair<size_t, RenderingFlag>, BatchData>;
+Batches s_ObjectBatches; // TODO make name better
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
@@ -47,7 +46,7 @@ std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
-void addObjectToBatches(Batches& batches, const Object& object);
+void addObjectToBatches(Batches& batches, const Object& object, RenderingFlag flags);
 std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
 
 namespace ShapeRenderer {
@@ -77,7 +76,8 @@ namespace ShapeRenderer {
 
 	void begin()
 	{
-		if (s_State == State::UNINITIALISED) {
+		if (s_State == State::UNINITIALISED) 
+		{
 			throw std::runtime_error("ShapeRenderer not initialised, did you call init()?");
 		}
 
@@ -86,17 +86,21 @@ namespace ShapeRenderer {
 
 	void draw(const Object& object, RenderingFlag flags)
 	{
-		addObjectToBatches(objectBatches, object);
+		addObjectToBatches(s_ObjectBatches, object, flags);
 	}
 
-	void end() {
+	void end()
+	{
 		checkRendererReady(s_State);
 
 		s_Vao->bind();
 		s_Shader->bind();
 
 		// for every batch 
-		for (auto& [handle, batchData] : objectBatches) {
+		for (auto& [handleAndFlags, batchData] : s_ObjectBatches) {
+
+			const auto& handle = handleAndFlags.first;
+			const auto& flags = handleAndFlags.second;
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -119,27 +123,14 @@ namespace ShapeRenderer {
 				
 				for (unsigned int i = 0; i < newPositions.size(); ++i)
 				{
-					if (object->selected)
-					{
-						static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
+					static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
 
-						batchVertices.emplace_back
-						(
-							newPositions.at(i),
-							//orange * Util::rgbToHue(colour),
-							orange,
-							mesh.textureCoordinates.at(i)
-						);
-					} else
-					{
-						batchVertices.emplace_back
-						(
-							newPositions.at(i),
-							object->material.colour,
-							mesh.textureCoordinates.at(i)
-						);
-					}
-
+					batchVertices.emplace_back
+					(
+						newPositions.at(i),
+						object->selected ? orange : object->material.colour,
+						mesh.textureCoordinates.at(i)
+					);
 				}
 			}
 
@@ -150,11 +141,19 @@ namespace ShapeRenderer {
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
 
-			Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+			if (flags & NO_DEPTH_TEST)
+			{
+				GLAPI(glDisable(GL_DEPTH_TEST));
+				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+				GLAPI(glEnable(GL_DEPTH_TEST));
+			} else
+			{
+				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+			}
 		}
 
 		// clear buffers
-		objectBatches.clear();
+		s_ObjectBatches.clear();
 
 		s_Vao->unbind();
 		s_Vbo->unbind();
@@ -165,8 +164,8 @@ namespace ShapeRenderer {
 	}
 }
 
-void checkRendererReady(const State& state) {
-
+void checkRendererReady(const State& state)
+{
 	switch (state) {
 	case State::BEGUN:
 		return;
@@ -179,13 +178,13 @@ void checkRendererReady(const State& state) {
 	}
 }
 
-void addObjectToBatches(Batches& batches, const Object& object)
+void addObjectToBatches(Batches& batches, const Object& object, RenderingFlag flags)
 {
 	checkRendererReady(s_State);
 
-	auto& [bathObjects, indicesCount, verticesCount] = batches[object.material.texHandle];
+	auto& [batchObjects, indicesCount, verticesCount] = batches[std::make_pair(object.material.texHandle, flags)];
 
-	bathObjects.emplace_back(&object);
+	batchObjects.emplace_back(&object);
 
 	const auto& mesh = object.shapePtr->getMesh();
 

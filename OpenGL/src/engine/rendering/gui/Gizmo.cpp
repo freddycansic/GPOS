@@ -19,12 +19,12 @@ void Gizmo::render() const
 {
 	for (const auto& line : s_Lines)
 	{
-		ShapeRenderer::draw(line);
+		ShapeRenderer::draw(line, ShapeRenderer::NO_DEPTH_TEST);
 	}
 
 	for (const auto& handle : getHandles())
 	{
-		ShapeRenderer::draw(handle);
+		ShapeRenderer::draw(handle, ShapeRenderer::NO_DEPTH_TEST);
 	}
 }
 

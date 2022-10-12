@@ -65,11 +65,11 @@ void Application::render()
 
 	ShapeRenderer::begin();
 
-	const auto& selected = Scene::getSelected();
-	if (!selected.empty())
-	{
-		ScaleGizmo(selected.at(0)->shapePtr->getPositions().at(0)).render();
-	}
+	//const auto& selected = Scene::getSelected();
+	//if (!selected.empty())
+	//{
+	//	ScaleGizmo(selected.at(0)->shapePtr->getPositions().at(0)).render();
+	//}
 
 	Scene::render();
 	drawAxes();
