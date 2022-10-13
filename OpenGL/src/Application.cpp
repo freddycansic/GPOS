@@ -12,22 +12,20 @@
 #include "engine/rendering/object/shapes/Cube.h"
 #include "engine/rendering/object/Object.h"
 #include "engine/input/Keybind.h"
-#include "engine/rendering/gui/Gizmo.h"
 #include "engine/rendering/object/Material.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
 #include "imgui/imgui.h"
-#include "maths/Vectors.h"
 
 void drawAxes()
 {
 	static constexpr float AXES_LINE_WIDTH = 0.01f;
 	static Object x(std::make_unique<Line>(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH), Colours::RED);
-	static Object y(std::make_unique<Line>(0, -100, 0 , 0, 100, 0, AXES_LINE_WIDTH), Colours::GREEN);
 	static Object z(std::make_unique<Line>(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH), Colours::BLUE);
+	static Object centreCube(std::make_unique<Cube>(0, 0, 0, 0.05f), Colours::WHITE);
 	ShapeRenderer::draw(x);
-	ShapeRenderer::draw(y);
 	ShapeRenderer::draw(z);
+	ShapeRenderer::draw(centreCube);
 }
 
 void Application::init(char* projectDir)
@@ -50,11 +48,11 @@ void Application::render()
 		Camera::update();
 	}
 
+	Scene::handleMouseClicks();
+
 	ShapeRenderer::begin();
 	
-	Scene::handleMouseClicks();
 	Scene::render();
-
 	drawAxes();
 
 	ShapeRenderer::end();

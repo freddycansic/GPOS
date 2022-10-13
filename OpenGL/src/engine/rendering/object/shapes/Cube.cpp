@@ -38,8 +38,13 @@ Mesh Cube::s_Mesh =
 	}
 };
 
+Cube::Cube()
+	: Shape({0, 0, 0})
+{
+}
+
 Cube::Cube(float x, float y, float z, float size)
-	: m_Size(size)
+	: Shape({ x, y, z }), m_Size(size)
 {
 	m_Transform.tra = { x, y, z };
 	m_Transform.rot = { 0.0f, 0.0f, 0.0f };

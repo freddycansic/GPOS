@@ -36,7 +36,7 @@ Mesh Line::s_Mesh =
 };
 
 Line::Line(float x1, float y1, float z1, float x2, float y2, float z2, float width)
-	:m_P1(x1, y1, z1), m_P2(x2, y2, z2)
+	: Shape({x1, y1, z1}), m_P1(x1, y1, z1), m_P2(x2, y2, z2)
 {
 	m_Selectable = false;
 

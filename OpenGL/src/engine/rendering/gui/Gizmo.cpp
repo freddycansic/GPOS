@@ -19,13 +19,13 @@ void Gizmo::render(const Vec3& pos) const
 {
 	for (const auto& line : s_Lines)
 	{
-		line.shapePtr->addTranslation(pos.x, pos.y, pos.z);
+		line.shapePtr->setTranslation(pos.x, pos.y, pos.z);
 		ShapeRenderer::draw(line, ShapeRenderer::NO_DEPTH_TEST);
 	}
 
-	for (const auto& handle : getHandles())
+	for (const auto& handle : this->getHandles())
 	{
-		handle.shapePtr->addTranslation(pos.x, pos.y, pos.z);
+		handle.shapePtr->setTranslation(pos.x, pos.y, pos.z);
 		ShapeRenderer::draw(handle, ShapeRenderer::NO_DEPTH_TEST);
 	}
 }
@@ -35,9 +35,9 @@ std::optional<Vec3> Gizmo::getIntersectingHandleAxis(const Ray& ray) const
 	std::optional<Vec3> axis;
 	const auto& handles = getHandles();
 
-	if (handles.at(0).shapePtr->isRayIntersecting(ray)) axis.emplace(1, 0, 0);
-	if (handles.at(1).shapePtr->isRayIntersecting(ray)) axis.emplace(0, 1, 0);
-	if (handles.at(2).shapePtr->isRayIntersecting(ray)) axis.emplace(0, 0, 1);
+	if (handles.at(0).shapePtr->isRayIntersecting(ray)) return axis.emplace(1, 0, 0);
+	if (handles.at(1).shapePtr->isRayIntersecting(ray)) return axis.emplace(0, 1, 0);
+	if (handles.at(2).shapePtr->isRayIntersecting(ray)) return axis.emplace(0, 0, 1);
 
 	return axis;
 }

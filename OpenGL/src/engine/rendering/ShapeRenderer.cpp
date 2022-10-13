@@ -136,8 +136,8 @@ namespace ShapeRenderer {
 
 			const auto& batchIndices = batchIndicesFuture.get();
 
-			s_Vbo->setSubData(0, sizeof(Vertex) * batchVertices.size(), batchVertices.data());
-			s_Ibo->setSubData(0, batchIndices.size(), batchIndices.data());
+			s_Vbo->setData(sizeof(Vertex) * batchVertices.size(), batchVertices.data());
+			s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
 

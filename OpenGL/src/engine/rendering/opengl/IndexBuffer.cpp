@@ -16,6 +16,12 @@ void IndexBuffer::setSubData(unsigned int offset, size_t count, const void* data
 	GLAPI(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, count * sizeof(GLuint), data));
 }
 
+void IndexBuffer::setData(size_t dataSizeBytes, const void* data) const
+{
+	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
+	GLAPI(glBufferData(GL_ELEMENT_ARRAY_BUFFER, dataSizeBytes, data, GL_DYNAMIC_DRAW));
+}
+
 void IndexBuffer::bind() const {
 	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
 }

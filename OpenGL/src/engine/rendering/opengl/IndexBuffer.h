@@ -13,6 +13,7 @@ public:
 	IndexBuffer& operator=(const IndexBuffer& tex) = delete;
 
 	void setSubData(unsigned int offset, size_t count, const void* data) const;
+	void setData(size_t dataSizeBytes, const void* data) const;
 	void bind() const;
 	void unbind() const;
 

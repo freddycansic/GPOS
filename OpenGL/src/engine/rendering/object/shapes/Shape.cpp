@@ -7,6 +7,12 @@
 #include "engine/Util.h"
 #include "engine/viewport/Camera.h"
 
+Shape::Shape(const Vec3& pos)
+	: m_StartingPos(pos)
+{
+	m_Transform.tra = pos;
+}
+
 Mat4x4 Shape::getTransformMatrix() const
 {
 	//auto transform = Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
@@ -86,7 +92,7 @@ void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
 }
 
 void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
-	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
+	m_Transform.tra = { m_StartingPos.x + xTranslate, m_StartingPos.y + yTranslate, m_StartingPos.z + zTranslate };
 	m_Moved = true;
 }
 

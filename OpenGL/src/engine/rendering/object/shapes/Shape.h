@@ -19,8 +19,10 @@ protected:
 	bool m_Moved = true;
 	bool m_Selectable = true;
 	Vec3 m_AvgPos = {std::numeric_limits<float>::max(), 0, 0};
+	Vec3 m_StartingPos;
 
 public:
+	Shape(const Vec3& pos);
 	virtual ~Shape() = default;
 
 	virtual void setScale(float xScale, float yScale, float zScale);

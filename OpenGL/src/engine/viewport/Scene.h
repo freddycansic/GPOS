@@ -12,12 +12,10 @@ namespace Scene
 {
 	void addObject(Object&& object);
 
-	[[nodiscard]] const std::vector<Object*>& getSelected();
 	void clearSelection();
 	std::optional<Object*> selectClosestIntersectingObject(const Ray& ray, const Vec3& position);
-	Vec3 getCenter();
+	Vec3 getSelectionCenter();
 
 	void render();
-	void handleObjectSelection();
-	void handleGizmoSelection();
+	void handleMouseClicks();
 }
