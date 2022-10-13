@@ -34,6 +34,7 @@ struct Vec3 {
 	Vec3 operator-(const Vec3& other) const;
 	void operator+=(const Vec3& other);
 	void operator-=(const Vec3& other);
+	void operator/=(float divisor);
 
 	template <typename T> requires std::convertible_to<T, float>
 	Vec3 operator*(T scalar) const {

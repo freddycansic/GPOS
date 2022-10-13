@@ -15,6 +15,9 @@ namespace Scene
 	[[nodiscard]] const std::vector<Object*>& getSelected();
 	void clearSelection();
 	std::optional<Object*> selectClosestIntersectingObject(const Ray& ray, const Vec3& position);
+	Vec3 getCenter();
 
 	void render();
+	void handleObjectSelection();
+	void handleGizmoSelection();
 }

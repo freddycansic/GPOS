@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\rendering\object\shapes\Cone.cpp" />
     <ClCompile Include="src\engine\rendering\gui\Gizmo.cpp" />
     <ClCompile Include="src\engine\rendering\object\Object.cpp" />
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
@@ -202,6 +203,7 @@
     <ClCompile Include="src\engine\rendering\opengl\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\rendering\object\shapes\Cone.h" />
     <ClInclude Include="src\engine\Colours.h" />
     <ClInclude Include="src\engine\rendering\gui\Gizmo.h" />
     <ClInclude Include="src\engine\rendering\object\Object.h" />

@@ -77,6 +77,11 @@ namespace Input
 		return mouseButtonStates[button.keyCode] == GLFW_PRESS;
 	}
 
+	bool isMouseButtonRepeat(const Key& button)
+	{
+		return mouseButtonStates[button.keyCode] == GLFW_REPEAT;
+	}
+
 	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 	{
 		GLAPI(glViewport(0, 0, width, height));

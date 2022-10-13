@@ -56,6 +56,13 @@ void Vec3::operator-=(const Vec3& other) {
 	z -= other.z;
 }
 
+void Vec3::operator/=(float divisor)
+{
+	x /= divisor;
+	y /= divisor;
+	z /= divisor;
+}
+
 float Vec3::magnitude() const
 {
 	return Util::sqrt(x * x + y * y + z * z);

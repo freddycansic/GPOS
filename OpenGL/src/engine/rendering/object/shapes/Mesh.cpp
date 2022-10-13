@@ -5,7 +5,6 @@
 #include "maths/Maths.h"
 #include "maths/Matrix.h"
 #include "maths/Vectors.h"
-#include "maths/Transform.h"
 
 Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<unsigned int>& indices) :
 	positions(positions), textureCoordinates(texCoords), indices(indices)

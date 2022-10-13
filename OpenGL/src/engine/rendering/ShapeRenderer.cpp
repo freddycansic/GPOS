@@ -145,7 +145,7 @@ namespace ShapeRenderer {
 			{
 				GLAPI(glDisable(GL_DEPTH_TEST));
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-				GLAPI(glEnable(GL_DEPTH_TEST));
+				GLAPI(glEnable(GL_DEPTH_TEST)); // TODO reset filters smth
 			} else
 			{
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);

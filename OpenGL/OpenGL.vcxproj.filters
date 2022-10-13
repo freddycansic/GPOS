@@ -41,6 +41,7 @@
     <ClCompile Include="src\engine\rendering\gui\Gizmo.cpp" />
     <ClCompile Include="src\engine\viewport\Scene.cpp" />
     <ClCompile Include="src\engine\rendering\object\Object.cpp" />
+    <ClCompile Include="src\engine\rendering\object\shapes\Cone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="src\engine\rendering\gui\Gizmo.h" />
     <ClInclude Include="src\engine\viewport\Scene.h" />
     <ClInclude Include="src\engine\Colours.h" />
+    <ClInclude Include="src\engine\rendering\object\shapes\Cone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

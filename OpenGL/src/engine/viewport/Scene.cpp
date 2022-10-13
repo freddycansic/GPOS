@@ -1,5 +1,9 @@
 #include "Scene.h"
 
+#include <algorithm>
+
+#include "Camera.h"
+#include "engine/input/Input.h"
 #include "engine/rendering/ShapeRenderer.h"
 #include "engine/rendering/object/Object.h"
 #include "engine/rendering/object/shapes/Cube.h"
@@ -9,6 +13,11 @@ std::vector<Object*> selectedObjects;
 
 namespace Scene
 {
+	std::optional<Object*> selectClosestIntersectingObject(const Ray& ray, const Vec3& position)
+
+
+	std::unique_ptr<Gizmo> sp_Gizmo;
+
 	void addObject(Object&& object)
 	{
 		objects.push_back(std::move(object));
@@ -19,6 +28,63 @@ namespace Scene
 		for (auto& object : objects)
 		{
 			ShapeRenderer::draw(object);
+		}
+
+		if (!Scene::getSelected().empty())
+		{
+			sp_Gizmo->render(Scene::getCenter());
+		}
+	}
+
+	void handleObjectSelection()
+	{
+		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
+
+		// TODO fix gross order of precedence stuff
+		const auto mouseRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
+
+		const auto selectedObject = selectClosestIntersectingObject(mouseRay, Camera::getPos());
+
+		if (!getSelected().empty())
+		{
+			if (!selectedObject.has_value())
+			{
+				if (!Input::isKeyDown(Keys::LEFT_CONTROL))
+				{
+					clearSelection();
+				}
+			}
+
+			if (sp_Gizmo == nullptr)
+			{
+				//switch (selectedTool)
+				//{
+				//case Tool::Translate:
+				//	sp_Gizmo = std::make_unique<TranslateGizmo>();
+				//}
+
+				sp_Gizmo = std::make_unique<ScaleGizmo>();
+			}
+		}
+	}
+
+	void handleGizmoSelection()
+	{
+		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
+
+		if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
+		{
+			//std::ranges::transform(selectedObjects, 
+			//std::transform(selectedObjects.begin(), selectedObjects.end(), 
+			//	[&intersectingAxis](Object* object)
+			//	{
+			//		sp_Gizmo->getTransformation(intersectingAxis.value(), 1.1f)(*object);
+			//	});
+
+			for (const auto& object : selectedObjects)
+			{
+				sp_Gizmo->getTransformation(intersectingAxis.value(), 1.1f)(*object);
+			}
 		}
 	}
 
@@ -74,5 +140,18 @@ namespace Scene
 		}
 
 		selectedObjects.clear();
+	}
+
+	Vec3 getCenter()
+	{
+		Vec3 center;
+		for (const auto& object : objects)
+		{
+			center += object.shapePtr->getAvgPosition();
+		}
+
+		center /= objects.size();
+
+		return center;
 	}
 }

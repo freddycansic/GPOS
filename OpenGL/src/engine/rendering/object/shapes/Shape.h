@@ -18,6 +18,7 @@ protected:
 	std::vector<Vec3> m_Positions;
 	bool m_Moved = true;
 	bool m_Selectable = true;
+	Vec3 m_AvgPos = {std::numeric_limits<float>::max(), 0, 0};
 
 public:
 	virtual ~Shape() = default;
@@ -26,7 +27,12 @@ public:
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
 	virtual void setTranslation(float xTranslate, float yTranslate, float zTranslate);
 
+	virtual void addScale(float x, float y, float z);
+	virtual void addRotation(float x, float y, float z);
+	virtual void addTranslation(float x, float y, float z);
+
 	[[nodiscard]] Cube getAABB() const;
+	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass
 
 	[[nodiscard]] std::optional<Vec3> isRayIntersecting(const Ray& ray) const;
 

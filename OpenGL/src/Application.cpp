@@ -50,28 +50,11 @@ void Application::render()
 		Camera::update();
 	}
 
-	if (Input::isMouseButtonDown(MouseButtons::LEFT))
-	{
-		const auto selectedObject = Scene::selectClosestIntersectingObject(Camera::perspRayFromCameraScreenPos(Input::getMousePos()), Camera::getPos());
-
-		if (!selectedObject.has_value()) 
-		{
-			if (!Input::isKeyDown(Keys::LEFT_CONTROL))
-			{
-				Scene::clearSelection();
-			}
-		}
-	}
-
 	ShapeRenderer::begin();
-
-	//const auto& selected = Scene::getSelected();
-	//if (!selected.empty())
-	//{
-	//	ScaleGizmo(selected.at(0)->shapePtr->getPositions().at(0)).render();
-	//}
-
+	
+	Scene::handleMouseClicks();
 	Scene::render();
+
 	drawAxes();
 
 	ShapeRenderer::end();

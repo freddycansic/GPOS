@@ -7,21 +7,6 @@
 #include "engine/Util.h"
 #include "engine/viewport/Camera.h"
 
-void Shape::setScale(float xScale, float yScale, float zScale) {
-	m_Transform.sca = { xScale, yScale, zScale };
-	m_Moved = true;
-}
-
-void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
-	m_Transform.rot = { xRotation, yRotation, zRotation };
-	m_Moved = true;
-}
-
-void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
-	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
-	m_Moved = true;
-}
-
 Mat4x4 Shape::getTransformMatrix() const
 {
 	//auto transform = Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
@@ -88,6 +73,55 @@ std::optional<Vec3> Shape::isRayIntersecting(const Ray& ray) const
 	}
 
 	return pointOfIntersection;
+}
+
+void Shape::setScale(float xScale, float yScale, float zScale) {
+	m_Transform.sca = { xScale, yScale, zScale };
+	m_Moved = true;
+}
+
+void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
+	m_Transform.rot = { xRotation, yRotation, zRotation };
+	m_Moved = true;
+}
+
+void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
+	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
+	m_Moved = true;
+}
+
+void Shape::addScale(float x, float y, float z)
+{
+	m_Transform.sca += {x, y, z};
+	m_Moved = true;
+}
+
+void Shape::addRotation(float x, float y, float z)
+{
+	m_Transform.rot += {x, y, z};
+	m_Moved = true;
+}
+
+void Shape::addTranslation(float x, float y, float z)
+{
+	m_Transform.tra += {x, y, z};
+	m_Moved = true;
+}
+
+Vec3 Shape::getAvgPosition()
+{
+	if (m_AvgPos.x != std::numeric_limits<float>::max()) return m_AvgPos;
+
+	Vec3 avg;
+	for (const auto& pos : m_Positions)
+	{
+		avg += pos;
+	}
+
+	avg /= static_cast<float>(m_Positions.size());
+
+	m_AvgPos = avg;
+	return avg;
 }
 
 void Shape::setMoved(bool moved)
