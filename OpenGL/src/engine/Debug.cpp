@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+// TODO use in built functions
 const char* severityEnumToString(GLenum severity) {
 	switch (severity) {
 	case GL_DEBUG_SEVERITY_HIGH:
