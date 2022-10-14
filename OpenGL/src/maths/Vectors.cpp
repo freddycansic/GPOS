@@ -8,6 +8,11 @@ Vec2::Vec2(float x, float y)
 {
 }
 
+Vec2 Vec2::operator-(Vec2 other) const
+{
+	return { x - other.x, y - other.y };
+}
+
 Vec2 Vec2::normalise() const
 {
 	const auto mag = magnitude();

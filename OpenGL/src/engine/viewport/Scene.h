@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <optional>
 
 #include "engine/rendering/object/Object.h"

@@ -23,7 +23,6 @@ namespace Scene
 
 	void render()
 	{
-		static size_t i = 0;
 		for (auto& object : s_Objects)
 		{
 			ShapeRenderer::draw(object);
@@ -39,22 +38,41 @@ namespace Scene
 	{
 		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
 
+		if (s_Objects.empty()) return; // cant select anything from empty scene
+
 		const auto& mouseRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
 
-		if (s_Objects.empty()) return; // cant select anything from empty scene
+		//if (Input::isMouseButtonJustDown(MouseButtons::LEFT)) s_FirstMousePos = Input::getMousePos();
+
+		static Vec2 s_FirstMousePos = { std::numeric_limits<float>::max(), 0};
+
+		/*
+		 * get mouse pos on first click
+		 * if left repeating
+		 *		move object by difference btwn current and first pos
+		 */
 
 		if (!s_SelectedObjects.empty())
 		{
-
 			if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
 			{
+				if (s_FirstMousePos.x == std::numeric_limits<float>::max()) s_FirstMousePos = Input::getMousePos();
+
 				for (const auto& object : s_SelectedObjects)
-				{	// TODO
-					sp_Gizmo->getTransformation(intersectingAxis.value(), 0.001f)(*object);
+				{
+					const auto mousePosDifference = s_FirstMousePos - Input::getMousePos();
+					const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
+
+					std::cout << mousePosDifferenceMagnitude << std::endl;
+
+					static constexpr float SENSITIVITY = 9999999999.0f;
+					sp_Gizmo->getTransformation(intersectingAxis.value(), SENSITIVITY * mousePosDifferenceMagnitude)(*object);
 				}
 				return;
 			}
 		}
+
+		s_FirstMousePos = { std::numeric_limits<float>::max(), 0 };
 
 		const auto selectedObject = selectClosestIntersectingObject(mouseRay, Camera::getPos());
 
@@ -64,7 +82,8 @@ namespace Scene
 			clearSelection();
 		} else
 		{
-			sp_Gizmo = std::make_unique<ScaleGizmo>();
+			// TODO
+			if (sp_Gizmo == nullptr) sp_Gizmo = std::make_unique<ScaleGizmo>();
 		}
 	}
 

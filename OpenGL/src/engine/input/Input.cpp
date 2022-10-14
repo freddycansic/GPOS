@@ -67,6 +67,7 @@ namespace Input
 	Vec3 getCameraDirection() { return cameraDirection; }
 
 	int mouseButtonStates[MouseButtons::LAST.keyCode + 1];
+
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
 		mouseButtonStates[button] = action;
@@ -77,10 +78,10 @@ namespace Input
 		return mouseButtonStates[button.keyCode] == GLFW_PRESS;
 	}
 
-	bool isMouseButtonRepeat(const Key& button)
-	{
-		return mouseButtonStates[button.keyCode] == GLFW_REPEAT;
-	}
+	//bool isMouseButtonJustDown(const Key& button)
+	//{
+	//	return mouseButtonStates[button.keyCode] == JUST_DOWN;
+	//}
 
 	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 	{

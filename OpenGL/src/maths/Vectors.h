@@ -11,6 +11,8 @@ struct Vec2 {
 	Vec2() = default;
 	Vec2(float x, float y);
 
+	Vec2 operator-(Vec2 other) const;
+
 	[[nodiscard]] Vec2 normalise() const;
 	[[nodiscard]] float magnitude() const;
 	[[nodiscard]] float dot(Vec2 other) const;

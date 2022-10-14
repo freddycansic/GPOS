@@ -57,7 +57,7 @@ std::function<void(const Object&)> ScaleGizmo::getTransformation(const Vec3& axi
 	return { [&axis, magnitude](const Object& obj)
 	{
 		const auto scale = axis * magnitude;
-		obj.shapePtr->addScale(scale.x, scale.y, scale.z);
+		obj.shapePtr->setScale(scale.x, scale.y, scale.z);
 	}};
 }
 
@@ -82,7 +82,7 @@ std::function<void(const Object&)> TranslateGizmo::getTransformation(const Vec3&
 	return { [&axis, magnitude](const Object& obj)
 	{
 		const auto translation = axis * magnitude;
-		obj.shapePtr->addTranslation(translation.x, translation.y, translation.z);
+		obj.shapePtr->setTranslation(translation.x, translation.y, translation.z);
 	}};
 }
 
@@ -107,7 +107,7 @@ std::function<void(const Object&)> RotateGizmo::getTransformation(const Vec3& ax
 	return { [&axis, magnitude](const Object& obj)
 	{
 		const auto rotation = axis * magnitude;
-		obj.shapePtr->addRotation(rotation.x, rotation.y, rotation.z);
+		obj.shapePtr->setRotation(rotation.x, rotation.y, rotation.z);
 	}};
 }
 
