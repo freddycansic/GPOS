@@ -1,29 +1,21 @@
 #pragma once
-#include "Shape.h"
+#include "Object.h"
 #include "maths/Maths.h"
 
-class Line : public Shape
+struct Line : public Object
 {
-	static Mesh s_Mesh;
-	Vec3 m_P1, m_P2;
-	
 public:
-	Line(float x1, float y1, float z1, float x2, float y2, float z2, float width);
-	Line(const Vec3& p1, const Vec3& p2, float width);
-	Line(const Ray& ray, float length, float width);
-	Line() = default;
+	Line(float x1, float y1, float z1, float x2, float y2, float z2, float width, const Material& material);
+	Line(const Vec3& p1, const Vec3& p2, float width, const Material& material);
+	Line(const Ray& ray, float length, float width, const Material& material);
 	~Line() override = default;
 	
 	[[nodiscard]] Mesh& getMesh() const override;
 	[[nodiscard]] Mat4x4 getTransformMatrix() const override;
 
-	void setP1(float x, float y, float z);
-	void setP1(const Vec3& pos);
-	[[nodiscard]] const Vec3& getP1() const;
+	Vec3 p1, p2;
 
-	void setP2(float x, float y, float z);
-	void setP2(const Vec3& pos);
-	[[nodiscard]] const Vec3& getP2() const;
-
+private:
+	static Mesh s_Mesh;
 };
 

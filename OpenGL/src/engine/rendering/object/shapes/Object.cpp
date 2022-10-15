@@ -1,4 +1,4 @@
-#include "Shape.h"
+#include "Object.h"
 
 #include <optional>
 
@@ -7,31 +7,57 @@
 #include "engine/Util.h"
 #include "engine/viewport/Camera.h"
 
-Shape::Shape(const Vec3& pos)
-	: m_StartingPos(pos)
+Object::Object(const Material& material)
+	: material(material)
 {
-	m_Transform.tra = pos;
 }
 
-Mat4x4 Shape::getTransformMatrix() const
+Mat4x4 Object::getTransformMatrix() const
 {
-	//auto transform = Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
-	//transform = Maths::rotate(transform, m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
-	//transform = Maths::scale(transform, m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+	//auto m_Transform = Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
+	//m_Transform = Maths::rotate(m_Transform, m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
+	//m_Transform = Maths::scale(m_Transform, m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
 	return Maths::scale(Maths::rotate(Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z), m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z), m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 }
 
-Cube Shape::getAABB() const
+Cube Object::getAABB() const
 {
-	return Util::getAABBFromPoints(m_Positions);
+	float minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
+	Vec3 avg;
+
+	for (const auto& pos : positions)
+	{
+		minX = pos.x < minX ? pos.x : minX;
+		minY = pos.y < minY ? pos.y : minY;
+		minZ = pos.z < minZ ? pos.z : minZ;
+		maxX = pos.x > maxX ? pos.x : maxX;
+		maxY = pos.y > maxY ? pos.y : maxY;
+		maxZ = pos.z > maxZ ? pos.z : maxZ;
+
+		avg.x += pos.x;
+		avg.y += pos.y;
+		avg.z += pos.z;
+	}
+
+	const auto numPositions = static_cast<float>(positions.size());
+
+	avg.x /= numPositions;
+	avg.y /= numPositions;
+	avg.z /= numPositions;
+
+	Cube AABB(avg, 1.0f, material);
+	AABB.setScale(maxX - minX, maxY - minY, maxZ - minZ);
+
+	AABB.positions = AABB.getMesh().recalculatePositions(AABB.getTransformMatrix());
+
+	return AABB;
 }
 
-std::optional<Vec3> Shape::isRayIntersecting(const Ray& ray) const
+std::optional<Vec3> Object::isRayIntersecting(const Ray& ray) const
 {
 	std::optional<Vec3> pointOfIntersection;
-
-	const auto& positions = this->getPositions();
+	
 	const auto& indices = this->getMesh().indices;
 
 	for (size_t i = 0; i < indices.size(); i+=3)
@@ -81,71 +107,50 @@ std::optional<Vec3> Shape::isRayIntersecting(const Ray& ray) const
 	return pointOfIntersection;
 }
 
-void Shape::setScale(float xScale, float yScale, float zScale) {
+void Object::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { xScale, yScale, zScale };
-	m_Moved = true;
+	moved = true;
 }
 
-void Shape::setRotation(float xRotation, float yRotation, float zRotation) {
+void Object::setRotation(float xRotation, float yRotation, float zRotation) {
 	m_Transform.rot = { xRotation, yRotation, zRotation };
-	m_Moved = true;
+	moved = true;
 }
 
-void Shape::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
-	m_Transform.tra = { m_StartingPos.x + xTranslate, m_StartingPos.y + yTranslate, m_StartingPos.z + zTranslate };
-	m_Moved = true;
+void Object::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
+	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
+	moved = true;
 }
 
-void Shape::addScale(float x, float y, float z)
+void Object::addScale(float x, float y, float z)
 {
 	m_Transform.sca += {x, y, z};
-	m_Moved = true;
+	moved = true;
 }
 
-void Shape::addRotation(float x, float y, float z)
+void Object::addRotation(float x, float y, float z)
 {
 	m_Transform.rot += {x, y, z};
-	m_Moved = true;
+	moved = true;
 }
 
-void Shape::addTranslation(float x, float y, float z)
+void Object::addTranslation(float x, float y, float z)
 {
 	m_Transform.tra += {x, y, z};
-	m_Moved = true;
+	moved = true;
 }
 
-Vec3 Shape::getAvgPosition()
+Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value()) return m_AvgPos.value();
 
 	Vec3 avg;
-	for (const auto& pos : m_Positions)
+	for (const auto& pos : positions)
 	{
 		avg += pos;
 	}
 
-	avg /= static_cast<float>(m_Positions.size());
+	avg /= static_cast<float>(positions.size());
 
 	return m_AvgPos.emplace(avg);
 }
-
-void Shape::setMoved(bool moved)
-{
-	m_Moved = moved;
-}
-
-bool Shape::moved() const
-{
-	return m_Moved;
-}
-
-const std::vector<Vec3>& Shape::getPositions() const
-{
-	return m_Positions;
-}
-
-void Shape::setPositions(const std::vector<Vec3>& positions)
-{
-	m_Positions = positions;
-}
-

@@ -7,7 +7,7 @@
 #include "engine/Debug.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/Renderer.h"
-#include "engine/rendering/ShapeRenderer.h"
+#include "engine/rendering/ObjectRenderer.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
 {

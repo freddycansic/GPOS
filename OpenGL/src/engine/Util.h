@@ -14,8 +14,6 @@ namespace Util
 {
 	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize);
 
-	Cube getAABBFromPoints(const std::vector<Vec3>& points);
-
 	float rgbToHue(const Vec4& rgba);
 	float rgbToHue(const Vec3& rgb);
 

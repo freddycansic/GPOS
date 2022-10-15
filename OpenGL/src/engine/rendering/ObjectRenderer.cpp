@@ -1,4 +1,4 @@
-#include "ShapeRenderer.h"
+#include "ObjectRenderer.h"
 
 #include <stdexcept>
 #include <memory>
@@ -11,16 +11,14 @@
 #include "engine/rendering/opengl/VertexBuffer.h"
 #include "engine/rendering/opengl/VertexArray.h"
 #include "engine/rendering/opengl/Shader.h"
-#include "engine/rendering/object/shapes/Shape.h"
+#include "engine/rendering/object/shapes/Object.h"
 #include "engine/input/Files.h"
-#include "object/Object.h"
 #include "object/shapes/Vertex.h"
 #include <engine/Debug.h>
 
 struct BatchData
 {
-	// pointer to constant OBJECT
-	std::vector<const Object*> objects;
+	std::vector<Object*> objects;
 	size_t indicesCount = 0;
 	size_t verticesCount = 0;
 };
@@ -46,7 +44,7 @@ std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
-void addObjectToBatches(Batches& batches, const Object& object, RenderingFlag flags);
+void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags);
 std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
 
 namespace ShapeRenderer {
@@ -84,10 +82,11 @@ namespace ShapeRenderer {
 		s_State = State::BEGUN;
 	}
 
-	void draw(const Object& object, RenderingFlag flags)
+	void draw(Object& object, RenderingFlag flags)
 	{
 		addObjectToBatches(s_ObjectBatches, object, flags);
 	}
+	void draw(Object&& object, RenderingFlag flags) { draw(object, flags); }
 
 	void end()
 	{
@@ -107,27 +106,24 @@ namespace ShapeRenderer {
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
 
-			for (const auto& object : batchData.objects)
+			for (auto& object : batchData.objects)
 			{
-				auto& shape = object->shapePtr;
-				auto& mesh = object->shapePtr->getMesh();
+				auto& mesh = object->getMesh();
 
 				// vertices
-				if (shape->moved())
+				if (object->moved)
 				{
-					shape->setPositions(mesh.recalculatePositions(shape->getTransformMatrix()));
-					shape->setMoved(false);
+					object->positions = mesh.recalculatePositions(object->getTransformMatrix());
+					object->moved = false;
 				}
-
-				const auto& newPositions = shape->getPositions();
 				
-				for (unsigned int i = 0; i < newPositions.size(); ++i)
+				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{
 					static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
 
 					batchVertices.emplace_back
 					(
-						newPositions.at(i),
+						object->positions.at(i),
 						object->selected ? orange : object->material.colour,
 						mesh.textureCoordinates.at(i)
 					);
@@ -178,7 +174,7 @@ void checkRendererReady(const State& state)
 	}
 }
 
-void addObjectToBatches(Batches& batches, const Object& object, RenderingFlag flags)
+void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags)
 {
 	checkRendererReady(s_State);
 
@@ -186,7 +182,7 @@ void addObjectToBatches(Batches& batches, const Object& object, RenderingFlag fl
 
 	batchObjects.emplace_back(&object);
 
-	const auto& mesh = object.shapePtr->getMesh();
+	const auto& mesh = object.getMesh();
 
 	indicesCount += mesh.indices.size();
 	verticesCount += mesh.positions.size();
@@ -202,7 +198,7 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 
 	for (const auto& object : batchData.objects)
 	{
-		auto& mesh = object->shapePtr->getMesh();
+		auto& mesh = object->getMesh();
 
 		// indices
 		const auto currentMaxShapeIndex = mesh.getMaxInt();

@@ -11,7 +11,6 @@
 #include "engine/viewport/Scene.h"
 #include "rendering/object/Material.h"
 #include "rendering/object/shapes/Cube.h"
-#include "rendering/object/Object.h"
 
 void GUI::renderMenuBar()
 {
@@ -111,7 +110,7 @@ void GUI::renderNewObjectMenu()
 
 	if (ImGui::Button("Cube"))
 	{
-		Scene::addObject(Object(std::make_unique<Cube>(), defaultMaterial));
+		Scene::addObject(std::make_unique<Cube>(0, 0, 0, 1.0f, defaultMaterial));
 		showingNewObjectMenu = false;
 	}
 

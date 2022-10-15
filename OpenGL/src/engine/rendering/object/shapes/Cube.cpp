@@ -38,26 +38,21 @@ Mesh Cube::s_Mesh =
 	}
 };
 
-Cube::Cube()
-	: Shape({0, 0, 0})
-{
-}
-
-Cube::Cube(float x, float y, float z, float size)
-	: Shape({ x, y, z }), m_Size(size)
+Cube::Cube(float x, float y, float z, float size, const Material& material)
+	: Object(material), m_Size(size)
 {
 	m_Transform.tra = { x, y, z };
 	m_Transform.rot = { 0.0f, 0.0f, 0.0f };
 	m_Transform.sca = { size, size, size };
 }
 
-Cube::Cube(const Vec3& pos, float size) : Cube(pos.x, pos.y, pos.z, size)
+Cube::Cube(const Vec3& pos, float size, const Material& material) : Cube(pos.x, pos.y, pos.z, size, material)
 {
 }
 
 void Cube::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
-	m_Moved = true;
+	moved = true;
 }
 
 Mesh& Cube::getMesh() const {

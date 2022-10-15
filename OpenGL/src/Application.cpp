@@ -6,13 +6,11 @@
 #include "engine/input/Files.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/Renderer.h"
-#include "engine/rendering/ShapeRenderer.h"
+#include "engine/rendering/ObjectRenderer.h"
 #include "engine/Window.h"
 #include "engine/rendering/object/shapes/Line.h"
 #include "engine/rendering/object/shapes/Cube.h"
-#include "engine/rendering/object/Object.h"
 #include "engine/input/Keybind.h"
-#include "engine/rendering/object/Material.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
 #include "imgui/imgui.h"
@@ -20,9 +18,9 @@
 void drawAxes()
 {
 	static constexpr float AXES_LINE_WIDTH = 0.01f;
-	static Object x(std::make_unique<Line>(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH), Colours::RED);
-	static Object z(std::make_unique<Line>(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH), Colours::BLUE);
-	static Object centreCube(std::make_unique<Cube>(0, 0, 0, 0.05f), Colours::WHITE);
+	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
+	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
+	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
 	ShapeRenderer::draw(x);
 	ShapeRenderer::draw(z);
 	ShapeRenderer::draw(centreCube);

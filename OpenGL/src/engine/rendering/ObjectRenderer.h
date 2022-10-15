@@ -24,7 +24,8 @@ namespace ShapeRenderer
 	**/
 	void begin();
 	
-	void draw(const Object& object, RenderingFlag flags = 0);
+	void draw(Object& object, RenderingFlag flags = 0);
+	void draw(Object&& object, RenderingFlag flags = 0);
 
 	/**
 	 * Ends the batch and draws to the screen.

@@ -3,27 +3,32 @@
 #include <optional>
 
 #include "Mesh.h"
+#include "engine/rendering/object/Material.h"
 #include "maths/Maths.h"
 #include "maths/Transform.h"
 
-class Cube;
+struct Cube;
 struct Vec3;
 struct Vec2;
 struct Ray;
 
-class Shape
+struct Object
 {
+public:
+	std::vector<Vec3> positions;
+	Material material;
+	bool selected = false;
+	bool moved = true;
+
 protected:
 	Transform m_Transform;
-	std::vector<Vec3> m_Positions;
-	bool m_Moved = true;
-	bool m_Selectable = true;
 	std::optional<Vec3> m_AvgPos;
-	Vec3 m_StartingPos;
+	bool m_Selectable = true;
 
 public:
-	Shape(const Vec3& pos);
-	virtual ~Shape() = default;
+	Object() = default;
+	explicit Object(const Material& material);
+	virtual ~Object() = default;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
@@ -37,13 +42,7 @@ public:
 	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass
 
 	[[nodiscard]] std::optional<Vec3> isRayIntersecting(const Ray& ray) const;
-
-	void setMoved(bool moved);
-	[[nodiscard]] bool moved() const;
-
-	void setPositions(const std::vector<Vec3>& positions);
-	[[nodiscard]] const std::vector<Vec3>& getPositions() const;
-
+	
 	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
 	[[nodiscard]] virtual Mat4x4 getTransformMatrix() const;
 };

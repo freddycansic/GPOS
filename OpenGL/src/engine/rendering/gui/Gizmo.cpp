@@ -1,32 +1,31 @@
 #include "Gizmo.h"
 
 #include "engine/Colours.h"
-#include "engine/rendering/ShapeRenderer.h"
-#include "engine/rendering/object/Object.h"
+#include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/object/shapes/Line.h"
 #include "engine/rendering/object/shapes/Cube.h"
 
 constexpr float GIZMO_LINE_WIDTH = 0.02f;
 
-const std::array<Object, 3> Gizmo::s_Lines =
+std::array<Line, 3> Gizmo::s_Lines =
 {
-	Object(std::make_unique<Line>(0, 0, 0, -1, 0, 0, GIZMO_LINE_WIDTH), Colours::RED),
-	Object(std::make_unique<Line>(0, 0, 0, 0, -1, 0, GIZMO_LINE_WIDTH), Colours::GREEN),
-	Object(std::make_unique<Line>(0, 0, 0, 0, 0, 1, GIZMO_LINE_WIDTH), Colours::BLUE)
+	Line(0, 0, 0, -1, 0, 0, GIZMO_LINE_WIDTH, Colours::RED),
+	Line(0, 0, 0, 0, -1, 0, GIZMO_LINE_WIDTH, Colours::GREEN),
+	Line(0, 0, 0, 0, 0, 1, GIZMO_LINE_WIDTH, Colours::BLUE)
 };
 
 void Gizmo::render(const Vec3& pos) const
 {
-	for (const auto& line : s_Lines)
+	for (auto& line : s_Lines)
 	{
-		line.shapePtr->setTranslation(pos.x, pos.y, pos.z);
+		line.setTranslation(pos.x, pos.y, pos.z);
 		ShapeRenderer::draw(line, ShapeRenderer::NO_DEPTH_TEST);
 	}
 
-	for (const auto& handle : this->getHandles())
+	for (auto& handle : this->getHandles())
 	{
-		handle.shapePtr->setTranslation(pos.x, pos.y, pos.z);
-		ShapeRenderer::draw(handle, ShapeRenderer::NO_DEPTH_TEST);
+		handle->setTranslation(pos.x, pos.y, pos.z);
+		ShapeRenderer::draw(*handle, ShapeRenderer::NO_DEPTH_TEST);
 	}
 }
 
@@ -35,9 +34,9 @@ std::optional<Vec3> Gizmo::getIntersectingHandleAxis(const Ray& ray) const
 	std::optional<Vec3> axis;
 	const auto& handles = getHandles();
 
-	if (handles.at(0).shapePtr->isRayIntersecting(ray)) return axis.emplace(1, 0, 0);
-	if (handles.at(1).shapePtr->isRayIntersecting(ray)) return axis.emplace(0, 1, 0);
-	if (handles.at(2).shapePtr->isRayIntersecting(ray)) return axis.emplace(0, 0, 1);
+	if (handles.at(0)->isRayIntersecting(ray)) return axis.emplace(1, 0, 0);
+	if (handles.at(1)->isRayIntersecting(ray)) return axis.emplace(0, 1, 0);
+	if (handles.at(2)->isRayIntersecting(ray)) return axis.emplace(0, 0, 1);
 
 	return axis;
 }
@@ -45,23 +44,23 @@ std::optional<Vec3> Gizmo::getIntersectingHandleAxis(const Ray& ray) const
 // Scaling gizmo
 constexpr float SCALE_GIZMO_HANDLE_SIZE = 0.08f;
 
-const std::array<Object, 3> ScaleGizmo::s_Handles =
+std::array<std::unique_ptr<Object>, 3> ScaleGizmo::s_Handles =
 {
-	Object(std::make_unique<Cube>(-1, 0, 0, SCALE_GIZMO_HANDLE_SIZE), Colours::RED),
-	Object(std::make_unique<Cube>(0, -1, 0, SCALE_GIZMO_HANDLE_SIZE), Colours::GREEN),
-	Object(std::make_unique<Cube>(0, 0, 1, SCALE_GIZMO_HANDLE_SIZE), Colours::BLUE)
+	std::make_unique<Cube>(-1, 0, 0, SCALE_GIZMO_HANDLE_SIZE, Colours::RED),
+	std::make_unique<Cube>(0, -1, 0, SCALE_GIZMO_HANDLE_SIZE, Colours::GREEN),
+	std::make_unique<Cube>(0, 0, 1, SCALE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(const Object&)> ScaleGizmo::getTransformation(const Vec3& axis, float magnitude) const
+std::function<void(Object&)> ScaleGizmo::getTransformation(const Vec3& axis, float magnitude) const
 {
-	return { [&axis, magnitude](const Object& obj)
+	return { [&axis, magnitude](Object& obj)
 	{
 		const auto scale = axis * magnitude;
-		obj.shapePtr->setScale(scale.x, scale.y, scale.z);
+		obj.setScale(scale.x, scale.y, scale.z);
 	}};
 }
 
-const std::array<Object, 3>& ScaleGizmo::getHandles() const
+const std::array<std::unique_ptr<Object>, 3>& ScaleGizmo::getHandles() const
 {
 	return s_Handles;
 }
@@ -70,23 +69,23 @@ const std::array<Object, 3>& ScaleGizmo::getHandles() const
 constexpr float TRANSLATE_GIZMO_HANDLE_SIZE = 0.08f;
 
 // TODO cone
-const std::array<Object, 3> TranslateGizmo::s_Handles =
+std::array<std::unique_ptr<Object>, 3> TranslateGizmo::s_Handles =
 {
-	Object(std::make_unique<Cube>(-1, 0, 0, TRANSLATE_GIZMO_HANDLE_SIZE), Colours::RED),
-	Object(std::make_unique<Cube>(0, -1, 0, TRANSLATE_GIZMO_HANDLE_SIZE), Colours::GREEN),
-	Object(std::make_unique<Cube>(0, 0, 1, TRANSLATE_GIZMO_HANDLE_SIZE), Colours::BLUE)
+	std::make_unique<Cube>(-1, 0, 0, TRANSLATE_GIZMO_HANDLE_SIZE, Colours::RED),
+	std::make_unique<Cube>(0, -1, 0, TRANSLATE_GIZMO_HANDLE_SIZE, Colours::GREEN),
+	std::make_unique<Cube>(0, 0, 1, TRANSLATE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(const Object&)> TranslateGizmo::getTransformation(const Vec3& axis, float magnitude) const
+std::function<void(Object&)> TranslateGizmo::getTransformation(const Vec3& axis, float magnitude) const
 {
-	return { [&axis, magnitude](const Object& obj)
+	return { [&axis, magnitude](Object& obj)
 	{
 		const auto translation = axis * magnitude;
-		obj.shapePtr->setTranslation(translation.x, translation.y, translation.z);
+		obj.setTranslation(translation.x, translation.y, translation.z);
 	}};
 }
 
-const std::array<Object, 3>& TranslateGizmo::getHandles() const
+const std::array<std::unique_ptr<Object>, 3>& TranslateGizmo::getHandles() const
 {
 	return s_Handles;
 }
@@ -95,23 +94,23 @@ const std::array<Object, 3>& TranslateGizmo::getHandles() const
 constexpr float ROTATE_GIZMO_HANDLE_SIZE = 0.08f;
 
 // TODO help
-const std::array<Object, 3> RotateGizmo::s_Handles =
+std::array<std::unique_ptr<Object>, 3> RotateGizmo::s_Handles =
 {
-	Object(std::make_unique<Cube>(-1, 0, 0, ROTATE_GIZMO_HANDLE_SIZE), Colours::RED),
-	Object(std::make_unique<Cube>(0, -1, 0, ROTATE_GIZMO_HANDLE_SIZE), Colours::GREEN),
-	Object(std::make_unique<Cube>(0, 0, 1, ROTATE_GIZMO_HANDLE_SIZE), Colours::BLUE)
+	std::make_unique<Cube>(-1, 0, 0, ROTATE_GIZMO_HANDLE_SIZE, Colours::RED),
+	std::make_unique<Cube>(0, -1, 0, ROTATE_GIZMO_HANDLE_SIZE, Colours::GREEN),
+	std::make_unique<Cube>(0, 0, 1, ROTATE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(const Object&)> RotateGizmo::getTransformation(const Vec3& axis, float magnitude) const
+std::function<void(Object&)> RotateGizmo::getTransformation(const Vec3& axis, float magnitude) const
 {
-	return { [&axis, magnitude](const Object& obj)
+	return { [&axis, magnitude](Object& obj)
 	{
 		const auto rotation = axis * magnitude;
-		obj.shapePtr->setRotation(rotation.x, rotation.y, rotation.z);
+		obj.setRotation(rotation.x, rotation.y, rotation.z);
 	}};
 }
 
-const std::array<Object, 3>& RotateGizmo::getHandles() const
+const std::array<std::unique_ptr<Object>, 3>& RotateGizmo::getHandles() const
 {
 	return s_Handles;
 }
