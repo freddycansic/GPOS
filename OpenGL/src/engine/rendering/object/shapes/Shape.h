@@ -18,7 +18,7 @@ protected:
 	std::vector<Vec3> m_Positions;
 	bool m_Moved = true;
 	bool m_Selectable = true;
-	Vec3 m_AvgPos = {std::numeric_limits<float>::max(), 0, 0};
+	std::optional<Vec3> m_AvgPos;
 	Vec3 m_StartingPos;
 
 public:

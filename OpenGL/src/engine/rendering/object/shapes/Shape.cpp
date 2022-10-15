@@ -116,7 +116,7 @@ void Shape::addTranslation(float x, float y, float z)
 
 Vec3 Shape::getAvgPosition()
 {
-	if (m_AvgPos.x != std::numeric_limits<float>::max()) return m_AvgPos;
+	if (m_AvgPos.has_value()) return m_AvgPos.value();
 
 	Vec3 avg;
 	for (const auto& pos : m_Positions)
@@ -126,8 +126,7 @@ Vec3 Shape::getAvgPosition()
 
 	avg /= static_cast<float>(m_Positions.size());
 
-	m_AvgPos = avg;
-	return avg;
+	return m_AvgPos.emplace(avg);
 }
 
 void Shape::setMoved(bool moved)

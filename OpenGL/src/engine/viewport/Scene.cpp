@@ -44,46 +44,42 @@ namespace Scene
 
 		//if (Input::isMouseButtonJustDown(MouseButtons::LEFT)) s_FirstMousePos = Input::getMousePos();
 
-		static Vec2 s_FirstMousePos = { std::numeric_limits<float>::max(), 0};
-
-		/*
-		 * get mouse pos on first click
-		 * if left repeating
-		 *		move object by difference btwn current and first pos
-		 */
+		static std::optional<Vec2> s_FirstMousePos;
 
 		if (!s_SelectedObjects.empty())
 		{
 			if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
 			{
-				if (s_FirstMousePos.x == std::numeric_limits<float>::max()) s_FirstMousePos = Input::getMousePos();
+				if (!s_FirstMousePos.has_value()) s_FirstMousePos = Input::getMousePos(); // if its the first time clicking obj get mouse pos
 
 				for (const auto& object : s_SelectedObjects)
 				{
-					const auto mousePosDifference = s_FirstMousePos - Input::getMousePos();
+					const auto mousePos = Input::getMousePos();
+
+					const auto mousePosDifference = s_FirstMousePos.value() - mousePos;
 					const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
 
-					std::cout << mousePosDifferenceMagnitude << std::endl;
+					const auto direction = s_FirstMousePos.value().dot(mousePos) < 0.0f ? 1.0f : -1.0f;
 
-					static constexpr float SENSITIVITY = 9999999999.0f;
-					sp_Gizmo->getTransformation(intersectingAxis.value(), SENSITIVITY * mousePosDifferenceMagnitude)(*object);
+					static constexpr float SENSITIVITY = 0.1f;
+					sp_Gizmo->getTransformation(intersectingAxis.value(), SENSITIVITY * mousePosDifferenceMagnitude * direction)(*object);
 				}
 				return;
 			}
 		}
 
-		s_FirstMousePos = { std::numeric_limits<float>::max(), 0 };
+		s_FirstMousePos = std::optional<Vec2>(); // reset first mouse pos
 
 		const auto selectedObject = selectClosestIntersectingObject(mouseRay, Camera::getPos());
 
 		// if im not clicking on anything
-		if (!selectedObject.has_value())
+		if (!selectedObject.has_value() && !Input::isKeyDown(Keys::LEFT_CONTROL))
 		{
 			clearSelection();
 		} else
 		{
 			// TODO
-			if (sp_Gizmo == nullptr) sp_Gizmo = std::make_unique<ScaleGizmo>();
+			if (sp_Gizmo == nullptr) sp_Gizmo = std::make_unique<TranslateGizmo>();
 		}
 	}
 
@@ -118,7 +114,6 @@ namespace Scene
 
 		if (closest.has_value())
 		{
-			std::cout << "SELECTING OBJ" << std::endl;
 			closest.value()->selected = true;
 			s_SelectedObjects.push_back(closest.value());
 		}
