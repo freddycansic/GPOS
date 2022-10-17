@@ -21,7 +21,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	);
 
 	Renderer::init();
-	ShapeRenderer::init();
+	ObjectRenderer::init();
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(Window::GLFWWindow(), true);

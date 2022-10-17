@@ -7,10 +7,12 @@ struct Vec4;
 struct Object;
 
 using RenderingFlag = size_t;
+using Light = Vec3;
 
-namespace ShapeRenderer
+namespace ObjectRenderer
 {
-	constexpr RenderingFlag NO_DEPTH_TEST = 1 << 0;
+	constexpr RenderingFlag NO_DEPTH_TEST	= 1 << 0;
+	constexpr RenderingFlag NO_LIGHTING		= 1 << 1;
 
 	/**
 	 * Initialises batch rendering, must be called once before the first begin() call.
@@ -26,6 +28,7 @@ namespace ShapeRenderer
 	
 	void draw(Object& object, RenderingFlag flags = 0);
 	void draw(Object&& object, RenderingFlag flags = 0);
+	void draw(const Light& light);
 
 	/**
 	 * Ends the batch and draws to the screen.

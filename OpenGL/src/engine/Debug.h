@@ -24,16 +24,16 @@
 #include <GLFW/glfw3.h>
 
 #ifdef _MSC_VER
-	#define ASSERT(x) if (!(x)) __debugbreak()
+	#define ASSERT(x, msg) if (!(x)) { std::cout << (msg) << std::endl; __debugbreak();}
 #else
 	#include <cassert>
-	#define ASSERT(x) if (!(x)) assert(false)
+	#define ASSERT(x) if (!(x)) { std::cout << msg << std::endl; assert(false);}
 #endif
 
 #define DEBUG
 
 #ifdef DEBUG
-#define GLAPI(x) Debug::clearGLError(); x; ASSERT(Debug::logGLFunc(#x, __FILE__, __LINE__))
+#define GLAPI(x) Debug::clearGLError(); x; ASSERT(Debug::logGLFunc(#x, __FILE__, __LINE__), "")
 #else
 	#define GLAPI(x) x
 #endif

@@ -27,6 +27,11 @@ void UniformBuffer::unbind()
 void UniformBuffer::setSubData(unsigned int offset, size_t dataSize, const void* data) const
 {
 	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, m_ID));
-	GLAPI(glBindBufferRange(GL_UNIFORM_BUFFER, 0, m_ID, 0, dataSize));
-	GLAPI(glBufferSubData(GL_UNIFORM_BUFFER, 0, dataSize, data));
+	GLAPI(glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, data));
+}
+
+void UniformBuffer::bindBufferBase(size_t index) const
+{
+	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, m_ID));
+	GLAPI(glBindBufferBase(GL_UNIFORM_BUFFER, index, m_ID));
 }

@@ -21,9 +21,9 @@ void drawAxes()
 	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
-	ShapeRenderer::draw(x);
-	ShapeRenderer::draw(z);
-	ShapeRenderer::draw(centreCube);
+	ObjectRenderer::draw(x, ObjectRenderer::NO_LIGHTING);
+	ObjectRenderer::draw(z, ObjectRenderer::NO_LIGHTING);
+	ObjectRenderer::draw(centreCube, ObjectRenderer::NO_LIGHTING);
 }
 
 void Application::init(char* projectDir)
@@ -48,12 +48,14 @@ void Application::render()
 
 	Scene::handleMouseClicks();
 
-	ShapeRenderer::begin();
-	
+	ObjectRenderer::begin();
+
+	ObjectRenderer::draw(Light(1.0f, 1.0f, 1.0f));
+
 	Scene::render();
 	drawAxes();
 
-	ShapeRenderer::end();
+	ObjectRenderer::end();
 }
 
 void Application::imGuiRender()

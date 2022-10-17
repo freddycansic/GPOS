@@ -84,7 +84,7 @@ namespace Scene
 	{
 		for (const auto& object : s_Objects)
 		{
-			ShapeRenderer::draw(*object);
+			ObjectRenderer::draw(*object);
 		}
 
 		if (!s_SelectedObjects.empty())

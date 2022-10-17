@@ -17,6 +17,5 @@ public:
 	void bind();
 	void unbind();
 	void setSubData(unsigned int offset, size_t dataSize, const void* data) const;
-
+	void bindBufferBase(size_t index) const;
 };
-

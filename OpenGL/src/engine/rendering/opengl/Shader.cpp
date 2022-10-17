@@ -70,8 +70,7 @@ void Shader::findAndAddUniforms(const std::string& filepath) {
 void Shader::checkUniformInShader(const std::string& name) const {
 #ifdef DEBUG
 	if (!m_Uniforms.contains(name)) {
-		std::cout << "Uniform " << name << " not found in shader!" << std::endl;
-		ASSERT(false);
+		ASSERT(false, "Uniform not found in shader!");
 	}
 #endif
 }

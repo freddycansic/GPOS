@@ -16,6 +16,8 @@
 #include "object/shapes/Vertex.h"
 #include <engine/Debug.h>
 
+#include "opengl/UniformBuffer.h"
+
 struct BatchData
 {
 	std::vector<Object*> objects;
@@ -32,22 +34,26 @@ enum class State {
 // little bit scared these magic numbers will come back to bite me
 constexpr static size_t MAX_VERTICES = 12000000;
 constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~421875 cubes
+constexpr static size_t MAX_COUNT_LIGHTS = 16;
+constexpr static size_t LIGHT_UBO_INDEX = 0;
 
 State s_State = State::UNINITIALISED;
 
 using Batches = std::map<std::pair<size_t, RenderingFlag>, BatchData>;
 Batches s_ObjectBatches; // TODO make name better
+std::vector<Light> s_Lights;
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
+std::unique_ptr<UniformBuffer> s_LightsUbo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
 void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags);
 std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
 
-namespace ShapeRenderer {
+namespace ObjectRenderer {
 
 	void init()
 	{
@@ -59,6 +65,9 @@ namespace ShapeRenderer {
 		s_Vao = std::make_unique<VertexArray>();
 		s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 		s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
+
+		s_LightsUbo = std::make_unique<UniformBuffer>(nullptr, MAX_COUNT_LIGHTS * sizeof(Vec3));
+		s_Lights.reserve(MAX_COUNT_LIGHTS);
 
 		VertexBufferLayout layout;
 		layout.addElement<float>(3, false);
@@ -87,6 +96,13 @@ namespace ShapeRenderer {
 		addObjectToBatches(s_ObjectBatches, object, flags);
 	}
 	void draw(Object&& object, RenderingFlag flags) { draw(object, flags); }
+
+	void draw(const Light& light)
+	{
+		s_Lights.push_back(light);
+
+		ASSERT(s_Lights.size() <= MAX_COUNT_LIGHTS, "Maximum number of lights exceeded.");
+	}
 
 	void end()
 	{
@@ -136,6 +152,10 @@ namespace ShapeRenderer {
 			s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
+			s_Shader->setUniform1i("u_NoLighting", flags & NO_LIGHTING ? 1 : 0);
+
+			s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
+			s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
 
 			if (flags & NO_DEPTH_TEST)
 			{
@@ -150,6 +170,7 @@ namespace ShapeRenderer {
 
 		// clear buffers
 		s_ObjectBatches.clear();
+		s_Lights.clear();
 
 		s_Vao->unbind();
 		s_Vbo->unbind();
