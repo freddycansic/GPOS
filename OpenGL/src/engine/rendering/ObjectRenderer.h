@@ -7,13 +7,21 @@ struct Vec4;
 struct Object;
 
 using RenderingFlag = size_t;
-using Light = Vec3;
 
-namespace ObjectRenderer
+struct Light
+{
+	Vec3 pos = { 0, 0, 0 };
+	Vec3 colour = { 0, 0, 0 };
+};
+
+namespace Flags
 {
 	constexpr RenderingFlag NO_DEPTH_TEST	= 1 << 0;
 	constexpr RenderingFlag NO_LIGHTING		= 1 << 1;
+}
 
+namespace ObjectRenderer
+{
 	/**
 	 * Initialises batch rendering, must be called once before the first begin() call.
 	 * @brief Initialises batch rendering.

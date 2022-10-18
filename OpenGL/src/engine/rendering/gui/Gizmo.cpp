@@ -16,16 +16,18 @@ std::array<Line, 3> Gizmo::s_Lines =
 
 void Gizmo::render(const Vec3& pos) const
 {
+	using namespace Flags;
+
 	for (auto& line : s_Lines)
 	{
 		line.setTranslation(pos.x, pos.y, pos.z);
-		ObjectRenderer::draw(line, ObjectRenderer::NO_DEPTH_TEST);
+		ObjectRenderer::draw(line, NO_DEPTH_TEST | NO_LIGHTING);
 	}
 
 	for (auto& handle : this->getHandles())
 	{
 		handle->setTranslation(pos.x, pos.y, pos.z);
-		ObjectRenderer::draw(*handle, ObjectRenderer::NO_DEPTH_TEST);
+		ObjectRenderer::draw(*handle, NO_DEPTH_TEST | NO_LIGHTING);
 	}
 }
 

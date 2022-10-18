@@ -13,8 +13,9 @@ struct Mesh
 	const std::vector<Vec3> positions;
 	const std::vector<Vec2> textureCoordinates;
 	const std::vector<unsigned int> indices;
+	const std::vector<Vec3> normals;
 
-	Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<unsigned int>& indices);
+	Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<unsigned int>& indices, const std::vector<Vec3>& normals);
 	Mesh() = default;
 
 	[[nodiscard]] unsigned int getMaxInt();

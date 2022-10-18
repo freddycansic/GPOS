@@ -17,13 +17,15 @@
 
 void drawAxes()
 {
+	using namespace Flags;
+
 	static constexpr float AXES_LINE_WIDTH = 0.01f;
 	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
-	ObjectRenderer::draw(x, ObjectRenderer::NO_LIGHTING);
-	ObjectRenderer::draw(z, ObjectRenderer::NO_LIGHTING);
-	ObjectRenderer::draw(centreCube, ObjectRenderer::NO_LIGHTING);
+	ObjectRenderer::draw(x, NO_DEPTH_TEST | NO_LIGHTING);
+	ObjectRenderer::draw(z, NO_DEPTH_TEST | NO_LIGHTING);
+	ObjectRenderer::draw(centreCube, NO_DEPTH_TEST | NO_LIGHTING);
 }
 
 void Application::init(char* projectDir)
@@ -36,6 +38,7 @@ void Application::init(char* projectDir)
 
 	Window::beginCursorCapture();
 }
+
 
 void Application::render()
 {
@@ -50,7 +53,14 @@ void Application::render()
 
 	ObjectRenderer::begin();
 
-	ObjectRenderer::draw(Light(1.0f, 1.0f, 1.0f));
+	//static constexpr float radius = 4.0f;
+	//static Vec2 lPos = { radius, radius };
+
+	//lPos.x = radius * sin(Window::currentTime());
+	//lPos.y = radius * cos(Window::currentTime());
+
+	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
+	//ObjectRenderer::draw(Cube(lPos.x, 2, lPos.y, 0.3f, Colours::WHITE));
 
 	Scene::render();
 	drawAxes();

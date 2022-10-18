@@ -1,40 +1,98 @@
 #include "Cube.h"
 
-Mesh Cube::s_Mesh = 
+Mesh Cube::s_Mesh =
 {
 	{
 		{-0.5f, -0.5f,  0.5f}, // 0 bottom front left
+		{-0.5f, -0.5f,  0.5f}, // 0 bottom front left
+		{-0.5f, -0.5f,  0.5f}, // 0 bottom front left
+		{ 0.5f, -0.5f,  0.5f}, // 1 bottom front right
+		{ 0.5f, -0.5f,  0.5f}, // 1 bottom front right
 		{ 0.5f, -0.5f,  0.5f}, // 1 bottom front right
 		{ 0.5f, -0.5f, -0.5f}, // 2 bottom back right
+		{ 0.5f, -0.5f, -0.5f}, // 2 bottom back right
+		{ 0.5f, -0.5f, -0.5f}, // 2 bottom back right
+		{-0.5f, -0.5f, -0.5f}, // 3 bottom back left
+		{-0.5f, -0.5f, -0.5f}, // 3 bottom back left
 		{-0.5f, -0.5f, -0.5f}, // 3 bottom back left
 		{-0.5f,  0.5f,  0.5f}, // 4 top front left
+		{-0.5f,  0.5f,  0.5f}, // 4 top front left
+		{-0.5f,  0.5f,  0.5f}, // 4 top front left
+		{ 0.5f,  0.5f,  0.5f}, // 5 top front right
+		{ 0.5f,  0.5f,  0.5f}, // 5 top front right
 		{ 0.5f,  0.5f,  0.5f}, // 5 top front right
 		{ 0.5f,  0.5f, -0.5f}, // 6 top back right
-		{-0.5f,  0.5f, -0.5f} // 7 top back left
+		{ 0.5f,  0.5f, -0.5f}, // 6 top back right
+		{ 0.5f,  0.5f, -0.5f}, // 6 top back right
+		{-0.5f,  0.5f, -0.5f}, // 7 top back left
+		{-0.5f,  0.5f, -0.5f}, // 7 top back left
+		{-0.5f,  0.5f, -0.5f}  // 7 top back left
 	},
 	{
 		{0.0f, 0.0f},
-		{0.0f, 1.0f},
-		{1.0f, 1.0f},
-		{1.0f, 0.0f},
+		{0.0f, 0.0f},
 		{0.0f, 0.0f},
 		{0.0f, 1.0f},
+		{0.0f, 1.0f},
+		{0.0f, 1.0f},
 		{1.0f, 1.0f},
+		{1.0f, 1.0f},
+		{1.0f, 1.0f},
+		{1.0f, 0.0f},
+		{1.0f, 0.0f},
+		{1.0f, 0.0f},
+		{0.0f, 0.0f},
+		{0.0f, 0.0f},
+		{0.0f, 0.0f},
+		{0.0f, 1.0f},
+		{0.0f, 1.0f},
+		{0.0f, 1.0f},
+		{1.0f, 1.0f},
+		{1.0f, 1.0f},
+		{1.0f, 1.0f},
+		{1.0f, 0.0f},
+		{1.0f, 0.0f},
 		{1.0f, 0.0f}
 	},
 	{
-		0, 1, 2, // bottom face
-		2, 3, 0,
-		2, 6, 3, // back face
-		3, 7, 6,
-		3, 0, 4, // left face
-		4, 7, 3,
-		0, 4, 5, // front face
-		5, 0, 1,
-		1, 2, 5, // right face
-		5, 6, 2,
-		4, 5, 6, // top face
-		6, 7, 4
+		1, 4, 7, // bottom front
+		1, 7, 10, // bottom back
+		13, 16, 19, // top front
+		13, 19, 22, // top back
+		0, 9, 12, // left front
+		9, 12, 21, // left back
+		3, 6, 15, // right front
+		6, 15, 18, // right back
+		11, 8, 20, // back right
+		11, 20, 23, // back left
+		2, 5, 17, // front right
+		2, 17, 14 // front left
+	},
+	{
+		{-1, 0, 0}, // 0 bottom front left
+		{0, -1, 0}, // 1 bottom front left
+		{0, 0, 1},  // 2 bottom front left
+		{1, 0, 0},  // 3 bottom front right
+		{0, -1, 0}, // 4 bottom front right
+		{0, 0, 1},  // 5 bottom front right
+		{1, 0, 0},  // 6 bottom back right
+		{0, -1, 0}, // 7 bottom back right
+		{0, 0, -1}, // 8 bottom back right
+		{-1, 0, 0}, // 9 bottom back left
+		{0, -1, 0}, // 10 bottom back left
+		{0, 0, -1}, // 11 bottom back left
+		{-1, 0, 0}, // 12 top front left
+		{0, 1, 0},  // 13 top front left
+		{0, 0, 1},  // 14 top front left
+		{1, 0, 0},  // 15 top front right
+		{0, 1, 0},  // 16 top front right
+		{0, 0, 1},  // 17 top front right
+		{1, 0, 0},  // 18 top back right
+		{0, 1, 0},  // 19 top back right
+		{0, 0, -1}, // 20 top back right
+		{-1, 0, 0}, // 21 top back left
+		{0, 1, 0},  // 22 top back left
+		{0, 0, -1}  // 23 top back left
 	}
 };
 

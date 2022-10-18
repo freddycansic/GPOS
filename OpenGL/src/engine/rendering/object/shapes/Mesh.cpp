@@ -6,8 +6,8 @@
 #include "maths/Matrix.h"
 #include "maths/Vectors.h"
 
-Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<unsigned int>& indices) :
-	positions(positions), textureCoordinates(texCoords), indices(indices)
+Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<unsigned int>& indices, const std::vector<Vec3>& normals) :
+	positions(positions), textureCoordinates(texCoords), indices(indices), normals(normals)
 {
 }
 

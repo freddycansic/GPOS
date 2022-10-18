@@ -70,9 +70,10 @@ namespace ObjectRenderer {
 		s_Lights.reserve(MAX_COUNT_LIGHTS);
 
 		VertexBufferLayout layout;
-		layout.addElement<float>(3, false);
-		layout.addElement<float>(4, false);
-		layout.addElement<float>(2, false);
+		layout.addElement<float>(3, false); // position
+		layout.addElement<float>(4, false); // colour
+		layout.addElement<float>(2, false); // tex coords
+		layout.addElement<float>(3, false); // normals
 
 		s_Vao->addBuffer(*s_Vbo, layout);
 		s_Vbo->unbind();
@@ -131,7 +132,7 @@ namespace ObjectRenderer {
 				{
 					object->positions = mesh.recalculatePositions(object->getTransformMatrix());
 					object->moved = false;
-				}
+				} // TODO recalculate normals on scale + rotation
 				
 				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{
@@ -141,7 +142,8 @@ namespace ObjectRenderer {
 					(
 						object->positions.at(i),
 						object->selected ? orange : object->material.colour,
-						mesh.textureCoordinates.at(i)
+						mesh.textureCoordinates.at(i),
+						mesh.normals.at(i)
 					);
 				}
 			}
@@ -152,12 +154,12 @@ namespace ObjectRenderer {
 			s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
-			s_Shader->setUniform1i("u_NoLighting", flags & NO_LIGHTING ? 1 : 0);
+			s_Shader->setUniform1i("u_NoLighting", flags & Flags::NO_LIGHTING ? 1 : 0);
 
 			s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
 			s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
 
-			if (flags & NO_DEPTH_TEST)
+			if (flags & Flags::NO_DEPTH_TEST)
 			{
 				GLAPI(glDisable(GL_DEPTH_TEST));
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);

@@ -7,16 +7,24 @@ out vec4 colour;
 
 in vec4 v_Colour;
 in vec2 v_TexCoord;
+in vec3 v_Normal;
+in vec3 v_FragPos;
+
+struct Light 
+{
+	vec3 pos;
+	vec3 colour;
+};
 
 layout (std140, binding = 0) uniform u_LightSources 
 {
-	vec3 u_Lights[16];
+	Light u_Lights[16];
 };
 
 uniform uvec2 u_TexHandle;
 uniform bool u_NoLighting; // passed in as int from CPU
 
-const float ambientStrength = 0.1;
+const float ambientStrength = 0.4;
 
 void main() 
 {
@@ -32,7 +40,16 @@ void main()
 
 	if (!u_NoLighting) 
 	{
-		vec3 ambient = ambientStrength * u_Lights[0];
-		colour = colour * vec4(ambient, 1.0f);
+		Light light = u_Lights[0]; // TODO
+
+		vec3 ambientColour = ambientStrength * light.colour;
+
+		vec3 normal = normalize(v_Normal); // make 100% sure it's normalised
+		vec3 lightDirection = normalize(light.pos - v_FragPos);
+
+		float diffuseStrength = max(dot(normal, lightDirection), 0.0);
+		vec3 diffuseColour = diffuseStrength * light.colour * 1.3;
+
+		colour = vec4((ambientColour + diffuseColour) * colour.rgb, 1.0f);
 	}
 };
