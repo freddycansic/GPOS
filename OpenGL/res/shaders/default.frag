@@ -1,7 +1,6 @@
 #version 430 core
 
 #extension GL_ARB_bindless_texture : require
-#extension GL_ARB_gpu_shader_int64 : enable
 
 out vec4 colour;
 
@@ -38,18 +37,17 @@ void main()
 		colour = mix(v_Colour, texture(sampler2D(u_TexHandle), v_TexCoord), 0.5);
 	}
 
-	if (!u_NoLighting) 
-	{
-		Light light = u_Lights[0]; // TODO
+	if (u_NoLighting) return;
 
-		vec3 ambientColour = ambientStrength * light.colour;
+	Light light = u_Lights[0]; // TODO
 
-		vec3 normal = normalize(v_Normal); // make 100% sure it's normalised
-		vec3 lightDirection = normalize(light.pos - v_FragPos);
+	vec3 ambientColour = ambientStrength * light.colour;
 
-		float diffuseStrength = max(dot(normal, lightDirection), 0.0);
-		vec3 diffuseColour = diffuseStrength * light.colour * 1.3;
+	vec3 normal = normalize(v_Normal); // make 100% sure it's normalised
+	vec3 lightDirection = normalize(light.pos - v_FragPos);
 
-		colour = vec4((ambientColour + diffuseColour) * colour.rgb, 1.0f);
-	}
+	float diffuseStrength = max(dot(normal, lightDirection), 0.0);
+	vec3 diffuseColour = diffuseStrength * light.colour * 0.7;
+
+	colour = vec4((ambientColour + diffuseColour) * colour.rgb, 1.0f);
 };

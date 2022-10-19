@@ -55,20 +55,6 @@ Mesh Cube::s_Mesh =
 		{1.0f, 0.0f}
 	},
 	{
-		1, 4, 7, // bottom front
-		1, 7, 10, // bottom back
-		13, 16, 19, // top front
-		13, 19, 22, // top back
-		0, 9, 12, // left front
-		9, 12, 21, // left back
-		3, 6, 15, // right front
-		6, 15, 18, // right back
-		11, 8, 20, // back right
-		11, 20, 23, // back left
-		2, 5, 17, // front right
-		2, 17, 14 // front left
-	},
-	{
 		{-1, 0, 0}, // 0 bottom front left
 		{0, -1, 0}, // 1 bottom front left
 		{0, 0, 1},  // 2 bottom front left
@@ -93,7 +79,21 @@ Mesh Cube::s_Mesh =
 		{-1, 0, 0}, // 21 top back left
 		{0, 1, 0},  // 22 top back left
 		{0, 0, -1}  // 23 top back left
-	}
+	},
+	{
+		1, 4, 7, // bottom front
+		1, 7, 10, // bottom back
+		13, 16, 19, // top front
+		13, 19, 22, // top back
+		0, 9, 12, // left front
+		9, 12, 21, // left back
+		3, 6, 15, // right front
+		6, 15, 18, // right back
+		11, 8, 20, // back right
+		11, 20, 23, // back left
+		2, 5, 17, // front right
+		2, 17, 14 // front left
+	},
 };
 
 Cube::Cube(float x, float y, float z, float size, const Material& material)

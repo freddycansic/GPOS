@@ -39,7 +39,6 @@ void Application::init(char* projectDir)
 	Window::beginCursorCapture();
 }
 
-
 void Application::render()
 {
 	Renderer::clear(0.42f, 0.42f, 0.42f);
@@ -49,20 +48,24 @@ void Application::render()
 		Camera::update();
 	}
 
-	Scene::handleMouseClicks();
+	//Scene::handleMouseClicks();
 
 	ObjectRenderer::begin();
 
-	//static constexpr float radius = 4.0f;
-	//static Vec2 lPos = { radius, radius };
+	static constexpr float radius = 4.0f;
+	static Vec3 lPos = { radius, 0, radius };
 
-	//lPos.x = radius * sin(Window::currentTime());
-	//lPos.y = radius * cos(Window::currentTime());
+	lPos.x = radius * sin(Window::currentTime());
+	lPos.y = radius * cos(Window::currentTime());
 
 	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
-	//ObjectRenderer::draw(Cube(lPos.x, 2, lPos.y, 0.3f, Colours::WHITE));
+	ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
+	ObjectRenderer::draw(Cube(lPos, 0.3f, Colours::WHITE), Flags::NO_LIGHTING);
 
-	Scene::render();
+	ObjectRenderer::draw(Cube(-1.5f, 0, 0, 2.0f, Colours::WHITE));
+	//ObjectRenderer::draw(Cube(1.5f, 0, 0, 2.0f, Vec3{0.1f, 0.1f, 0.1f}));
+
+	//Scene::render();
 	drawAxes();
 
 	ObjectRenderer::end();

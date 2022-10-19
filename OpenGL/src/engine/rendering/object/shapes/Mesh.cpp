@@ -6,8 +6,8 @@
 #include "maths/Matrix.h"
 #include "maths/Vectors.h"
 
-Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<unsigned int>& indices, const std::vector<Vec3>& normals) :
-	positions(positions), textureCoordinates(texCoords), indices(indices), normals(normals)
+Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<Vec3>& normals, const std::vector<unsigned int>& indices)
+	: positions(positions), textureCoordinates(texCoords), normals(normals), indices(indices)
 {
 }
 
@@ -25,9 +25,7 @@ std::vector<Vec3> Mesh::recalculatePositions(const Mat4x4& transformMatrix) cons
 
 unsigned int Mesh::getMaxInt()
 {
-	if (m_MaxInt != std::numeric_limits<unsigned int>::max()) return m_MaxInt;
+	if (m_MaxInt.has_value()) return m_MaxInt.value();
 
-	m_MaxInt = *std::ranges::max_element(indices);
-
-	return m_MaxInt;
+	return m_MaxInt.emplace(*std::ranges::max_element(indices));
 }
