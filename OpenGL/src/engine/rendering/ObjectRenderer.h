@@ -35,7 +35,6 @@ namespace ObjectRenderer
 	void begin();
 	
 	void draw(Object& object, RenderingFlag flags = 0);
-	void draw(Object&& object, RenderingFlag flags = 0);
 	void draw(const Light& light);
 
 	/**

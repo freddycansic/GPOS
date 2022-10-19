@@ -4,6 +4,7 @@
 #include "engine/rendering/opengl/IndexBuffer.h"
 #include "engine/rendering/opengl/Shader.h"
 #include "maths/Maths.h"
+#include "maths/Vectors.h"
 
 enum class RenderMode
 {
@@ -22,6 +23,7 @@ public:
 
 	static void init();
 	static void clear(float r, float g, float b);
+	static void clear(const Vec3& colour);
 	
 	static void draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader);
 

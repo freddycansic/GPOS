@@ -23,9 +23,9 @@ void drawAxes()
 	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
-	ObjectRenderer::draw(x, NO_DEPTH_TEST | NO_LIGHTING);
-	ObjectRenderer::draw(z, NO_DEPTH_TEST | NO_LIGHTING);
-	ObjectRenderer::draw(centreCube, NO_DEPTH_TEST | NO_LIGHTING);
+	ObjectRenderer::draw(x, NO_LIGHTING);
+	ObjectRenderer::draw(z, NO_LIGHTING);
+	ObjectRenderer::draw(centreCube, NO_LIGHTING);
 }
 
 void Application::init(char* projectDir)
@@ -36,36 +36,51 @@ void Application::init(char* projectDir)
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
+	constexpr float cubesSideCount = 82;
+
+	for (float i = -cubesSideCount / 2; i < cubesSideCount / 2; ++i)
+	{
+		for (float j = -cubesSideCount / 2; j < cubesSideCount / 2; ++j)
+		{
+			for (float k = -cubesSideCount / 2; k < cubesSideCount / 2; ++k)
+			{
+				Scene::addObject(std::make_unique<Cube>(i, j, k, 0.5f, Colours::WHITE));
+			}
+		}
+	}
+
 	Window::beginCursorCapture();
 }
 
 void Application::render()
 {
-	Renderer::clear(0.42f, 0.42f, 0.42f);
+	//Renderer::clear(0.42f, 0.42f, 0.42f);
+	Renderer::clear(Colours::BLACK);
 
 	if (Window::capturingCursor())
 	{
 		Camera::update();
 	}
 
-	//Scene::handleMouseClicks();
+	Scene::handleMouseClicks();
 
 	ObjectRenderer::begin();
 
-	static constexpr float radius = 4.0f;
-	static Vec3 lPos = { radius, 0, radius };
+	static constexpr float radius = 40.0f;
+	static Vec3 lPos = { radius, 2, radius };
 
 	lPos.x = radius * sin(Window::currentTime());
-	lPos.y = radius * cos(Window::currentTime());
+	lPos.z = radius * cos(Window::currentTime());
 
-	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
+	//ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
 	ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
-	ObjectRenderer::draw(Cube(lPos, 0.3f, Colours::WHITE), Flags::NO_LIGHTING);
 
-	ObjectRenderer::draw(Cube(-1.5f, 0, 0, 2.0f, Colours::WHITE));
+	Cube c(lPos, 0.5f, Colours::WHITE);
+	ObjectRenderer::draw(c, Flags::NO_LIGHTING);
+
 	//ObjectRenderer::draw(Cube(1.5f, 0, 0, 2.0f, Vec3{0.1f, 0.1f, 0.1f}));
 
-	//Scene::render();
+	Scene::render();
 	drawAxes();
 
 	ObjectRenderer::end();

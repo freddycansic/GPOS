@@ -39,6 +39,11 @@ void Renderer::clear(float r, float g, float b)
 	GLAPI(glClearColor(r, g, b, 1.0f));
 }
 
+void Renderer::clear(const Vec3& colour)
+{
+	clear(colour.r, colour.g, colour.b);
+}
+
 void Renderer::setProjectionMatrix(const Mat4x4& mat) {
 	s_Proj = mat;
 }

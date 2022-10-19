@@ -35,7 +35,7 @@ Vec3 getSelectionCenter()
 	return center;
 }
 
-std::optional<Object*> selectClosestIntersectingObject(const Ray& ray, const Vec3& position)
+std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3& position)
 {
 	std::optional<Object*> closest;
 
@@ -64,11 +64,7 @@ std::optional<Object*> selectClosestIntersectingObject(const Ray& ray, const Vec
 		}
 	}
 
-	if (closest.has_value())
-	{
-		closest.value()->selected = true;
-		s_SelectedObjects.push_back(closest.value());
-	}
+	return closest;
 
 	return closest; 
 }
@@ -129,14 +125,18 @@ namespace Scene
 
 		s_FirstMousePos = std::optional<Vec2>(); // reset first mouse pos
 
-		const auto selectedObject = selectClosestIntersectingObject(mouseRay, Camera::getPos());
+		const auto closestObject = findClosestIntersectingObject(mouseRay, Camera::getPos());
 
-		// if im not clicking on anything
-		if (!selectedObject.has_value() && !Input::isKeyDown(Keys::LEFT_CONTROL))
+		if (!Input::isKeyDown(Keys::LEFT_CONTROL))
 		{
 			clearSelection();
-		} else
+		}
+
+		if (closestObject.has_value())
 		{
+			closestObject.value()->selected = true;
+			s_SelectedObjects.push_back(closestObject.value());
+
 			// TODO
 			if (sp_Gizmo == nullptr) sp_Gizmo = std::make_unique<TranslateGizmo>();
 		}

@@ -96,7 +96,6 @@ namespace ObjectRenderer {
 	{
 		addObjectToBatches(s_ObjectBatches, object, flags);
 	}
-	void draw(Object&& object, RenderingFlag flags) { draw(object, flags); }
 
 	void draw(const Light& light)
 	{
@@ -123,7 +122,7 @@ namespace ObjectRenderer {
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
 
-			for (auto& object : batchData.objects)
+			for (const auto& object : batchData.objects)
 			{
 				auto& mesh = object->getMesh();
 
