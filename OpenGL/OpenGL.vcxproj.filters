@@ -35,7 +35,7 @@
     <ClCompile Include="src\engine\rendering\object\shapes\Mesh.cpp" />
     <ClCompile Include="src\engine\rendering\object\Material.cpp" />
     <ClCompile Include="src\engine\Util.cpp" />
-    <ClCompile Include="src\engine\GUI.cpp" />
+    <ClCompile Include="src\engine\rendering\gui\GUI.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
     <ClCompile Include="src\engine\rendering\gui\Gizmo.cpp" />
@@ -78,7 +78,7 @@
     <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\engine\rendering\object\shapes\Mesh.h" />
     <ClInclude Include="src\engine\rendering\object\Material.h" />
-    <ClInclude Include="src\engine\GUI.h" />
+    <ClInclude Include="src\engine\rendering\gui\GUI.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
     <ClInclude Include="src\maths\Matrix.h" />
     <ClInclude Include="src\engine\viewport\Camera.h" />

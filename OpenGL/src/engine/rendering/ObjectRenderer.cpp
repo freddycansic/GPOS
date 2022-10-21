@@ -111,6 +111,9 @@ namespace ObjectRenderer {
 		s_Vao->bind();
 		s_Shader->bind();
 
+		s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
+		s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
+
 		// for every batch 
 		for (auto& [handleAndFlags, batchData] : s_ObjectBatches) {
 
@@ -154,9 +157,6 @@ namespace ObjectRenderer {
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
 			s_Shader->setUniform1i("u_NoLighting", flags & Flags::NO_LIGHTING ? 1 : 0);
-
-			s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
-			s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
 
 			if (flags & Flags::NO_DEPTH_TEST)
 			{

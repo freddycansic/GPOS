@@ -2,15 +2,16 @@
 
 #include <array>
 
-#include "Util.h"
-#include "Window.h"
 #include "imgui/imgui.h"
-#include "input/Input.h"
+
+#include "engine/Util.h"
+#include "engine/Window.h"
+#include "engine/input/Input.h"
 #include "engine/input/Keybind.h"
-#include "rendering/Renderer.h"
+#include "engine/rendering/Renderer.h"
 #include "engine/viewport/Scene.h"
-#include "rendering/object/Material.h"
-#include "rendering/object/shapes/Cube.h"
+#include "engine/rendering/object/Material.h"
+#include "engine/rendering/object/shapes/Cube.h"
 
 void GUI::renderMenuBar()
 {

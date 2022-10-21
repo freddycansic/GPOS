@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	config.projectDir = (argc > 1) ? argv[1] : nullptr;
 
 	Application app;
-	ApplicationLauncher appHandler(app, config);
+	ApplicationLauncher(app, config);
 
 	return 0;
 }

@@ -1,7 +1,7 @@
 #include "Application.h"
 
 #include "engine/Colours.h"
-#include "engine/GUI.h"
+#include "engine/rendering/gui/GUI.h"
 
 #include "engine/input/Files.h"
 #include "engine/input/Input.h"
@@ -24,7 +24,7 @@ void drawAxes()
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
 	ObjectRenderer::draw(x, NO_LIGHTING);
-	ObjectRenderer::draw(z, NO_LIGHTING);
+	//ObjectRenderer::draw(z, NO_LIGHTING);
 	ObjectRenderer::draw(centreCube, NO_LIGHTING);
 }
 
@@ -36,7 +36,7 @@ void Application::init(char* projectDir)
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
-	constexpr float cubesSideCount = 82;
+	constexpr float cubesSideCount = 0;
 
 	for (float i = -cubesSideCount / 2; i < cubesSideCount / 2; ++i)
 	{
@@ -73,10 +73,10 @@ void Application::render()
 	lPos.z = radius * cos(Window::currentTime());
 
 	//ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
-	ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
+	//ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
 
-	Cube c(lPos, 0.5f, Colours::WHITE);
-	ObjectRenderer::draw(c, Flags::NO_LIGHTING);
+	//Cube c(lPos, 0.5f, Colours::WHITE);
+	//ObjectRenderer::draw(c, Flags::NO_LIGHTING);
 
 	//ObjectRenderer::draw(Cube(1.5f, 0, 0, 2.0f, Vec3{0.1f, 0.1f, 0.1f}));
 

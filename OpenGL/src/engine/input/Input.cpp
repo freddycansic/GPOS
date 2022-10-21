@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "engine/Debug.h"
-#include "engine/GUI.h"
+#include "engine/rendering/gui/GUI.h"
 #include "Keys.h"
 #include "Keybind.h"
 #include "engine/Window.h"

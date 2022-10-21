@@ -20,7 +20,8 @@ namespace Window
 	void init(const WindowConfig& config)
 	{
 		// initialise GLFW
-		if (!glfwInit()) {
+		if (!glfwInit()) 
+		{
 			throw std::runtime_error("GLFW failed to initialise!");
 		}
 
@@ -35,19 +36,14 @@ namespace Window
 		s_DisplayWidth = vidmode->width;
 		s_DisplayHeight = vidmode->height;
 
-		s_Initialised = true;
-
-		if (!s_Initialised) {
-			throw std::runtime_error("Window class not initialised! Did you call Window::init() first?");
-		}
-
 		// init window
 		glfwWindowHint(GLFW_MAXIMIZED, config.maximised ? GLFW_TRUE : GLFW_FALSE);
 		m_ID = glfwCreateWindow(config.width, config.height, config.title.c_str(), GLFW_FALSE, GLFW_FALSE);
 
 		glfwGetWindowSize(m_ID, &m_Width, &m_Height);
 
-		if (!m_ID) {
+		if (!m_ID) 
+		{
 			glfwTerminate();
 			throw std::runtime_error("Failed to create window!");
 		}
@@ -59,7 +55,8 @@ namespace Window
 		glfwSwapInterval(config.vsync);
 
 		// initialise GLEW, must be called after there is a opengl rendering context
-		if (glewInit() != GLEW_OK) {
+		if (glewInit() != GLEW_OK) 
+		{
 			throw std::runtime_error("GLEW initialisation failed!");
 		}
 

@@ -2,11 +2,11 @@
 
 #include "engine/Debug.h"
 
-UniformBuffer::UniformBuffer(const void* data, size_t size)
+UniformBuffer::UniformBuffer(const void* data, size_t dataSizeBytes)
 {
 	GLAPI(glGenBuffers(1, &m_ID));
 	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, m_ID));
-	GLAPI(glBufferData(GL_UNIFORM_BUFFER, size, data, GL_DYNAMIC_DRAW));
+	GLAPI(glBufferData(GL_UNIFORM_BUFFER, dataSizeBytes, data, GL_DYNAMIC_DRAW));
 }
 
 UniformBuffer::~UniformBuffer()
@@ -24,10 +24,10 @@ void UniformBuffer::unbind()
 	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, 0));
 }
 
-void UniformBuffer::setSubData(unsigned int offset, size_t dataSize, const void* data) const
+void UniformBuffer::setSubData(unsigned int offset, size_t dataSizeBytes, const void* data) const
 {
 	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, m_ID));
-	GLAPI(glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, data));
+	GLAPI(glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSizeBytes, data));
 }
 
 void UniformBuffer::bindBufferBase(size_t index) const
