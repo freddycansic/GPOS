@@ -24,7 +24,7 @@ void drawAxes()
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
 	ObjectRenderer::draw(x, NO_LIGHTING);
-	//ObjectRenderer::draw(z, NO_LIGHTING);
+	ObjectRenderer::draw(z, NO_LIGHTING);
 	ObjectRenderer::draw(centreCube, NO_LIGHTING);
 }
 
@@ -66,19 +66,26 @@ void Application::render()
 
 	ObjectRenderer::begin();
 
-	static constexpr float radius = 40.0f;
+	static constexpr float radius = 5.0f;
 	static Vec3 lPos = { radius, 2, radius };
 
 	lPos.x = radius * sin(Window::currentTime());
 	lPos.z = radius * cos(Window::currentTime());
 
-	//ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
-	//ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
+	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
 
-	//Cube c(lPos, 0.5f, Colours::WHITE);
-	//ObjectRenderer::draw(c, Flags::NO_LIGHTING);
+	ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
+	Cube c(lPos, 0.5f, Colours::WHITE);
+	ObjectRenderer::draw(c, Flags::NO_LIGHTING);
 
-	//ObjectRenderer::draw(Cube(1.5f, 0, 0, 2.0f, Vec3{0.1f, 0.1f, 0.1f}));
+	Cube c0(1.5f, 0, 0, 2.0f, Colours::RED);
+	ObjectRenderer::draw(c0);
+
+	Cube c1(4.5f, 0, 0, 2.0f, Colours::GREEN);
+	ObjectRenderer::draw(c1);
+
+	Line l0(lPos, { 0, 0, 0 }, 0.1f, Colours::WHITE);
+	ObjectRenderer::draw(l0);
 
 	Scene::render();
 	drawAxes();
