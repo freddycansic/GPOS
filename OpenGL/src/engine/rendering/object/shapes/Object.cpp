@@ -18,7 +18,14 @@ Mat4x4 Object::getTransformMatrix() const
 	//m_Transform = Maths::rotate(m_Transform, m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
 	//m_Transform = Maths::scale(m_Transform, m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
-	return Maths::scale(Maths::rotate(Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z), m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z), m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+	return
+		Maths::scale(
+			Maths::rotate(
+				Maths::translate(Mat4x4::identity(), 
+					m_Transform.tra.x + m_TempTransform.tra.x, m_Transform.tra.y + m_TempTransform.tra.y, m_Transform.tra.z + m_TempTransform.tra.z
+				), 
+				m_Transform.rot.x + m_TempTransform.rot.x, m_Transform.rot.y, m_Transform.rot.z),
+			m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 }
 
 Cube Object::getAABB() const
@@ -142,18 +149,17 @@ void Object::addTranslation(float x, float y, float z)
 
 void Object::offsetScale(float x, float y, float z)
 {
-	setScale(m_Transform.sca.x + x, m_Transform.sca.y + y, m_Transform.sca.z + z);
-	moved = true;
+	m_TempTransform.sca += Vec3(x, y, z);
 }
 
 void Object::offsetRotation(float x, float y, float z)
 {
-
+	m_TempTransform.rot += Vec3(x, y, z);
 }
 
 void Object::offsetTranslation(float x, float y, float z)
 {
-
+	m_TempTransform.tra += Vec3(x, y, z);
 }
 
 Vec3 Object::getAvgPosition()

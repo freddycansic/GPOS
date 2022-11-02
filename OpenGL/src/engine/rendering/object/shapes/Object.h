@@ -21,7 +21,7 @@ public:
 	bool moved = true;
 
 protected:
-	Transform m_Transform;
+	Transform m_Transform, m_TempTransform;
 	std::optional<Vec3> m_AvgPos;
 	bool m_Selectable = true;
 
