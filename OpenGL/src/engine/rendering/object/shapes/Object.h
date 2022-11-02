@@ -38,6 +38,10 @@ public:
 	virtual void addRotation(float x, float y, float z);
 	virtual void addTranslation(float x, float y, float z);
 
+	virtual void offsetScale(float x, float y, float z);
+	virtual void offsetRotation(float x, float y, float z);
+	virtual void offsetTranslation(float x, float y, float z);
+
 	[[nodiscard]] Cube getAABB() const;
 	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass
 

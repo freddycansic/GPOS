@@ -140,6 +140,22 @@ void Object::addTranslation(float x, float y, float z)
 	moved = true;
 }
 
+void Object::offsetScale(float x, float y, float z)
+{
+	setScale(m_Transform.sca.x + x, m_Transform.sca.y + y, m_Transform.sca.z + z);
+	moved = true;
+}
+
+void Object::offsetRotation(float x, float y, float z)
+{
+
+}
+
+void Object::offsetTranslation(float x, float y, float z)
+{
+
+}
+
 Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value()) return m_AvgPos.value();

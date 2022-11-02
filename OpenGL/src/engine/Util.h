@@ -1,6 +1,5 @@
 #pragma once
 
-#include <concepts>
 #include <limits>
 #include <vector>
 
@@ -16,6 +15,16 @@ namespace Util
 
 	float rgbToHue(const Vec4& rgba);
 	float rgbToHue(const Vec3& rgb);
+
+	template <typename T>
+	void printVec(const std::vector<T>& vec, const char* delimitor = "\n")
+	{
+		for (const auto& el : vec)
+		{
+			std::cout << el << delimitor;
+		}
+		std::cout << std::endl;
+	}
 
 	// https://gist.github.com/alexshtf/eb5128b3e3e143187794
 	template <typename T>

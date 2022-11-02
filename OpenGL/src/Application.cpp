@@ -15,10 +15,10 @@
 #include "engine/viewport/Scene.h"
 #include "imgui/imgui.h"
 
+using namespace Flags;
+
 void drawAxes()
 {
-	using namespace Flags;
-
 	static constexpr float AXES_LINE_WIDTH = 0.01f;
 	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
@@ -36,18 +36,18 @@ void Application::init(char* projectDir)
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
-	constexpr float cubesSideCount = 0;
+	//constexpr float cubesSideCount = 0;
 
-	for (float i = -cubesSideCount / 2; i < cubesSideCount / 2; ++i)
-	{
-		for (float j = -cubesSideCount / 2; j < cubesSideCount / 2; ++j)
-		{
-			for (float k = -cubesSideCount / 2; k < cubesSideCount / 2; ++k)
-			{
-				Scene::addObject(std::make_unique<Cube>(i, j, k, 0.5f, Colours::WHITE));
-			}
-		}
-	}
+	//for (float i = -cubesSideCount / 2; i < cubesSideCount / 2; ++i)
+	//{
+	//	for (float j = -cubesSideCount / 2; j < cubesSideCount / 2; ++j)
+	//	{
+	//		for (float k = -cubesSideCount / 2; k < cubesSideCount / 2; ++k)
+	//		{
+	//			Scene::addObject(std::make_unique<Cube>(i, j, k, 0.5f, Colours::WHITE));
+	//		}
+	//	}
+	//}
 
 	Window::beginCursorCapture();
 }
@@ -72,11 +72,10 @@ void Application::render()
 	lPos.x = radius * sin(Window::currentTime());
 	lPos.z = radius * cos(Window::currentTime());
 
-	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
 
 	ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
 	Cube c(lPos, 0.5f, Colours::WHITE);
-	ObjectRenderer::draw(c, Flags::NO_LIGHTING);
+	ObjectRenderer::draw(c, NO_LIGHTING);
 
 	Cube c0(1.5f, 0, 0, 2.0f, Colours::RED);
 	ObjectRenderer::draw(c0);
@@ -84,9 +83,7 @@ void Application::render()
 	Cube c1(4.5f, 0, 0, 2.0f, Colours::GREEN);
 	ObjectRenderer::draw(c1);
 
-	Line l0(lPos, { 0, 0, 0 }, 0.1f, Colours::WHITE);
-	ObjectRenderer::draw(l0);
-
+	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
 	Scene::render();
 	drawAxes();
 

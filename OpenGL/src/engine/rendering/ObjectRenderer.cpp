@@ -16,6 +16,7 @@
 #include "object/shapes/Vertex.h"
 #include <engine/Debug.h>
 
+#include "engine/Util.h"
 #include "opengl/UniformBuffer.h"
 
 struct BatchData
@@ -236,8 +237,8 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 
 			// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
 
-			maxIndex += (currentMaxShapeIndex > lastMaxShapeIndex) ? currentMaxShapeIndex - 1 : lastMaxShapeIndex + 1;
-		}
+			maxIndex += lastMaxShapeIndex + 1;
+		}	
 
 		lastMaxShapeIndex = currentMaxShapeIndex;
 
