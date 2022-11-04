@@ -66,11 +66,15 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
+	constexpr int JUST_RELEASED = 3;
+
 	int mouseButtonStates[MouseButtons::LAST.keyCode + 1];
 
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
 		mouseButtonStates[button] = action;
+
+		std::cout << action << " " << button << std::endl;
 	}
 
 	bool isMouseButtonDown(const Key& button)
@@ -78,10 +82,10 @@ namespace Input
 		return mouseButtonStates[button.keyCode] == GLFW_PRESS;
 	}
 
-	//bool isMouseButtonJustDown(const Key& button)
-	//{
-	//	return mouseButtonStates[button.keyCode] == JUST_DOWN;
-	//}
+	bool isMouseButtonJustReleased(const Key& button)
+	{
+		return mouseButtonStates[button.keyCode] == JUST_RELEASED;
+	}
 
 	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 	{
@@ -92,7 +96,6 @@ namespace Input
 	}
 
 	int keyStates[Keys::LAST.keyCode + 1];
-	constexpr int JUST_RELEASED = 3;
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{

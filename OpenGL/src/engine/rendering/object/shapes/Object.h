@@ -49,6 +49,8 @@ public:
 	virtual void offsetRotation(float x, float y, float z);
 	virtual void offsetTranslation(float x, float y, float z);
 
+	void resetOffset();
+
 	[[nodiscard]] Cube getAABB() const;
 	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass
 

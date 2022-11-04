@@ -168,6 +168,11 @@ void Object::offsetTranslation(float x, float y, float z)
 	moved = true;
 }
 
+void Object::resetOffset()
+{
+	m_TempTransform = Transform();
+}
+
 Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();

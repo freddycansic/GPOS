@@ -26,7 +26,7 @@ namespace Input
 	GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyJustReleased);
 
 	[[nodiscard]] bool isMouseButtonDown(const Key& button);
-	//[[nodiscard]] bool isMouseButtonJustDown(const Key& button);
+	[[nodiscard]] bool isMouseButtonJustReleased(const Key& button);
 
 	Keybind getFunctionKeybind(void(*function)());
 	bool isKeybindJustReleased(const Keybind& keybind);

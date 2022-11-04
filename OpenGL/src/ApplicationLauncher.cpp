@@ -44,6 +44,8 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+		Input::resetMouseButtonStates()
+
 		Window::update();
 	}
 

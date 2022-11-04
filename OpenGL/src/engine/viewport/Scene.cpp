@@ -89,6 +89,8 @@ namespace Scene
 
 	void handleMouseClicks()
 	{
+		//if (Input::isMouseButtonDown())
+
 		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
 
 		if (s_Objects.empty()) return; // cant select anything from empty scene
@@ -99,26 +101,37 @@ namespace Scene
 
 		//static std::optional<Vec2> s_FirstMousePos;
 
+		static bool s_UsingGizmo = false;
+		static Vec2 s_FirstMousePos;
+		static Vec3 currentGizmoTransform;
+
 		if (!s_SelectedObjects.empty())
 		{
-			//if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
-			//{
-				//if (!s_FirstMousePos.has_value()) s_FirstMousePos = Input::getMousePos(); // if its the first time clicking obj get mouse pos
+			if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
+			{
+				if (!s_UsingGizmo) s_FirstMousePos = Input::getMousePos();
+				s_UsingGizmo = true;
 
-				//for (const auto& object : s_SelectedObjects)
-				//{
-				//	const auto mousePos = Input::getMousePos();
+				for (const auto& object : s_SelectedObjects)
+				{
+					const auto mousePos = Input::getMousePos();
 
-				//	const auto mousePosDifference = s_FirstMousePos.value() - mousePos;
-				//	const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
+					const auto mousePosDifference = s_FirstMousePos - mousePos;
+					const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
 
-				//	const auto direction = s_FirstMousePos.value().dot(mousePos) < 0.0f ? 1.0f : -1.0f;
+					const auto direction = s_FirstMousePos.dot(mousePos) < 0.0f ? 1.0f : -1.0f;
 
-				//	static constexpr float SENSITIVITY = 0.1f;
-				//	sp_Gizmo->getOffsetTransformation(intersectingAxis.value(), SENSITIVITY * mousePosDifferenceMagnitude * direction)(*object);
-				//}
-				//return;
-			//}
+					static constexpr float SENSITIVITY = 0.1f;
+
+					const auto movement = SENSITIVITY * mousePosDifferenceMagnitude * direction;
+
+					currentGizmoTransform = { movement, movement, movement };
+
+					sp_Gizmo->getOffsetTransformation(intersectingAxis.value(), movement)(*object);
+				}
+
+				return;
+			}
 		}
 
 		//s_FirstMousePos = std::optional<Vec2>(); // reset first mouse pos

@@ -19,28 +19,28 @@ void Gizmo::render(const Vec3& pos) const
 {
 	using namespace Flags;
 
-	//s_Lines[0].p1 = pos;
-	//s_Lines[0].p1 = { pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z };
-	//ObjectRenderer::draw(s_Lines[0], NO_DEPTH_TEST | NO_LIGHTING);
+	s_Lines[0].p1 = pos;
+	s_Lines[0].p1 = { pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z };
+	ObjectRenderer::draw(s_Lines[0], NO_DEPTH_TEST | NO_LIGHTING);
 
-	//s_Lines[1].p1 = pos;
-	//s_Lines[1].p1 = { pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z };
-	//ObjectRenderer::draw(s_Lines[1], NO_DEPTH_TEST | NO_LIGHTING);
+	s_Lines[1].p1 = pos;
+	s_Lines[1].p1 = { pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z };
+	ObjectRenderer::draw(s_Lines[1], NO_DEPTH_TEST | NO_LIGHTING);
 
-	//s_Lines[2].p1 = pos;
-	//s_Lines[2].p1 = { pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH };
-	//ObjectRenderer::draw(s_Lines[2], NO_DEPTH_TEST | NO_LIGHTING);
+	s_Lines[2].p1 = pos;
+	s_Lines[2].p1 = { pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH };
+	ObjectRenderer::draw(s_Lines[2], NO_DEPTH_TEST | NO_LIGHTING);
 
-	//const auto& handles = this->getHandles();
+	const auto& handles = this->getHandles();
 
-	//handles[0]->setTranslation(pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z);
-	//ObjectRenderer::draw(*handles[0], NO_DEPTH_TEST | NO_LIGHTING);
+	handles[0]->setTranslation(pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z);
+	ObjectRenderer::draw(*handles[0], NO_DEPTH_TEST | NO_LIGHTING);
 
-	//handles[1]->setTranslation(pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z);
-	//ObjectRenderer::draw(*handles[1], NO_DEPTH_TEST | NO_LIGHTING);
+	handles[1]->setTranslation(pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z);
+	ObjectRenderer::draw(*handles[1], NO_DEPTH_TEST | NO_LIGHTING);
 
-	//handles[2]->setTranslation(pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH);
-	//ObjectRenderer::draw(*handles[2], NO_DEPTH_TEST | NO_LIGHTING);
+	handles[2]->setTranslation(pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH);
+	ObjectRenderer::draw(*handles[2], NO_DEPTH_TEST | NO_LIGHTING);
 }
 
 std::optional<Vec3> Gizmo::getIntersectingHandleAxis(const Ray& ray) const
