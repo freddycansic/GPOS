@@ -53,7 +53,7 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 
 				//const auto distanceFromPointToPlane = std::abs(planeOfIntersection.x * position.x + planeOfIntersection.y * position.y + planeOfIntersection.z * position.z + planeOfIntersection.w) / std::sqrt(planeOfIntersection.x * planeOfIntersection.x + planeOfIntersection.y * planeOfIntersection.y + planeOfIntersection.z * planeOfIntersection.z);
 
-				const auto distanceFromPointToIntersection = std::pow(pointOfIntersection.x - position.x, 2) + std::pow(pointOfIntersection.y - position.y, 2) + std::pow(pointOfIntersection.z - position.z, 2);
+				const auto distanceFromPointToIntersection = std::powf(pointOfIntersection.x - position.x, 2) + std::powf(pointOfIntersection.y - position.y, 2) + std::powf(pointOfIntersection.z - position.z, 2);
 
 				if (distanceFromPointToIntersection < closestDistance)
 				{
@@ -65,8 +65,6 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 	}
 
 	return closest;
-
-	return closest; 
 }
 
 namespace Scene
@@ -99,31 +97,31 @@ namespace Scene
 
 		//if (Input::isMouseButtonJustDown(MouseButtons::LEFT)) s_FirstMousePos = Input::getMousePos();
 
-		static std::optional<Vec2> s_FirstMousePos;
+		//static std::optional<Vec2> s_FirstMousePos;
 
 		if (!s_SelectedObjects.empty())
 		{
-			if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
-			{
-				if (!s_FirstMousePos.has_value()) s_FirstMousePos = Input::getMousePos(); // if its the first time clicking obj get mouse pos
+			//if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
+			//{
+				//if (!s_FirstMousePos.has_value()) s_FirstMousePos = Input::getMousePos(); // if its the first time clicking obj get mouse pos
 
-				for (const auto& object : s_SelectedObjects)
-				{
-					const auto mousePos = Input::getMousePos();
+				//for (const auto& object : s_SelectedObjects)
+				//{
+				//	const auto mousePos = Input::getMousePos();
 
-					const auto mousePosDifference = s_FirstMousePos.value() - mousePos;
-					const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
+				//	const auto mousePosDifference = s_FirstMousePos.value() - mousePos;
+				//	const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
 
-					const auto direction = s_FirstMousePos.value().dot(mousePos) < 0.0f ? 1.0f : -1.0f;
+				//	const auto direction = s_FirstMousePos.value().dot(mousePos) < 0.0f ? 1.0f : -1.0f;
 
-					static constexpr float SENSITIVITY = 0.1f;
-					sp_Gizmo->getTransformation(intersectingAxis.value(), SENSITIVITY * mousePosDifferenceMagnitude * direction)(*object);
-				}
-				return;
-			}
+				//	static constexpr float SENSITIVITY = 0.1f;
+				//	sp_Gizmo->getOffsetTransformation(intersectingAxis.value(), SENSITIVITY * mousePosDifferenceMagnitude * direction)(*object);
+				//}
+				//return;
+			//}
 		}
 
-		s_FirstMousePos = std::optional<Vec2>(); // reset first mouse pos
+		//s_FirstMousePos = std::optional<Vec2>(); // reset first mouse pos
 
 		const auto closestObject = findClosestIntersectingObject(mouseRay, Camera::getPos());
 

@@ -14,7 +14,8 @@ class Gizmo
 public:
 	void render(const Vec3& pos) const;
 	[[nodiscard]] virtual std::optional<Vec3> getIntersectingHandleAxis(const Ray& ray) const;
-	[[nodiscard]] virtual std::function<void(Object&)> getTransformation(const Vec3& axis, float magnitude) const = 0;
+	[[nodiscard]] virtual std::function<void(Object&)> getSetTransformation(const Vec3& axis, float magnitude) const = 0;
+	[[nodiscard]] virtual std::function<void(Object&)> getOffsetTransformation(const Vec3& axis, float magnitude) const = 0;
 
 	Gizmo() = default;
 	virtual ~Gizmo() = default;
@@ -29,7 +30,8 @@ protected:
 class ScaleGizmo : public Gizmo
 {
 public:
-	[[nodiscard]] std::function<void(Object&)> getTransformation(const Vec3& axis, float magnitude) const override;
+	[[nodiscard]] std::function<void(Object&)> getSetTransformation(const Vec3& axis, float magnitude) const override;
+	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& axis, float magnitude) const override;
 
 protected:
 	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
@@ -41,7 +43,8 @@ private:
 class TranslateGizmo : public Gizmo
 {
 public:
-	[[nodiscard]] std::function<void(Object&)> getTransformation(const Vec3& axis, float magnitude) const override;
+	[[nodiscard]] std::function<void(Object&)> getSetTransformation(const Vec3& axis, float magnitude) const override;
+	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& axis, float magnitude) const override;
 
 protected:
 	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
@@ -53,7 +56,8 @@ private:
 class RotateGizmo : public Gizmo
 {
 public:
-	[[nodiscard]] std::function<void(Object&)> getTransformation(const Vec3& axis, float magnitude) const override;
+	[[nodiscard]] std::function<void(Object&)> getSetTransformation(const Vec3& axis, float magnitude) const override;
+	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& axis, float magnitude) const override;
 
 
 protected:

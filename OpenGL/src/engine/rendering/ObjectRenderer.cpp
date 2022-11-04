@@ -115,11 +115,14 @@ namespace ObjectRenderer {
 		s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
 		s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
 
-		// for every batch 
-		for (auto& [handleAndFlags, batchData] : s_ObjectBatches) {
+		// for every batch
+		for (auto& [handleAndFlags, batchData] : s_ObjectBatches) 
+		{
 
 			const auto& handle = handleAndFlags.first;
 			const auto& flags = handleAndFlags.second;
+
+			std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -168,6 +171,7 @@ namespace ObjectRenderer {
 			{
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 			}
+
 		}
 
 		// clear buffers
@@ -246,6 +250,8 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 		{
 			batchIndices.push_back(index + maxIndex);
 		}
+
+		Util::printVec(batchIndices, " ");
 	}
 
 	return batchIndices;

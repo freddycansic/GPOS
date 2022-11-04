@@ -24,8 +24,8 @@ Mat4x4 Object::getTransformMatrix() const
 				Maths::translate(Mat4x4::identity(), 
 					m_Transform.tra.x + m_TempTransform.tra.x, m_Transform.tra.y + m_TempTransform.tra.y, m_Transform.tra.z + m_TempTransform.tra.z
 				), 
-				m_Transform.rot.x + m_TempTransform.rot.x, m_Transform.rot.y, m_Transform.rot.z),
-			m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
+				m_Transform.rot.x + m_TempTransform.rot.x, m_Transform.rot.y + m_TempTransform.rot.y, m_Transform.rot.z + m_TempTransform.rot.z),
+			m_Transform.sca.x + m_TempTransform.sca.x, m_Transform.sca.y + m_TempTransform.sca.y, m_Transform.sca.z + m_TempTransform.sca.z);
 }
 
 Cube Object::getAABB() const
@@ -114,17 +114,20 @@ std::optional<Vec3> Object::isRayIntersecting(const Ray& ray) const
 	return pointOfIntersection;
 }
 
-void Object::setScale(float xScale, float yScale, float zScale) {
+void Object::setScale(float xScale, float yScale, float zScale)
+{
 	m_Transform.sca = { xScale, yScale, zScale };
 	moved = true;
 }
 
-void Object::setRotation(float xRotation, float yRotation, float zRotation) {
+void Object::setRotation(float xRotation, float yRotation, float zRotation)
+{
 	m_Transform.rot = { xRotation, yRotation, zRotation };
 	moved = true;
 }
 
-void Object::setTranslation(float xTranslate, float yTranslate, float zTranslate) {
+void Object::setTranslation(float xTranslate, float yTranslate, float zTranslate)
+{
 	m_Transform.tra = { xTranslate, yTranslate, zTranslate };
 	moved = true;
 }
@@ -150,21 +153,24 @@ void Object::addTranslation(float x, float y, float z)
 void Object::offsetScale(float x, float y, float z)
 {
 	m_TempTransform.sca += Vec3(x, y, z);
+	moved = true;
 }
 
 void Object::offsetRotation(float x, float y, float z)
 {
 	m_TempTransform.rot += Vec3(x, y, z);
+	moved = true;
 }
 
 void Object::offsetTranslation(float x, float y, float z)
 {
 	m_TempTransform.tra += Vec3(x, y, z);
+	moved = true;
 }
 
 Vec3 Object::getAvgPosition()
 {
-	if (m_AvgPos.has_value()) return m_AvgPos.value();
+	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();
 
 	Vec3 avg;
 	for (const auto& pos : positions)

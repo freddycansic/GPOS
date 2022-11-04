@@ -24,7 +24,7 @@ void drawAxes()
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
 	ObjectRenderer::draw(x, NO_LIGHTING);
-	ObjectRenderer::draw(z, NO_LIGHTING);
+	//ObjectRenderer::draw(z, NO_LIGHTING);
 	ObjectRenderer::draw(centreCube, NO_LIGHTING);
 }
 
