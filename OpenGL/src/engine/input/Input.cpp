@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <unordered_map>
+#include <array>
 
 #include "engine/Debug.h"
 #include "engine/rendering/gui/GUI.h"
@@ -28,7 +29,7 @@ namespace Input
 
 		xPos = static_cast<float>(xpos);
 		yPos = static_cast<float>(ypos);
-		
+
 		if (firstMouseMove) {
 			lastX = xPos;
 			lastY = yPos;
@@ -68,13 +69,17 @@ namespace Input
 
 	constexpr int JUST_RELEASED = 3;
 
-	int mouseButtonStates[MouseButtons::LAST.keyCode + 1];
+	std::array<int, MouseButtons::LAST.keyCode + 1> mouseButtonStates;
 
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
-		mouseButtonStates[button] = action;
+		if (mouseButtonStates[button] == GLFW_PRESS && action == GLFW_RELEASE)
+		{
+			mouseButtonStates[button] = JUST_RELEASED;
+			return;
+		}
 
-		std::cout << action << " " << button << std::endl;
+		mouseButtonStates[button] = action;
 	}
 
 	bool isMouseButtonDown(const Key& button)
@@ -84,7 +89,13 @@ namespace Input
 
 	bool isMouseButtonJustReleased(const Key& button)
 	{
-		return mouseButtonStates[button.keyCode] == JUST_RELEASED;
+		if (mouseButtonStates[button.keyCode] == JUST_RELEASED)
+		{
+			mouseButtonStates[button.keyCode] = GLFW_RELEASE;
+			return true;
+		}
+
+		return false;
 	}
 
 	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -95,7 +106,7 @@ namespace Input
 		Renderer::recalculateProjectionMatrices();
 	}
 
-	int keyStates[Keys::LAST.keyCode + 1];
+	std::array<int, Keys::LAST.keyCode + 1> keyStates;
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
@@ -173,16 +184,4 @@ namespace Input
 			if (isKeybindJustReleased(keybind)) std::invoke(function);
 		}
 	}
-
 }
-
-//std::unordered_map <std::function<std::any>, std::array<int, 3>> keybinds =
-//{
-//	//{Scene::openScene, {Keys::LEFT_CONTROL, Keys::O, 0}},
-//	{Window::close, {Keys::LEFT_CONTROL, Keys::Q, 0}}
-//};
-
-//auto getKeybinds()
-//{
-//	return keybinds;
-//}

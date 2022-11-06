@@ -89,7 +89,23 @@ namespace Scene
 
 	void handleMouseClicks()
 	{
-		//if (Input::isMouseButtonDown())
+		static bool s_UsingGizmo = false;
+		static Vec2 s_FirstMousePos;
+		static float s_CurrentGizmoTransformMagnitude;
+		static std::optional<Vec3> s_IntersectingAxis;
+
+		if (s_UsingGizmo && Input::isMouseButtonJustReleased(MouseButtons::LEFT))
+		{
+			for (const auto& object : s_SelectedObjects)
+			{
+				sp_Gizmo->getSetTransformation(s_IntersectingAxis.value(), s_CurrentGizmoTransformMagnitude)(*object);
+				sp_Gizmo->getOffsetTransformation({ 1, 1, 1 }, 0)(*object);
+			}
+
+			s_UsingGizmo = false;
+
+			return;
+		}
 
 		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
 
@@ -97,37 +113,27 @@ namespace Scene
 
 		const auto& mouseRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
 
-		//if (Input::isMouseButtonJustDown(MouseButtons::LEFT)) s_FirstMousePos = Input::getMousePos();
-
-		//static std::optional<Vec2> s_FirstMousePos;
-
-		static bool s_UsingGizmo = false;
-		static Vec2 s_FirstMousePos;
-		static Vec3 currentGizmoTransform;
-
 		if (!s_SelectedObjects.empty())
 		{
-			if (const auto& intersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); intersectingAxis.has_value())
+			if (s_IntersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); s_IntersectingAxis.has_value())
 			{
 				if (!s_UsingGizmo) s_FirstMousePos = Input::getMousePos();
 				s_UsingGizmo = true;
 
+				const auto mousePos = Input::getMousePos();
+
+				const auto mousePosDifference = s_FirstMousePos - mousePos;
+				const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
+
+				const auto direction = s_FirstMousePos.dot(mousePos) < 0.0f ? 1.0f : -1.0f;
+
+				static constexpr float SENSITIVITY = 0.1f;
+
+				s_CurrentGizmoTransformMagnitude = SENSITIVITY * mousePosDifferenceMagnitude * direction;
+
 				for (const auto& object : s_SelectedObjects)
 				{
-					const auto mousePos = Input::getMousePos();
-
-					const auto mousePosDifference = s_FirstMousePos - mousePos;
-					const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
-
-					const auto direction = s_FirstMousePos.dot(mousePos) < 0.0f ? 1.0f : -1.0f;
-
-					static constexpr float SENSITIVITY = 0.1f;
-
-					const auto movement = SENSITIVITY * mousePosDifferenceMagnitude * direction;
-
-					currentGizmoTransform = { movement, movement, movement };
-
-					sp_Gizmo->getOffsetTransformation(intersectingAxis.value(), movement)(*object);
+					sp_Gizmo->getOffsetTransformation(s_IntersectingAxis.value(), s_CurrentGizmoTransformMagnitude)(*object);
 				}
 
 				return;

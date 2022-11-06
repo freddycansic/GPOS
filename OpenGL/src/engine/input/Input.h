@@ -30,6 +30,7 @@ namespace Input
 
 	Keybind getFunctionKeybind(void(*function)());
 	bool isKeybindJustReleased(const Keybind& keybind);
+
 	void processFunctionKeybindPresses();
 
 	[[nodiscard]] float getMouseX();
