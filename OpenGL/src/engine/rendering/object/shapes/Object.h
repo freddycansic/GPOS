@@ -38,17 +38,27 @@ public:
 	virtual ~Object() = default;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
+	virtual void setScale(const Vec3& scale);
 	virtual void setRotation(float xRotation, float yRotation, float zRotation);
+	virtual void setRotation(const Vec3& rotation);
 	virtual void setTranslation(float xTranslate, float yTranslate, float zTranslate);
+	virtual void setTranslation(const Vec3& translation);
 
 	virtual void addScale(float x, float y, float z);
+	virtual void addScale(const Vec3& scale);
 	virtual void addRotation(float x, float y, float z);
+	virtual void addRotation(const Vec3& rotation);
 	virtual void addTranslation(float x, float y, float z);
+	virtual void addTranslation(const Vec3& translation);
 
 	virtual void offsetScale(float x, float y, float z);
+	virtual void offsetScale(const Vec3& scale);
 	virtual void offsetRotation(float x, float y, float z);
+	virtual void offsetRotation(const Vec3& rotation);
 	virtual void offsetTranslation(float x, float y, float z);
+	virtual void offsetTranslation(const Vec3& translation);
 
+	void applyOffset();
 	void resetOffset();
 
 	[[nodiscard]] Cube getAABB() const;

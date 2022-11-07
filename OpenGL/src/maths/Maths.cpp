@@ -144,4 +144,24 @@ namespace Maths {
 				{0, 0, 0, 1}
 			});
 	}
+
+	Mat4x4 scale(const Mat4x4& mat, const Vec3& scale)
+	{
+		return Maths::scale(mat, scale.x, scale.y, scale.z);
+	}
+
+	Mat4x4 rotate(const Mat4x4& mat, const Vec3& rotation)
+	{
+		return rotate(mat, rotation.x, rotation.y, rotation.z);
+	}
+
+	Mat4x4 rotateAxis(const Mat4x4& mat, const Vec3& axis, float theta)
+	{
+		return Maths::rotateAxis(mat, axis.x, axis.y, axis.z, theta);
+	}
+
+	Mat4x4 translate(const Mat4x4& mat, const Vec3& translation)
+	{
+		return Maths::translate(mat, translation.x, translation.y, translation.z);
+	}
 }

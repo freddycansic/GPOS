@@ -9,7 +9,7 @@ public:
 	Line(const Vec3& p1, const Vec3& p2, float width, const Material& material);
 	Line(const Ray& ray, float length, float width, const Material& material);
 	~Line() override = default;
-	
+
 	[[nodiscard]] Mesh& getMesh() const override;
 	[[nodiscard]] Mat4x4 getTransformMatrix() const override;
 

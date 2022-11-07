@@ -19,16 +19,19 @@ void Gizmo::render(const Vec3& pos) const
 {
 	using namespace Flags;
 
-	s_Lines[0].p1 = pos;
-	s_Lines[0].p1 = { pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z };
+	//s_Lines[0].p1 = pos;
+	//s_Lines[0].p2 = { pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z };
+	s_Lines[0].setTranslation(pos);
 	ObjectRenderer::draw(s_Lines[0], NO_DEPTH_TEST | NO_LIGHTING);
 
-	s_Lines[1].p1 = pos;
-	s_Lines[1].p1 = { pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z };
+	//s_Lines[1].p1 = pos;
+	//s_Lines[1].p2 = { pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z };
+	s_Lines[0].setTranslation(pos);
 	ObjectRenderer::draw(s_Lines[1], NO_DEPTH_TEST | NO_LIGHTING);
 
-	s_Lines[2].p1 = pos;
-	s_Lines[2].p1 = { pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH };
+	//s_Lines[2].p1 = pos;
+	//s_Lines[2].p2 = { pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH };
+	s_Lines[0].setTranslation(pos);
 	ObjectRenderer::draw(s_Lines[2], NO_DEPTH_TEST | NO_LIGHTING);
 
 	const auto& handles = this->getHandles();
@@ -65,15 +68,6 @@ std::array<std::unique_ptr<Object>, 3> ScaleGizmo::s_Handles =
 	std::make_unique<Cube>(0, 0, 1, SCALE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(Object&)> ScaleGizmo::getSetTransformation(const Vec3& axis, float magnitude) const
-{
-	return { [&axis, magnitude](Object& obj)
-	{
-		const auto scale = axis * magnitude;
-		obj.setScale(scale.x, scale.y, scale.z);
-	}};
-}
-
 std::function<void(Object&)> ScaleGizmo::getOffsetTransformation(const Vec3& axis, float magnitude) const
 {
 	return { [&axis, magnitude](Object& obj)
@@ -99,15 +93,6 @@ std::array<std::unique_ptr<Object>, 3> TranslateGizmo::s_Handles =
 	std::make_unique<Cube>(0, 0, 1, TRANSLATE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(Object&)> TranslateGizmo::getSetTransformation(const Vec3& axis, float magnitude) const
-{
-	return { [&axis, magnitude](Object& obj)
-	{
-		const auto translation = axis * magnitude;
-		obj.setTranslation(translation.x, translation.y, translation.z);
-	}};
-}
-
 std::function<void(Object&)> TranslateGizmo::getOffsetTransformation(const Vec3& axis, float magnitude) const
 {
 	return { [&axis, magnitude](Object& obj)
@@ -132,15 +117,6 @@ std::array<std::unique_ptr<Object>, 3> RotateGizmo::s_Handles =
 	std::make_unique<Cube>(0, -1, 0, ROTATE_GIZMO_HANDLE_SIZE, Colours::GREEN),
 	std::make_unique<Cube>(0, 0, 1, ROTATE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
-
-std::function<void(Object&)> RotateGizmo::getSetTransformation(const Vec3& axis, float magnitude) const
-{
-	return { [&axis, magnitude](Object& obj)
-	{
-		const auto rotation = axis * magnitude;
-		obj.setRotation(rotation.x, rotation.y, rotation.z);
-	}};
-}
 
 std::function<void(Object&)> RotateGizmo::getOffsetTransformation(const Vec3& axis, float magnitude) const
 {

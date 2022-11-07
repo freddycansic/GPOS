@@ -120,10 +120,20 @@ void Object::setScale(float xScale, float yScale, float zScale)
 	moved = true;
 }
 
+void Object::setScale(const Vec3& scale)
+{
+	setScale(scale.x, scale.y, scale.z);
+}
+
 void Object::setRotation(float xRotation, float yRotation, float zRotation)
 {
 	m_Transform.rot = { xRotation, yRotation, zRotation };
 	moved = true;
+}
+
+void Object::setRotation(const Vec3& rotation)
+{
+	setRotation(rotation.x, rotation.y, rotation.z);
 }
 
 void Object::setTranslation(float xTranslate, float yTranslate, float zTranslate)
@@ -132,10 +142,20 @@ void Object::setTranslation(float xTranslate, float yTranslate, float zTranslate
 	moved = true;
 }
 
+void Object::setTranslation(const Vec3& translation)
+{
+	setTranslation(translation.x, translation.y, translation.z);
+}
+
 void Object::addScale(float x, float y, float z)
 {
 	m_Transform.sca += {x, y, z};
 	moved = true;
+}
+
+void Object::addScale(const Vec3& scale)
+{
+	addScale(scale.x, scale.y, scale.z);
 }
 
 void Object::addRotation(float x, float y, float z)
@@ -144,28 +164,59 @@ void Object::addRotation(float x, float y, float z)
 	moved = true;
 }
 
+void Object::addRotation(const Vec3& rotation)
+{
+	addRotation(rotation.x, rotation.y, rotation.z);
+}
+
 void Object::addTranslation(float x, float y, float z)
 {
 	m_Transform.tra += {x, y, z};
 	moved = true;
 }
 
+void Object::addTranslation(const Vec3& translation)
+{
+	addTranslation(translation.x, translation.y, translation.z);
+}
+
 void Object::offsetScale(float x, float y, float z)
 {
-	m_TempTransform.sca += Vec3(x, y, z);
+	m_TempTransform.sca = Vec3(x, y, z);
 	moved = true;
+}
+
+void Object::offsetScale(const Vec3& scale)
+{
+	offsetScale(scale.x, scale.y, scale.z);
 }
 
 void Object::offsetRotation(float x, float y, float z)
 {
-	m_TempTransform.rot += Vec3(x, y, z);
+	m_TempTransform.rot = Vec3(x, y, z);
 	moved = true;
+}
+
+void Object::offsetRotation(const Vec3& rotation)
+{
+	offsetRotation(rotation.x, rotation.y, rotation.z);
 }
 
 void Object::offsetTranslation(float x, float y, float z)
 {
-	m_TempTransform.tra += Vec3(x, y, z);
+	m_TempTransform.tra = Vec3(x, y, z);
 	moved = true;
+}
+
+void Object::offsetTranslation(const Vec3& translation)
+{
+	offsetTranslation(translation.x, translation.y, translation.z);
+}
+
+void Object::applyOffset()
+{
+	m_Transform += m_TempTransform;
+	resetOffset();
 }
 
 void Object::resetOffset()

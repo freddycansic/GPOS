@@ -13,6 +13,7 @@ public:
 	[[nodiscard]] Mesh& getMesh() const override;
 
 	void setScale(float xScale, float yScale, float zScale) override;
+
 private:
 	static Mesh s_Mesh;
 	float m_Size = 1.0f;

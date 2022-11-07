@@ -22,8 +22,14 @@ namespace Maths {
 	Mat4x4 lookAt(const Vec3& position, const Vec3& target, const Vec3& up);
 	Mat4x4 perspective(float fovRad, float aspect, float near, float far);
 	Mat4x4 ortho(float left, float right, float top, float bottom, float near, float far);
+
 	Mat4x4 scale(const Mat4x4& mat, float xScale, float yScale, float zScale);
 	Mat4x4 rotate(const Mat4x4& mat, float xRotate, float yRotate, float zRotate);
 	Mat4x4 rotateAxis(const Mat4x4& mat, float xAxis, float yAxis, float zAxis, float theta);
 	Mat4x4 translate(const Mat4x4& mat, float xTranslate, float yTranslate, float zTranslate);
+
+	Mat4x4 scale(const Mat4x4& mat, const Vec3& scale);
+	Mat4x4 rotate(const Mat4x4& mat, const Vec3& rotation);
+	Mat4x4 rotateAxis(const Mat4x4& mat, const Vec3& axis, float theta);
+	Mat4x4 translate(const Mat4x4& mat, const Vec3& translation);
 }

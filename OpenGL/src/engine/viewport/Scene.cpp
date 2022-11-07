@@ -94,12 +94,32 @@ namespace Scene
 		static float s_CurrentGizmoTransformMagnitude;
 		static std::optional<Vec3> s_IntersectingAxis;
 
+		if (s_UsingGizmo && Input::isMouseButtonDown(MouseButtons::LEFT))
+		{
+			const auto mousePos = Input::getMousePos();
+
+			const auto mousePosDifference = s_FirstMousePos - mousePos;
+			const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
+
+			const auto direction = s_FirstMousePos.dot(mousePos) < 0.0f ? 1.0f : -1.0f;
+
+			static constexpr float SENSITIVITY = 0.05f;
+
+			s_CurrentGizmoTransformMagnitude = SENSITIVITY * mousePosDifferenceMagnitude * direction;
+
+			for (const auto& object : s_SelectedObjects)
+			{
+				sp_Gizmo->getOffsetTransformation(s_IntersectingAxis.value(), s_CurrentGizmoTransformMagnitude)(*object);
+			}
+
+			return;
+		}
+
 		if (s_UsingGizmo && Input::isMouseButtonJustReleased(MouseButtons::LEFT))
 		{
 			for (const auto& object : s_SelectedObjects)
 			{
-				sp_Gizmo->getSetTransformation(s_IntersectingAxis.value(), s_CurrentGizmoTransformMagnitude)(*object);
-				sp_Gizmo->getOffsetTransformation({ 1, 1, 1 }, 0)(*object);
+				object->applyOffset();
 			}
 
 			s_UsingGizmo = false;
@@ -108,7 +128,6 @@ namespace Scene
 		}
 
 		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
-
 		if (s_Objects.empty()) return; // cant select anything from empty scene
 
 		const auto& mouseRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
@@ -118,23 +137,8 @@ namespace Scene
 			if (s_IntersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); s_IntersectingAxis.has_value())
 			{
 				if (!s_UsingGizmo) s_FirstMousePos = Input::getMousePos();
+
 				s_UsingGizmo = true;
-
-				const auto mousePos = Input::getMousePos();
-
-				const auto mousePosDifference = s_FirstMousePos - mousePos;
-				const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
-
-				const auto direction = s_FirstMousePos.dot(mousePos) < 0.0f ? 1.0f : -1.0f;
-
-				static constexpr float SENSITIVITY = 0.1f;
-
-				s_CurrentGizmoTransformMagnitude = SENSITIVITY * mousePosDifferenceMagnitude * direction;
-
-				for (const auto& object : s_SelectedObjects)
-				{
-					sp_Gizmo->getOffsetTransformation(s_IntersectingAxis.value(), s_CurrentGizmoTransformMagnitude)(*object);
-				}
 
 				return;
 			}

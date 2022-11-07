@@ -116,13 +116,12 @@ namespace ObjectRenderer {
 		s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
 
 		// for every batch
-		for (auto& [handleAndFlags, batchData] : s_ObjectBatches) 
+		for (auto& [handleAndFlags, batchData] : s_ObjectBatches)
 		{
-
 			const auto& handle = handleAndFlags.first;
 			const auto& flags = handleAndFlags.second;
 
-			//std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
+			std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -139,10 +138,10 @@ namespace ObjectRenderer {
 					object->positions = mesh.recalculatePositions(object->getTransformMatrix());
 					object->moved = false;
 				} // TODO recalculate normals on scale + rotation
-				
+
 				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{
-					static const Vec4 orange = { 1, 194.0f/255.0f, 102.0f/255.0f, 1 };
+					static const Vec4 orange = { 1, 194.0f / 255.0f, 102.0f / 255.0f, 1 };
 
 					batchVertices.emplace_back
 					(
@@ -167,11 +166,11 @@ namespace ObjectRenderer {
 				GLAPI(glDisable(GL_DEPTH_TEST));
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 				GLAPI(glEnable(GL_DEPTH_TEST)); // TODO reset filters smth
-			} else
+			}
+			else
 			{
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 			}
-
 		}
 
 		// clear buffers
@@ -234,13 +233,6 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 			maxIndex = 0;
 		}
 		else {
-			// 0 1 2 3 4,			0 1 2 3 4,			5 4 3 2 1 0
-			//						cM = 4, lM = 4,		cM = 5, lM = 4
-
-			// m = 4				m = 9				m = 
-
-			// 0 1 2 3 4, 5 6 7 8 9, 15 14 13 12 11 10
-
 			maxIndex += lastMaxShapeIndex + 1;
 		}	
 
@@ -251,7 +243,7 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 			batchIndices.push_back(index + maxIndex);
 		}
 
-		//Util::printVec(batchIndices, " ");
+		Util::printVec(batchIndices, " ");
 	}
 
 	return batchIndices;

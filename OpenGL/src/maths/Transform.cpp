@@ -6,3 +6,10 @@ std::ostream& operator<<(std::ostream& os, const Transform& transform) {
 		"Scale : " << transform.sca.x << ", " << transform.sca.y << ", " << transform.sca.z;
 	return os;
 }
+
+void Transform::operator+=(const Transform& other)
+{
+	this->tra += other.tra;
+	this->rot += other.rot;
+	this->sca += other.sca;
+}
