@@ -88,6 +88,21 @@ void GUI::renderToolbar()
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
+	if (ImGui::Button("Translate"))
+	{
+		
+	}
+
+	if (ImGui::Button("Scale"))
+	{
+		
+	}
+
+	if (ImGui::Button("Rotate"))
+	{
+
+	}
+
 	ImGui::End();
 }
 

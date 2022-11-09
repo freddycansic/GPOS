@@ -94,33 +94,16 @@ namespace Scene
 		static bool s_UsingGizmo = false;
 		static Vec2 s_FirstMousePos;
 		static float s_CurrentGizmoTransformMagnitude;
-		static std::optional<Vec3> s_PointOfIntersection;
 		static std::optional<Vec3> s_IntersectingAxis;
+		static Vec2 s_CentreToFirstMouseScreen, s_SelectionCentreScreen;
 
 		if (s_UsingGizmo && Input::isMouseButtonDown(MouseButtons::LEFT))
 		{
 			const auto mousePos = Input::getMousePos();
 
-			static constexpr float SENSITIVITY = 0.05f;
-			
-			const Vec3 movement;
-			const auto& centre = getSelectionCenter();
-			const Vec4 projectedCentre = Vec4(centre, 1.0f) * Renderer::getViewProjectionMatrix();
-			const Vec2 flattenedCentreNDC = { projectedCentre.x / projectedCentre.w, projectedCentre.y / projectedCentre.w };
+			const auto centreToCurrentMouse = mousePos - s_SelectionCentreScreen;
 
-			//x = (2 * screen.x / width - 1.0f)
-			//(x + 1) * width / 2 = screen.x
-
-			//y = 1 - 2 * screen.y / height
-			//(y - 1) * height / -2 = screen.y
-
-			const Vec2 selectionCentreScreen = Camera::NDCToScreenBounds(flattenedCentreNDC);
-			const auto centreToFirstMouse = s_FirstMousePos - selectionCentreScreen; // TODO only get once at first click
-			const auto centreToCurrentMouse = mousePos - selectionCentreScreen;
-
-			const auto mag = centreToFirstMouse.dot(centreToCurrentMouse) / std::powf(centreToFirstMouse.magnitude(), 2);
-
-			std::cout << mag << std::endl;
+			const auto mag = s_CentreToFirstMouseScreen.dot(centreToCurrentMouse) / std::powf(s_CentreToFirstMouseScreen.magnitude(), 2);
 
 			for (const auto& object : s_SelectedObjects)
 			{
@@ -151,16 +134,23 @@ namespace Scene
 		{
 			if (s_IntersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); s_IntersectingAxis.has_value())
 			{
-				if (!s_UsingGizmo) s_FirstMousePos = Input::getMousePos();
+				if (!s_UsingGizmo) 
+				{
+					s_FirstMousePos = Input::getMousePos();
+
+					const auto& centre = getSelectionCenter();
+					const Vec4 projectedCentre = Vec4(centre, 1.0f) * Renderer::getViewProjectionMatrix();
+					const Vec2 flattenedCentreNDC = { projectedCentre.x / projectedCentre.w, projectedCentre.y / projectedCentre.w };
+
+					s_SelectionCentreScreen = Camera::NDCToScreenBounds(flattenedCentreNDC);
+					s_CentreToFirstMouseScreen = s_FirstMousePos - s_SelectionCentreScreen; // TODO only get once at first click
+				}
 
 				s_UsingGizmo = true;
-				s_PointOfIntersection = sp_Gizmo->getHandleIntersectionPoint(mouseRay);
 
 				return;
 			}
 		}
-
-		//s_FirstMousePos = std::optional<Vec2>(); // reset first mouse pos
 
 		const auto closestObject = findClosestIntersectingObject(mouseRay, Camera::getPos());
 
