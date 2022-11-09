@@ -92,24 +92,38 @@ namespace Scene
 		static bool s_UsingGizmo = false;
 		static Vec2 s_FirstMousePos;
 		static float s_CurrentGizmoTransformMagnitude;
+		static std::optional<Vec3> s_PointOfIntersection;
 		static std::optional<Vec3> s_IntersectingAxis;
 
 		if (s_UsingGizmo && Input::isMouseButtonDown(MouseButtons::LEFT))
 		{
 			const auto mousePos = Input::getMousePos();
 
+			//std::cout << "First = " << s_FirstMousePos << std::endl;
+			//std::cout << "Current = " << mousePos << "\n" << std::endl;
+
 			const auto mousePosDifference = s_FirstMousePos - mousePos;
 			const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
 
-			const auto direction = s_FirstMousePos.dot(mousePos) < 0.0f ? 1.0f : -1.0f;
-
+			const auto direction = s_IntersectingAxis.value().dot(s_PointOfIntersection.value());
+			
 			static constexpr float SENSITIVITY = 0.05f;
 
 			s_CurrentGizmoTransformMagnitude = SENSITIVITY * mousePosDifferenceMagnitude * direction;
+			std::cout << s_CurrentGizmoTransformMagnitude << std::endl;
 
 			for (const auto& object : s_SelectedObjects)
 			{
-				sp_Gizmo->getOffsetTransformation(s_IntersectingAxis.value(), s_CurrentGizmoTransformMagnitude)(*object);
+				const Vec3 movement =
+				{
+					s_IntersectingAxis->x * s_PointOfIntersection->x,
+					s_IntersectingAxis->y * s_PointOfIntersection->y,
+					s_IntersectingAxis->z * s_PointOfIntersection->z
+				};
+
+				std::cout << movement << std::endl;
+
+				sp_Gizmo->getOffsetTransformation(movement)(*object);
 			}
 
 			return;
@@ -139,6 +153,7 @@ namespace Scene
 				if (!s_UsingGizmo) s_FirstMousePos = Input::getMousePos();
 
 				s_UsingGizmo = true;
+				s_PointOfIntersection = sp_Gizmo->getHandleIntersectionPoint(mouseRay);
 
 				return;
 			}

@@ -121,7 +121,7 @@ namespace ObjectRenderer {
 			const auto& handle = handleAndFlags.first;
 			const auto& flags = handleAndFlags.second;
 
-			std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
+			//std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
 
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -243,7 +243,7 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 			batchIndices.push_back(index + maxIndex);
 		}
 
-		Util::printVec(batchIndices, " ");
+		//Util::printVec(batchIndices, " ");
 	}
 
 	return batchIndices;
