@@ -24,11 +24,13 @@
 #include <GLFW/glfw3.h>
 
 #ifdef _MSC_VER
-	#define ASSERT(x, msg) if (!(x)) { std::cout << (msg) << std::endl; __debugbreak();}
+	#define ASSERT_WITH_MSG(x, msg) if (!(x)) { std::cout << (msg) << std::endl; __debugbreak();}
 #else
 	#include <cassert>
-	#define ASSERT(x) if (!(x)) { std::cout << msg << std::endl; assert(false);}
+	#define ASSERT_WITH_MSG(x) if (!(x)) { std::cout << msg << std::endl; assert(false);}
 #endif
+
+#define ASSERT(x) ASSERT_WITH_MSG(x, "")
 
 #define DEBUG
 

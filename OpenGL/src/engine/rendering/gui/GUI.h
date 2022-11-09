@@ -2,6 +2,10 @@
 
 namespace GUI
 {
+	void init();
+	void startFrame();
+	void endFrame();
+
 	void renderMenuBar();
 
 	void renderToolbar();

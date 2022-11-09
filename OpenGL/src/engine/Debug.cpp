@@ -109,9 +109,12 @@ namespace Debug {
 		supportedExtensions[extension] = supported;
 
 		std::cout << extension << " : " << (supported ? "" : "NOT ") << "SUPPORTED" << std::endl;
+
+		ASSERT(supported);
 	}
 
 	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+		// TODO use built ins
 		const char* severityStr = severityEnumToString(severity);
 		const char* sourceStr = sourceEnumToString(source);
 		const char* typeStr = typeEnumToString(type);

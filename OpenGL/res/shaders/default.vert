@@ -14,7 +14,8 @@ out vec3 v_FragPos;
 
 uniform mat4 u_ViewProj;
 
-void main() {
+void main() 
+{
 	gl_Position = u_ViewProj * a_Position;
 
 	v_Colour = a_Colour;

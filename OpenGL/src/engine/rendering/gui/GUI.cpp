@@ -3,6 +3,8 @@
 #include <array>
 
 #include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 #include "engine/Util.h"
 #include "engine/Window.h"
@@ -12,6 +14,29 @@
 #include "engine/viewport/Scene.h"
 #include "engine/rendering/object/Material.h"
 #include "engine/rendering/object/shapes/Cube.h"
+
+void GUI::init()
+{
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(Window::GLFWWindow(), true);
+	ImGui_ImplOpenGL3_Init();
+	ImGui::StyleColorsDark();
+
+	ImGui::GetIO().IniFilename = nullptr; // stops immgui from creating ini file
+}
+
+void GUI::startFrame()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+}
+
+void GUI::endFrame()
+{
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
 
 void GUI::renderMenuBar()
 {
@@ -84,7 +109,7 @@ void GUI::renderMenuBar()
 void GUI::renderToolbar()
 {
 	ImGui::SetNextWindowPos(ImVec2(0, 50));
-	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 
