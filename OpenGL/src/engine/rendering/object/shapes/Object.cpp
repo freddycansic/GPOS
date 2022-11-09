@@ -22,10 +22,9 @@ Mat4x4 Object::getTransformMatrix() const
 		Maths::scale(
 			Maths::rotate(
 				Maths::translate(Mat4x4::identity(), 
-					m_Transform.tra.x + m_TempTransform.tra.x, m_Transform.tra.y + m_TempTransform.tra.y, m_Transform.tra.z + m_TempTransform.tra.z
-				), 
-				m_Transform.rot.x + m_TempTransform.rot.x, m_Transform.rot.y + m_TempTransform.rot.y, m_Transform.rot.z + m_TempTransform.rot.z),
-			m_Transform.sca.x + m_TempTransform.sca.x, m_Transform.sca.y + m_TempTransform.sca.y, m_Transform.sca.z + m_TempTransform.sca.z);
+					m_Transform.tra + m_TempTransform.tra), 
+				m_Transform.rot + m_TempTransform.rot),
+			m_Transform.sca + m_TempTransform.sca);
 }
 
 Cube Object::getAABB() const
@@ -221,7 +220,7 @@ void Object::applyOffset()
 
 void Object::resetOffset()
 {
-	m_TempTransform = Transform();
+	m_TempTransform = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
 }
 
 Vec3 Object::getAvgPosition()

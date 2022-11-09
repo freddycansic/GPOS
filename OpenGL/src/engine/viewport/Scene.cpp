@@ -6,7 +6,9 @@
 #include "Camera.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/ObjectRenderer.h"
+#include "engine/rendering/Renderer.h"
 #include "engine/rendering/object/shapes/Cube.h"
+#include "engine/Window.h"
 
 std::vector<std::unique_ptr<Object>> s_Objects;
 std::vector<Object*> s_SelectedObjects;
@@ -99,31 +101,30 @@ namespace Scene
 		{
 			const auto mousePos = Input::getMousePos();
 
-			//std::cout << "First = " << s_FirstMousePos << std::endl;
-			//std::cout << "Current = " << mousePos << "\n" << std::endl;
-
-			const auto mousePosDifference = s_FirstMousePos - mousePos;
-			const auto mousePosDifferenceMagnitude = mousePosDifference.magnitude();
-
-			const auto direction = s_IntersectingAxis.value().dot(s_PointOfIntersection.value());
-			
 			static constexpr float SENSITIVITY = 0.05f;
+			
+			const Vec3 movement;
+			const auto& centre = getSelectionCenter();
+			const Vec4 projectedCentre = Vec4(centre, 1.0f) * Renderer::getViewProjectionMatrix();
+			const Vec2 flattenedCentreNDC = { projectedCentre.x / projectedCentre.w, projectedCentre.y / projectedCentre.w };
 
-			s_CurrentGizmoTransformMagnitude = SENSITIVITY * mousePosDifferenceMagnitude * direction;
-			std::cout << s_CurrentGizmoTransformMagnitude << std::endl;
+			//x = (2 * screen.x / width - 1.0f)
+			//(x + 1) * width / 2 = screen.x
+
+			//y = 1 - 2 * screen.y / height
+			//(y - 1) * height / -2 = screen.y
+
+			const Vec2 selectionCentreScreen = Camera::NDCToScreenBounds(flattenedCentreNDC);
+			const auto centreToFirstMouse = s_FirstMousePos - selectionCentreScreen; // TODO only get once at first click
+			const auto centreToCurrentMouse = mousePos - selectionCentreScreen;
+
+			const auto mag = centreToFirstMouse.dot(centreToCurrentMouse) / std::powf(centreToFirstMouse.magnitude(), 2);
+
+			std::cout << mag << std::endl;
 
 			for (const auto& object : s_SelectedObjects)
 			{
-				const Vec3 movement =
-				{
-					s_IntersectingAxis->x * s_PointOfIntersection->x,
-					s_IntersectingAxis->y * s_PointOfIntersection->y,
-					s_IntersectingAxis->z * s_PointOfIntersection->z
-				};
-
-				std::cout << movement << std::endl;
-
-				sp_Gizmo->getOffsetTransformation(movement)(*object);
+				sp_Gizmo->getOffsetTransformation(s_IntersectingAxis.value() * -1 * (mag - 1))(*object);
 			}
 
 			return;

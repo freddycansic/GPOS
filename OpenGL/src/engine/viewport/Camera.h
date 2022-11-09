@@ -17,7 +17,10 @@ namespace Camera
 		ORBIT
 	};
 
-	Ray perspRayFromCameraScreenPos(const Vec2& screenCoord);
+	Ray perspRayFromCameraScreenPos(Vec2 screenCoord);
+
+	Vec2 NDCToScreenBounds(Vec2 NDCCoord);
+	Vec2 screenToNDCBounds(Vec2 screenCoord);
 
 	void update();
 	void setMode(CameraMode mode);

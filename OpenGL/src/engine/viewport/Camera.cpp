@@ -15,18 +15,34 @@ Mat4x4 fpsFlyUpdate();
 
 namespace Camera
 {
-	// https://stackoverflow.com/questions/45893277/is-it-possible-get-which-surface-of-cube-will-be-click-in-opengl/45946943#45946943
-	Ray perspRayFromCameraScreenPos(const Vec2& screenPos)
+	Vec2 NDCToScreenBounds(Vec2 NDCCoord)
 	{
 		const auto w = static_cast<float>(Window::width());
 		const auto h = static_cast<float>(Window::height());
 
-		// x and y in range -1 to 1
-		const Vec2 NDCPos =
+		return
 		{
-			(2.0f * screenPos.x / w - 1.0f),
-			1.0f - 2.0f * screenPos.y / h
+			(NDCCoord.x + 1.0f) * w / 2.0f,
+			(NDCCoord.y - 1.0f) * h / -2.0f
 		};
+	}
+
+	Vec2 screenToNDCBounds(Vec2 screenCoord)
+	{
+		const auto w = static_cast<float>(Window::width());
+		const auto h = static_cast<float>(Window::height());
+
+		return
+		{
+			(2.0f * screenCoord.x / w - 1.0f),
+			1.0f - 2.0f * screenCoord.y / h
+		};
+	}
+
+	// https://stackoverflow.com/questions/45893277/is-it-possible-get-which-surface-of-cube-will-be-click-in-opengl/45946943#45946943
+	Ray perspRayFromCameraScreenPos(Vec2 screenCoord)
+	{
+		const auto NDCPos = screenToNDCBounds(screenCoord);
 
 		const Vec3 directionView = Vec3(Vec4(NDCPos.x, NDCPos.y, 0, 1) * Renderer::getProjectionMatrix().adjugateInverse()).normalise();
 

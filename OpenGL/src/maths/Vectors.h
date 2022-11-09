@@ -5,11 +5,15 @@
 
 #include "Maths.h"
 
+struct Vec4; // forward delaration for vec3 + vec4 conversion
+
 struct Vec2 {
 	float x = 0.0f, y = 0.0f;
 
 	Vec2() = default;
 	Vec2(float x, float y);
+
+	explicit Vec2(const Vec4& vec4);
 
 	Vec2 operator-(Vec2 other) const;
 
@@ -19,7 +23,6 @@ struct Vec2 {
 	[[nodiscard]] float angleBetween(Vec2 other) const;
 };
 
-struct Vec4; // forward delaration for vec3 conversion
 
 struct Vec3 {
 	union { float x = 0.0f, r; };

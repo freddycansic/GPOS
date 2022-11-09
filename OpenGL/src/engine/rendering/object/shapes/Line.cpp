@@ -72,7 +72,7 @@ Mat4x4 Line::getTransformMatrix() const
 
 	const float theta = i.angleBetween(diff);
 
-	auto transform = Maths::translate(Mat4x4::identity(), p2.x + m_TempTransform.tra.x, p2.y + m_TempTransform.tra.y, p2.z + m_TempTransform.tra.z);
+	auto transform = Maths::translate(Mat4x4::identity(), p2.x, p2.y, p2.z);
 	transform = Maths::rotateAxis(transform, axis.x, axis.y, axis.z, theta);
 	transform = Maths::scale(transform, mag, m_Transform.sca.y, m_Transform.sca.z);
 

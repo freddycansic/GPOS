@@ -8,6 +8,7 @@
 Mat4x4 Renderer::s_Persp;
 Mat4x4 Renderer::s_Ortho;
 Mat4x4 Renderer::s_Proj;
+Mat4x4 Renderer::s_ViewProj;
 
 void Renderer::init() {
 	GLAPI(glEnable(GL_BLEND)); // enable alpha blending
@@ -23,10 +24,10 @@ void Renderer::init() {
 }
 
 void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader) {
-	const Mat4x4 vp = s_Proj * Camera::getViewMatrix();
+	s_ViewProj = s_Proj * Camera::getViewMatrix();
 
 	shader.bind();
-	shader.setUniformMat4("u_ViewProj", vp);
+	shader.setUniformMat4("u_ViewProj", s_ViewProj);
 
 	vao.bind();
 
@@ -48,9 +49,14 @@ void Renderer::setProjectionMatrix(const Mat4x4& mat) {
 	s_Proj = mat;
 }
 
-Mat4x4 Renderer::getProjectionMatrix()
+const Mat4x4& Renderer::getProjectionMatrix()
 {
 	return s_Proj;
+}
+
+const Mat4x4& Renderer::getViewProjectionMatrix()
+{
+	return s_ViewProj;
 }
 
 void Renderer::recalculateProjectionMatrices()

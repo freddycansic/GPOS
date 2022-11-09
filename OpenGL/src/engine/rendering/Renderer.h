@@ -16,7 +16,7 @@ class Renderer
 {
 private:
 
-	static Mat4x4 s_Persp, s_Ortho, s_Proj, s_View;
+	static Mat4x4 s_Persp, s_Ortho, s_Proj, s_View, s_ViewProj;
 
 public:
 	Renderer() = delete;
@@ -28,7 +28,10 @@ public:
 	static void draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader);
 
 	static void setProjectionMatrix(const Mat4x4& mat);
-	static Mat4x4 getProjectionMatrix();
+
+	static const Mat4x4& getProjectionMatrix();
+	static const Mat4x4& getViewProjectionMatrix();
+
 	static void recalculateProjectionMatrices();
 
 	static void setRenderMode(RenderMode renderMode);
