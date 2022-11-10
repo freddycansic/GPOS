@@ -13,3 +13,8 @@ void Transform::operator+=(const Transform& other)
 	this->rot += other.rot;
 	this->sca += other.sca;
 }
+
+Transform Transform::operator+(const Transform& other) const
+{
+	return {{tra + other.tra}, {rot + other.rot}, {sca + other.sca}};
+}

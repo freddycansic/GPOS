@@ -223,6 +223,16 @@ void Object::resetOffset()
 	m_TempTransform = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
 }
 
+const Transform& Object::getTransform() const
+{
+	return m_Transform;
+}
+
+const Transform& Object::getTempTransform() const
+{
+	return m_TempTransform;
+}
+
 Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();

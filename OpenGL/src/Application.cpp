@@ -66,22 +66,6 @@ void Application::render()
 
 	ObjectRenderer::begin();
 
-	//static constexpr float radius = 5.0f;
-	//static Vec3 lPos = { radius, 2, radius };
-
-	//lPos.x = radius * sin(Window::currentTime());
-	//lPos.z = radius * cos(Window::currentTime());
-
-	//ObjectRenderer::draw(Light(lPos, {1, 1, 1}));
-	//Cube c(lPos, 0.5f, Colours::WHITE);
-	//ObjectRenderer::draw(c, NO_LIGHTING);
-
-	//Cube c0(1.5f, 0, 0, 2.0f, Colours::RED);
-	//ObjectRenderer::draw(c0);
-
-	//Cube c1(4.5f, 0, 0, 2.0f, Colours::GREEN);
-	//ObjectRenderer::draw(c1);
-
 	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
 	Scene::render();
 	drawAxes();

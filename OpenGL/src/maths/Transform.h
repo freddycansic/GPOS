@@ -8,6 +8,7 @@ struct Transform {
 	Vec3 sca = {1.0f, 1.0f, 1.0f};
 
 	void operator+=(const Transform& other);
+	Transform operator+(const Transform& other) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Transform& transform);

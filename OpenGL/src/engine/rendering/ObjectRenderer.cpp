@@ -53,6 +53,7 @@ std::unique_ptr<Shader> s_Shader = nullptr;
 void checkRendererReady(const State& state);
 void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags);
 std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
+void recalculateAllBatchPositions(const BatchData& batchData);
 
 namespace ObjectRenderer {
 
@@ -123,7 +124,22 @@ namespace ObjectRenderer {
 
 			//std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
 
+			// TODO thread all index complication once per frame
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
+
+			// concurrently calculate mesh positions and normals
+			std::thread recalculateAllBatchPositionsThread(recalculateAllBatchPositions, std::ref(batchData));
+
+			for (const auto& object : batchData.objects )
+			{
+				if (object->moved)
+				{
+					object->normals = object->getMesh().recalculateNormals(object->getTransform() + object->getTempTransform());
+				}
+			}
+
+			// mesh positionsn and normals recalculated
+			recalculateAllBatchPositionsThread.join();
 
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
@@ -132,12 +148,7 @@ namespace ObjectRenderer {
 			{
 				auto& mesh = object->getMesh();
 
-				// vertices
-				if (object->moved)
-				{
-					object->positions = mesh.recalculatePositions(object->getTransformMatrix());
-					object->moved = false;
-				} // TODO recalculate normals on scale + rotation
+				object->moved = false; // object is guaranteed to have its positions recalculated
 
 				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{
@@ -148,7 +159,7 @@ namespace ObjectRenderer {
 						object->positions.at(i),
 						object->selected ? orange : object->material.colour,
 						mesh.textureCoordinates.at(i),
-						mesh.normals.at(i)
+						object->normals.at(i)
 					);
 				}
 			}
@@ -247,4 +258,15 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 	}
 
 	return batchIndices;
+}
+
+void recalculateAllBatchPositions(const BatchData& batchData)
+{
+	for (auto& object : batchData.objects)
+	{
+		if (object->moved)
+		{
+			object->positions = object->getMesh().recalculatePositions(object->getTransformMatrix());
+		}
+	}
 }

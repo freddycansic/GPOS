@@ -21,6 +21,7 @@ struct Mesh
 
 	[[nodiscard]] unsigned int getMaxInt();
 	[[nodiscard]] std::vector<Vec3> recalculatePositions(const Mat4x4& transformMatrix) const;
+	[[nodiscard]] std::vector<Vec3> recalculateNormals(const Transform& transform) const;
 
 private:
 	std::optional<unsigned int> m_MaxInt;

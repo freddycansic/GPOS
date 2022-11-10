@@ -16,6 +16,8 @@ struct Object
 {
 public:
 	std::vector<Vec3> positions;
+	std::vector<Vec3> normals;
+
 	Material material;
 	bool selected = false;
 	bool moved = true;
@@ -60,6 +62,9 @@ public:
 
 	void applyOffset();
 	void resetOffset();
+
+	[[nodiscard]] const Transform& getTransform() const;
+	[[nodiscard]] const Transform& getTempTransform() const;
 
 	[[nodiscard]] Cube getAABB() const;
 	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass
