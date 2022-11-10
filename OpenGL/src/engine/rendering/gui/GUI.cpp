@@ -106,26 +106,32 @@ void GUI::renderMenuBar()
 	ImGui::End();
 }
 
+void renderProperties()
+{
+	ImGui::SetNextWindowPos({ static_cast<float>(Window::width() - 100), 50 });
+}
+
 void GUI::renderToolbar()
 {
 	ImGui::SetNextWindowPos(ImVec2(0, 50));
 	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
+	ImGui::Text("Time per frame %.4f", static_cast<double>(ImGui::GetIO().DeltaTime));
 
 	if (ImGui::Button("Translate"))
 	{
-		
+		Scene::setGizmoToTranslate();
 	}
 
 	if (ImGui::Button("Scale"))
 	{
-		
+		Scene::setGizmoToScale();
 	}
 
 	if (ImGui::Button("Rotate"))
 	{
-
+		Scene::setGizmoToRotate();
 	}
 
 	ImGui::End();

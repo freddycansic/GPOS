@@ -80,11 +80,11 @@ std::array<std::unique_ptr<Object>, 3> ScaleGizmo::s_Handles =
 	std::make_unique<Cube>(0, 0, 1, SCALE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(Object&)> ScaleGizmo::getOffsetTransformation(const Vec3& transformation) const
+std::function<void(Object&)> ScaleGizmo::getOffsetTransformation(const Vec3& scale) const
 {
-	return { [&transformation](Object& obj)
+	return { [&scale](Object& obj)
 	{
-		obj.offsetScale(transformation);
+		obj.offsetScale(scale * -1.0f);
 	}};
 }
 
@@ -104,11 +104,11 @@ std::array<std::unique_ptr<Object>, 3> TranslateGizmo::s_Handles =
 	std::make_unique<Cube>(0, 0, 1, TRANSLATE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(Object&)> TranslateGizmo::getOffsetTransformation(const Vec3& transformation) const
+std::function<void(Object&)> TranslateGizmo::getOffsetTransformation(const Vec3& translation) const
 {
-	return { [&transformation](Object& obj)
+	return { [&translation](Object& obj)
 	{
-		obj.offsetTranslation(transformation);
+		obj.offsetTranslation(translation.x, translation.y, -translation.z);
 	}};
 }
 
@@ -128,11 +128,13 @@ std::array<std::unique_ptr<Object>, 3> RotateGizmo::s_Handles =
 	std::make_unique<Cube>(0, 0, 1, ROTATE_GIZMO_HANDLE_SIZE, Colours::BLUE)
 };
 
-std::function<void(Object&)> RotateGizmo::getOffsetTransformation(const Vec3& transformation) const
+std::function<void(Object&)> RotateGizmo::getOffsetTransformation(const Vec3& rotate) const
 {
-	return { [&transformation](Object& obj)
+	static constexpr float ROTATION_SENSITIVITY = 30.0f;
+
+	return { [&rotate](Object& obj)
 	{
-		obj.offsetRotation(transformation);
+		obj.offsetRotation(rotate * ROTATION_SENSITIVITY);
 	} };
 }
 

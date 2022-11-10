@@ -35,7 +35,7 @@
 #define DEBUG
 
 #ifdef DEBUG
-#define GLAPI(x) Debug::clearGLError(); x; ASSERT(Debug::logGLFunc(#x, __FILE__, __LINE__), "")
+#define GLAPI(x) Debug::clearGLError(); x; ASSERT_WITH_MSG(Debug::logGLFunc(#x, __FILE__, __LINE__), "")
 #else
 	#define GLAPI(x) x
 #endif

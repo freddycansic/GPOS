@@ -29,7 +29,7 @@ protected:
 class ScaleGizmo : public Gizmo
 {
 public:
-	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& transformation) const override;
+	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& scale) const override;
 
 protected:
 	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
@@ -41,7 +41,7 @@ private:
 class TranslateGizmo : public Gizmo
 {
 public:
-	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& transformation) const override;
+	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& translate) const override;
 
 protected:
 	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
@@ -53,7 +53,7 @@ private:
 class RotateGizmo : public Gizmo
 {
 public:
-	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& transformation) const override;
+	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& rotate) const override;
 
 
 protected:

@@ -9,6 +9,7 @@ namespace GUI
 	void renderMenuBar();
 
 	void renderToolbar();
+	void renderProperties();
 
 	void showNewObjectMenu();
 	void renderNewObjectMenu();

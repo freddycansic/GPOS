@@ -71,11 +71,6 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 
 namespace Scene
 {
-	void addObject(std::unique_ptr<Object>&& objectPtr)
-	{
-		s_Objects.push_back(std::move(objectPtr));
-	}
-
 	void render()
 	{
 		for (const auto& object : s_Objects)
@@ -93,7 +88,6 @@ namespace Scene
 	{
 		static bool s_UsingGizmo = false;
 		static Vec2 s_FirstMousePos;
-		static float s_CurrentGizmoTransformMagnitude;
 		static std::optional<Vec3> s_IntersectingAxis;
 		static Vec2 s_CentreToFirstMouseScreen, s_SelectionCentreScreen;
 
@@ -167,5 +161,25 @@ namespace Scene
 			// TODO
 			if (sp_Gizmo == nullptr) sp_Gizmo = std::make_unique<TranslateGizmo>();
 		}
+	}
+
+	void addObject(std::unique_ptr<Object>&& objectPtr)
+	{
+		s_Objects.push_back(std::move(objectPtr));
+	}
+
+	void setGizmoToTranslate()
+	{
+		sp_Gizmo = std::make_unique<TranslateGizmo>();
+	}
+
+	void setGizmoToScale()
+	{
+		sp_Gizmo = std::make_unique<ScaleGizmo>();
+	}
+
+	void setGizmoToRotate()
+	{
+		sp_Gizmo = std::make_unique<RotateGizmo>();
 	}
 }
