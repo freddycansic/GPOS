@@ -6,12 +6,15 @@
 #include "maths/Vectors.h"
 #include "engine/rendering/Renderer.h"
 
-Camera::CameraMode s_Mode = Camera::CameraMode::FPS_FLY;
+Camera::CameraMode s_Mode = Camera::CameraMode::ORBIT;
 Mat4x4 s_View = Mat4x4::identity();
 
 Vec3 s_CameraPos = { 0.0f, 0.0f, 30.0f };
 
 Mat4x4 fpsFlyUpdate();
+
+Vec3 s_OrbitTarget;
+Mat4x4 orbitUpdate();
 
 namespace Camera
 {
@@ -64,6 +67,7 @@ namespace Camera
 		}
 
 		case CameraMode::ORBIT:
+			s_View = orbitUpdate();
 			break;
 
 		default:
@@ -74,6 +78,11 @@ namespace Camera
 	void setMode(CameraMode mode)
 	{
 		s_Mode = mode;
+	}
+
+	void setOrbitTarget(const Vec3& target)
+	{
+		s_OrbitTarget = target;
 	}
 
 	Vec3 getPos()
@@ -111,4 +120,21 @@ Mat4x4 fpsFlyUpdate()
 	}
 
 	return Maths::lookAt(s_CameraPos, s_CameraPos + ls_CameraFront, ls_CameraUp);
+}
+
+Mat4x4 orbitUpdate()
+{
+	static Vec3 ls_CameraUp = { 0, 1, 0 };
+
+	static float ls_Radius = 5.0f;
+	static constexpr float SENSITIVITY = 0.01f;
+
+	s_CameraPos =
+	{
+		ls_Radius * sin(Input::getMouseYaw() * SENSITIVITY) * cos(Input::getMousePitch() * SENSITIVITY),
+		ls_Radius * sin(Input::getMouseYaw() * SENSITIVITY) * sin(Input::getMousePitch() * SENSITIVITY),
+		ls_Radius * cos(Input::getMouseYaw() * SENSITIVITY),
+	};
+
+	return Maths::lookAt(s_CameraPos, s_OrbitTarget, ls_CameraUp);
 }

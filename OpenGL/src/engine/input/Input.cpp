@@ -13,6 +13,7 @@
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 #include "engine/viewport/Scene.h"
+#include "engine/viewport/Camera.h"
 
 namespace Input
 {
@@ -146,6 +147,22 @@ namespace Input
 		{Scene::setGizmoToTranslate, {Keys::G}},
 		{Scene::setGizmoToScale, {Keys::S}},
 		{Scene::setGizmoToRotate, {Keys::R}},
+
+		{[]
+		{// TODO make mouse buttons be able to activate keybinds
+			const auto& selectedObjects = Scene::getSelectedObjects();
+			const auto ray = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
+
+			for (const auto& object : selectedObjects)
+			{
+				if (object->isRayIntersecting(ray))
+				{
+					Camera::setOrbitTarget(object->getAvgPosition());
+					break;
+				}
+			}
+
+		}, {MouseButtons::MIDDLE}},
 
 		// TODO TEMP
 		{Window::beginCursorCapture, {Keys::C}},

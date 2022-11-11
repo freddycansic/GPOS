@@ -1,5 +1,6 @@
 #pragma once
 
+#include "engine/rendering/object/shapes/Object.h"
 #include "maths/Maths.h"
 #include "maths/Vectors.h"
 
@@ -24,6 +25,8 @@ namespace Camera
 
 	void update();
 	void setMode(CameraMode mode);
+
+	void setOrbitTarget(const Vec3& target);
 
 	Vec3 getPos();
 	Mat4x4 getViewMatrix();

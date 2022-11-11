@@ -182,4 +182,9 @@ namespace Scene
 	{
 		sp_Gizmo = std::make_unique<RotateGizmo>();
 	}
+
+	const std::vector<Object*>& getSelectedObjects()
+	{
+		return s_SelectedObjects;
+	}
 }

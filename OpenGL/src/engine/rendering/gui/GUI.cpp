@@ -117,7 +117,7 @@ void GUI::renderToolbar()
 	ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
 
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
-	ImGui::Text("Time per frame %.4f", static_cast<double>(ImGui::GetIO().DeltaTime));
+	ImGui::Text("Time per frame %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
 
 	if (ImGui::Button("Translate"))
 	{
