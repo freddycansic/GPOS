@@ -18,7 +18,7 @@
 namespace Input
 {
 	// initial mouse pos = middle of the screen
-	float xOffset, yOffset, yaw = -90.0f, pitch = 0.0f;
+	float xOffset, yOffset, yaw = 25.0f, pitch = 45.0f;
 	Vec3 cameraDirection;
 	float xPos, yPos;
 
@@ -49,8 +49,9 @@ namespace Input
 		yaw -= xOffset * sens;
 		pitch -= yOffset * sens;
 
-		//pitch = std::clamp(pitch, -89.0f, 89.0f);
-		//yaw = std::fmod(yaw, 360.0f);
+		//pitch = std::clamp(pitch, -89.9f, 89.9f);
+		pitch = std::clamp(pitch, 0.1f, 103.9f); // TODO magic values which stop orbit camera from freaking out when looking directly down/up on/to an object
+		yaw = std::fmod(yaw, 360.0f);
 
 		cameraDirection = Vec3(
 			cos(Maths::radians(yaw)) * cos(Maths::radians(pitch)),

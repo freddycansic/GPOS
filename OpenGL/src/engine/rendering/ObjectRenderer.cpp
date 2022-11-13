@@ -122,8 +122,6 @@ namespace ObjectRenderer {
 			const auto& handle = handleAndFlags.first;
 			const auto& flags = handleAndFlags.second;
 
-			//std::cout << "BATCH FLAGS=" << flags << " STARTED" << std::endl;
-
 			// TODO thread all index complication once per frame
 			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
 
@@ -138,7 +136,7 @@ namespace ObjectRenderer {
 				}
 			}
 
-			// mesh positionsn and normals recalculated
+			// mesh positions and normals recalculated
 			recalculateAllBatchPositionsThread.join();
 
 			std::vector<Vertex> batchVertices;
@@ -254,7 +252,6 @@ std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
 			batchIndices.push_back(index + maxIndex);
 		}
 
-		//Util::printVec(batchIndices, " ");
 	}
 
 	return batchIndices;

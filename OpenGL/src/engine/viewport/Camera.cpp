@@ -129,16 +129,12 @@ Mat4x4 orbitUpdate()
 	static float ls_Radius = 5.0f;
 	static constexpr float SENSITIVITY = 0.03f;
 
-	std::cout << Vec2(Input::getMouseYaw(), Input::getMousePitch()) << std::endl;
-
 	s_CameraPos =
 	{
-		ls_Radius * sin(Input::getMousePitch() * SENSITIVITY) * cos(Input::getMouseYaw() * SENSITIVITY),
-		-ls_Radius * cos(Input::getMousePitch() * SENSITIVITY),
-		ls_Radius * sin(Input::getMousePitch() * SENSITIVITY) * sin(Input::getMouseYaw() * SENSITIVITY),
+		s_OrbitTarget.x + ls_Radius * sin(Input::getMousePitch() * SENSITIVITY) * cos(Input::getMouseYaw() * SENSITIVITY),
+		s_OrbitTarget.y + -ls_Radius * cos(Input::getMousePitch() * SENSITIVITY),
+		s_OrbitTarget.z + ls_Radius * sin(Input::getMousePitch() * SENSITIVITY) * sin(Input::getMouseYaw() * SENSITIVITY),
 	};
-
-	s_CameraPos += s_OrbitTarget;
 
 	return Maths::lookAt(s_CameraPos, s_OrbitTarget, ls_CameraUp);
 }
