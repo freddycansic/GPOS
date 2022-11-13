@@ -24,6 +24,7 @@ namespace Camera
 	Vec2 screenToNDCBounds(Vec2 screenCoord);
 
 	void update();
+	void zoom(float direction);
 	void setMode(CameraMode mode);
 
 	void setOrbitTarget(const Vec3& target);

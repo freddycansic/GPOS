@@ -119,20 +119,22 @@ void GUI::renderToolbar()
 	ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 	ImGui::Text("Time per frame %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
 
-	if (ImGui::Button("Translate"))
-	{
-		Scene::setGizmoToTranslate();
-	}
+	//if (ImGui::Button("Translate"))
+	//{
+	//	Scene::setGizmoToTranslate();
+	//}
 
-	if (ImGui::Button("Scale"))
-	{
-		Scene::setGizmoToScale();
-	}
+	//if (ImGui::Button("Scale"))
+	//{
+	//	Scene::setGizmoToScale();
+	//}
 
-	if (ImGui::Button("Rotate"))
-	{
-		Scene::setGizmoToRotate();
-	}
+	//if (ImGui::Button("Rotate"))
+	//{
+	//	Scene::setGizmoToRotate();
+	//}
+
+	ImGui::Text("Hold middle mouse = orbit camera\nScroll = zoom in / out\nShift + A = new object menu\nLeft click = select object\nLeft ctrl + left click = select multiple objects\nF = set last selected object as orbit point\nG = select move tool\nS = select scale tool\nR = select rotate tool");
 
 	ImGui::End();
 }
@@ -161,10 +163,10 @@ void GUI::renderNewObjectMenu()
 		showingNewObjectMenu = false;
 	}
 
-	if (ImGui::Button("Line"))
-	{
-		showingNewObjectMenu = false;
-	}
+	//if (ImGui::Button("Line"))
+	//{
+	//	showingNewObjectMenu = false;
+	//}
 
 	const auto& windowPos = ImGui::GetWindowPos();
 	const auto& windowSize = ImGui::GetWindowSize();

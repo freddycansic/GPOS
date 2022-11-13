@@ -49,6 +49,7 @@ namespace Input
 		void GLAPIENTRY keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		void GLAPIENTRY mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 		void GLAPIENTRY frameBufferSizeCallback(GLFWwindow* window, int width, int height);
+		void GLAPIENTRY scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 	}
 
 }

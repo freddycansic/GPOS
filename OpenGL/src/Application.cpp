@@ -80,8 +80,8 @@ void Application::render()
 
 void Application::imGuiRender()
 {
-	ImGui::Image(reinterpret_cast<ImTextureID>(tex1.getID()), ImVec2(100, 100));
-	ImGui::Image(reinterpret_cast<ImTextureID>(tex2.getID()), ImVec2(100, 100));
+	//ImGui::Image(reinterpret_cast<ImTextureID>(tex1.getID()), ImVec2(100, 100));
+	//ImGui::Image(reinterpret_cast<ImTextureID>(tex2.getID()), ImVec2(100, 100));
 
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();

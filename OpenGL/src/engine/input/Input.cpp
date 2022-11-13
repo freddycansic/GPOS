@@ -18,13 +18,13 @@
 namespace Input
 {
 	// initial mouse pos = middle of the screen
-	float xOffset, yOffset, yaw = 25.0f, pitch = 45.0f;
+	float xOffset, yOffset, yaw = 25.0f, pitch = 65.0f;
 	Vec3 cameraDirection;
 	float xPos, yPos;
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
-		static constexpr float sens = 0.2f;
+		static constexpr float SENSITIVITY = 0.0025f;
 		static bool firstMouseMove = true;
 		static float lastX = static_cast<float>(Window::width()) / 2.0f;
 		static float lastY = static_cast<float>(Window::height()) / 2.0f;
@@ -38,25 +38,25 @@ namespace Input
 			firstMouseMove = false;
 		}
 
-		xOffset = (xPos - lastX) * sens;
-		yOffset = (lastY - yPos) * sens; // inverted as highest y pos is bottom of screen
+		xOffset = (xPos - lastX) * SENSITIVITY;
+		yOffset = (lastY - yPos) * SENSITIVITY; // inverted as highest y pos is bottom of screen
 
 		lastX = xPos;
 		lastY = yPos;
 
 		if (!Window::capturingCursor()) return;
 
-		yaw -= xOffset * sens;
-		pitch -= yOffset * sens;
+		yaw -= xOffset;
+		pitch -= yOffset;
 
 		//pitch = std::clamp(pitch, -89.9f, 89.9f);
-		pitch = std::clamp(pitch, 0.1f, 103.9f); // TODO magic values which stop orbit camera from freaking out when looking directly down/up on/to an object
-		yaw = std::fmod(yaw, 360.0f);
+		pitch = std::clamp(pitch, 0.01f, Maths::PI<float>); // TODO magic values which stop orbit camera from freaking out when looking directly down/up on/to an object
+		yaw = std::fmod(yaw, Maths::PI<float> * 2);
 
 		cameraDirection = Vec3(
-			cos(Maths::radians(yaw)) * cos(Maths::radians(pitch)),
-			sin(Maths::radians(pitch)),
-			sin(Maths::radians(yaw)) * cos(Maths::radians(pitch))
+			cos(yaw) * cos(pitch),
+			sin(pitch),
+			sin(yaw) * cos(pitch)
 		).normalise();
 	}
 
@@ -107,6 +107,11 @@ namespace Input
 		Window::setWidth(width);
 		Window::setHeight(height);
 		Renderer::recalculateProjectionMatrices();
+	}
+
+	void GLAPIENTRY Callbacks::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+	{
+		Camera::zoom(static_cast<float>(yoffset));
 	}
 
 	std::array<int, Keys::LAST.keyCode + 1> keyStates;

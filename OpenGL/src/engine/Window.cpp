@@ -62,16 +62,18 @@ namespace Window
 
 		GLAPI(glViewport(0, 0, m_Width, m_Height));
 
-		// need to move this
+		// TODO need to move this
 		GLAPI(glEnable(GL_DEBUG_OUTPUT));
 		GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
 
 		//GLAPI(glEnable(GL_DEPTH_TEST));
 		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, nullptr));
-		GLAPI(glfwSetCursorPosCallback(Window::GLFWWindow(), Input::Callbacks::mouseCallback));
-		GLAPI(glfwSetKeyCallback(Window::GLFWWindow(), Input::Callbacks::keyCallback));
-		GLAPI(glfwSetMouseButtonCallback(Window::GLFWWindow(), Input::Callbacks::mouseButtonCallback));
-		GLAPI(glfwSetFramebufferSizeCallback(Window::GLFWWindow(), Input::Callbacks::frameBufferSizeCallback));
+
+		glfwSetCursorPosCallback(m_ID, Input::Callbacks::mouseCallback);
+		glfwSetKeyCallback(m_ID, Input::Callbacks::keyCallback);
+		glfwSetMouseButtonCallback(m_ID, Input::Callbacks::mouseButtonCallback);
+		glfwSetFramebufferSizeCallback(m_ID, Input::Callbacks::frameBufferSizeCallback);
+		glfwSetScrollCallback(m_ID, Input::Callbacks::scrollCallback);
 
 		// turn off notifications
 		GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));

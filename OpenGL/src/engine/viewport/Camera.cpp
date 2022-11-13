@@ -9,12 +9,14 @@
 Camera::CameraMode s_Mode = Camera::CameraMode::ORBIT;
 Mat4x4 s_View = Mat4x4::identity();
 
-Vec3 s_CameraPos = { 0.0f, 0.0f, 30.0f };
+Vec3 s_CameraPos = { 0.0f, 0.0f, 15.0f };
 
 Mat4x4 fpsFlyUpdate();
+Vec3 s_CameraFront = { 0.0f, 0.0f, 1.0f }; // point forward
 
-Vec3 s_OrbitTarget;
 Mat4x4 orbitUpdate();
+float s_OrbitRadius = 5.0f;
+Vec3 s_OrbitTarget;
 
 namespace Camera
 {
@@ -69,9 +71,25 @@ namespace Camera
 		case CameraMode::ORBIT:
 			s_View = orbitUpdate();
 			break;
+		}
+	}
 
-		default:
+	void zoom(float direction)
+	{
+		switch (s_Mode)
+		{
+		case CameraMode::FPS_FLY:
+		{
+			s_CameraPos += s_CameraFront * -direction;
 			break;
+		}
+		case CameraMode::ORBIT:
+		{
+			static constexpr float ORBIT_ZOOM_STEP = 0.5f;
+			s_OrbitRadius += ORBIT_ZOOM_STEP * -direction;
+			Camera::update();
+			break;
+		}
 		}
 	}
 
@@ -98,42 +116,43 @@ namespace Camera
 
 Mat4x4 fpsFlyUpdate()
 {
-	static Vec3 ls_CameraFront = { 0.0f, 0.0f, 1.0f }; // point forward
 	static Vec3 ls_CameraUp = { 0.0f, 1.0f, 0.0f };
 
 	constexpr static float ls_SprintSpeed = 2.0f;
 	const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? ls_SprintSpeed : 1.0f);
 
-	ls_CameraFront = Input::getCameraDirection();
+	s_CameraFront = Input::getCameraDirection();
 
 	if (Input::isKeyDown(Keys::W)) {
-		s_CameraPos += ls_CameraFront * moveSpeed * Window::deltatime();
+		s_CameraPos += s_CameraFront * moveSpeed * Window::deltatime();
 	}
 	if (Input::isKeyDown(Keys::S)) {
-		s_CameraPos -= ls_CameraFront * moveSpeed * Window::deltatime();
+		s_CameraPos -= s_CameraFront * moveSpeed * Window::deltatime();
 	}
 	if (Input::isKeyDown(Keys::D)) {
-		s_CameraPos -= ls_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
+		s_CameraPos -= s_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
 	if (Input::isKeyDown(Keys::A)) {
-		s_CameraPos += ls_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
+		s_CameraPos += s_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
 
-	return Maths::lookAt(s_CameraPos, s_CameraPos + ls_CameraFront, ls_CameraUp);
+	return Maths::lookAt(s_CameraPos, s_CameraPos + s_CameraFront, ls_CameraUp);
 }
 
 Mat4x4 orbitUpdate()
 {
 	static Vec3 ls_CameraUp = { 0, 1, 0 };
 
-	static float ls_Radius = 5.0f;
-	static constexpr float SENSITIVITY = 0.03f;
+	//static constexpr float SENSITIVITY = 0.3f;
+
+	const auto& pitch = Input::getMousePitch();
+	const auto& yaw = Input::getMouseYaw();
 
 	s_CameraPos =
 	{
-		s_OrbitTarget.x + ls_Radius * sin(Input::getMousePitch() * SENSITIVITY) * cos(Input::getMouseYaw() * SENSITIVITY),
-		s_OrbitTarget.y + -ls_Radius * cos(Input::getMousePitch() * SENSITIVITY),
-		s_OrbitTarget.z + ls_Radius * sin(Input::getMousePitch() * SENSITIVITY) * sin(Input::getMouseYaw() * SENSITIVITY),
+		s_OrbitTarget.x + s_OrbitRadius * sin(pitch) * cos(yaw),
+		s_OrbitTarget.y + s_OrbitRadius * cos(pitch),
+		s_OrbitTarget.z + s_OrbitRadius * sin(pitch) * sin(yaw),
 	};
 
 	return Maths::lookAt(s_CameraPos, s_OrbitTarget, ls_CameraUp);
