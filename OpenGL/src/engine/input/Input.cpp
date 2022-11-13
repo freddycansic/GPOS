@@ -49,8 +49,8 @@ namespace Input
 		yaw -= xOffset * sens;
 		pitch -= yOffset * sens;
 
-		pitch = std::clamp(pitch, -89.0f, 89.0f);
-		yaw = std::fmod(yaw, 360.0f);
+		//pitch = std::clamp(pitch, -89.0f, 89.0f);
+		//yaw = std::fmod(yaw, 360.0f);
 
 		cameraDirection = Vec3(
 			cos(Maths::radians(yaw)) * cos(Maths::radians(pitch)),
@@ -112,6 +112,8 @@ namespace Input
 
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
+		if (key < 0) return;
+
 		if ((keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
 		{
 			keyStates[key] = JUST_RELEASED;
@@ -151,22 +153,16 @@ namespace Input
 		{[]
 		{// TODO make mouse buttons be able to activate keybinds
 			const auto& selectedObjects = Scene::getSelectedObjects();
-			const auto ray = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
+			const auto& lastSelected = selectedObjects.at(selectedObjects.size() - 1);
 
-			for (const auto& object : selectedObjects)
-			{
-				if (object->isRayIntersecting(ray))
-				{
-					Camera::setOrbitTarget(object->getAvgPosition());
-					break;
-				}
-			}
+			Camera::setOrbitTarget(lastSelected->getAvgPosition());
+			Camera::update();
 
-		}, {MouseButtons::MIDDLE}},
+		}, {Keys::F}},
 
 		// TODO TEMP
-		{Window::beginCursorCapture, {Keys::C}},
-		{Window::endCursorCapture, {Keys::V}},
+		//{Window::beginCursorCapture, {Keys::C}},
+		//{Window::endCursorCapture, {Keys::V}},
 	};
 
 	Keybind getFunctionKeybind(void(*function)())

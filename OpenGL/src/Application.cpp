@@ -57,11 +57,16 @@ void Application::render()
 	//Renderer::clear(0.42f, 0.42f, 0.42f);
 	Renderer::clear(Colours::BLACK);
 
-	if (Window::capturingCursor())
+	if (Input::isKeyDown(Keys::D))
 	{
-		Camera::update();
-	}
+		if (!Window::capturingCursor()) Window::beginCursorCapture();
 
+		Camera::update();
+	} else
+	{
+		if (Window::capturingCursor()) Window::endCursorCapture();
+	}
+		
 	Scene::handleMouseClicks();
 
 	ObjectRenderer::begin();
