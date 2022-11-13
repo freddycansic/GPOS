@@ -9,6 +9,7 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/gui/GUI.h"
+#include "engine/viewport/Camera.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
 {
@@ -25,6 +26,8 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	GUI::init();
 
 	app.init(config.projectDir);
+
+	Camera::update();
 
 	while (!Window::shouldClose() && !Window::closeCalled())
 	{

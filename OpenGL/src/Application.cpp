@@ -57,7 +57,7 @@ void Application::render()
 	//Renderer::clear(0.42f, 0.42f, 0.42f);
 	Renderer::clear(Colours::BLACK);
 
-	if (Input::isKeyDown(Keys::D))
+	if (Input::isMouseButtonDown(MouseButtons::MIDDLE))
 	{
 		if (!Window::capturingCursor()) Window::beginCursorCapture();
 
