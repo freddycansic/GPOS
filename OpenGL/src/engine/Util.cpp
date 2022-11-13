@@ -6,11 +6,6 @@
 
 namespace Util
 {
-	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize)
-	{
-		return (mousePos.x > windowPos.x && mousePos.x < windowPos.x + windowSize.x && mousePos.y > windowPos.y && mousePos.y < windowPos.y + windowSize.y);
-	}
-
 	float rgbToHue(const Vec3& rgb)
 	{
 		const auto maxComp = std::max({ rgb.r, rgb.g, rgb.b});

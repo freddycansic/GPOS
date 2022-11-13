@@ -35,8 +35,8 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 
 		Input::processFunctionKeybindPresses();
 
-		app.render();
 		app.imGuiRender();
+		app.render();
 	
 		GUI::endFrame();
 

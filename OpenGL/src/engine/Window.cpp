@@ -79,7 +79,6 @@ namespace Window
 		GLAPI(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE));
 	}
 
-
 	void update()
 	{
 		static float lastTime = currentTime();
