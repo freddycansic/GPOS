@@ -32,8 +32,6 @@
 
 #define ASSERT(x) ASSERT_WITH_MSG(x, "")
 
-#define DEBUG
-
 #ifdef DEBUG
 #define GLAPI(x) Debug::clearGLError(); x; ASSERT_WITH_MSG(Debug::logGLFunc(#x, __FILE__, __LINE__), "")
 #else

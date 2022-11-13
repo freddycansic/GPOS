@@ -33,5 +33,5 @@ void UniformBuffer::setSubData(unsigned int offset, size_t dataSizeBytes, const 
 void UniformBuffer::bindBufferBase(size_t index) const
 {
 	GLAPI(glBindBuffer(GL_UNIFORM_BUFFER, m_ID));
-	GLAPI(glBindBufferBase(GL_UNIFORM_BUFFER, index, m_ID));
+	GLAPI(glBindBufferBase(GL_UNIFORM_BUFFER, static_cast<GLuint>(index), m_ID));
 }

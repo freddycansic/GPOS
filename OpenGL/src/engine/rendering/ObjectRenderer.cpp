@@ -103,7 +103,7 @@ namespace ObjectRenderer {
 	{
 		s_Lights.push_back(light);
 
-		ASSERT(s_Lights.size() <= MAX_COUNT_LIGHTS, "Maximum number of lights exceeded.");
+		ASSERT_WITH_MSG(s_Lights.size() <= MAX_COUNT_LIGHTS, "Maximum number of lights exceeded.");
 	}
 
 	void end()
