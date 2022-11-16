@@ -9,6 +9,8 @@
 #include "engine/Debug.h"
 #include "maths/Maths.h"
 
+#include "maths/Vectors.h"
+
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& [name, location] : map) {
 		os << "Name = " << name << " Location = " << location << "\n";
@@ -46,16 +48,31 @@ void Shader::findAndAddUniforms(const std::string& filepath) {
 			std::string uniformName = tokens[i + 2];
 
 			// remove array notation e.g "[4]"
-			size_t startBracketIndex = uniformName.find('[');
-			if (startBracketIndex != std::string::npos) {
-				uniformName = uniformName.substr(0, startBracketIndex);
-			}
+			//const size_t startBracketIndex = uniformName.find('[');
+			//if (startBracketIndex != std::string::npos) {
+			//	uniformName = uniformName.substr(0, startBracketIndex);
+			//}
+
 
 			// remove semi colon at end
 			if (uniformName.at(uniformName.size() - 1) == ';')
 				uniformName = uniformName.substr(0, uniformName.size() - 1);
 
-			int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
+			if (uniformName.at(uniformName.size() - 1) == ']')
+			{
+				for (char j = 0; j < uniformName.at(uniformName.size() - 2); ++j)
+				{
+					if (tokens.at(i - 1) == "Light")
+					{
+						const char* lightPosName = uniformName + "[" + j + "].pos";
+
+						const int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
+						m_Uniforms[] = 
+					}
+				}
+			}
+
+			const int uniformLocation = glGetUniformLocation(m_ID, uniformName.c_str());
 
 			if (uniformLocation == -1 && !uniformName.contains('{')) {
 				std::cout << "Uniform " << uniformName << " not in use." << std::endl;
@@ -65,6 +82,8 @@ void Shader::findAndAddUniforms(const std::string& filepath) {
 			m_Uniforms[uniformName] = uniformLocation;
 		}
 	}
+
+	std::cout << m_Uniforms << std::endl;
 }
 
 void Shader::checkUniformInShader(const std::string& name) const {
@@ -75,9 +94,25 @@ void Shader::checkUniformInShader(const std::string& name) const {
 #endif
 }
 
+void Shader::setUniform3f(const std::string& name, float v1, float v2, float v3) const
+{
+	//checkUniformInShader(name);
+	GLAPI(glUniform3f(m_Uniforms.at(name), v1, v2, v3));
+}
+
+void Shader::setUniform3f(const std::string& name, const Vec3& vec) const
+{
+	setUniform3f(name, vec.x, vec.y, vec.z);
+}
+
 void Shader::setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const {
 	checkUniformInShader(name);
 	GLAPI(glUniform4f(m_Uniforms.at(name), v1, v2, v3, v4));
+}
+
+void Shader::setUniform4f(const std::string& name, const Vec4& vec) const
+{
+	setUniform4f(name, vec.x, vec.y, vec.z, vec.w);
 }
 
 void Shader::setUniformMat4(const std::string& name, const Mat4x4& matrix) const {
@@ -105,6 +140,7 @@ void Shader::setUniform1iv(const std::string& name, size_t count, const int* val
 	checkUniformInShader(name);
 	GLAPI(glUniform1iv(m_Uniforms.at(name), static_cast<GLsizei>(count), value));
 }
+
 
 unsigned int compileShader(unsigned int type, const std::string& source) {
 	// generate shader

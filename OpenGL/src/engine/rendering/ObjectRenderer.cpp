@@ -47,7 +47,7 @@ std::vector<Light> s_Lights;
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
-std::unique_ptr<UniformBuffer> s_LightsUbo = nullptr;
+//std::unique_ptr<UniformBuffer> s_LightsUbo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
@@ -68,7 +68,7 @@ namespace ObjectRenderer {
 		s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 		s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
 
-		s_LightsUbo = std::make_unique<UniformBuffer>(nullptr, MAX_COUNT_LIGHTS * sizeof(Light));
+		//s_LightsUbo = std::make_unique<UniformBuffer>(nullptr, MAX_COUNT_LIGHTS * sizeof(Light));
 		s_Lights.reserve(MAX_COUNT_LIGHTS);
 
 		VertexBufferLayout layout;
@@ -113,8 +113,15 @@ namespace ObjectRenderer {
 		s_Vao->bind();
 		s_Shader->bind();
 
-		s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
-		s_LightsUbo->setSubData(0, s_Lights.size() * sizeof(Light), s_Lights.data());
+		for (size_t i = 0; i < s_Lights.size(); ++i)
+		{
+			const auto& [pos, colour] = s_Lights.at(i);
+			s_Shader->setUniform3f("u_LightSources[" + std::to_string(i) + "].pos", pos);
+			s_Shader->setUniform3f("u_LightSources[" + std::to_string(i) + "].colour", colour);
+		}
+
+		//s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
+		//s_LightsUbo->setSubData(0, MAX_COUNT_LIGHTS * sizeof(Light), s_Lights.data());
 
 		// for every batch
 		for (auto& [handleAndFlags, batchData] : s_ObjectBatches)
@@ -166,6 +173,12 @@ namespace ObjectRenderer {
 
 			s_Vbo->setData(sizeof(Vertex) * batchVertices.size(), batchVertices.data());
 			s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
+
+			//s_Vbo->setSubData(0, sizeof(Vertex) * MAX_VERTICES, batchVertices.data());
+			//s_Ibo->setSubData(0, sizeof(GLuint) * MAX_INDICES, batchIndices.data());
+
+			//s_Vbo->setSubData(0, sizeof(Vertex) * batchVertices.size(), batchVertices.data());
+			//s_Ibo->setSubData(0, sizeof(GLuint) * batchIndices.size(), batchIndices.data());
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
 			s_Shader->setUniform1i("u_NoLighting", flags & Flags::NO_LIGHTING ? 1 : 0);

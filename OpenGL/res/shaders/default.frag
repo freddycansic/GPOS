@@ -15,10 +15,10 @@ struct Light
 	vec3 colour;
 };
 
-layout (std140, binding = 0) uniform u_LightSources 
-{
-	Light u_Lights[16];
-};
+//layout (std140, binding = 0) uniform u_LightSources 
+//{
+uniform Light u_Lights[16];
+//};
 
 uniform uvec2 u_TexHandle;
 uniform bool u_NoLighting; // passed in as int from CPU

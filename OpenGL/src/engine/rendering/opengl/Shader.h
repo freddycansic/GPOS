@@ -6,6 +6,8 @@
 
 #include "maths/Maths.h"
 
+struct Vec4;
+
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map);
 
 class Shader
@@ -27,7 +29,10 @@ public:
 	void setUniform1i(const std::string& name, int value) const;
 	void setUniform1ui64(const std::string& name, uint64_t value) const;
 	void setUniform1iv(const std::string& name, size_t count, const int* value) const;
+	void setUniform3f(const std::string& name, float v1, float v2, float v3) const;
+	void setUniform3f(const std::string& name, const Vec3& vec) const;
 	void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) const;
+	void setUniform4f(const std::string& name, const Vec4& vec) const;
 	void setUniformMat4(const std::string& name, const Mat4x4& matrix) const;
 
 	void bind() const;

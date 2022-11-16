@@ -30,6 +30,7 @@ void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader
 	shader.setUniformMat4("u_ViewProj", s_ViewProj);
 
 	vao.bind();
+	ibo.bind();
 
 	GLAPI(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo.getCount()), ibo.getType(), nullptr));
 }
