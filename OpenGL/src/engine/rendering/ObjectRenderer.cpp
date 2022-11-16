@@ -68,7 +68,7 @@ namespace ObjectRenderer {
 		s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 		s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
 
-		s_LightsUbo = std::make_unique<UniformBuffer>(nullptr, MAX_COUNT_LIGHTS * sizeof(Vec3));
+		s_LightsUbo = std::make_unique<UniformBuffer>(nullptr, MAX_COUNT_LIGHTS * sizeof(Light));
 		s_Lights.reserve(MAX_COUNT_LIGHTS);
 
 		VertexBufferLayout layout;
