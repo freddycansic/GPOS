@@ -55,8 +55,8 @@ void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags);
 std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
 void recalculateAllBatchPositions(const BatchData& batchData);
 
-namespace ObjectRenderer {
-
+namespace ObjectRenderer
+{
 	void init()
 	{
 		// TODO FIX ME DDDD: = do move semantics for opengl Shapes
@@ -113,11 +113,11 @@ namespace ObjectRenderer {
 		s_Vao->bind();
 		s_Shader->bind();
 
-		for (size_t i = 0; i < s_Lights.size(); ++i)
+		for (char i = 0; i < s_Lights.size(); ++i)
 		{
 			const auto& [pos, colour] = s_Lights.at(i);
-			s_Shader->setUniform3f("u_LightSources[" + std::to_string(i) + "].pos", pos);
-			s_Shader->setUniform3f("u_LightSources[" + std::to_string(i) + "].colour", colour);
+			s_Shader->setUniform3f("u_Lights[" + std::to_string(i) + "].pos", pos);
+			s_Shader->setUniform3f("u_Lights[" + std::to_string(i) + "].colour", colour);
 		}
 
 		//s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
