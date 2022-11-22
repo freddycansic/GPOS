@@ -22,14 +22,17 @@ void IndexBuffer::setData(size_t dataSizeBytes, const void* data) const
 	GLAPI(glBufferData(GL_ELEMENT_ARRAY_BUFFER, dataSizeBytes, data, GL_DYNAMIC_DRAW));
 }
 
-void IndexBuffer::bind() const {
+void IndexBuffer::bind() const
+{
 	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID));
 }
 
-void IndexBuffer::unbind() const {
+void IndexBuffer::unbind() const
+{
 	GLAPI(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
-IndexBuffer::~IndexBuffer() {
+IndexBuffer::~IndexBuffer()
+{
 	GLAPI(glDeleteBuffers(1, &m_ID));
 }

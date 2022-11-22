@@ -187,7 +187,7 @@ namespace ObjectRenderer
 			{
 				GLAPI(glDisable(GL_DEPTH_TEST));
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-				GLAPI(glEnable(GL_DEPTH_TEST-100)); // TODO reset filters smth
+				GLAPI(glEnable(GL_DEPTH_TEST)); // TODO reset filters smth
 			}
 			else
 			{
