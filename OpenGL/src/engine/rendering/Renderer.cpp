@@ -23,13 +23,14 @@ void Renderer::init() {
 	s_Proj = s_Persp;
 }
 
-void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader) {
+void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, Shader& shader) {
 	s_ViewProj = s_Proj * Camera::getViewMatrix();
 
 	shader.bind();
 	shader.setUniformMat4("u_ViewProj", s_ViewProj);
 
 	vao.bind();
+	ibo.bind();
 
 	GLAPI(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo.getCount()), ibo.getType(), nullptr));
 }

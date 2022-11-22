@@ -1,19 +1,4 @@
-# 3D Graphics Engine
-
-### Current features:
-- Batch rendering 
-- 2D + 3D meshes with
-  - Colour
-  - Bindless textures
-- Semi-interactive GUI
-- Keyboard input processing
-- FPS camera
-
----
-
-### Future features:
-- Basic lighting
-- Ico spheres
+Instructions are shown in a GUI window in the program.
 
 ---
 
