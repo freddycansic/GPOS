@@ -36,25 +36,11 @@ void Application::init(char* projectDir)
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
-	//constexpr float cubesSideCount = 0;
-
-	//for (float i = -cubesSideCount / 2; i < cubesSideCount / 2; ++i)
-	//{
-	//	for (float j = -cubesSideCount / 2; j < cubesSideCount / 2; ++j)
-	//	{
-	//		for (float k = -cubesSideCount / 2; k < cubesSideCount / 2; ++k)
-	//		{
-	//			Scene::addObject(std::make_unique<Cube>(i, j, k, 0.5f, Colours::WHITE));
-	//		}
-	//	}
-	//}
-
 	Window::beginCursorCapture();
 }
 
 void Application::render()
 {
-	//Renderer::clear(0.42f, 0.42f, 0.42f);
 	Renderer::clear(Colours::BLACK);
 
 	if (Input::isMouseButtonDown(MouseButtons::MIDDLE) || Input::isKeyDown(Keys::D))
@@ -83,9 +69,6 @@ void Application::render()
 
 void Application::imGuiRender()
 {
-	//ImGui::Image(reinterpret_cast<ImTextureID>(tex1.getID()), ImVec2(100, 100));
-	//ImGui::Image(reinterpret_cast<ImTextureID>(tex2.getID()), ImVec2(100, 100));
-
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
 	GUI::renderToolbar();
