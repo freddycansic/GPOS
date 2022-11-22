@@ -25,7 +25,7 @@ public:
 	static void clear(float r, float g, float b);
 	static void clear(const Vec3& colour);
 	
-	static void draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader);
+	static void draw(const VertexArray& vao, const IndexBuffer& ibo, Shader& shader);
 
 	static void setProjectionMatrix(const Mat4x4& mat);
 
