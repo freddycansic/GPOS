@@ -1,8 +1,9 @@
 #include "Application.h"
 
+#include "imgui/imgui.h"
+
 #include "engine/Colours.h"
 #include "engine/rendering/gui/GUI.h"
-
 #include "engine/input/Files.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/Renderer.h"
@@ -13,7 +14,6 @@
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
-#include "imgui/imgui.h"
 
 using namespace Flags;
 

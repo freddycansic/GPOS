@@ -2,9 +2,8 @@
 
 #include <fstream>
 #include <sstream>
-#include <vector>
 
-#include <GL/glew.h>
+#include <GLEW/glew.h>
 
 #include "engine/Debug.h"
 #include "maths/Maths.h"

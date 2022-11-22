@@ -23,8 +23,8 @@ public:
 	[[nodiscard]] uint64_t getHandle() const { return m_Handle; }
 
 private:
-	unsigned int m_ID;
-	unsigned char* m_Buffer;
-	int m_Width, m_Height, m_ColorDepth;
-	uint64_t m_Handle;
+	unsigned int m_ID = 0;
+	unsigned char* m_Buffer = nullptr;
+	int m_Width = 0, m_Height = 0, m_ColorDepth = 0;
+	uint64_t m_Handle = 0;
 };

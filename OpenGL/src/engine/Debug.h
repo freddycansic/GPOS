@@ -1,9 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include <unordered_map>
 
-#include <GL/glew.h>
+#include <GLEW/glew.h> // TODO fix this
 #include <GLFW/glfw3.h>
 
 #ifdef _MSC_VER
@@ -21,8 +20,8 @@
 	#define GLAPI(x) x
 #endif
 
-namespace Debug {
-
+namespace Debug
+{
 	inline std::unordered_map<const char*, bool> supportedExtensions;
 
 	void clearGLError();

@@ -7,16 +7,8 @@
     <ClCompile Include="src\engine\rendering\opengl\VertexArray.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\Shader.cpp" />
     <ClCompile Include="src\engine\rendering\Renderer.cpp" />
-    <ClCompile Include="src\libs\stb_image\stb_image.cpp" />
     <ClCompile Include="src\engine\rendering\opengl\Texture.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui_demo.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui_tables.cpp" />
-    <ClCompile Include="src\libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\engine\rendering\ObjectRenderer.cpp" />
     <ClCompile Include="src\maths\Vectors.cpp" />
     <ClCompile Include="src\engine\rendering\object\shapes\Vertex.cpp" />
@@ -40,6 +32,14 @@
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
     <ClCompile Include="src\engine\rendering\gui\Gizmo.cpp" />
     <ClCompile Include="src\engine\viewport\Scene.cpp" />
+    <ClCompile Include="libs\imgui\imgui.cpp" />
+    <ClCompile Include="libs\imgui\imgui_demo.cpp" />
+    <ClCompile Include="libs\imgui\imgui_draw.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="libs\imgui\imgui_tables.cpp" />
+    <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="libs\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
@@ -48,20 +48,10 @@
     <ClInclude Include="src\engine\rendering\opengl\VertexBufferLayout.h" />
     <ClInclude Include="src\engine\rendering\opengl\Shader.h" />
     <ClInclude Include="src\engine\rendering\Renderer.h" />
-    <ClInclude Include="src\libs\stb_image\stb_image.h" />
     <ClInclude Include="src\engine\rendering\opengl\Texture.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\maths\Vectors.h" />
     <ClInclude Include="src\engine\Debug.h" />
-    <ClInclude Include="src\libs\imgui\imconfig.h" />
-    <ClInclude Include="src\libs\imgui\imgui.h" />
-    <ClInclude Include="src\libs\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="src\libs\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\libs\imgui\imgui_internal.h" />
-    <ClInclude Include="src\libs\imgui\imstb_rectpack.h" />
-    <ClInclude Include="src\libs\imgui\imstb_textedit.h" />
-    <ClInclude Include="src\libs\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\libs\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\engine\input\Files.h" />
     <ClInclude Include="src\engine\rendering\ObjectRenderer.h" />
     <ClInclude Include="src\engine\rendering\object\shapes\Object.h" />
@@ -85,6 +75,22 @@
     <ClInclude Include="src\engine\rendering\gui\Gizmo.h" />
     <ClInclude Include="src\engine\viewport\Scene.h" />
     <ClInclude Include="src\engine\Colours.h" />
+    <ClInclude Include="libs\GLEW\include\GL\eglew.h" />
+    <ClInclude Include="libs\GLEW\include\GL\glew.h" />
+    <ClInclude Include="libs\GLEW\include\GL\glxew.h" />
+    <ClInclude Include="libs\GLEW\include\GL\wglew.h" />
+    <ClInclude Include="libs\GLFW\include\GLFW\glfw3.h" />
+    <ClInclude Include="libs\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="libs\imgui\imconfig.h" />
+    <ClInclude Include="libs\imgui\imgui.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="libs\imgui\imgui_internal.h" />
+    <ClInclude Include="libs\imgui\imstb_rectpack.h" />
+    <ClInclude Include="libs\imgui\imstb_textedit.h" />
+    <ClInclude Include="libs\imgui\imstb_truetype.h" />
+    <ClInclude Include="libs\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -93,5 +99,9 @@
   <ItemGroup>
     <Image Include="res\textures\image.png" />
     <Image Include="res\textures\hashinshin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="libs\GLEW\lib\glew32s.lib" />
+    <Library Include="libs\GLFW\lib\glfw3.lib" />
   </ItemGroup>
 </Project>
