@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h> // TODO fix + DO NOT REMOVE
+#include <GLEW/glew.h> // TODO fix + DO NOT REMOVE
 
 #include "Application.h"
 #include "engine/Window.h"

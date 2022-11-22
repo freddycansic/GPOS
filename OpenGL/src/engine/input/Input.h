@@ -2,8 +2,9 @@
 
 #include <unordered_map>
 
-#include <GL/glew.h>
+#include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
+
 #include "Keys.h"
 
 #define GENERATE_KEY_INPUT_GETTER_VARIADIC(isKeyPredicate)\

@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string>
 
-// TODO use in built functions
+#include "Util.h"
+
 const char* severityEnumToString(GLenum severity) {
 	switch (severity) {
 	case GL_DEBUG_SEVERITY_HIGH:
@@ -80,11 +81,13 @@ const char* typeEnumToString(GLenum type) {
 
 namespace Debug {
 	
-	void clearGLError() {
+	void clearGLError()
+	{
 		while (glGetError() != GL_NO_ERROR);
 	}
 
-	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum) {
+	bool logGLFunc(const char* functionName, const char* errorFile, int lineNum)
+	{
 		while (const GLenum error = glGetError()) {
 			std::string filePathFull(errorFile);
 			
@@ -92,9 +95,9 @@ namespace Debug {
 			const std::string filePath = filePathFull.substr(0, filePathFull.find(fileName));
 
 			std::cout << "(" << error << ") " << filePath;
-			YELLOW;
-			std::cout << fileName;
-			CLEAR;
+
+			Util::printColoured(fileName, TextColour::YELLOW);
+
 			std::cout << " " << functionName << " : " << lineNum << std::endl;
 			return false;
 		}
@@ -103,7 +106,8 @@ namespace Debug {
 
 	void checkExtensionsSupported() {}
 
-	void checkExtensionsSupported(const char* extension) {
+	void checkExtensionsSupported(const char* extension)
+	{
 		const bool supported = glfwExtensionSupported(extension);
 
 		supportedExtensions[extension] = supported;
@@ -113,8 +117,8 @@ namespace Debug {
 		ASSERT(supported);
 	}
 
-	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-		// TODO use built ins
+	void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+	{
 		const char* severityStr = severityEnumToString(severity);
 		const char* sourceStr = sourceEnumToString(source);
 		const char* typeStr = typeEnumToString(type);
@@ -123,29 +127,24 @@ namespace Debug {
 		switch (severity) {
 
 		case GL_DEBUG_SEVERITY_HIGH:
-			RED;
-			std::cout << severityStr;
+			Util::printColoured(severityStr, TextColour::RED);
 			break;
 
 		case GL_DEBUG_SEVERITY_MEDIUM:
-			ORANGE;
-			std::cout << severityStr;
+			Util::printColoured(severityStr, TextColour::ORANGE);
 			break;
 
 		case GL_DEBUG_SEVERITY_LOW:
-			YELLOW;
-			std::cout << severityStr;
+			Util::printColoured(severityStr, TextColour::YELLOW);
 			break;
 
 		case GL_DEBUG_SEVERITY_NOTIFICATION:
-			LIGHT_BLUE;
-			std::cout << severityStr;
+			Util::printColoured(severityStr, TextColour::LIGHT_BLUE);
 			break;
 
 		default:
 			std::cout << severityStr;
 		}
-		CLEAR;
 
 		std::cout << "* [" << sourceStr << "] (" << typeStr << "): " << message << std::endl;
 	}
