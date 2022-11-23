@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+#include <algorithm>
 #include <array>
 
 #include "imgui/imgui.h"
@@ -14,15 +15,26 @@
 #include "engine/rendering/object/Material.h"
 #include "engine/rendering/object/shapes/Cube.h"
 
-std::vector<std::pair<ImVec2, ImVec2>> s_PosAndSizeOfWindows;
-
-void addCurrentWindowDimensions()
+enum class WindowType
 {
-	s_PosAndSizeOfWindows.emplace_back
-	(
+	TOOLBAR,
+	STATISTICS,
+	PROPERTIES,
+	MENU_BAR,
+	NEW_OBJECT_MENU
+};
+
+static constexpr float MENU_BAR_LENGTH = 17.0f; // px
+static const ImVec2 s_Padding = { 20.0f, 20.0f + MENU_BAR_LENGTH };
+static std::unordered_map<WindowType, std::pair<ImVec2, ImVec2>> s_PosAndSizeOfWindows;
+
+void addCurrentWindowDimensions(const WindowType type)
+{
+	s_PosAndSizeOfWindows[type] = 
+	{
 		ImGui::GetWindowPos(),
 		ImGui::GetWindowSize()
-	);
+	};
 }
 
 namespace GUI
@@ -54,8 +66,10 @@ namespace GUI
 
 	bool isMouseHoveringAnyWindows()
 	{
-		for (const auto& [pos, size] : s_PosAndSizeOfWindows)
+		for (const auto& [windowType, posAndSize] : s_PosAndSizeOfWindows)
 		{
+			const auto& pos = posAndSize.first;
+			const auto& size = posAndSize.second;
 			if (isMouseHoveredWindow(ImGui::GetMousePos(), pos, size)) return true;
 		}
 
@@ -133,18 +147,37 @@ namespace GUI
 			ImGui::EndMenuBar();
 		}
 
-		addCurrentWindowDimensions();
+		addCurrentWindowDimensions(WindowType::MENU_BAR);
 		ImGui::End();
 	}
 
 	void renderProperties()
 	{
-		//ImGui::SetNextWindowPos({ static_cast<float>(Window::width() - 100), 50 });
+		static ImVec2 ls_WindowSize;
+
+		if (Scene::getSelectedObjects().empty()) return;
+
+		ImGui::SetNextWindowPos({ static_cast<float>(Window::width()) - ls_WindowSize.x - s_Padding.x, s_Padding.y });
+		ImGui::SetNextWindowSize({ 0, 0 });
+
+		ImGui::Begin("Properties", nullptr , ImGuiWindowFlags_NoScrollbar);
+		
+		const auto& lastSelected = Scene::getSelectedObjects().at(Scene::getSelectedObjects().size() - 1);
+		const auto& lastSelectedTransform = lastSelected->getCombinedTransformations();
+
+		ImGui::Text("Position : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.tra.x, lastSelectedTransform.tra.y, lastSelectedTransform.tra.z);
+		ImGui::Text("Rotation : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.rot.x, lastSelectedTransform.rot.y, lastSelectedTransform.rot.z);
+		ImGui::Text("Scale    : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.sca.x, lastSelectedTransform.sca.y, lastSelectedTransform.sca.z);
+
+		ls_WindowSize = ImGui::GetWindowSize();
+
+		addCurrentWindowDimensions(WindowType::PROPERTIES);
+		ImGui::End();
 	}
 
 	void renderToolbar()
 	{
-		ImGui::SetNextWindowPos(ImVec2(0, 50));
+		ImGui::SetNextWindowPos(s_Padding);
 		ImGui::SetNextWindowSize(ImVec2(0, 0));
 		//ImGui::min
 		ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
@@ -152,28 +185,33 @@ namespace GUI
 		ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
 		ImGui::Text("Time per frame %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
 
-		//if (ImGui::Button("Translate"))
-		//{
-		//	Scene::setGizmoToTranslate();
-		//}
+		if (ImGui::Button("Translate"))
+		{
+			Scene::setGizmoToTranslate();
+		}
 
-		//if (ImGui::Button("Scale"))
-		//{
-		//	Scene::setGizmoToScale();
-		//}
+		if (ImGui::Button("Scale"))
+		{
+			Scene::setGizmoToScale();
+		}
 
-		//if (ImGui::Button("Rotate"))
-		//{
-		//	Scene::setGizmoToRotate();
-		//}
+		if (ImGui::Button("Rotate"))
+		{
+			Scene::setGizmoToRotate();
+		}
 
 		if (!Scene::getSelectedObjects().empty())
 		{
 			ImGui::ColorPicker4("Colour", &Scene::getSelectedObjects()[0]->material.colour.x);
 		}
 
-		addCurrentWindowDimensions();
+		addCurrentWindowDimensions(WindowType::TOOLBAR);
 		ImGui::End();
+	}
+
+	void renderStats()
+	{
+		//ImGui::SetNextWindowPos();
 	}
 
 	bool showingNewObjectMenu = false;
@@ -214,7 +252,7 @@ namespace GUI
 			showingNewObjectMenu = false;
 		}
 
-		addCurrentWindowDimensions();
+		addCurrentWindowDimensions(WindowType::NEW_OBJECT_MENU);
 		ImGui::End();
 	}
 }

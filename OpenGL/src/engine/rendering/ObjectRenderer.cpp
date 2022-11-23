@@ -16,6 +16,7 @@
 #include "object/shapes/Vertex.h"
 #include <engine/Debug.h>
 
+#include "engine/Stats.h"
 #include "engine/Util.h"
 #include "opengl/UniformBuffer.h"
 
@@ -193,6 +194,8 @@ namespace ObjectRenderer
 			{
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 			}
+
+			++Stats::drawCallsPerFrame;
 		}
 
 		// clear buffers

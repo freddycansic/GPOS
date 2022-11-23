@@ -173,6 +173,7 @@
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="libs\stb_image\stb_image.cpp" />
     <ClCompile Include="src\engine\rendering\gui\Gizmo.cpp" />
+    <ClCompile Include="src\engine\Stats.cpp" />
     <ClCompile Include="src\engine\viewport\Camera.cpp" />
     <ClCompile Include="src\engine\input\Keybind.cpp" />
     <ClCompile Include="src\engine\rendering\gui\GUI.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="libs\stb_image\stb_image.h" />
     <ClInclude Include="src\engine\Colours.h" />
     <ClInclude Include="src\engine\rendering\gui\Gizmo.h" />
+    <ClInclude Include="src\engine\Stats.h" />
     <ClInclude Include="src\engine\viewport\Camera.h" />
     <ClInclude Include="src\engine\input\Keybind.h" />
     <ClInclude Include="src\engine\rendering\gui\GUI.h" />

@@ -18,13 +18,15 @@ Mat4x4 Object::getTransformMatrix() const
 	//m_Transform = Maths::rotate(m_Transform, m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
 	//m_Transform = Maths::scale(m_Transform, m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
 
+	const auto& combined = getCombinedTransformations();
+
 	return
 		Maths::scale(
 			Maths::rotate(
 				Maths::translate(Mat4x4::identity(), 
-					m_Transform.tra + m_TempTransform.tra), 
-				m_Transform.rot + m_TempTransform.rot),
-			m_Transform.sca + m_TempTransform.sca);
+					combined.tra), 
+				combined.rot),
+			combined.sca);
 }
 
 Cube Object::getAABB() const
@@ -231,6 +233,11 @@ const Transform& Object::getTransform() const
 const Transform& Object::getTempTransform() const
 {
 	return m_TempTransform;
+}
+
+const Transform& Object::getCombinedTransformations() const
+{
+	return m_Transform + m_TempTransform;
 }
 
 Vec3 Object::getAvgPosition()

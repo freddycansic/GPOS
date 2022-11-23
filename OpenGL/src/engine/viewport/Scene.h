@@ -9,6 +9,7 @@ struct Vec3;
 namespace Scene
 {
 	void addObject(std::unique_ptr<Object>&& objectPtr);
+	void duplicateCurrentSelected();
 
 	void setGizmoToTranslate();
 	void setGizmoToScale();

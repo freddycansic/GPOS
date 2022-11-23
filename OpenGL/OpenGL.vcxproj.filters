@@ -40,6 +40,7 @@
     <ClCompile Include="libs\imgui\imgui_tables.cpp" />
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="libs\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\engine\Stats.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\rendering\opengl\VertexBuffer.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="libs\imgui\imstb_textedit.h" />
     <ClInclude Include="libs\imgui\imstb_truetype.h" />
     <ClInclude Include="libs\stb_image\stb_image.h" />
+    <ClInclude Include="src\engine\Stats.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />

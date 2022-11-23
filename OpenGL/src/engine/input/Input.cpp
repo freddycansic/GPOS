@@ -18,7 +18,7 @@
 namespace Input
 {
 	// initial mouse pos = middle of the screen
-	float xOffset, yOffset, yaw = 25.0f, pitch = 65.0f;
+	float xOffset, yOffset, yaw = Maths::PI<float> / 4, pitch = (3 * Maths::PI<float> / 5);
 	Vec3 cameraDirection;
 	float xPos, yPos;
 
@@ -155,9 +155,11 @@ namespace Input
 		{Scene::setGizmoToTranslate, {Keys::G}},
 		{Scene::setGizmoToScale, {Keys::S}},
 		{Scene::setGizmoToRotate, {Keys::R}},
-
+		{Scene::duplicateCurrentSelected, {Keys::LEFT_SHIFT, Keys::D}},
 		{[]
 		{// TODO make mouse buttons be able to activate keybinds
+			if (Scene::getSelectedObjects().empty()) return;
+
 			const auto& selectedObjects = Scene::getSelectedObjects();
 			const auto& lastSelected = selectedObjects.at(selectedObjects.size() - 1);
 

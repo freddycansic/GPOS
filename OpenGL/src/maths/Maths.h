@@ -5,9 +5,9 @@ struct Vec3;
 
 using Mat4x4 = Mat<4, 4, float>;
 
-namespace Maths {
-
-	template<typename T>
+namespace Maths
+{
+	template<typename T> requires std::is_convertible_v<T, double>
 	constexpr T PI = static_cast<T>(3.14159265358979323846);
 
 	constexpr double PI_OVER_ONE_EIGHTY = PI<double> / 180;

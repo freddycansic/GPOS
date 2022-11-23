@@ -5,6 +5,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "engine/Debug.h"
+#include "engine/Stats.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ObjectRenderer.h"
@@ -39,6 +40,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 		app.render();
 	
 		GUI::endFrame();
+		Stats::resetPerFrameData();
 
 		Window::update();
 	}

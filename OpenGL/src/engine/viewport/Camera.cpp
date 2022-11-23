@@ -15,7 +15,7 @@ Mat4x4 fpsFlyUpdate();
 Vec3 s_CameraFront = { 0.0f, 0.0f, 1.0f }; // point forward
 
 Mat4x4 orbitUpdate();
-float s_OrbitRadius = 5.0f;
+float s_OrbitRadius = 10.0f;
 Vec3 s_OrbitTarget;
 
 namespace Camera

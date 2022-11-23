@@ -15,6 +15,7 @@ namespace GUI
 
 	void renderToolbar();
 	void renderProperties();
+	void renderStats();
 
 	void showNewObjectMenu();
 	void renderNewObjectMenu();

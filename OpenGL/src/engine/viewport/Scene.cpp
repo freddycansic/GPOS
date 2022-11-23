@@ -8,7 +8,6 @@
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/object/shapes/Cube.h"
-#include "engine/Window.h"
 
 std::vector<std::unique_ptr<Object>> s_Objects;
 std::vector<Object*> s_SelectedObjects;
@@ -53,8 +52,6 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 			{
 				const auto& pointOfIntersection = rayIntersection.value();
 
-				//const auto distanceFromPointToPlane = std::abs(planeOfIntersection.x * position.x + planeOfIntersection.y * position.y + planeOfIntersection.z * position.z + planeOfIntersection.w) / std::sqrt(planeOfIntersection.x * planeOfIntersection.x + planeOfIntersection.y * planeOfIntersection.y + planeOfIntersection.z * planeOfIntersection.z);
-
 				const auto distanceFromPointToIntersection = std::powf(pointOfIntersection.x - position.x, 2) + std::powf(pointOfIntersection.y - position.y, 2) + std::powf(pointOfIntersection.z - position.z, 2);
 
 				if (distanceFromPointToIntersection < closestDistance)
@@ -67,6 +64,12 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 	}
 
 	return closest;
+}
+
+void selectObject(Object* obj)
+{
+	s_SelectedObjects.push_back(obj);
+	obj->selected = true;
 }
 
 namespace Scene
@@ -85,7 +88,7 @@ namespace Scene
 	}
 
 	void handleMouseClicks()
-	{
+	{ // TODO make this readable
 		static bool s_UsingGizmo = false;
 		static Vec2 s_FirstMousePos;
 		static std::optional<Vec3> s_IntersectingAxis;
@@ -155,11 +158,20 @@ namespace Scene
 
 		if (closestObject.has_value())
 		{
-			closestObject.value()->selected = true;
-			s_SelectedObjects.push_back(closestObject.value());
+			selectObject(closestObject.value());
 
-			// TODO
 			if (sp_Gizmo == nullptr) sp_Gizmo = std::make_unique<TranslateGizmo>();
+		}
+	}
+
+	void duplicateCurrentSelected()
+	{
+		const auto currentSelectionCopy = s_SelectedObjects;
+		clearSelection();
+
+		for (const auto& object : currentSelectionCopy)
+		{
+			//s_Objects.push_back(); // TODO make deep copy of unique ptr
 		}
 	}
 
