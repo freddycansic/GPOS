@@ -1,3 +1,2 @@
-dependencies/** linguist-detectable=false
 OpenGL/res/shaders/** linguist-language=GLSL
-OpenGL/src/libs/** linguist-detectable=false
+OpenGL/libs/** linguist-detectable=false
