@@ -238,11 +238,6 @@ namespace GUI
 			showingNewObjectMenu = false;
 		}
 
-		//if (ImGui::Button("Line"))
-		//{
-		//	showingNewObjectMenu = false;
-		//}
-
 		const auto& windowPos = ImGui::GetWindowPos();
 		const auto& windowSize = ImGui::GetWindowSize();
 		const auto& realtimeMousePos = ImGui::GetMousePos();

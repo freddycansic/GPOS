@@ -65,7 +65,7 @@ public:
 
 	[[nodiscard]] const Transform& getTransform() const;
 	[[nodiscard]] const Transform& getTempTransform() const;
-	[[nodiscard]] const Transform& getCombinedTransformations() const;
+	[[nodiscard]] Transform getCombinedTransformations() const;
 
 	[[nodiscard]] Cube getAABB() const;
 	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass

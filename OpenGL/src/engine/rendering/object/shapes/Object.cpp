@@ -235,7 +235,7 @@ const Transform& Object::getTempTransform() const
 	return m_TempTransform;
 }
 
-const Transform& Object::getCombinedTransformations() const
+Transform Object::getCombinedTransformations() const
 {
 	return m_Transform + m_TempTransform;
 }
