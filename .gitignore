@@ -1,4 +1,4 @@
-bin/**
+bin/
 .vs/**
 OpenGL/imgui.ini
 OpenGL.ctb~
@@ -7,3 +7,4 @@ OpenGL.ctb~~~
 CppProperties.json
 *.vspx
 /count-lines-of-code.bat
+build/
