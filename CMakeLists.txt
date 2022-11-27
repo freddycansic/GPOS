@@ -1,19 +1,17 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 
-project(OpenGL3D)
+project(OpenGL LANGUAGES CXX)
 
-set(srcDir OpenGL/src/)
-set(libsDir OpenGL/libs/)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-file(GLOB_RECURSE OpenGL3D_sources *.cpp *.h)
+add_subdirectory(OpenGL)
+add_subdirectory(libraries/glfw)
+add_subdirectory(libraries/glew)
 
-add_executable(OpenGL3D_sources ${sources})
-
-include_directories(${srcDir} ${libsDir})
-
-link_directories(${libsDir}GLFW/lib ${libsDir}GLEW/lib)
-
-add_library(glfw3 STATIC OpenGL/libs/GLFW/lib/glfw3.lib)
-add_library(glew STATIC OpenGL/libs/GLEW/lib/glew32s.lib)
-
-target_link_libraries(glfw3 glew opengl32.lib User32.lib Gdi32.lib Shell32.lib)
+target_include_directories(OpenGL PRIVATE {CMAKE_CURRENT_SOURCE_DIR}/libraries/glfw/include)
+target_include_directories(OpenGL PRIVATE {CMAKE_CURRENT_SOURCE_DIR}/libraries/glew/include)
+target_include_directories(OpenGL PRIVATE OpenGL/src)
+target_include_directories(OpenGL PRIVATE libraries)
+target_include_directories(OpenGL PRIVATE libraries/stb)

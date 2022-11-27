@@ -3,7 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 
-#include <GLEW/glew.h> // TODO fix this
+#include <GL/glew.h> // TODO fix this
 #include <GLFW/glfw3.h>
 
 #ifdef _MSC_VER

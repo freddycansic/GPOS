@@ -2,7 +2,7 @@
 
 #include "Matrix.h"
 
-#include <GLEW/glew.h>
+#include <GL/glew.h>
 
 struct Vec3;
 

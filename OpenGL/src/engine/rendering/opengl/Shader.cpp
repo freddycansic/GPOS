@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <GLEW/glew.h>
+#include <GL/glew.h>
 
 #include "engine/Debug.h"
 #include "maths/Maths.h"
