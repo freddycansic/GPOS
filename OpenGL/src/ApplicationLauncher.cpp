@@ -15,7 +15,13 @@
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
 {
 	Window::init(config.window);
-	
+
+#ifdef DEBUG
+	std::cout << "Running in DEBUG mode." << std::endl;
+#else
+	std::cout << "Running in RELEASE mode." << std::endl;
+#endif
+
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	Debug::checkExtensionsSupported(

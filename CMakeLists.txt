@@ -6,6 +6,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+	add_definitions(-DDEBUG) # preprocessor macro
+else()
+	if (WIN32)
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") # if running on release mode remove the cmd prompt on windows
+	endif()
+endif()
+
 add_subdirectory(OpenGL)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
