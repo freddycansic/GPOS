@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 
+#include "engine/Stats.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -211,7 +212,11 @@ namespace GUI
 
 	void renderStats()
 	{
-		//ImGui::SetNextWindowPos();
+		ImGui::Begin("Stats", nullptr);
+
+		ImGui::Text("Draw calls per frame : %i", Stats::drawCallsPerFrame);
+
+		ImGui::End();
 	}
 
 	bool showingNewObjectMenu = false;

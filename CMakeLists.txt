@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 2.0)
+cmake_minimum_required(VERSION 3.0)
 
 project(OpenGL3D)
 
 set(srcDir OpenGL/src/)
 set(libsDir OpenGL/libs/)
 
-file(GLOB OpenGL3D_sources *.cpp *.h)
+file(GLOB_RECURSE OpenGL3D_sources *.cpp *.h)
 
 add_executable(OpenGL3D_sources ${sources})
 

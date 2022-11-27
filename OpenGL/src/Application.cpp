@@ -74,6 +74,7 @@ void Application::imGuiRender()
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
 	GUI::renderToolbar();
+	GUI::renderStats();
 	GUI::renderProperties();
 
 	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(Window::width()) - 400.0f, 150.0f));

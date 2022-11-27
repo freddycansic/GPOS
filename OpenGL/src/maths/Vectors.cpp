@@ -3,7 +3,7 @@
 #include "maths/Vectors.h"
 #include "engine/Util.h"
 
-Vec2::Vec2(float x, float y)
+Vec2::Vec2(GLfloat x, GLfloat y)
 	: x(x), y(y)
 {
 }
@@ -24,17 +24,17 @@ Vec2 Vec2::normalise() const
 	return { x / mag, y / mag };
 }
 
-float Vec2::magnitude() const
+GLfloat Vec2::magnitude() const
 {
 	return Util::sqrt(x * x + y * y);
 }
 
-float Vec2::dot(Vec2 other) const
+GLfloat Vec2::dot(Vec2 other) const
 {
 	return x * other.x + y * other.y;
 }
 
-float Vec2::angleBetween(Vec2 other) const
+GLfloat Vec2::angleBetween(Vec2 other) const
 {
 	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
 }
@@ -66,19 +66,19 @@ void Vec3::operator-=(const Vec3& other) {
 	z -= other.z;
 }
 
-void Vec3::operator/=(float divisor)
+void Vec3::operator/=(GLfloat divisor)
 {
 	x /= divisor;
 	y /= divisor;
 	z /= divisor;
 }
 
-float Vec3::magnitude() const
+GLfloat Vec3::magnitude() const
 {
 	return Util::sqrt(x * x + y * y + z * z);
 }
 
-float Vec3::dot(const Vec3& other) const
+GLfloat Vec3::dot(const Vec3& other) const
 {
 	return x * other.x + y * other.y + z * other.z;
 }
@@ -92,7 +92,7 @@ Vec3 Vec3::cross(const Vec3& other) const
 	};
 }
 
-float Vec3::angleBetween(const Vec3& other) const
+GLfloat Vec3::angleBetween(const Vec3& other) const
 {
 	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
 }
@@ -103,12 +103,12 @@ Vec3 Vec3::normalise() const
 	return { x / mag, y / mag, z / mag };
 }
 
-Vec4::Vec4(float x, float y, float z, float w) :
+Vec4::Vec4(GLfloat x, GLfloat y, GLfloat z, GLfloat w) :
 	x(x), y(y), z(z), w(w)
 {
 }
 
-Vec4::Vec4(const Vec3& vec3, float w) :
+Vec4::Vec4(const Vec3& vec3, GLfloat w) :
 	x(vec3.x), y(vec3.y), z(vec3.z), w(w)
 {
 }
@@ -118,7 +118,7 @@ Vec4::Vec4(const Vec3& vec3) :
 {
 }
 
-Vec4 Vec4::operator*(float multiplier) const
+Vec4 Vec4::operator*(GLfloat multiplier) const
 {
 	return { x * multiplier, y * multiplier, z * multiplier, w * multiplier };
 }

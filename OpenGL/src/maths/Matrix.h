@@ -98,11 +98,8 @@ public:
 		}
 
 		for (size_t row = 0; row < rows; ++row) {
-			// for every column in matrix B
 			for (size_t otherCol = 0; otherCol < otherCols; ++otherCol) {
-				// for every piece of data in the column and row
 				for (size_t element = 0; element < rows; ++element) {
-					// sum of them
 					result[row][otherCol] += m_Data[row][element] * other[element][otherCol];
 				}
 			}

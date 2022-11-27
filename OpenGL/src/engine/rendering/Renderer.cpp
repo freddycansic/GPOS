@@ -2,6 +2,7 @@
 
 #include "engine/viewport/Camera.h"
 #include "engine/Debug.h"
+#include "engine/Stats.h"
 #include "engine/Window.h"
 
 // init matrices
@@ -33,6 +34,8 @@ void Renderer::draw(const VertexArray& vao, const IndexBuffer& ibo, Shader& shad
 	ibo.bind();
 
 	GLAPI(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo.getCount()), ibo.getType(), nullptr));
+
+	++Stats::drawCallsPerFrame;
 }
 
 void Renderer::clear(float r, float g, float b)

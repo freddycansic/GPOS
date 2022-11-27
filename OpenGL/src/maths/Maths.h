@@ -1,9 +1,12 @@
 #pragma once
+
 #include "Matrix.h"
+
+#include <GLEW/glew.h>
 
 struct Vec3;
 
-using Mat4x4 = Mat<4, 4, float>;
+using Mat4x4 = Mat<4, 4, GLfloat>;
 
 namespace Maths
 {

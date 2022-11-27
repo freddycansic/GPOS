@@ -14,11 +14,8 @@
 #include "engine/rendering/object/shapes/Object.h"
 #include "engine/input/Files.h"
 #include "object/shapes/Vertex.h"
-#include <engine/Debug.h>
-
-#include "engine/Stats.h"
+#include "engine/Debug.h"
 #include "engine/Util.h"
-#include "opengl/UniformBuffer.h"
 
 struct BatchData
 {
@@ -37,7 +34,6 @@ enum class State {
 constexpr static size_t MAX_VERTICES = 12000000;
 constexpr static size_t MAX_INDICES = 20000000; // <-- INDICES LIMIT LIMITS TO ~421875 cubes
 constexpr static size_t MAX_COUNT_LIGHTS = 16;
-constexpr static size_t LIGHT_UBO_INDEX = 0;
 
 State s_State = State::UNINITIALISED;
 
@@ -48,12 +44,11 @@ std::vector<Light> s_Lights;
 std::unique_ptr<VertexArray> s_Vao = nullptr;
 std::unique_ptr<VertexBuffer> s_Vbo = nullptr;
 std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
-//std::unique_ptr<UniformBuffer> s_LightsUbo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
 void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags);
-std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData);
+std::vector<GLuint> getCompiledIndexVector(const BatchData& batchData);
 void recalculateAllBatchPositions(const BatchData& batchData);
 
 namespace ObjectRenderer
@@ -69,7 +64,6 @@ namespace ObjectRenderer
 		s_Vbo = std::make_unique<VertexBuffer>(nullptr, MAX_VERTICES * sizeof(Vertex));
 		s_Ibo = std::make_unique<IndexBuffer>(nullptr, GL_UNSIGNED_INT, MAX_INDICES);
 
-		//s_LightsUbo = std::make_unique<UniformBuffer>(nullptr, MAX_COUNT_LIGHTS * sizeof(Light));
 		s_Lights.reserve(MAX_COUNT_LIGHTS);
 
 		VertexBufferLayout layout;
@@ -114,15 +108,12 @@ namespace ObjectRenderer
 		s_Vao->bind();
 		s_Shader->bind();
 
-		for (char i = 0; i < s_Lights.size(); ++i)
+		for (size_t i = 0; i < s_Lights.size(); ++i)
 		{
 			const auto& [pos, colour] = s_Lights.at(i);
 			s_Shader->setUniform3f("u_Lights[" + std::to_string(i) + "].pos", pos);
 			s_Shader->setUniform3f("u_Lights[" + std::to_string(i) + "].colour", colour);
 		}
-
-		//s_LightsUbo->bindBufferBase(LIGHT_UBO_INDEX);
-		//s_LightsUbo->setSubData(0, MAX_COUNT_LIGHTS * sizeof(Light), s_Lights.data());
 
 		// for every batch
 		for (auto& [handleAndFlags, batchData] : s_ObjectBatches)
@@ -131,21 +122,23 @@ namespace ObjectRenderer
 			const auto& flags = handleAndFlags.second;
 
 			// TODO thread all index complication once per frame
-			auto batchIndicesFuture = std::async(getCompiledIndexVector, std::ref(batchData));
+			auto f_BatchIndices = std::async(getCompiledIndexVector, std::ref(batchData));
 
 			// concurrently calculate mesh positions and normals
-			std::thread recalculateAllBatchPositionsThread(recalculateAllBatchPositions, std::ref(batchData));
+			std::thread t_RecalculateAllBatchPositions(
+				recalculateAllBatchPositions, std::ref(batchData));
 
 			for (const auto& object : batchData.objects )
 			{
 				if (object->moved)
 				{
-					object->normals = object->getMesh().recalculateNormals(object->getTransform() + object->getTempTransform());
+					object->normals = object->getMesh().recalculateNormals(object->getCombinedTransformations());
 				}
 			}
 
-			// mesh positions and normals recalculated
-			recalculateAllBatchPositionsThread.join();
+			// normal recalculation code omitted
+
+			t_RecalculateAllBatchPositions.join();
 
 			std::vector<Vertex> batchVertices;
 			batchVertices.reserve(batchData.verticesCount);
@@ -170,16 +163,10 @@ namespace ObjectRenderer
 				}
 			}
 
-			const auto& batchIndices = batchIndicesFuture.get();
+			const auto& batchIndices = f_BatchIndices.get();
 
 			s_Vbo->setData(sizeof(Vertex) * batchVertices.size(), batchVertices.data());
 			s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
-
-			//s_Vbo->setSubData(0, sizeof(Vertex) * MAX_VERTICES, batchVertices.data());
-			//s_Ibo->setSubData(0, sizeof(GLuint) * MAX_INDICES, batchIndices.data());
-
-			//s_Vbo->setSubData(0, sizeof(Vertex) * batchVertices.size(), batchVertices.data());
-			//s_Ibo->setSubData(0, sizeof(GLuint) * batchIndices.size(), batchIndices.data());
 
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
 			s_Shader->setUniform1i("u_NoLighting", flags & Flags::NO_LIGHTING ? 1 : 0);
@@ -194,8 +181,6 @@ namespace ObjectRenderer
 			{
 				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 			}
-
-			++Stats::drawCallsPerFrame;
 		}
 
 		// clear buffers
@@ -239,12 +224,12 @@ void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags)
 	verticesCount += mesh.positions.size();
 }
 
-std::vector<unsigned int> getCompiledIndexVector(const BatchData& batchData)
+std::vector<GLuint> getCompiledIndexVector(const BatchData& batchData)
 {
-	unsigned int maxIndex = 0;
-	unsigned int lastMaxShapeIndex = 0;
+	GLuint maxIndex = 0;
+	GLuint lastMaxShapeIndex = 0;
 
-	std::vector<unsigned int> batchIndices;
+	std::vector<GLuint> batchIndices;
 	batchIndices.reserve(batchData.indicesCount);
 
 	for (const auto& object : batchData.objects)

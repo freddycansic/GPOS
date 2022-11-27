@@ -37,12 +37,13 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 		Input::processFunctionKeybindPresses();
 
 		app.imGuiRender();
+		Stats::resetPerFrameData();
 		app.render();
 	
 		GUI::endFrame();
-		Stats::resetPerFrameData();
 
 		Window::update();
+
 	}
 
 	app.destroy();
