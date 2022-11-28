@@ -1,6 +1,6 @@
 #pragma once
 
-#include "maths/Vectors.h"
+#include "maths/Vec3.h"
 
 struct Transform {
 	Vec3 tra = {0.0f, 0.0f, 0.0f};

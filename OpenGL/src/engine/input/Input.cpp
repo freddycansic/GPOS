@@ -11,9 +11,10 @@
 #include "engine/Window.h"
 #include "engine/rendering/Renderer.h"
 #include "maths/Maths.h"
-#include "maths/Vectors.h"
 #include "engine/viewport/Scene.h"
 #include "engine/viewport/Camera.h"
+#include "maths/Vec2.h"
+#include "maths/Vec3.h"
 
 namespace Input
 {

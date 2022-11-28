@@ -2,7 +2,8 @@
 
 #include "engine/rendering/object/shapes/Object.h"
 #include "maths/Maths.h"
-#include "maths/Vectors.h"
+
+#include "maths/Vec3.h"
 
 struct Ray
 {

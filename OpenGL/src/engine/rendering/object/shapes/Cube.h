@@ -2,7 +2,7 @@
 
 #include "Object.h"
 
-struct Cube : public Object
+struct Cube : Object
 {
 public:
 	Cube(float x, float y, float z, float size, const Material& material);

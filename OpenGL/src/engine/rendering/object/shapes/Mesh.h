@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 
 #include "maths/Maths.h"
+#include "maths/Matrix.h"
 
 struct Vec3;
 struct Vec2;

@@ -6,9 +6,9 @@
 #include "engine/rendering/object/Material.h"
 #include "maths/Maths.h"
 #include "maths/Transform.h"
+#include "maths/Vec3.h"
 
 struct Cube;
-struct Vec3;
 struct Vec2;
 struct Ray;
 

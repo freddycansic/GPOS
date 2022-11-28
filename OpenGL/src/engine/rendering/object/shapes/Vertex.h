@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-#include "maths/Vectors.h"
+#include "maths/Vec2.h"
+#include "maths/Vec3.h"
+#include "maths/Vec4.h"
 
 struct Vertex {
 	Vec3 position = {0, 0, 0};

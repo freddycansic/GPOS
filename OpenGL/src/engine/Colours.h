@@ -1,6 +1,6 @@
 #pragma once
 
-#include "maths/Vectors.h"
+#include "maths/Vec3.h"
 
 namespace Colours
 {

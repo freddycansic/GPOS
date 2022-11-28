@@ -1,7 +1,9 @@
 #pragma once
 
 #include "engine/rendering/opengl/Texture.h"
-#include "maths/Vectors.h"
+#include "maths/Vec4.h"
+
+struct Vec3;
 
 struct Material
 {

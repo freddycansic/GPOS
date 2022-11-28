@@ -4,7 +4,6 @@
 #include "engine/rendering/opengl/IndexBuffer.h"
 #include "engine/rendering/opengl/Shader.h"
 #include "maths/Maths.h"
-#include "maths/Vectors.h"
 
 enum class RenderMode
 {

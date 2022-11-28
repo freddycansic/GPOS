@@ -6,7 +6,7 @@
 
 #include "engine/rendering/object/shapes/Line.h"
 #include "engine/rendering/object/shapes/Object.h"
-#include "maths/Vectors.h"
+#include "maths/Vec3.h"
 
 // TODO AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
