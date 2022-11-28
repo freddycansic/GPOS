@@ -7,7 +7,9 @@
 #include <cassert>
 #include <smmintrin.h>
 
-template<size_t rows, size_t columns, typename T = float> requires std::is_arithmetic_v<T>
+#include "engine/Util.h"
+
+template<size_t rows, size_t columns, Util::arithmetic T = float>
 class Mat
 {
 	using Mat4x4 = Mat<4, 4, float>;
@@ -432,7 +434,7 @@ public:
 		return m_Data.at(index);
 	}
 
-	template<size_t rows, size_t columns, typename T>
+	template<size_t rows_2, size_t columns_2, typename T_2>
 	friend std::ostream& operator<<(std::ostream& os, const Mat<rows, columns>& matrix);
 
 private:

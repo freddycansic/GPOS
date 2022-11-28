@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <concepts>
 
 #include <GL/glew.h>
 
@@ -43,7 +42,7 @@ struct Vec3 {
 	void operator-=(const Vec3& other);
 	void operator/=(GLfloat divisor);
 
-	template <typename T> requires std::convertible_to<T, GLfloat>
+	template <Util::arithmetic T>
 	Vec3 operator*(T scalar) const {
 		return { x * scalar, y * scalar, z * scalar };
 	}

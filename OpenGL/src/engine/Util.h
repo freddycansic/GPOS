@@ -19,8 +19,8 @@ enum class TextColour
 
 namespace Util
 {
-	//float rgbToHue(const Vec4& rgba);
-	//float rgbToHue(const Vec3& rgb);
+	template <typename T>
+	concept arithmetic = std::is_arithmetic_v<T>;
 
 	template <typename T>
 	void printVec(const std::vector<T>& vec, const char* delimitor = "\n")
@@ -41,8 +41,8 @@ namespace Util
 			: sqrtNewtonRaphson(x, static_cast<T>(0.5) * (curr + x / curr), curr);
 	}
 
-	template <typename T>
-	constexpr T sqrt(T x) requires std::is_arithmetic_v<T>
+	template <Util::arithmetic T>
+	constexpr T sqrt(T x)
 	{
 		return x >= 0 && x < std::numeric_limits<T>::infinity()
 			? sqrtNewtonRaphson(x, x, static_cast<T>(0))
