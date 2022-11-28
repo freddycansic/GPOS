@@ -5,9 +5,7 @@
 #include <iostream>
 #include <functional>
 #include <cassert>
-#include <xmmintrin.h>
-#include <intrin.h>
-
+#include <smmintrin.h>
 
 template<size_t rows, size_t columns, typename T = float> requires std::is_arithmetic_v<T>
 class Mat
