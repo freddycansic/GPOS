@@ -65,6 +65,7 @@ void Application::render()
 	drawAxes();
 
 	ObjectRenderer::end();
+
 }
 
 void Application::imGuiRender()
