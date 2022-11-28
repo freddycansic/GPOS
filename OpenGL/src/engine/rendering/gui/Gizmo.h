@@ -2,6 +2,7 @@
 
 #include <array>
 #include <optional>
+#include <memory>
 
 #include "engine/rendering/object/shapes/Line.h"
 #include "engine/rendering/object/shapes/Object.h"

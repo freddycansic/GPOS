@@ -24,7 +24,6 @@ struct Vec2 {
 	[[nodiscard]] GLfloat angleBetween(Vec2 other) const;
 };
 
-
 struct Vec3 {
 	union { GLfloat x = 0.0f, r; };
 	union { GLfloat y = 0.0f, g; };

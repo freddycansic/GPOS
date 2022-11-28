@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "engine/rendering/gui/Gizmo.h"
 #include "engine/rendering/object/shapes/Object.h"
 
