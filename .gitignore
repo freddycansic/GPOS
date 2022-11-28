@@ -1,6 +1,3 @@
 .vs/**
-OpenGL/imgui.ini
-CppProperties.json
 *.vspx
-/count-lines-of-code.bat
 build
