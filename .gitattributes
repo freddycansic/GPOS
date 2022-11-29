@@ -1,2 +1,3 @@
 OpenGL/res/shaders/** linguist-language=GLSL
 libraries/** linguist-detectable=false
+CMakePresets.json linguist-detectable=false
