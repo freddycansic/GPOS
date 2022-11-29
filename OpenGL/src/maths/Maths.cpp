@@ -3,7 +3,7 @@
 #include <random>
 #include <chrono>
 
-#include "Vectors.h"
+#include "Vec3.h"
 
 std::mt19937 mersenne(static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
 

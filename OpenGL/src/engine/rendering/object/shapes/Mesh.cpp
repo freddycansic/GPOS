@@ -4,7 +4,8 @@
 
 #include "maths/Maths.h"
 #include "maths/Matrix.h"
-#include "maths/Vectors.h"
+#include "maths/Vec4.h"
+#include "maths/Vec3.h"
 #include "maths/Transform.h"
 
 Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<Vec3>& normals, const std::vector<GLuint>& indices)

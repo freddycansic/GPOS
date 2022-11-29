@@ -8,7 +8,8 @@
 #include "engine/Debug.h"
 #include "maths/Maths.h"
 
-#include "maths/Vectors.h"
+#include "maths/Vec3.h"
+#include "maths/Vec4.h"
 
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<std::string, int>& map) {
 	for (const auto& [name, location] : map) {

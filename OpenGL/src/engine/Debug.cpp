@@ -96,7 +96,7 @@ namespace Debug {
 
 			std::cout << "(" << error << ") " << filePath;
 
-			Util::printColoured(fileName, TextColour::YELLOW);
+			Util::printColoured(fileName.c_str(), TextColour::YELLOW);
 
 			std::cout << " " << functionName << " : " << lineNum << std::endl;
 			return false;

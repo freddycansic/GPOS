@@ -3,7 +3,7 @@
 #include "engine/Window.h"
 #include "engine/input/Input.h"
 #include "engine/input/Keys.h"
-#include "maths/Vectors.h"
+#include "maths/Vec3.h"
 #include "engine/rendering/Renderer.h"
 
 Camera::CameraMode s_Mode = Camera::CameraMode::ORBIT;
