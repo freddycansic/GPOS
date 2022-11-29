@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <optional>
+#include <algorithm>
 
 #include "Camera.h"
 #include "engine/input/Input.h"
@@ -52,7 +53,7 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 			{
 				const auto& pointOfIntersection = rayIntersection.value();
 
-				const auto distanceFromPointToIntersection = std::powf(pointOfIntersection.x - position.x, 2) + std::powf(pointOfIntersection.y - position.y, 2) + std::powf(pointOfIntersection.z - position.z, 2);
+				const auto distanceFromPointToIntersection = std::pow(pointOfIntersection.x - position.x, 2) + std::pow(pointOfIntersection.y - position.y, 2) + std::pow(pointOfIntersection.z - position.z, 2);
 
 				if (distanceFromPointToIntersection < closestDistance)
 				{
@@ -100,7 +101,7 @@ namespace Scene
 
 			const auto centreToCurrentMouse = mousePos - s_SelectionCentreScreen;
 
-			const auto mag = s_CentreToFirstMouseScreen.dot(centreToCurrentMouse) / std::powf(s_CentreToFirstMouseScreen.magnitude(), 2);
+			const auto mag = s_CentreToFirstMouseScreen.dot(centreToCurrentMouse) / std::pow(s_CentreToFirstMouseScreen.magnitude(), 2);
 
 			for (const auto& object : s_SelectedObjects)
 			{

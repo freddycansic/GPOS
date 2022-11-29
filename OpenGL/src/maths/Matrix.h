@@ -6,6 +6,7 @@
 #include <functional>
 #include <cassert>
 #include <algorithm>
+#include <cmath>
 
 #include <smmintrin.h>
 
