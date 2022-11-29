@@ -5,6 +5,8 @@
 #include <iostream>
 #include <functional>
 #include <cassert>
+#include <algorithm>
+
 #include <smmintrin.h>
 
 #include "engine/Util.h"
