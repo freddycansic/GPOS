@@ -8,8 +8,9 @@
 #include "maths/Maths.h"
 #include "maths/Matrix.h"
 
-struct Vec3;
-struct Vec2;
+#include "maths/Vec3.h"
+#include "maths/Vec2.h"
+
 struct Transform;
 
 struct Mesh

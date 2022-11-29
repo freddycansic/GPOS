@@ -14,9 +14,12 @@ else()
 	endif()
 endif()
 
+#set(BUILD_SHARED_LIBS OFF) # make assimp compile to a static library
+
 add_subdirectory(OpenGL)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
+#add_subdirectory(libraries/assimp)
 
 target_include_directories(OpenGL PRIVATE {CMAKE_CURRENT_SOURCE_DIR}/libraries/glfw/include)
 target_include_directories(OpenGL PRIVATE {CMAKE_CURRENT_SOURCE_DIR}/libraries/glew/include)

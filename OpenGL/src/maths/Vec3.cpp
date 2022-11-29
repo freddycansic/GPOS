@@ -1,7 +1,7 @@
 #include "Vec3.h"
 
+#include "Maths.h"
 #include "Vec4.h"
-#include "engine/Util.h"
 
 Vec3::Vec3(const Vec4& vec4) :
 	x(vec4.x), y(vec4.y), z(vec4.z)
@@ -44,7 +44,7 @@ Vec3 Vec3::operator*(GLfloat scalar) const
 
 GLfloat Vec3::magnitude() const
 {
-	return Util::sqrt(x * x + y * y + z * z);
+	return Maths::sqrt(x * x + y * y + z * z);
 }
 
 GLfloat Vec3::dot(const Vec3& other) const

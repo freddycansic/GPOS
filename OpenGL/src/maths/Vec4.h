@@ -1,10 +1,8 @@
 #pragma once
 
-#include <iostream>
-
 #include <GL/glew.h>
 
-class Mat4x4;
+#include "Maths.h"
 
 struct Vec3;
 

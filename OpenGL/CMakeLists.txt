@@ -7,4 +7,5 @@ add_executable(OpenGL ${OpenGL_sources})
 target_link_libraries(OpenGL
     glfw
     libglew_static
+    #assimp
 )

@@ -1,5 +1,6 @@
 #include "Vec2.h"
 
+#include "Maths.h"
 #include "Vec4.h"
 
 Vec2::Vec2(GLfloat x, GLfloat y)
@@ -25,7 +26,7 @@ Vec2 Vec2::normalise() const
 
 GLfloat Vec2::magnitude() const
 {
-	return Util::sqrt(x * x + y * y);
+	return Maths::sqrt(x * x + y * y);
 }
 
 GLfloat Vec2::dot(Vec2 other) const
