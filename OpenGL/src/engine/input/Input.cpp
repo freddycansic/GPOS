@@ -4,9 +4,9 @@
 #include <unordered_map>
 #include <array>
 
+#include "Buttons.h"
 #include "engine/Debug.h"
 #include "engine/rendering/gui/GUI.h"
-#include "Keys.h"
 #include "Keybind.h"
 #include "engine/Window.h"
 #include "engine/rendering/Renderer.h"
@@ -71,35 +71,15 @@ namespace Input
 	float getMousePitch() { return pitch; }
 	Vec3 getCameraDirection() { return cameraDirection; }
 
-	constexpr int JUST_RELEASED = 3;
-
-	std::array<int, MouseButtons::LAST.keyCode + 1> mouseButtonStates;
-
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
-		if (mouseButtonStates[button] == GLFW_PRESS && action == GLFW_RELEASE)
+		if (MouseButtons::states[button] == GLFW_PRESS && action == GLFW_RELEASE)
 		{
-			mouseButtonStates[button] = JUST_RELEASED;
+			MouseButtons::states[button] = JUST_RELEASED;
 			return;
 		}
 
-		mouseButtonStates[button] = action;
-	}
-
-	bool isMouseButtonDown(const Key& button)
-	{
-		return mouseButtonStates[button.keyCode] == GLFW_PRESS;
-	}
-
-	bool isMouseButtonJustReleased(const Key& button)
-	{
-		if (mouseButtonStates[button.keyCode] == JUST_RELEASED)
-		{
-			mouseButtonStates[button.keyCode] = GLFW_RELEASE;
-			return true;
-		}
-
-		return false;
+		MouseButtons::states[button] = action;
 	}
 
 	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -115,38 +95,20 @@ namespace Input
 		Camera::zoom(static_cast<float>(yoffset));
 	}
 
-	std::array<int, Keys::LAST.keyCode + 1> keyStates;
-
 	void GLAPIENTRY Callbacks::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (key < 0) return;
 
-		if ((keyStates[key] == GLFW_PRESS || keyStates[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
+		if ((Keys::states[key] == GLFW_PRESS || Keys::states[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
 		{
-			keyStates[key] = JUST_RELEASED;
+			Keys::states[key] = JUST_RELEASED;
 			return;
 		}
 
-		keyStates[key] = action;
+		Keys::states[key] = action;
 	}
 
-	bool isKeyDown(const Key& key)
-	{
-		return keyStates[key.keyCode] == GLFW_PRESS || keyStates[key.keyCode] == GLFW_REPEAT;
-	}
-
-	bool isKeyJustReleased(const Key& key)
-	{
-		if (keyStates[key.keyCode] == JUST_RELEASED)
-		{
-			keyStates[key.keyCode] = GLFW_RELEASE;
-			return true;
-		}
-
-		return false;
-	}
-
-	std::unordered_map<void(*)(), Keybind> keybinds =
+	std::unordered_map<void(*)(), Keybind> justReleaseKeybinds =
 	{
 #ifdef DEBUG
 		{Window::close, {Keys::ESCAPE}},
@@ -158,7 +120,7 @@ namespace Input
 		{Scene::setGizmoToRotate, {Keys::R}},
 		{Scene::duplicateCurrentSelected, {Keys::LEFT_SHIFT, Keys::D}},
 		{[]
-		{// TODO make mouse buttons be able to activate keybinds
+		{
 			if (Scene::getSelectedObjects().empty()) return;
 
 			const auto& selectedObjects = Scene::getSelectedObjects();
@@ -174,40 +136,36 @@ namespace Input
 		//{Window::endCursorCapture, {Keys::V}},
 	};
 
+	std::unordered_map<void(*)(), Keybind> heldKeybinds =
+	{
+		{GUI::showLeo, {Keys::L, Keys::E, Keys::O}},
+		//{}
+	};
+
 	Keybind getFunctionKeybind(void(*function)())
 	{
-		return keybinds.at(function);
-	}
-
-	bool isKeybindJustReleased(const Keybind& keybind)
-	{
-		unsigned int numKeysDown = 0, numKeysJustReleased = 0;
-		const auto& keys = keybind.getKeys();
-
-		for (const auto& key : keys)
+		if (justReleaseKeybinds.contains(function))
 		{
-			if (isKeyDown(key))
-			{
-				++numKeysDown;
-				continue;
-			}
-
-			if (isKeyJustReleased(key))
-			{
-				++numKeysJustReleased;
-			}
+			return justReleaseKeybinds.at(function);
 		}
 
-		if (numKeysDown >= keys.size()) return false;
-
-		return numKeysDown + numKeysJustReleased == keys.size();
+		return heldKeybinds.at(function);
 	}
 
 	void processFunctionKeybindPresses()
 	{
-		for (const auto& [function, keybind] : keybinds)
+		for (const auto& [function, keybind] : justReleaseKeybinds)
 		{
-			if (isKeybindJustReleased(keybind)) std::invoke(function);
+			//std::cout << keybind.toString() << std::endl;
+
+			if (keybind.isJustReleased()) std::invoke(function);
+		}
+
+		for (const auto& [function, keybind] : heldKeybinds)
+		{
+			//std::cout << keybind.toString() << std::endl;
+
+			if (keybind.isHeld()) std::invoke(function);
 		}
 	}
 }

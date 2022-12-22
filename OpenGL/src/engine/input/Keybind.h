@@ -1,25 +1,53 @@
 #pragma once
+
 #include <string>
 #include <vector>
 #include <ostream>
+#include <unordered_map>
+#include <memory>
 
-struct Key;
+#include "Button.h"
+
+struct Button;
 
 class Keybind
 {
 public:
-	Keybind(const std::initializer_list<Key>& list);
+	Keybind(const std::initializer_list<std::shared_ptr<Button>>& list);
 
-	void setKeyBind(const std::vector<Key>& keys);
+	void setKeybind(const std::vector<std::shared_ptr<Button>>& buttons);
 
-	[[nodiscard]] std::vector<Key> getKeys() const;
+	[[nodiscard]] const std::vector<std::shared_ptr<Button>>& getButtons() const;
 	[[nodiscard]] std::string toString() const;
 
-	friend std::ostream& operator<<(std::ostream& os, const Keybind& keybind);
+	[[nodiscard]] bool isJustReleased() const;
+	[[nodiscard]] bool isHeld() const;
+
+	bool operator==(const Keybind& other) const;
+
+ 	friend std::ostream& operator<<(std::ostream& os, const Keybind& keybind);
 
 private:
-	std::vector<Key> m_Keys;
-	std::string m_StrRepr;
+	std::vector<std::shared_ptr<Button>> m_Buttons;
 
-	static std::string keybindToString(const std::vector<Key>& keys);
+	// unique ptr hack to get around making toString() non const
+	static std::unique_ptr<std::unordered_map<Keybind, std::string>> sp_StringRepresentations;
+};
+
+template <>
+struct std::hash<Keybind>
+{
+	std::size_t operator()(const Keybind& keybind) const noexcept
+	{
+		if (keybind.getButtons().empty()) return std::hash<int>()(0);
+
+		size_t result = std::hash<Button>()(*keybind.getButtons()[0]);
+
+		for (size_t i = 1; i < keybind.getButtons().size(); ++i)
+		{
+			result ^= std::hash<Button>()(*keybind.getButtons()[i]);
+		}
+
+		return result;
+	}
 };

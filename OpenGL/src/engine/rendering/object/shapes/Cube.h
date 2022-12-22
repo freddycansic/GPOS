@@ -10,6 +10,8 @@ public:
 	Cube() = default;
 	~Cube() override = default;
 
+	[[nodiscard]] std::unique_ptr<Object> clone() const override;
+
 	[[nodiscard]] Mesh& getMesh() const override;
 
 	void setScale(float xScale, float yScale, float zScale) override;

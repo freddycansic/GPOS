@@ -1,42 +1,93 @@
 #include "Keybind.h"
 
-#include "Keys.h"
+#include <set>
 
-Keybind::Keybind(const std::initializer_list<Key>& list) :
-	m_Keys(list), m_StrRepr(keybindToString(list))
+#include "Input.h"
+#include "Button.h"
+
+std::unique_ptr<std::unordered_map<Keybind, std::string>> Keybind::sp_StringRepresentations = std::make_unique<std::unordered_map<Keybind, std::string>>();
+
+Keybind::Keybind(const std::initializer_list<std::shared_ptr<Button>>& list) :
+	m_Buttons(list)
 {
 }
 
-void Keybind::setKeyBind(const std::vector<Key>& keys)
+void Keybind::setKeybind(const std::vector<std::shared_ptr<Button>>& buttons)
 {
-	m_Keys = keys;
-
-	m_StrRepr = keybindToString(keys);
+	m_Buttons = buttons;
 }
 
-std::string Keybind::keybindToString(const std::vector<Key>& keys)
+bool Keybind::isJustReleased() const
 {
-	using namespace std::string_literals;
+	unsigned int numKeysDown = 0, numKeysJustReleased = 0;
+	const auto& buttons = this->getButtons();
 
-	std::string result;
-
-	for (unsigned int i = 0; i < keys.size()-1; ++i)
+	for (const auto& button : buttons)
 	{
-		result += std::string(keys.at(i).name) + "+"s;
-	}
-	result += std::string(keys.at(keys.size() - 1).name);
+		if (button->isDown())
+		{
+			++numKeysDown;
+			continue;
+		}
 
-	return result;
+		if (button->isJustReleased())
+		{
+			++numKeysJustReleased;
+		}
+	}
+
+	if (numKeysDown >= buttons.size()) return false;
+
+	return numKeysDown + numKeysJustReleased == buttons.size();
 }
 
-std::vector<Key> Keybind::getKeys() const
+bool Keybind::isHeld() const
 {
-    return m_Keys;
+	for (const auto& key : this->getButtons())
+	{
+		if (!key->isDown()) return false;
+	}
+
+	return true;
+}
+
+const std::vector<std::shared_ptr<Button>>& Keybind::getButtons() const
+{
+    return m_Buttons;
 }
 
 std::string Keybind::toString() const
 {
-    return m_StrRepr;
+	if (sp_StringRepresentations->contains(*this))
+	{
+		return sp_StringRepresentations->at(*this);
+	}
+
+	using namespace std::string_literals;
+		
+	std::string result;
+
+	for (unsigned int i = 0; i < m_Buttons.size() - 1; ++i)
+	{
+		result += std::string(m_Buttons.at(i)->name) + "+"s;
+	}
+	result += std::string(m_Buttons.at(m_Buttons.size() - 1)->name);
+
+	// i love c++
+	sp_StringRepresentations->operator[](*this) = result;
+
+	return result;
+}
+
+bool Keybind::operator==(const Keybind& other) const
+{
+	std::set<std::shared_ptr<Button>> buttons;
+	buttons.insert(m_Buttons.begin(), m_Buttons.end());
+
+	std::set< std::shared_ptr<Button>> otherButtons;
+	otherButtons.insert(other.getButtons().begin(), other.getButtons().end());
+
+	return buttons == otherButtons;
 }
 
 std::ostream& operator<<(std::ostream& os, const Keybind& keybind)

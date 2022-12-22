@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "Camera.h"
+#include "engine/input/Buttons.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/Renderer.h"
@@ -95,7 +96,7 @@ namespace Scene
 		static std::optional<Vec3> s_IntersectingAxis;
 		static Vec2 s_CentreToFirstMouseScreen, s_SelectionCentreScreen;
 
-		if (s_UsingGizmo && Input::isMouseButtonDown(MouseButtons::LEFT))
+		if (s_UsingGizmo && MouseButtons::MOUSE_1->isDown())
 		{
 			const auto mousePos = Input::getMousePos();
 
@@ -111,7 +112,7 @@ namespace Scene
 			return;
 		}
 
-		if (s_UsingGizmo && Input::isMouseButtonJustReleased(MouseButtons::LEFT))
+		if (s_UsingGizmo && MouseButtons::MOUSE_1->isJustReleased())
 		{
 			for (const auto& object : s_SelectedObjects)
 			{
@@ -123,7 +124,7 @@ namespace Scene
 			return;
 		}
 
-		if (!Input::isMouseButtonDown(MouseButtons::LEFT)) return;
+		if (!MouseButtons::MOUSE_1->isDown()) return;
 		if (s_Objects.empty()) return; // cant select anything from empty scene
 
 		const auto& mouseRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
@@ -152,7 +153,7 @@ namespace Scene
 
 		const auto closestObject = findClosestIntersectingObject(mouseRay, Camera::getPos());
 
-		if (!Input::isKeyDown(Keys::LEFT_CONTROL))
+		if (!Keys::LEFT_CONTROL->isDown())
 		{
 			clearSelection();
 		}
@@ -168,11 +169,12 @@ namespace Scene
 	void duplicateCurrentSelected()
 	{
 		const auto currentSelectionCopy = s_SelectedObjects;
-		clearSelection();
+		//clearSelection();
 
 		for (const auto& object : currentSelectionCopy)
 		{
-			//s_Objects.push_back(); // TODO make deep copy of unique ptr
+			//const auto& newObj = object->clone();
+			//s_Objects.push_back(std::move(newObj));/
 		}
 	}
 

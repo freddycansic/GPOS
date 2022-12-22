@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <memory>
 
 #include "Mesh.h"
 #include "engine/rendering/object/Material.h"
@@ -38,6 +39,8 @@ public:
 	Object() = default;
 	explicit Object(const Material& material);
 	virtual ~Object() = default;
+
+	[[nodiscard]] virtual std::unique_ptr<Object> clone() const = 0;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
 	virtual void setScale(const Vec3& scale);

@@ -1,8 +1,8 @@
 #include "Camera.h"
 
 #include "engine/Window.h"
+#include "engine/input/Buttons.h"
 #include "engine/input/Input.h"
-#include "engine/input/Keys.h"
 #include "maths/Vec3.h"
 #include "engine/rendering/Renderer.h"
 
@@ -85,8 +85,14 @@ namespace Camera
 		}
 		case CameraMode::ORBIT:
 		{
-			static constexpr float ORBIT_ZOOM_STEP = 0.5f;
+			static constexpr float ORBIT_ZOOM_STEP = 0.7f;
 			s_OrbitRadius += ORBIT_ZOOM_STEP * -direction;
+
+			if (s_OrbitRadius < 0.0f)
+			{
+				s_OrbitRadius = 0.0f;
+			}
+
 			Camera::update();
 			break;
 		}
@@ -119,20 +125,20 @@ Mat4x4 fpsFlyUpdate()
 	static Vec3 ls_CameraUp = { 0.0f, 1.0f, 0.0f };
 
 	constexpr static float ls_SprintSpeed = 2.0f;
-	const float moveSpeed = 10.0f * (Input::isKeyDown(Keys::LEFT_SHIFT) ? ls_SprintSpeed : 1.0f);
+	const float moveSpeed = 10.0f * (Keys::LEFT_SHIFT->isDown() ? ls_SprintSpeed : 1.0f);
 
 	s_CameraFront = Input::getCameraDirection();
 
-	if (Input::isKeyDown(Keys::W)) {
+	if (Keys::W->isDown()) {
 		s_CameraPos += s_CameraFront * moveSpeed * Window::deltatime();
 	}
-	if (Input::isKeyDown(Keys::S)) {
+	if (Keys::S->isDown()) {
 		s_CameraPos -= s_CameraFront * moveSpeed * Window::deltatime();
 	}
-	if (Input::isKeyDown(Keys::D)) {
+	if (Keys::D->isDown()) {
 		s_CameraPos -= s_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
-	if (Input::isKeyDown(Keys::A)) {
+	if (Keys::A->isDown()) {
 		s_CameraPos += s_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
 

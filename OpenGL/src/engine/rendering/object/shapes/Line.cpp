@@ -59,7 +59,12 @@ Line::Line(const Ray& ray, float length, float width, const Material& material) 
 {
 }
 
-const Vec3 i = { 1.0f, 0.0f, 0.0f };
+[[nodiscard]] std::unique_ptr<Object> Line::clone() const
+{
+	return std::make_unique<Line>(*this);
+}
+
+constexpr Vec3 i = { 1.0f, 0.0f, 0.0f };
 
 Mat4x4 Line::getTransformMatrix() const
 {

@@ -20,4 +20,5 @@ namespace GUI
 	void showNewObjectMenu();
 	void renderNewObjectMenu();
 
+	void showLeo();
 }

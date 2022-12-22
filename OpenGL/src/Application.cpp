@@ -5,10 +5,10 @@
 #include "engine/Colours.h"
 #include "engine/rendering/gui/GUI.h"
 #include "engine/input/Files.h"
-#include "engine/input/Input.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/Window.h"
+#include "engine/input/Buttons.h"
 #include "engine/rendering/object/shapes/Line.h"
 #include "engine/rendering/object/shapes/Cube.h"
 #include "engine/input/Keybind.h"
@@ -43,8 +43,10 @@ void Application::render()
 {
 	Renderer::clear(Colours::BLACK);
 
-	if (Input::isMouseButtonDown(MouseButtons::MIDDLE) || Input::isKeyDown(Keys::D))
+	if (MouseButtons::MOUSE_3->isDown() || Keys::D->isDown())
 	{
+		std::cout << "MOUSE 3 or D" << std::endl;
+
 		if (!Window::capturingCursor()) Window::beginCursorCapture();
 
 		Camera::update();

@@ -108,6 +108,11 @@ Cube::Cube(const Vec3& pos, float size, const Material& material) : Cube(pos.x, 
 {
 }
 
+[[nodiscard]] std::unique_ptr<Object> Cube::clone() const
+{
+	return std::make_unique<Cube>(*this);
+}
+
 void Cube::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
 	moved = true;

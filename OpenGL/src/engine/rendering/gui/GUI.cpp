@@ -9,6 +9,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "engine/Window.h"
+#include "engine/input/Files.h"
 #include "engine/input/Input.h"
 #include "engine/input/Keybind.h"
 #include "engine/rendering/Renderer.h"
@@ -183,9 +184,6 @@ namespace GUI
 		//ImGui::min
 		ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
 
-		ImGui::Text("%.1f FPS", static_cast<double>(ImGui::GetIO().Framerate));
-		ImGui::Text("Time per frame %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
-
 		if (ImGui::Button("Translate"))
 		{
 			Scene::setGizmoToTranslate();
@@ -214,6 +212,8 @@ namespace GUI
 	{
 		ImGui::Begin("Stats", nullptr);
 
+		ImGui::Text("FPS : %.1f", static_cast<double>(ImGui::GetIO().Framerate));
+		ImGui::Text("Time per frame : %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
 		ImGui::Text("Draw calls per frame : %i", Stats::drawCallsPerFrame);
 
 		ImGui::End();
@@ -253,6 +253,16 @@ namespace GUI
 		}
 
 		addCurrentWindowDimensions(WindowType::NEW_OBJECT_MENU);
+		ImGui::End();
+	}
+
+	void showLeo()
+	{
+		static const Texture leo(Files::internal("textures/leo.png"));
+
+		ImGui::SetNextWindowPos(ImGui::GetMousePos());
+		ImGui::Begin("LEO", nullptr);
+		ImGui::Image(reinterpret_cast<ImTextureID>(leo.getID()), ImVec2(200, 200));
 		ImGui::End();
 	}
 }
