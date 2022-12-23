@@ -168,13 +168,12 @@ namespace Scene
 
 	void duplicateCurrentSelected()
 	{
-		const auto currentSelectionCopy = s_SelectedObjects;
-		//clearSelection();
-
-		for (const auto& object : currentSelectionCopy)
+		for (const auto& object : s_SelectedObjects)
 		{
-			//const auto& newObj = object->clone();
-			//s_Objects.push_back(std::move(newObj));/
+			s_Objects.push_back(object->clone());
+
+			// deselect old object
+			s_Objects.at(s_Objects.size() - 1)->selected = false;
 		}
 	}
 

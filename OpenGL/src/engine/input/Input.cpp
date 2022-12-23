@@ -119,21 +119,7 @@ namespace Input
 		{Scene::setGizmoToScale, {Keys::S}},
 		{Scene::setGizmoToRotate, {Keys::R}},
 		{Scene::duplicateCurrentSelected, {Keys::LEFT_SHIFT, Keys::D}},
-		{[]
-		{
-			if (Scene::getSelectedObjects().empty()) return;
-
-			const auto& selectedObjects = Scene::getSelectedObjects();
-			const auto& lastSelected = selectedObjects.at(selectedObjects.size() - 1);
-
-			Camera::setOrbitTarget(lastSelected->getAvgPosition());
-			Camera::update();
-
-		}, {Keys::F}},
-
-		// TODO TEMP
-		//{Window::beginCursorCapture, {Keys::C}},
-		//{Window::endCursorCapture, {Keys::V}},
+		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
 	};
 
 	std::unordered_map<void(*)(), Keybind> heldKeybinds =

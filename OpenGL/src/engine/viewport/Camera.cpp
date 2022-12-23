@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+#include "Scene.h"
 #include "engine/Window.h"
 #include "engine/input/Buttons.h"
 #include "engine/input/Input.h"
@@ -107,6 +108,17 @@ namespace Camera
 	void setOrbitTarget(const Vec3& target)
 	{
 		s_OrbitTarget = target;
+	}
+
+	void setOrbitTargetToLastSelected()
+	{
+		if (Scene::getSelectedObjects().empty()) return;
+
+		const auto& selectedObjects = Scene::getSelectedObjects();
+		const auto& lastSelected = selectedObjects.at(selectedObjects.size() - 1);
+
+		setOrbitTarget(lastSelected->getAvgPosition());
+		update();
 	}
 
 	Vec3 getPos()

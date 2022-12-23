@@ -29,6 +29,7 @@ namespace Camera
 	void setMode(CameraMode mode);
 
 	void setOrbitTarget(const Vec3& target);
+	void setOrbitTargetToLastSelected();
 
 	Vec3 getPos();
 	Mat4x4 getViewMatrix();
