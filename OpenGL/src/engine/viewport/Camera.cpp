@@ -44,7 +44,7 @@ namespace Camera
 		};
 	}
 
-	// https://stackoverflow.com/questions/45893277/is-it-possible-get-which-surface-of-cube-will-be-click-in-opengl/45946943#45946943
+	// code adjusted from https://stackoverflow.com/questions/45893277/is-it-possible-get-which-surface-of-cube-will-be-click-in-opengl/45946943#45946943
 	Ray perspRayFromCameraScreenPos(Vec2 screenCoord)
 	{
 		const auto NDCPos = screenToNDCBounds(screenCoord);

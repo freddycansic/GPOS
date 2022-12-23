@@ -6,9 +6,8 @@
 #include "Key.h"
 #include "MouseButton.h"
 
-inline constexpr int JUST_RELEASED = 3;
+constexpr int JUST_RELEASED = 3;
 
-// stolen from glfw3.h lines ~315 - ~518
 namespace Keys
 {
 	const std::shared_ptr<Key> SPACE = std::make_shared<Key>(32, "Space");
@@ -129,22 +128,18 @@ namespace Keys
 	const std::shared_ptr<Key> RIGHT_SHIFT = std::make_shared<Key>(344, "Right Shift");
 	const std::shared_ptr<Key> RIGHT_CONTROL = std::make_shared<Key>(345, "Right Ctrl");
 	const std::shared_ptr<Key> RIGHT_ALT = std::make_shared<Key>(346, "Right Alt");
-	const std::shared_ptr<Key> RIGHT_SUPER = std::make_shared<Key>( 347, "Right Super");
-	const std::shared_ptr<Key> MENU = std::make_shared<Key>( 348, "Menu");
-
-	inline static std::array<int, 348 + 1> states;
+	const std::shared_ptr<Key> RIGHT_SUPER = std::make_shared<Key>(347, "Right Super");
+	const std::shared_ptr<Key> MENU = std::make_shared<Key>(348, "Menu");
 }
 
 namespace MouseButtons
 {
 	const std::shared_ptr<MouseButton> MOUSE_1 = std::make_shared<MouseButton>(0, "Left Click");
-	const std::shared_ptr<MouseButton> MOUSE_2 = std::make_shared<MouseButton>( 1, "Right Click");
-	const std::shared_ptr<MouseButton> MOUSE_3 = std::make_shared<MouseButton>( 2, "Middle Click");
-	const std::shared_ptr<MouseButton> MOUSE_4 = std::make_shared<MouseButton>( 3, "Mouse 4");
-	const std::shared_ptr<MouseButton> MOUSE_5 = std::make_shared<MouseButton>( 4, "Mouse 5");
-	const std::shared_ptr<MouseButton> MOUSE_6 = std::make_shared<MouseButton>( 5, "Mouse 6");
-	const std::shared_ptr<MouseButton> MOUSE_7 = std::make_shared<MouseButton>( 6, "Mouse 7");
-	const std::shared_ptr<MouseButton> MOUSE_8 = std::make_shared<MouseButton>( 7, "Mouse 8");
-
-	inline static std::array<int, 7 + 1> states;
+	const std::shared_ptr<MouseButton> MOUSE_2 = std::make_shared<MouseButton>(1, "Right Click");
+	const std::shared_ptr<MouseButton> MOUSE_3 = std::make_shared<MouseButton>(2, "Middle Click");
+	const std::shared_ptr<MouseButton> MOUSE_4 = std::make_shared<MouseButton>(3, "Mouse 4");
+	const std::shared_ptr<MouseButton> MOUSE_5 = std::make_shared<MouseButton>(4, "Mouse 5");
+	const std::shared_ptr<MouseButton> MOUSE_6 = std::make_shared<MouseButton>(5, "Mouse 6");
+	const std::shared_ptr<MouseButton> MOUSE_7 = std::make_shared<MouseButton>(6, "Mouse 7");
+	const std::shared_ptr<MouseButton> MOUSE_8 = std::make_shared<MouseButton>(7, "Mouse 8");
 }

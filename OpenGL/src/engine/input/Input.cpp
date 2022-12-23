@@ -73,13 +73,13 @@ namespace Input
 
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
-		if (MouseButtons::states[button] == GLFW_PRESS && action == GLFW_RELEASE)
+		if (MouseButton::states[button] == GLFW_PRESS && action == GLFW_RELEASE)
 		{
-			MouseButtons::states[button] = JUST_RELEASED;
+			MouseButton::states[button] = JUST_RELEASED;
 			return;
 		}
 
-		MouseButtons::states[button] = action;
+		MouseButton::states[button] = action;
 	}
 
 	void GLAPIENTRY Callbacks::frameBufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -99,13 +99,13 @@ namespace Input
 	{
 		if (key < 0) return;
 
-		if ((Keys::states[key] == GLFW_PRESS || Keys::states[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
+		if ((Key::states[key] == GLFW_PRESS || Key::states[key] == GLFW_REPEAT) && action == GLFW_RELEASE)
 		{
-			Keys::states[key] = JUST_RELEASED;
+			Key::states[key] = JUST_RELEASED;
 			return;
 		}
 
-		Keys::states[key] = action;
+		Key::states[key] = action;
 	}
 
 	std::unordered_map<void(*)(), Keybind> justReleaseKeybinds =

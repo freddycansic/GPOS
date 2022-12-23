@@ -14,6 +14,7 @@
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
+#include "engine/input/Input.h"
 
 using namespace Flags;
 
@@ -45,8 +46,6 @@ void Application::render()
 
 	if (MouseButtons::MOUSE_3->isDown() || Keys::D->isDown())
 	{
-		std::cout << "MOUSE 3 or D" << std::endl;
-
 		if (!Window::capturingCursor()) Window::beginCursorCapture();
 
 		Camera::update();
@@ -59,7 +58,7 @@ void Application::render()
 	{
 		Scene::handleMouseClicks(); // only process mouse clicks when we're not interacting with the GUI
 	}
-
+	
 	ObjectRenderer::begin();
 
 	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
@@ -67,7 +66,6 @@ void Application::render()
 	drawAxes();
 
 	ObjectRenderer::end();
-
 }
 
 void Application::imGuiRender()

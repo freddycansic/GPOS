@@ -1,7 +1,7 @@
 #include "Button.h"
 
-Button::Button(int code, const std::string_view& name) :
-	code(code), name(name)
+Button::Button(int buttonCode, const std::string_view& buttonName) :
+	code(buttonCode), name(buttonName)
 {
 }
 

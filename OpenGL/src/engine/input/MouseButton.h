@@ -9,6 +9,8 @@ struct MouseButton : Button
 	[[nodiscard]] bool isDown() const override;
 	[[nodiscard]] bool isJustReleased() const override;
 
-	MouseButton(int code, const std::string_view& name);
+	MouseButton(int mouseCode, const std::string_view& mouseName);
 	~MouseButton() override = default;
+
+	static std::array<int, 8 + 1> states;
 };

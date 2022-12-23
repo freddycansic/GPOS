@@ -1,23 +1,27 @@
 #include "Key.h"
 
+#include <iostream>
+
 #include "Buttons.h"
 
 #include "GLFW/glfw3.h"
 
-Key::Key(int code, const std::string_view& name) : Button(code, name)
+std::array<int, 348 + 1> Key::states;
+
+Key::Key(int keyCode, const std::string_view& keyName) : Button(keyCode, keyName)
 {
 }
 
 bool Key::isDown() const
 {
-	return Keys::states[code] == GLFW_PRESS || Keys::states[code] == GLFW_REPEAT;
+	return states[code] == GLFW_PRESS || states[code] == GLFW_REPEAT;
 }
 
 bool Key::isJustReleased() const
 {
-	if (Keys::states[code] == JUST_RELEASED)
+	if (states[code] == JUST_RELEASED)
 	{
-		Keys::states[code] = GLFW_RELEASE;
+		states[code] = GLFW_RELEASE;
 		return true;
 	}
 

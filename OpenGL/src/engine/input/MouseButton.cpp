@@ -4,20 +4,22 @@
 
 #include "GLFW/glfw3.h"
 
-MouseButton::MouseButton(int code, const std::string_view& name) : Button(code, name)
+std::array<int, 8 + 1> MouseButton::states;
+
+MouseButton::MouseButton(int mouseCode, const std::string_view& mouseName) : Button(mouseCode, mouseName)
 {
 }
 
 bool MouseButton::isDown() const
 {
-	return MouseButtons::states[code] == GLFW_PRESS || MouseButtons::states[code] == GLFW_REPEAT;
+	return states[code] == GLFW_PRESS || states[code] == GLFW_REPEAT;
 }
 
 bool MouseButton::isJustReleased() const
 {
-	if (MouseButtons::states[code] == JUST_RELEASED)
+	if (states[code] == JUST_RELEASED)
 	{
-		MouseButtons::states[code] = GLFW_RELEASE;
+		states[code] = GLFW_RELEASE;
 		return true;
 	}
 

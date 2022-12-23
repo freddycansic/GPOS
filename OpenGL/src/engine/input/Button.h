@@ -4,11 +4,11 @@
 
 struct Button
 {
+	Button(int buttonCode, const std::string_view& buttonName);
+	virtual ~Button() = default;
+
 	[[nodiscard]] virtual bool isDown() const = 0;
 	[[nodiscard]] virtual bool isJustReleased() const = 0;
-
-	Button(int code, const std::string_view& name);
-	virtual ~Button() = default;
 
 	bool operator==(const Button& other) const;
 
