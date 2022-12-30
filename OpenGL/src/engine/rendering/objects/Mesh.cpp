@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "engine/Colours.h"
+#include "engine/Debug.h"
 #include "maths/Maths.h"
 #include "maths/Matrix.h"
 #include "maths/Vec4.h"
@@ -11,6 +13,7 @@
 Mesh::Mesh(const std::vector<Vec3>& positions, const std::vector<Vec2>& texCoords, const std::vector<Vec3>& normals, const std::vector<GLuint>& indices)
 	: positions(positions), textureCoordinates(texCoords), normals(normals), indices(indices)
 {
+	ASSERT(positions.size() == textureCoordinates.size() && positions.size() == normals.size());
 }
 
 std::vector<Vec3> Mesh::recalculatePositions(const Mat4x4& transformMatrix) const

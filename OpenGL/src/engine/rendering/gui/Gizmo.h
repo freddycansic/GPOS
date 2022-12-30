@@ -4,8 +4,8 @@
 #include <optional>
 #include <memory>
 
-#include "engine/rendering/object/shapes/Line.h"
-#include "engine/rendering/object/shapes/Object.h"
+#include "engine/rendering/objects/Line.h"
+#include "engine/rendering/objects/Object.h"
 #include "maths/Vec3.h"
 
 // TODO AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

@@ -11,9 +11,9 @@
 #include "engine/rendering/opengl/VertexBuffer.h"
 #include "engine/rendering/opengl/VertexArray.h"
 #include "engine/rendering/opengl/Shader.h"
-#include "engine/rendering/object/shapes/Object.h"
+#include "engine/rendering/objects/Object.h"
 #include "engine/input/Files.h"
-#include "object/shapes/Vertex.h"
+#include "objects/Vertex.h"
 #include "engine/Debug.h"
 #include "engine/Util.h"
 

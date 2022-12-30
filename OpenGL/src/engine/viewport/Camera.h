@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/rendering/object/shapes/Object.h"
+#include "engine/rendering/objects/Object.h"
 #include "maths/Maths.h"
 
 #include "maths/Vec3.h"

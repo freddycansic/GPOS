@@ -9,11 +9,12 @@
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/Window.h"
 #include "engine/input/Buttons.h"
-#include "engine/rendering/object/shapes/Line.h"
-#include "engine/rendering/object/shapes/Cube.h"
+#include "engine/rendering/objects/Line.h"
+#include "engine/rendering/objects/Cube.h"
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
+#include "engine/Debug.h"
 
 using namespace Flags;
 
@@ -35,6 +36,8 @@ void Application::init(char* projectDir)
 
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
+
+	Scene::loadModel("res/models/torus.obj");
 
 	Window::beginCursorCapture();
 }

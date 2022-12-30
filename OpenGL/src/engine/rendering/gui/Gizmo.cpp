@@ -2,8 +2,8 @@
 
 #include "engine/Colours.h"
 #include "engine/rendering/ObjectRenderer.h"
-#include "engine/rendering/object/shapes/Line.h"
-#include "engine/rendering/object/shapes/Cube.h"
+#include "engine/rendering/objects/Line.h"
+#include "engine/rendering/objects/Cube.h"
 
 constexpr float GIZMO_LINE_WIDTH = 0.02f;
 constexpr float GIZMO_LINE_LENGTH = 1.0f;

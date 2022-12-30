@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Mesh.h"
-#include "engine/rendering/object/Material.h"
+#include "Material.h"
 #include "maths/Maths.h"
 #include "maths/Transform.h"
 #include "maths/Vec3.h"

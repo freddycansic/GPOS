@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 
+#include "engine/Colours.h"
 #include "engine/Stats.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -14,8 +15,8 @@
 #include "engine/input/Keybind.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/viewport/Scene.h"
-#include "engine/rendering/object/Material.h"
-#include "engine/rendering/object/shapes/Cube.h"
+#include "engine/rendering/objects/Material.h"
+#include "engine/rendering/objects/Cube.h"
 
 enum class WindowType
 {
@@ -137,9 +138,6 @@ namespace GUI
 					case 1:
 						Renderer::setRenderMode(RenderMode::Wireframe);
 						break;
-
-					default:
-						break;
 					}
 				}
 
@@ -230,8 +228,6 @@ namespace GUI
 
 	void renderNewObjectMenu()
 	{
-		static const Material defaultMaterial = Vec4{ 0.2f, 0.2f, 0.2f, 1 };
-
 		if (!showingNewObjectMenu) return;
 
 		ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - 1, mousePosOnShowWindow.y - 1 });
@@ -239,7 +235,7 @@ namespace GUI
 
 		if (ImGui::Button("Cube"))
 		{
-			Scene::addObject(std::make_unique<Cube>(0, 0, 0, 1.0f, defaultMaterial));
+			Scene::addObject(std::make_unique<Cube>(0, 0, 0, 1.0f, Colours::DEFAULT));
 			showingNewObjectMenu = false;
 		}
 

@@ -7,6 +7,7 @@
 
 #include "maths/Maths.h"
 #include "maths/Matrix.h"
+#include "Material.h"
 
 #include "maths/Vec3.h"
 #include "maths/Vec2.h"

@@ -19,7 +19,6 @@ public:
 private:
 	static Mesh s_Mesh;
 	float m_Size = 1.0f;
-
 };
 
 

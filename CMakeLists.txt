@@ -23,12 +23,13 @@ endif()
 add_subdirectory(OpenGL)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
-#add_subdirectory(libraries/assimp)
+add_subdirectory(libraries/assimp)
 
-#set(BUILD_SHARED_LIBS OFF) # make assimp compile to a static library
+set(BUILD_SHARED_LIBS OFF) # make assimp compile to a static library
 
 target_include_directories(${PROJECT_NAME} PRIVATE {CMAKE_CURRENT_SOURCE_DIR}/libraries/glfw/include)
 target_include_directories(${PROJECT_NAME} PRIVATE {CMAKE_CURRENT_SOURCE_DIR}/libraries/glew/include)
 target_include_directories(${PROJECT_NAME} PRIVATE OpenGL/src)
 target_include_directories(${PROJECT_NAME} PRIVATE libraries)
 target_include_directories(${PROJECT_NAME} PRIVATE libraries/stb)
+target_include_directories(${PROJECT_NAME} PRIVATE libraries/assimp/include)
