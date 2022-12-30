@@ -54,7 +54,7 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 			{
 				const auto& pointOfIntersection = rayIntersection.value();
 
-				const auto distanceFromPointToIntersection = std::pow(pointOfIntersection.x - position.x, 2) + std::pow(pointOfIntersection.y - position.y, 2) + std::pow(pointOfIntersection.z - position.z, 2);
+				const auto distanceFromPointToIntersection = static_cast<float>(std::pow(pointOfIntersection.x - position.x, 2)) + static_cast<float>(std::pow(pointOfIntersection.y - position.y, 2)) + static_cast<float>(std::pow(pointOfIntersection.z - position.z, 2));
 
 				if (distanceFromPointToIntersection < closestDistance)
 				{
@@ -96,13 +96,15 @@ namespace Scene
 		static std::optional<Vec3> s_IntersectingAxis;
 		static Vec2 s_CentreToFirstMouseScreen, s_SelectionCentreScreen;
 
+		// TODO add cancelling gizmo movements
+
 		if (s_UsingGizmo && MouseButtons::MOUSE_1->isDown())
 		{
 			const auto mousePos = Input::getMousePos();
 
 			const auto centreToCurrentMouse = mousePos - s_SelectionCentreScreen;
 
-			const auto mag = s_CentreToFirstMouseScreen.dot(centreToCurrentMouse) / std::pow(s_CentreToFirstMouseScreen.magnitude(), 2);
+			const auto mag = s_CentreToFirstMouseScreen.dot(centreToCurrentMouse) / static_cast<float>(std::pow(s_CentreToFirstMouseScreen.magnitude(), 2));
 
 			for (const auto& object : s_SelectedObjects)
 			{
@@ -133,7 +135,7 @@ namespace Scene
 		{
 			if (s_IntersectingAxis = sp_Gizmo->getIntersectingHandleAxis(mouseRay); s_IntersectingAxis.has_value())
 			{
-				if (!s_UsingGizmo) 
+				if (!s_UsingGizmo)
 				{
 					s_FirstMousePos = Input::getMousePos();
 

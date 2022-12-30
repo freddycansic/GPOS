@@ -13,6 +13,7 @@ struct WindowConfig
 	bool fullscreen = false; // TODO make fullscreen a functionality
 	bool vsync = true;
 	bool resizable = true;
+	unsigned int samples = 4;
 };
 
 namespace Window

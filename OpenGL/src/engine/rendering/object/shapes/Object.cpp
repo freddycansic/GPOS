@@ -62,6 +62,7 @@ Cube Object::getAABB() const
 	return AABB;
 }
 
+// https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
 std::optional<Vec3> Object::isRayIntersecting(const Ray& ray) const
 {
 	std::optional<Vec3> pointOfIntersection;
@@ -83,12 +84,11 @@ std::optional<Vec3> Object::isRayIntersecting(const Ray& ray) const
 
 		const auto planeNormal = v2MinusV1.cross(v3MinusV1);
 
-		const auto d = -planeNormal.dot(v1); // distance from origin to plane
-
 		const auto planeNormalDotRayDirection = planeNormal.dot(ray.direction);
 
 		if (planeNormalDotRayDirection == 0) continue; // ray and triangle are parallel
 
+		const auto d = -planeNormal.dot(v1); // distance from world origin to plane
 		const auto rayOriginToIntersectionDist = -(planeNormal.dot(ray.origin) + d) / planeNormalDotRayDirection;
 
 		if (rayOriginToIntersectionDist < 0) continue; // ray direction is going away from the triangle

@@ -38,6 +38,8 @@ namespace Window
 
 		// init window
 		glfwWindowHint(GLFW_MAXIMIZED, config.maximised ? GLFW_TRUE : GLFW_FALSE);
+		glfwWindowHint(GLFW_SAMPLES, config.samples);
+
 		m_ID = glfwCreateWindow(config.width, config.height, config.title.c_str(), GLFW_FALSE, GLFW_FALSE);
 
 		glfwGetWindowSize(m_ID, &m_Width, &m_Height);
@@ -65,6 +67,7 @@ namespace Window
 		// TODO need to move this
 		GLAPI(glEnable(GL_DEBUG_OUTPUT));
 		GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
+		glEnable(GL_MULTISAMPLE);
 
 		//GLAPI(glEnable(GL_DEPTH_TEST));
 		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, nullptr));
