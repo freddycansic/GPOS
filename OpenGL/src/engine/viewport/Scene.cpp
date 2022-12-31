@@ -21,16 +21,6 @@ std::vector<std::unique_ptr<Object>> s_Objects;
 std::vector<Object*> s_SelectedObjects;
 std::unique_ptr<Gizmo> sp_Gizmo;
 
-void clearSelection()
-{
-	for (const auto& selectedObject : s_SelectedObjects)
-	{
-		selectedObject->selected = false;
-	}
-
-	s_SelectedObjects.clear();
-}
-
 Vec3 getSelectionCenter()
 {
 	Vec3 center;
@@ -74,14 +64,24 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 	return closest;
 }
 
-void selectObject(Object* obj)
-{
-	s_SelectedObjects.push_back(obj);
-	obj->selected = true;
-}
-
 namespace Scene
 {
+	void clearSelection()
+	{
+		for (const auto& selectedObject : s_SelectedObjects)
+		{
+			selectedObject->selected = false;
+		}
+
+		s_SelectedObjects.clear();
+	}
+
+	void selectObject(Object* obj)
+	{
+		s_SelectedObjects.push_back(obj);
+		obj->selected = true;
+	}
+
 	void render()
 	{
 		for (const auto& object : s_Objects)
@@ -292,5 +292,9 @@ namespace Scene
 	const std::vector<Object*>& getSelectedObjects()
 	{
 		return s_SelectedObjects;
+	}
+	const std::vector<std::unique_ptr<Object>>& getObjects()
+	{
+		return s_Objects;
 	}
 }

@@ -37,14 +37,12 @@ void Application::init(char* projectDir)
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 
-	Scene::loadModel("res/models/torus.obj");
-
 	Window::beginCursorCapture();
 }
 
 void Application::render()
 {
-	Renderer::clear(Colours::BLACK);
+	Renderer::clear(Colours::WHITE);
 
 	if (MouseButtons::MOUSE_3->isDown() || Keys::D->isDown())
 	{

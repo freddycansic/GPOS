@@ -1,13 +1,13 @@
 #include "GUI.h"
 
-#include <algorithm>
 #include <array>
 
-#include "engine/Colours.h"
-#include "engine/Stats.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+
+#include "engine/Colours.h"
+#include "engine/Stats.h"
 
 #include "engine/Window.h"
 #include "engine/input/Files.h"
@@ -94,6 +94,15 @@ namespace GUI
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+
+				if (ImGui::MenuItem("Load model"))
+				{
+					if (const auto path = Files::getPathFromDialogue("obj"); path)
+					{
+						Scene::loadModel(path);
+					}
+				}
+
 				if (ImGui::MenuItem("Close", Input::getFunctionKeybind(Window::close).toString().c_str())) { Window::close(); }
 				ImGui::EndMenu();
 			}

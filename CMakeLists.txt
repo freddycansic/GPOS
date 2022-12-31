@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(OpenGL LANGUAGES CXX)
+project(OpenGL LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,6 +24,7 @@ add_subdirectory(OpenGL)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
 add_subdirectory(libraries/assimp)
+add_subdirectory(libraries/nativefiledialog)
 
 set(BUILD_SHARED_LIBS OFF) # make assimp compile to a static library
 
@@ -33,3 +34,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE OpenGL/src)
 target_include_directories(${PROJECT_NAME} PRIVATE libraries)
 target_include_directories(${PROJECT_NAME} PRIVATE libraries/stb)
 target_include_directories(${PROJECT_NAME} PRIVATE libraries/assimp/include)
+target_include_directories(${PROJECT_NAME} PRIVATE libraries/nativefiledialog/src/include)

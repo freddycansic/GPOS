@@ -14,12 +14,17 @@ int m_Width, m_Height, s_DisplayWidth, s_DisplayHeight;
 float m_Delta = 0;
 bool s_Initialised;
 
+void glfwError(int id, const char* description)
+{
+	std::cout << description << std::endl;
+}
+
 namespace Window
 {
-	// setup window and opengl context
 	void init(const WindowConfig& config)
 	{
-		// initialise GLFW
+		glfwSetErrorCallback(glfwError);
+
 		if (!glfwInit()) 
 		{
 			throw std::runtime_error("GLFW failed to initialise!");
@@ -44,7 +49,7 @@ namespace Window
 
 		glfwGetWindowSize(m_ID, &m_Width, &m_Height);
 
-		if (!m_ID) 
+		if (!m_ID)
 		{
 			glfwTerminate();
 			throw std::runtime_error("Failed to create window!");

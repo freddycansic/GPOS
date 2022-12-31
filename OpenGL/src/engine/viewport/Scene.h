@@ -18,7 +18,11 @@ namespace Scene
 	void setGizmoToScale();
 	void setGizmoToRotate();
 
+	void selectObject(Object* obj);
+	void clearSelection();
+
 	const std::vector<Object*>& getSelectedObjects();
+	const std::vector<std::unique_ptr<Object>>& getObjects();
 
 	void render();
 	void handleMouseClicks();

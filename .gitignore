@@ -1,3 +1,4 @@
 .vs/**
 *.vspx
 build
+OpenGL/res/models/*.mtl
