@@ -115,9 +115,9 @@ namespace Input
 #endif
 		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}},
 		{GUI::showNewObjectMenu, {Keys::LEFT_SHIFT, Keys::A}},
-		{Scene::setGizmoToTranslate, {Keys::G}},
-		{Scene::setGizmoToScale, {Keys::S}},
-		{Scene::setGizmoToRotate, {Keys::R}},
+		//{Scene::setGizmoToTranslate, {Keys::G}},
+		//{Scene::setGizmoToScale, {Keys::S}},
+		//{Scene::setGizmoToRotate, {Keys::R}},
 		{Scene::duplicateCurrentSelected, {Keys::LEFT_SHIFT, Keys::D}},
 		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
 	};

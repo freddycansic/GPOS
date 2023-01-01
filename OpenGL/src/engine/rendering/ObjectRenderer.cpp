@@ -130,7 +130,7 @@ namespace ObjectRenderer
 
 			for (const auto& object : batchData.objects )
 			{
-				if (object->moved)
+				if (object->shouldRecalculateNormals)
 				{
 					object->normals = object->getMesh().recalculateNormals(object->getCombinedTransformations());
 				}
@@ -147,7 +147,7 @@ namespace ObjectRenderer
 			{
 				auto& mesh = object->getMesh();
 
-				object->moved = false; // object is guaranteed to have its positions recalculated
+				object->shouldRecalculateNormals = false; // object is guaranteed to have its positions recalculated
 
 				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{
@@ -171,16 +171,25 @@ namespace ObjectRenderer
 			s_Shader->setUniform1ui64("u_TexHandle", handle);
 			s_Shader->setUniform1i("u_NoLighting", flags & Flags::NO_LIGHTING ? 1 : 0);
 
+			bool wasWireframe = false;
+			if (flags & Flags::ALWAYS_SOLID)
+			{
+				if (Renderer::getRenderMode() == RenderMode::Wireframe)
+				{
+					wasWireframe = true;
+					Renderer::setRenderMode(RenderMode::Solid);
+				}
+			}
+
 			if (flags & Flags::NO_DEPTH_TEST)
 			{
 				GLAPI(glDisable(GL_DEPTH_TEST));
-				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-				GLAPI(glEnable(GL_DEPTH_TEST)); // TODO reset filters smth
 			}
-			else
-			{
-				Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-			}
+
+			Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+
+			if (wasWireframe) Renderer::setRenderMode(RenderMode::Wireframe);
+			GLAPI(glEnable(GL_DEPTH_TEST));
 		}
 
 		// clear buffers

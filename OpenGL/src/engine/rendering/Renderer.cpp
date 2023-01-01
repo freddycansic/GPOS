@@ -69,8 +69,12 @@ void Renderer::recalculateProjectionMatrices()
 	s_Ortho = Maths::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, -1.0f, 1.0f);
 }
 
+RenderMode s_RenderMode = RenderMode::Solid;
+
 void Renderer::setRenderMode(RenderMode renderMode)
 {
+	s_RenderMode = renderMode;
+
 	switch (renderMode)
 	{
 	case RenderMode::Wireframe:
@@ -81,4 +85,9 @@ void Renderer::setRenderMode(RenderMode renderMode)
 		GLAPI(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 		break;
 	}
+}
+
+RenderMode Renderer::getRenderMode()
+{
+	return s_RenderMode;
 }

@@ -22,6 +22,7 @@ public:
 	Material material;
 	bool selected = false;
 	bool moved = true;
+	bool shouldRecalculateNormals = true;
 
 protected:
 	Transform m_Transform;

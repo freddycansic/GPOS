@@ -34,4 +34,5 @@ public:
 	static void recalculateProjectionMatrices();
 
 	static void setRenderMode(RenderMode renderMode);
+	static RenderMode getRenderMode();
 };

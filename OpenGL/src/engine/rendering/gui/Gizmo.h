@@ -8,58 +8,22 @@
 #include "engine/rendering/objects/Object.h"
 #include "maths/Vec3.h"
 
-// TODO AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-class Gizmo
+enum class GizmoTool
 {
-public:
-	void render(const Vec3& pos) const;
-	[[nodiscard]] std::optional<Vec3> getIntersectingHandleAxis(const Ray& ray) const;
-	[[nodiscard]] std::optional<Vec3> getHandleIntersectionPoint(const Ray& ray) const;
-	[[nodiscard]] virtual std::function<void(Object&)> getOffsetTransformation(const Vec3& transformation) const = 0;
-
-	Gizmo() = default;
-	virtual ~Gizmo() = default;
-
-protected:
-	[[nodiscard]] virtual const std::array<std::unique_ptr<Object>, 3>& getHandles() const = 0;
-
-	static std::array<Line, 3> s_Lines;
+	TRANSLATE,
+	ROTATE,
+	SCALE
 };
 
-class ScaleGizmo : public Gizmo
+namespace Gizmo
 {
-public:
-	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& scale) const override;
+	void render(const Vec3& pos);
 
-protected:
-	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
+	[[nodiscard]] std::optional<Vec3> getIntersectingHandleAxis(const Ray& ray);
+	[[nodiscard]] std::optional<Vec3> getHandleIntersectionPoint(const Ray& ray);
 
-private:
-	static std::array<std::unique_ptr<Object>, 3> s_Handles;
-};
+	void transformObject(Object& object, const Vec3& transformation);
 
-class TranslateGizmo : public Gizmo
-{
-public:
-	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& translate) const override;
-
-protected:
-	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
-
-private:
-	static std::array<std::unique_ptr<Object>, 3> s_Handles;
-};
-
-class RotateGizmo : public Gizmo
-{
-public:
-	[[nodiscard]] std::function<void(Object&)> getOffsetTransformation(const Vec3& rotate) const override;
-
-
-protected:
-	[[nodiscard]] const std::array<std::unique_ptr<Object>, 3>& getHandles() const override;
-
-private:
-	static std::array<std::unique_ptr<Object>, 3> s_Handles;
+	void setTool(GizmoTool tool);
+	[[nodiscard]] GizmoTool getTool();
 };

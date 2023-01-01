@@ -249,7 +249,26 @@ public:
 
 	[[nodiscard]] Mat adjugateInverse() const
 	{
-		return this->adjugate() * (1 / this->determinant());
+		if constexpr (!rows == 4 && !columns == 4) return this->adjugate() * (1 / this->determinant());
+
+		// optimised for 4x4 matrix
+		const auto m0 = this->minor(0, 0).determinant();
+		const auto m1 = this->minor(0, 1).determinant();
+		const auto m2 = this->minor(0, 2).determinant();
+		const auto m3 = this->minor(0, 3).determinant();
+
+		const auto determinant = m0 * m_Data[0][0] - m1 * m_Data[0][1] + m2 * m_Data[0][2] - m3 * m_Data[0][3];
+
+		// reuses already calculated determinants
+		const Mat4x4 cofactor =
+		{
+			{m0, -m1, m2, -m3},
+			{this->cofactor(1, 0), this->cofactor(1, 1), this->cofactor(1, 2), this->cofactor(1, 3)},
+			{this->cofactor(2, 0), this->cofactor(2, 1), this->cofactor(2, 2), this->cofactor(2, 3)},
+			{this->cofactor(3, 0), this->cofactor(3, 1), this->cofactor(3, 2), this->cofactor(3, 3)},
+		};
+
+		return cofactor.transpose() * (1 / determinant);
 	}
 
 	[[nodiscard]] static Mat identity()

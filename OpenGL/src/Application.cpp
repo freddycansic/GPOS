@@ -24,9 +24,9 @@ void drawAxes()
 	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
 	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
 	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
-	ObjectRenderer::draw(centreCube, NO_LIGHTING);
-	ObjectRenderer::draw(x, NO_LIGHTING);
-	ObjectRenderer::draw(z, NO_LIGHTING);
+	ObjectRenderer::draw(centreCube, NO_LIGHTING | ALWAYS_SOLID);
+	ObjectRenderer::draw(x, NO_LIGHTING | ALWAYS_SOLID);
+	ObjectRenderer::draw(z, NO_LIGHTING | ALWAYS_SOLID);
 }
 
 void Application::init(char* projectDir)

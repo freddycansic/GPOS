@@ -12,11 +12,7 @@ namespace Scene
 {
 	void addObject(std::unique_ptr<Object>&& objectPtr);
 	void duplicateCurrentSelected();
-	void loadModel(const char* path);
-
-	void setGizmoToTranslate();
-	void setGizmoToScale();
-	void setGizmoToRotate();
+	void loadModelIntoScene(const char* path);
 
 	void selectObject(Object* obj);
 	void clearSelection();

@@ -18,6 +18,7 @@ namespace Flags
 {
 	constexpr RenderingFlag NO_DEPTH_TEST	= 1 << 0;
 	constexpr RenderingFlag NO_LIGHTING		= 1 << 1;
+	constexpr RenderingFlag ALWAYS_SOLID	= 1 << 2;
 }
 
 namespace ObjectRenderer

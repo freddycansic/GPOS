@@ -8,7 +8,6 @@
 
 #include "engine/Colours.h"
 #include "engine/Stats.h"
-
 #include "engine/Window.h"
 #include "engine/input/Files.h"
 #include "engine/input/Input.h"
@@ -17,6 +16,7 @@
 #include "engine/viewport/Scene.h"
 #include "engine/rendering/objects/Material.h"
 #include "engine/rendering/objects/Cube.h"
+#include "engine/rendering/gui/Gizmo.h"
 
 enum class WindowType
 {
@@ -99,7 +99,7 @@ namespace GUI
 				{
 					if (const auto path = Files::getPathFromDialogue("obj"); path)
 					{
-						Scene::loadModel(path);
+						Scene::loadModelIntoScene(path);
 					}
 				}
 
@@ -193,17 +193,17 @@ namespace GUI
 
 		if (ImGui::Button("Translate"))
 		{
-			Scene::setGizmoToTranslate();
+			Gizmo::setTool(GizmoTool::TRANSLATE);
 		}
 
 		if (ImGui::Button("Scale"))
 		{
-			Scene::setGizmoToScale();
+			Gizmo::setTool(GizmoTool::SCALE);
 		}
 
 		if (ImGui::Button("Rotate"))
 		{
-			Scene::setGizmoToRotate();
+			Gizmo::setTool(GizmoTool::ROTATE);
 		}
 
 		if (!Scene::getSelectedObjects().empty())

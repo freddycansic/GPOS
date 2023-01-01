@@ -1,5 +1,6 @@
 #include "Object.h"
 
+#include <numeric>
 #include <optional>
 
 #include "maths/Matrix.h"
@@ -243,14 +244,9 @@ Transform Object::getCombinedTransformations() const
 Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();
-
-	Vec3 avg;
-	for (const auto& pos : positions)
-	{
-		avg += pos;
-	}
-
-	avg /= static_cast<float>(positions.size());
-
-	return m_AvgPos.emplace(avg);
+	
+	return m_AvgPos.emplace
+	(
+		std::accumulate(positions.begin(), positions.end(), Vec3(0, 0, 0)) / static_cast<float>(positions.size())
+	);
 }

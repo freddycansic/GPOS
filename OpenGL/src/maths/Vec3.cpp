@@ -18,6 +18,16 @@ Vec3 Vec3::operator-(const Vec3& other) const
 	return { x - other.x, y - other.y, z - other.z };
 }
 
+Vec3 Vec3::operator/(GLfloat divisor) const
+{
+	return
+	{
+		x / divisor,
+		y / divisor,
+		z / divisor
+	};
+}
+
 void Vec3::operator+=(const Vec3& other) {
 	x += other.x;
 	y += other.y;
