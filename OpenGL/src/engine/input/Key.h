@@ -12,5 +12,7 @@ struct Key final : Button
 
 	Key(int keyCode, const std::string_view& keyName);
 
+	static void resetJustReleased();
+
 	static std::array<int, 348 + 1> states;
 };

@@ -115,17 +115,19 @@ namespace Input
 #endif
 		{Window::close, {Keys::LEFT_CONTROL, Keys::Q}},
 		{GUI::showNewObjectMenu, {Keys::LEFT_SHIFT, Keys::A}},
-		//{Scene::setGizmoToTranslate, {Keys::G}},
-		//{Scene::setGizmoToScale, {Keys::S}},
-		//{Scene::setGizmoToRotate, {Keys::R}},
+		{[] {Gizmo::setTool(GizmoTool::TRANSLATE); }, {Keys::G}},
+		{[] {Gizmo::setTool(GizmoTool::SCALE); }, {Keys::S}},
+		{[] {Gizmo::setTool(GizmoTool::ROTATE); }, {Keys::R}},
 		{Scene::duplicateCurrentSelected, {Keys::LEFT_SHIFT, Keys::D}},
+		{Scene::selectAll, {Keys::A}},
+		{Scene::clearSelection, {Keys::LEFT_CONTROL, Keys::D}},
 		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
+		{Scene::loadModelIntoScene, {Keys::LEFT_CONTROL, Keys::I}},
 	};
 
 	std::unordered_map<void(*)(), Keybind> heldKeybinds =
 	{
 		{GUI::showLeo, {Keys::L, Keys::E, Keys::O}},
-		//{}
 	};
 
 	Keybind getFunctionKeybind(void(*function)())
@@ -142,15 +144,11 @@ namespace Input
 	{
 		for (const auto& [function, keybind] : justReleaseKeybinds)
 		{
-			//std::cout << keybind.toString() << std::endl;
-
 			if (keybind.isJustReleased()) std::invoke(function);
 		}
 
 		for (const auto& [function, keybind] : heldKeybinds)
 		{
-			//std::cout << keybind.toString() << std::endl;
-
 			if (keybind.isHeld()) std::invoke(function);
 		}
 	}

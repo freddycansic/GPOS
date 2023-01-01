@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "engine/Debug.h"
 #include "engine/input/Buttons.h"
+#include "engine/input/Files.h"
 #include "engine/input/Input.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/Renderer.h"
@@ -25,7 +26,6 @@ Vec3 getSelectionCenter()
 	}
 
 	center /= static_cast<float>(s_SelectedObjects.size());
-
 	return center;
 }
 
@@ -71,8 +71,18 @@ namespace Scene
 		s_SelectedObjects.clear();
 	}
 
+	void selectAll()
+	{
+		for (const auto& object : s_Objects)
+		{
+			selectObject(&*object);
+		}
+	}
+
 	void selectObject(Object* obj)
 	{
+		if (obj->selected) return;
+
 		s_SelectedObjects.push_back(obj);
 		obj->selected = true;
 	}
@@ -119,7 +129,11 @@ namespace Scene
 		{
 			for (const auto& object : s_SelectedObjects)
 			{
-				object->shouldRecalculateNormals = true;
+				if (Gizmo::getTool() != GizmoTool::TRANSLATE)
+				{
+					object->shouldRecalculateNormals = true;
+				}
+
 				object->applyOffset();
 			}
 
@@ -179,18 +193,18 @@ namespace Scene
 		}
 	}
 
-	void loadModelIntoScene(const char* path)
+	void loadModelIntoScene()
 	{
-		if (!Model::meshes.contains(path))
+		if (const auto path = Files::getPathFromDialogue("amf,3ds,ac,ase,assbin,b3d,bvh,collada,dxf,csm,hmp,irrmesh,iqm,irr,lwo,lws,m3d,md2,md3,md5,mdc,mdl,nff,ndo,off,obj,ogre,opengex,ply,ms3d,cob,blend,ifc,xgl,fbx,q3d"); path)
 		{
 			Model::loadModelMeshes(path);
-		}
-		
-		const auto& models = Model::meshes.at(path);
 			
-		for (size_t modelIdx = 0; modelIdx < models.size(); ++modelIdx)
-		{
-			addObject(std::make_unique<Model>(0, 0, 0, path, modelIdx, models.at(modelIdx).second));
+			const auto& models = Model::meshes.at(path);
+				
+			for (size_t modelIdx = 0; modelIdx < models.size(); ++modelIdx)
+			{
+				addObject(std::make_unique<Model>(0, 0, 0, path, modelIdx, models.at(modelIdx).second));
+			}
 		}
 	}
 
@@ -206,5 +220,16 @@ namespace Scene
 	const std::vector<std::unique_ptr<Object>>& getObjects()
 	{
 		return s_Objects;
+	}
+
+	Vec3 s_BackgroundColour = { 0, 0, 0 };
+	const Vec3& getBackgroundColour()
+	{
+		return s_BackgroundColour;
+	}
+
+	void setBackgroundColour(const Vec3& colour)
+	{
+		s_BackgroundColour = colour;
 	}
 }

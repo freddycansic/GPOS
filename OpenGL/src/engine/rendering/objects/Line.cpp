@@ -64,6 +64,11 @@ Line::Line(const Ray& ray, float length, float width, const Material& material) 
 	return std::make_unique<Line>(*this);
 }
 
+std::string Line::stringName() const
+{
+	return "Line";
+}
+
 constexpr Vec3 i = { 1.0f, 0.0f, 0.0f };
 
 Mat4x4 Line::getTransformMatrix() const

@@ -3,6 +3,7 @@
 #include <imgui/imgui.h>
 
 #include "engine/Debug.h"
+#include "engine/Util.h"
 
 std::unordered_map<const char*, std::vector<std::pair<Mesh, Material>>> Model::meshes;
 Assimp::Importer Model::s_Importer;
@@ -10,38 +11,32 @@ Assimp::Importer Model::s_Importer;
 Model::Model(Vec3 pos, const char* path, size_t index, const Material& material)
 	: Object(material), m_Path(path), m_Index(index)
 {
-	loadModelMeshes(path);
+	const std::string stringPath(path);
+
+	auto lastSlashPos = stringPath.find_last_of('\\');
+	if (lastSlashPos == std::string::npos) lastSlashPos = stringPath.find_last_of('/');
+	if (lastSlashPos == std::string::npos) lastSlashPos = 0;
+
+	const auto lastDotPos = stringPath.find_last_of('.');
+	m_Name = stringPath.substr(lastSlashPos + 1, lastDotPos - lastSlashPos - 1) + std::string("_") + std::to_string(index);
+	m_Name = Util::replaceAll(m_Name, " ", "_");
 
 	m_Transform.tra = pos;
+
+	loadModelMeshes(path);
 }
 
 Model::Model(float x, float y, float z, const char* path, size_t index, const Material& material)
-	: Object(material), m_Path(path), m_Index(index)
-{
-	loadModelMeshes(path);
-
-	m_Transform.tra = {x, y, z};
-}
+	: Model(Vec3(x, y, z), path, index, material)
+{}
 
 void Model::loadModelMeshes(const char* path)
 {
 	// if the model has already been loaded
-	//if (!meshes.empty() && meshes.contains(path))
-	//{
-	//	// TODO ask user if they want to reload the mesh
-	//	ImGui::BeginPopupModal("Confirmation");
-	//	ImGui::Text("The model you have specified has already been loaded. Do you wish to reload the model?");
-	//	ImGui::Button("Yes");
-	//	ImGui::SameLine();
-	//	if (ImGui::Button("No"))
-	//	{
-	//		ImGui::End();
-	//		return;
-	//	}
-	//	ImGui::End();
-	//}
-
-	if (meshes.contains(path)) return;
+	if (meshes.contains(path))
+	{
+		return;
+	}
 
 	// load model and store in all models
 	const auto scene = s_Importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -95,7 +90,6 @@ void Model::loadModelMeshes(const char* path)
 
 		meshes[path].emplace_back(Mesh(meshPositions, meshTextureCoords, meshNormals, meshIndices), meshMaterial);
 
-
 		// TODO textures
 		//std::vector<Texture> assimpMaterialTextures(assimpMaterial->GetTextureCount(aiTextureType_DIFFUSE));
 		//for (size_t textureIdx = 0; textureIdx < assimpMaterial->GetTextureCount(aiTextureType_DIFFUSE); textureIdx++)
@@ -115,4 +109,9 @@ Mesh& Model::getMesh() const
 [[nodiscard]] std::unique_ptr<Object> Model::clone() const
 {
 	return std::make_unique<Model>(*this);
+}
+
+std::string Model::stringName() const
+{
+	return m_Name;
 }

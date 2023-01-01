@@ -21,9 +21,16 @@ bool Key::isJustReleased() const
 {
 	if (states[code] == JUST_RELEASED)
 	{
-		states[code] = GLFW_RELEASE;
 		return true;
 	}
 
 	return false;
+}
+
+void Key::resetJustReleased()
+{
+	for (auto& state : states)
+	{
+		if (state == JUST_RELEASED) state = GLFW_RELEASE;
+	}
 }

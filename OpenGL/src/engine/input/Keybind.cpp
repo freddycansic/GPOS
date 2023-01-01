@@ -1,9 +1,12 @@
 #include "Keybind.h"
 
+#include <iostream>
 #include <set>
 
 #include "Input.h"
 #include "Button.h"
+#include "Key.h"
+#include "MouseButton.h"
 
 std::unique_ptr<std::unordered_map<Keybind, std::string>> Keybind::sp_StringRepresentations = std::make_unique<std::unordered_map<Keybind, std::string>>();
 
@@ -27,7 +30,6 @@ bool Keybind::isJustReleased() const
 		if (button->isDown())
 		{
 			++numKeysDown;
-			continue;
 		}
 
 		if (button->isJustReleased())
@@ -36,7 +38,51 @@ bool Keybind::isJustReleased() const
 		}
 	}
 
-	if (numKeysDown >= buttons.size()) return false;
+	// TODO make less ugly
+	// make sure any other keys arent being pressed
+	// iterate over all keys
+	for (size_t i = 0; i < Key::states.size(); ++i)
+	{
+		const auto& state = Key::states[i];
+
+		// if any of them are being pressed
+		if (state == GLFW_PRESS || state == GLFW_REPEAT)
+		{
+			bool ok = false;
+			for (const auto& button : buttons)
+			{
+				if (button->code == i)
+				{
+					ok = true;
+				}
+			}
+
+			if (!ok) 
+			{
+				return false;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < MouseButton::states.size(); ++i)
+	{
+		const auto& state = MouseButton::states[i];
+
+		// if any of them are being pressed
+		if (state == GLFW_PRESS || state == GLFW_REPEAT)
+		{
+			bool ok = false;
+			for (const auto& button : buttons)
+			{
+				if (button->code == i) ok = true;
+			}
+
+			if (!ok) 
+			{
+				return false;
+			}
+		}
+	}
 
 	return numKeysDown + numKeysJustReleased == buttons.size();
 }

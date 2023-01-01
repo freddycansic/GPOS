@@ -36,4 +36,16 @@ namespace Util
 		SetConsoleTextAttribute(COLOURED_TEXT_HANDLE, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 #endif
 	}
+
+	std::string replaceAll(std::string original, const std::string& match, const std::string& replace)
+	{
+		size_t pos = 0;
+		while ((pos = original.find(match, pos)) != std::string::npos)
+		{
+			original.replace(pos, match.length(), replace);
+			pos += replace.length();
+		}
+
+		return original;
+	}
 }

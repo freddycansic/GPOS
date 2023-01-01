@@ -113,6 +113,11 @@ Cube::Cube(const Vec3& pos, float size, const Material& material) : Cube(pos.x, 
 	return std::make_unique<Cube>(*this);
 }
 
+std::string Cube::stringName() const
+{
+	return "Cube";
+}
+
 void Cube::setScale(float xScale, float yScale, float zScale) {
 	m_Transform.sca = { m_Size * xScale, m_Size * yScale, m_Size * zScale };
 	moved = true;

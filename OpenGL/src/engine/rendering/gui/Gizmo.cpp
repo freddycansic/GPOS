@@ -65,7 +65,7 @@ namespace Gizmo
 		{
 			case GizmoTool::TRANSLATE:
 			{
-				object.offsetTranslation(transformation);
+				object.offsetTranslation(Vec3(transformation.x, transformation.y, -transformation.z));
 				break;
 			}
 

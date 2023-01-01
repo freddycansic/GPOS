@@ -1,6 +1,7 @@
 #pragma once
 
 struct ImVec2;
+struct WindowData;
 
 namespace GUI
 {
@@ -9,13 +10,14 @@ namespace GUI
 	void endFrame();
 
 	bool isMouseHoveringAnyWindows();
-	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize);
+	bool isMouseHoveredWindow(const ImVec2& mousePos, const WindowData& data);
 
 	void renderMenuBar();
 
 	void renderToolbar();
 	void renderProperties();
 	void renderStats();
+	void renderSceneViewer();
 
 	void showNewObjectMenu();
 	void renderNewObjectMenu();

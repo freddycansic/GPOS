@@ -9,6 +9,7 @@
 #include "engine/Colours.h"
 #include "engine/Stats.h"
 #include "engine/Window.h"
+#include "engine/input/Buttons.h"
 #include "engine/input/Files.h"
 #include "engine/input/Input.h"
 #include "engine/input/Keybind.h"
@@ -24,20 +25,34 @@ enum class WindowType
 	STATISTICS,
 	PROPERTIES,
 	MENU_BAR,
-	NEW_OBJECT_MENU
+	NEW_OBJECT_MENU,
+	SCENE_VIEWER
 };
 
-static constexpr float MENU_BAR_LENGTH = 17.0f; // px
-static const ImVec2 s_Padding = { 20.0f, 20.0f + MENU_BAR_LENGTH };
-static std::unordered_map<WindowType, std::pair<ImVec2, ImVec2>> s_PosAndSizeOfWindows;
+struct WindowData
+{
+	ImVec2 pos = {0, 0};
+	ImVec2 size = {0, 0};
+	bool visible = true;
+};
+
+constexpr float MENU_BAR_LENGTH = 17.0f; // px
+constexpr float s_Padding = 20.0f;
+
+std::unordered_map<WindowType, WindowData> s_Windows = 
+{
+	{WindowType::TOOLBAR, WindowData()},
+	{WindowType::STATISTICS, WindowData()},
+	{WindowType::PROPERTIES, WindowData()},
+	{WindowType::MENU_BAR, WindowData()},
+	{WindowType::NEW_OBJECT_MENU, {{0, 0}, {9999, 9999}, false}},
+	{WindowType::SCENE_VIEWER, WindowData()}
+};
 
 void addCurrentWindowDimensions(const WindowType type)
 {
-	s_PosAndSizeOfWindows[type] = 
-	{
-		ImGui::GetWindowPos(),
-		ImGui::GetWindowSize()
-	};
+	s_Windows[type].pos = ImGui::GetWindowPos();
+	s_Windows[type].size = ImGui::GetWindowSize();
 }
 
 namespace GUI
@@ -63,31 +78,29 @@ namespace GUI
 	{
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		s_PosAndSizeOfWindows.clear();
 	}
 
 	bool isMouseHoveringAnyWindows()
 	{
-		for (const auto& [windowType, posAndSize] : s_PosAndSizeOfWindows)
+		for (const auto& [windowType, window] : s_Windows)
 		{
-			const auto& pos = posAndSize.first;
-			const auto& size = posAndSize.second;
-			if (isMouseHoveredWindow(ImGui::GetMousePos(), pos, size)) return true;
+			if (isMouseHoveredWindow(ImGui::GetMousePos(), window)) return true;
 		}
 
 		return false;
 	}
 
-	bool isMouseHoveredWindow(const ImVec2& mousePos, const ImVec2& windowPos, const ImVec2& windowSize)
+	bool isMouseHoveredWindow(const ImVec2& mousePos, const WindowData& data)
 	{
-		return (mousePos.x > windowPos.x && mousePos.x < windowPos.x + windowSize.x && mousePos.y > windowPos.y && mousePos.y < windowPos.y + windowSize.y);
+		const ImVec2 windowPos = { data.pos.x - 5, data.pos.y - 5 };
+		const ImVec2 windowSize = { data.size.x + 5, data.pos.y + 5 };
+		return (data.visible && mousePos.x > windowPos.x && mousePos.x < windowPos.x + windowSize.x && mousePos.y > windowPos.y && mousePos.y < windowPos.y + windowSize.y);
 	}
 
 	void renderMenuBar()
 	{
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
-		ImGui::Begin("#1", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
+		ImGui::Begin("#1", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -95,15 +108,15 @@ namespace GUI
 			{
 				if (ImGui::MenuItem("Open", "Ctrl+O")) {}
 
-				if (ImGui::MenuItem("Load model"))
+				if (ImGui::MenuItem("Load model", Input::getFunctionKeybind(Scene::loadModelIntoScene).toString().c_str()))
 				{
-					if (const auto path = Files::getPathFromDialogue("obj"); path)
-					{
-						Scene::loadModelIntoScene(path);
-					}
+					Scene::loadModelIntoScene();
 				}
 
-				if (ImGui::MenuItem("Close", Input::getFunctionKeybind(Window::close).toString().c_str())) { Window::close(); }
+				if (ImGui::MenuItem("Close", Input::getFunctionKeybind(Window::close).toString().c_str()))
+				{
+					Window::close();
+				}
 				ImGui::EndMenu();
 			}
 
@@ -123,8 +136,25 @@ namespace GUI
 
 			if (ImGui::BeginMenu("Select"))
 			{
-				if (ImGui::MenuItem("Select All", "Ctrl+A")) {}
-				if (ImGui::MenuItem("Deselect All", "Ctrl+D")) {}
+				if (ImGui::MenuItem("Select All", Input::getFunctionKeybind(Scene::selectAll).toString().c_str()))
+				{
+					Scene::selectAll();
+				}
+
+				if (ImGui::MenuItem("Deselect All", Input::getFunctionKeybind(Scene::clearSelection).toString().c_str()))
+				{
+					Scene::clearSelection();
+				}
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Windows"))
+			{
+				ImGui::MenuItem("Toolbar", nullptr, &s_Windows.at(WindowType::TOOLBAR).visible);
+				ImGui::MenuItem("Statistics", nullptr, &s_Windows.at(WindowType::STATISTICS).visible);
+				ImGui::MenuItem("Scene Viewer", nullptr, &s_Windows.at(WindowType::SCENE_VIEWER).visible);
+				ImGui::MenuItem("Properties", nullptr, &s_Windows.at(WindowType::PROPERTIES).visible);
 				ImGui::EndMenu();
 			}
 
@@ -150,6 +180,11 @@ namespace GUI
 					}
 				}
 
+				if (ImGui::Button("Change Background Colour"))
+				{
+					//ImGui::BeginPopup();
+				}
+
 				ImGui::EndMenu();
 			}
 
@@ -160,14 +195,46 @@ namespace GUI
 		ImGui::End();
 	}
 
+	void renderSceneViewer()
+	{
+		if (!s_Windows.at(WindowType::SCENE_VIEWER).visible) return;
+
+		ImGui::SetNextWindowPos({ Window::width() - s_Padding - 200, s_Padding });
+		ImGui::SetNextWindowSize({ 200, 400 });
+
+		ImGui::Begin("Scene Viewer", nullptr);
+
+		ImGui::PushItemWidth(-1);
+		if (ImGui::BeginListBox("##"))
+		{
+			for (size_t i = 0; i < Scene::getObjects().size(); ++i)
+			{
+				const auto& object = Scene::getObjects().at(i);
+
+				if (ImGui::Selectable((std::to_string(i) + std::string(" ") + object->stringName()).c_str(), object->selected))
+				{
+					if (!Keys::LEFT_CONTROL->isDown()) Scene::clearSelection();
+					Scene::selectObject(&*object);
+				}
+			}
+
+			ImGui::EndListBox();
+		}
+
+		addCurrentWindowDimensions(WindowType::SCENE_VIEWER);
+		ImGui::End();
+	}
+
 	void renderProperties()
 	{
-		static ImVec2 ls_WindowSize;
+		if (!s_Windows.at(WindowType::PROPERTIES).visible) return;
 
 		if (Scene::getSelectedObjects().empty()) return;
 
-		ImGui::SetNextWindowPos({ static_cast<float>(Window::width()) - ls_WindowSize.x - s_Padding.x, s_Padding.y });
-		ImGui::SetNextWindowSize({ 0, 0 });
+		// snap to bottom of scene viewer
+		const auto& sceneViewerDimensions = s_Windows.at(WindowType::SCENE_VIEWER);
+		ImGui::SetNextWindowPos(ImVec2(sceneViewerDimensions.pos.x, sceneViewerDimensions.pos.y + sceneViewerDimensions.size.y));
+		ImGui::SetNextWindowSize(ImVec2(sceneViewerDimensions.size.x, 0));
 
 		ImGui::Begin("Properties", nullptr , ImGuiWindowFlags_NoScrollbar);
 		
@@ -178,15 +245,15 @@ namespace GUI
 		ImGui::Text("Rotation : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.rot.x, lastSelectedTransform.rot.y, lastSelectedTransform.rot.z);
 		ImGui::Text("Scale    : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.sca.x, lastSelectedTransform.sca.y, lastSelectedTransform.sca.z);
 
-		ls_WindowSize = ImGui::GetWindowSize();
-
 		addCurrentWindowDimensions(WindowType::PROPERTIES);
 		ImGui::End();
 	}
 
 	void renderToolbar()
 	{
-		ImGui::SetNextWindowPos(s_Padding);
+		if (!s_Windows.at(WindowType::TOOLBAR).visible) return;
+
+		ImGui::SetNextWindowPos(ImVec2(s_Padding, s_Padding + MENU_BAR_LENGTH));
 		ImGui::SetNextWindowSize(ImVec2(0, 0));
 		//ImGui::min
 		ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
@@ -217,15 +284,19 @@ namespace GUI
 
 	void renderStats()
 	{
+		if (!s_Windows.at(WindowType::STATISTICS).visible) return;
+
+		ImGui::SetNextWindowPos(ImVec2(s_Padding, Window::height() - s_Windows.at(WindowType::STATISTICS).size.y - s_Padding));
 		ImGui::Begin("Stats", nullptr);
 
 		ImGui::Text("FPS : %.1f", static_cast<double>(ImGui::GetIO().Framerate));
 		ImGui::Text("Time per frame : %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
 		ImGui::Text("Draw calls per frame : %i", Stats::drawCallsPerFrame);
 
+		addCurrentWindowDimensions(WindowType::STATISTICS);
 		ImGui::End();
 	}
-
+	
 	bool showingNewObjectMenu = false;
 	ImVec2 mousePosOnShowWindow;
 
@@ -244,7 +315,7 @@ namespace GUI
 
 		if (ImGui::Button("Cube"))
 		{
-			Scene::addObject(std::make_unique<Cube>(0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addObject<Cube>(0, 0, 0, 1.0f, Colours::DEFAULT);
 			showingNewObjectMenu = false;
 		}
 
@@ -252,7 +323,7 @@ namespace GUI
 		const auto& windowSize = ImGui::GetWindowSize();
 		const auto& realtimeMousePos = ImGui::GetMousePos();
 
-		if (!isMouseHoveredWindow(realtimeMousePos, windowPos, windowSize))
+		if (!isMouseHoveredWindow(realtimeMousePos, WindowData(windowPos, windowSize, true)))
 		{
 			showingNewObjectMenu = false;
 		}

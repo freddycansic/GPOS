@@ -7,6 +7,8 @@
 #include "engine/Debug.h"
 #include "engine/Stats.h"
 #include "engine/input/Input.h"
+#include "engine/input/Key.h"
+#include "engine/input/MouseButton.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/gui/GUI.h"
@@ -48,8 +50,10 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	
 		GUI::endFrame();
 
-		Window::update();
+		Key::resetJustReleased();
+		MouseButton::resetJustReleased();
 
+		Window::update();
 	}
 
 	app.destroy();

@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <memory>
+#include <string>
 
 #include "Mesh.h"
 #include "Material.h"
@@ -42,6 +43,7 @@ public:
 	virtual ~Object() = default;
 
 	[[nodiscard]] virtual std::unique_ptr<Object> clone() const = 0;
+	[[nodiscard]] virtual std::string stringName() const = 0;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
 	virtual void setScale(const Vec3& scale);

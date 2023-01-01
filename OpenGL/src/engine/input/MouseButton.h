@@ -12,5 +12,7 @@ struct MouseButton : Button
 	MouseButton(int mouseCode, const std::string_view& mouseName);
 	~MouseButton() override = default;
 
+	static void resetJustReleased();
+
 	static std::array<int, 8 + 1> states;
 };

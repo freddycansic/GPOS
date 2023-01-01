@@ -11,6 +11,7 @@ public:
 	~Line() override = default;
 
 	[[nodiscard]] std::unique_ptr<Object> clone() const override;
+	[[nodiscard]] std::string stringName() const override;
 
 	[[nodiscard]] Mesh& getMesh() const override;
 	[[nodiscard]] Mat4x4 getTransformMatrix() const override;

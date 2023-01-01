@@ -19,9 +19,16 @@ bool MouseButton::isJustReleased() const
 {
 	if (states[code] == JUST_RELEASED)
 	{
-		states[code] = GLFW_RELEASE;
 		return true;
 	}
 
 	return false;
+}
+
+void MouseButton::resetJustReleased()
+{
+	for (auto& state : states)
+	{
+		if (state == JUST_RELEASED) state = GLFW_RELEASE;
+	}
 }
