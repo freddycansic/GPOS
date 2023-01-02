@@ -6,6 +6,7 @@
 #include "engine/input/Input.h"
 #include "maths/Vec3.h"
 #include "engine/rendering/Renderer.h"
+#include "engine/rendering/gui/GUI.h"
 
 Camera::CameraMode s_Mode = Camera::CameraMode::ORBIT;
 Mat4x4 s_View = Mat4x4::identity();
@@ -77,6 +78,8 @@ namespace Camera
 
 	void zoom(float direction)
 	{
+		if (GUI::isMouseHoveringAnyWindows()) return;
+
 		switch (s_Mode)
 		{
 		case CameraMode::FPS_FLY:

@@ -34,12 +34,13 @@ std::vector<Vec3> Mesh::recalculateNormals(const Transform& transform) const
 
 	Mat4x4 transformMatrix = Maths::rotate(Mat4x4::identity(), transform.rot);
 	transformMatrix = Maths::scale(transformMatrix, transform.sca);
+	const auto& transposedInverse = transformMatrix.adjugateInverse().transpose();
 
 	// TODO fix normal deformation on scale operations
 
 	for (size_t i = 0; i < normals.size(); ++i)
 	{
-		newNormals[i] = Vec3(Vec4(normals[i], 1.0f) * transformMatrix.adjugateInverse().transpose()).normalise();
+		newNormals[i] = Vec3(Vec4(normals[i], 1.0f) * transposedInverse).normalise();
 	}
 
 	return newNormals;

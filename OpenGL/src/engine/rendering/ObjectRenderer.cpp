@@ -130,13 +130,11 @@ namespace ObjectRenderer
 
 			for (const auto& object : batchData.objects )
 			{
-				if (object->shouldRecalculateNormals)
+				if (Gizmo::getTool() != GizmoTool::TRANSLATE || object->normals.empty())
 				{
 					object->normals = object->getMesh().recalculateNormals(object->getCombinedTransformations());
 				}
 			}
-
-			// normal recalculation code omitted
 
 			t_RecalculateAllBatchPositions.join();
 
@@ -146,8 +144,6 @@ namespace ObjectRenderer
 			for (const auto& object : batchData.objects)
 			{
 				auto& mesh = object->getMesh();
-
-				object->shouldRecalculateNormals = false; // object is guaranteed to have its positions recalculated
 
 				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{

@@ -129,11 +129,6 @@ namespace Scene
 		{
 			for (const auto& object : s_SelectedObjects)
 			{
-				if (Gizmo::getTool() != GizmoTool::TRANSLATE)
-				{
-					object->shouldRecalculateNormals = true;
-				}
-
 				object->applyOffset();
 			}
 
