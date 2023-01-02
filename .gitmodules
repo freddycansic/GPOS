@@ -7,3 +7,6 @@
 [submodule "assimp"]
 	path = libraries/assimp
 	url = https://github.com/assimp/assimp
+[submodule "nativefiledialog"]
+	path = libraries/nativefiledialog
+	url = https://github.com/mlabbe/nativefiledialog
