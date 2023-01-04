@@ -73,7 +73,7 @@ namespace Input
 
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
-		if (MouseButton::states[button] == GLFW_PRESS && action == GLFW_RELEASE)
+		if ((MouseButton::states[button] == GLFW_PRESS || MouseButton::states[button] == GLFW_REPEAT) && action == GLFW_RELEASE)
 		{
 			MouseButton::states[button] = JUST_RELEASED;
 			return;
@@ -121,13 +121,14 @@ namespace Input
 		{Scene::duplicateCurrentSelected, {Keys::LEFT_SHIFT, Keys::D}},
 		{Scene::selectAll, {Keys::A}},
 		{Scene::clearSelection, {Keys::LEFT_CONTROL, Keys::D}},
+		{Scene::deleteSelected, {Keys::X}},
 		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
 		{Scene::loadModelIntoScene, {Keys::LEFT_CONTROL, Keys::I}},
 	};
 
 	std::unordered_map<void(*)(), Keybind> heldKeybinds =
 	{
-		{GUI::showLeo, {Keys::L, Keys::E, Keys::O}},
+		{GUI::showLeo, {Keys::L, Keys::E, Keys::O}},// TODO fix not working
 	};
 
 	Keybind getFunctionKeybind(void(*function)())

@@ -11,6 +11,8 @@ struct Vec3;
 
 namespace Scene
 {
+	void init();
+
 	void addObject(std::unique_ptr<Object>&& objectPtr);
 
 	template <typename T, typename... Args> requires std::derived_from<T, Object>
@@ -25,6 +27,7 @@ namespace Scene
 	void selectObject(Object* obj);
 	void clearSelection();
 	void selectAll();
+	void deleteSelected();
 
 	[[nodiscard]] const std::vector<Object*>& getSelectedObjects();
 	[[nodiscard]] const std::vector<std::unique_ptr<Object>>& getObjects();

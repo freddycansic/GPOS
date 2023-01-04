@@ -16,19 +16,6 @@
 #include "engine/viewport/Scene.h"
 #include "engine/Debug.h"
 
-using namespace Flags;
-
-void drawAxes()
-{
-	static constexpr float AXES_LINE_WIDTH = 0.01f;
-	static Line x(-100, 0, 0 , 100, 0, 0, AXES_LINE_WIDTH, Colours::RED);
-	static Line z(0, 0, -100 , 0, 0, 100, AXES_LINE_WIDTH, Colours::BLUE);
-	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
-	ObjectRenderer::draw(centreCube, NO_LIGHTING | ALWAYS_SOLID);
-	ObjectRenderer::draw(x, NO_LIGHTING | ALWAYS_SOLID);
-	ObjectRenderer::draw(z, NO_LIGHTING | ALWAYS_SOLID);
-}
-
 void Application::init(char* projectDir)
 {
 	openedProject = projectDir;
@@ -63,7 +50,6 @@ void Application::render()
 
 	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
 	Scene::render();
-	drawAxes();
 
 	ObjectRenderer::end();
 }

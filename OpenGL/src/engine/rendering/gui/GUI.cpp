@@ -84,16 +84,21 @@ namespace GUI
 	{
 		for (const auto& [windowType, window] : s_Windows)
 		{
-			if (isMouseHoveredWindow(ImGui::GetMousePos(), window)) return true;
+			//std::cout << "Is hovered over " << static_cast<int>(windowType);
+			if (isMouseHoveredWindow(ImGui::GetMousePos(), window)) {
+				//std::cout << " YES" << std::endl;
+				return true;
+			}
+			//std::cout << " NO" << std::endl;
 		}
-
 		return false;
 	}
 
 	bool isMouseHoveredWindow(const ImVec2& mousePos, const WindowData& data)
 	{
-		const ImVec2 windowPos = { data.pos.x - 5, data.pos.y - 5 };
-		const ImVec2 windowSize = { data.size.x + 5, data.pos.y + 5 };
+		static constexpr size_t LEEWAY = 5;
+		const ImVec2 windowPos = { data.pos.x - LEEWAY, data.pos.y - LEEWAY };
+		const ImVec2 windowSize = { data.size.x + LEEWAY, data.pos.y + LEEWAY };
 		return (data.visible && mousePos.x > windowPos.x && mousePos.x < windowPos.x + windowSize.x && mousePos.y > windowPos.y && mousePos.y < windowPos.y + windowSize.y);
 	}
 
@@ -134,7 +139,7 @@ namespace GUI
 				ImGui::EndMenu();
 			}
 
-			if (ImGui::BeginMenu("Select"))
+			if (ImGui::BeginMenu("Scene"))
 			{
 				if (ImGui::MenuItem("Select All", Input::getFunctionKeybind(Scene::selectAll).toString().c_str()))
 				{
@@ -144,6 +149,11 @@ namespace GUI
 				if (ImGui::MenuItem("Deselect All", Input::getFunctionKeybind(Scene::clearSelection).toString().c_str()))
 				{
 					Scene::clearSelection();
+				}
+
+				if (ImGui::MenuItem("Delete Selected", Input::getFunctionKeybind(Scene::deleteSelected).toString().c_str()))
+				{
+					Scene::deleteSelected();
 				}
 
 				ImGui::EndMenu();
@@ -182,7 +192,11 @@ namespace GUI
 
 				if (ImGui::Button("Change Background Colour"))
 				{
-					//ImGui::BeginPopup();
+					if (ImGui::BeginPopup("GELP"))
+					{
+						ImGui::Text("HELP");
+						ImGui::EndPopup();
+					}
 				}
 
 				ImGui::EndMenu();
@@ -200,7 +214,7 @@ namespace GUI
 		if (!s_Windows.at(WindowType::SCENE_VIEWER).visible) return;
 
 		ImGui::SetNextWindowPos({ Window::width() - s_Padding - 200, s_Padding });
-		ImGui::SetNextWindowSize({ 200, 400 });
+		ImGui::SetNextWindowSize({ 200, 0 });
 
 		ImGui::Begin("Scene Viewer", nullptr);
 
@@ -253,8 +267,15 @@ namespace GUI
 	{
 		if (!s_Windows.at(WindowType::TOOLBAR).visible) return;
 
+		//std::cout << "POS\n" <<  * reinterpret_cast<Vec2*>(&s_Windows.at(WindowType::TOOLBAR).pos) << std::endl;
+		//std::cout << "SIZE\n" << *reinterpret_cast<Vec2*>(&s_Windows.at(WindowType::TOOLBAR).size) << std::endl;
+		//auto cursor = ImGui::GetCursorPos();
+		//std::cout << "MOUSE\n" << *reinterpret_cast<Vec2*>(&cursor) << std::endl;
+
+		//std::cout << std::endl;
+
 		ImGui::SetNextWindowPos(ImVec2(s_Padding, s_Padding + MENU_BAR_LENGTH));
-		ImGui::SetNextWindowSize(ImVec2(0, 0));
+		//ImGui::SetNextWindowSize(ImVec2(0, 0));
 		//ImGui::min
 		ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
 

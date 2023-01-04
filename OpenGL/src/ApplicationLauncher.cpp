@@ -13,6 +13,7 @@
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/gui/GUI.h"
 #include "engine/viewport/Camera.h"
+#include "engine/viewport/Scene.h"
 
 ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConfig& config)
 {
@@ -32,6 +33,7 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 
 	Renderer::init();
 	ObjectRenderer::init();
+	Scene::init();
 	GUI::init();
 
 	app.init(config.projectDir);

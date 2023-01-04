@@ -13,6 +13,8 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/objects/Cube.h"
 #include "engine/rendering/objects/Model.h"
+#include "engine/rendering/ObjectRenderer.h"
+#include "engine/Colours.h"
 
 std::vector<std::unique_ptr<Object>> s_Objects;
 std::vector<Object*> s_SelectedObjects;
@@ -59,8 +61,52 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 	return closest;
 }
 
+std::vector<Line> gridLines;
+constexpr float GRIDLINE_LENGTH = 200.0f;
+constexpr float AXES_LINE_WIDTH = 0.01f;
+
+void drawAxes()
+{
+	using namespace Flags;
+
+	static Line x(-GRIDLINE_LENGTH / 2, 0, 0, GRIDLINE_LENGTH / 2, 0, 0, AXES_LINE_WIDTH, Colours::RED);
+	static Line z(0, 0, -GRIDLINE_LENGTH / 2, 0, 0, GRIDLINE_LENGTH / 2, AXES_LINE_WIDTH, Colours::BLUE);
+	static Cube centreCube(0, 0, 0, 0.05f, Colours::WHITE);
+
+	ObjectRenderer::draw(centreCube, NO_LIGHTING | ALWAYS_SOLID);
+	ObjectRenderer::draw(x, NO_LIGHTING | ALWAYS_SOLID);
+	ObjectRenderer::draw(z, NO_LIGHTING | ALWAYS_SOLID);
+
+	for (auto& gridLine : gridLines)
+	{
+		ObjectRenderer::draw(gridLine, NO_LIGHTING | ALWAYS_SOLID);
+	}
+}
+
 namespace Scene
 {
+	void init()
+	{
+		static constexpr float GRIDLINE_STEP = 2.5f;
+		static constexpr float GRIDLINE_WIDTH = 0.005f;
+		for (float i = -GRIDLINE_LENGTH / 2; i < GRIDLINE_LENGTH / 2; i += GRIDLINE_STEP)
+		{
+			gridLines.emplace_back
+			(
+				-GRIDLINE_LENGTH / 2, 0, i, 
+				GRIDLINE_LENGTH / 2, 0, i,
+				GRIDLINE_WIDTH, Colours::DEFAULT
+			);
+
+			gridLines.emplace_back
+			(
+				i, 0, -GRIDLINE_LENGTH / 2,
+				i, 0, GRIDLINE_LENGTH / 2,
+				GRIDLINE_WIDTH, Colours::DEFAULT
+			);
+		}
+	}
+
 	void clearSelection()
 	{
 		for (const auto& selectedObject : s_SelectedObjects)
@@ -87,8 +133,27 @@ namespace Scene
 		obj->selected = true;
 	}
 
+	void deleteSelected()
+	{
+		std::vector<std::unique_ptr<Object>> newObjects;
+
+		for (auto& object : s_Objects)
+		{
+			if (!object->selected)
+			{
+				newObjects.push_back(std::move(object));
+			}
+		}
+
+		s_SelectedObjects.clear(); // dont call clearSelection cause pointers will be invalid
+
+		s_Objects = std::move(newObjects);
+	}
+
 	void render()
 	{
+		drawAxes();
+
 		for (const auto& object : s_Objects)
 		{
 			ObjectRenderer::draw(*object);

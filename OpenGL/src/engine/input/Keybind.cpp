@@ -89,9 +89,15 @@ bool Keybind::isJustReleased() const
 
 bool Keybind::isHeld() const
 {
+	//std::cout << toString() << std::endl;
+
 	for (const auto& key : this->getButtons())
 	{
-		if (!key->isDown()) return false;
+		if (!key->isDown())
+		{
+			//std::cout << key->name << " not held : " << Key::states[key->code] << std::endl;
+			return false;
+		}
 	}
 
 	return true;
