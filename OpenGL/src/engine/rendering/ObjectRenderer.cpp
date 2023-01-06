@@ -7,6 +7,7 @@
 #include <future>
 
 #include "Renderer.h"
+#include "engine/Colours.h"
 #include "engine/rendering/opengl/IndexBuffer.h"
 #include "engine/rendering/opengl/VertexBuffer.h"
 #include "engine/rendering/opengl/VertexArray.h"
@@ -147,12 +148,10 @@ namespace ObjectRenderer
 
 				for (unsigned int i = 0; i < object->positions.size(); ++i)
 				{
-					static const Vec4 orange = { 1, 194.0f / 255.0f, 102.0f / 255.0f, 1 };
-
 					batchVertices.emplace_back
 					(
 						object->positions.at(i),
-						object->selected ? orange : object->material.colour,
+						object->selected ? Vec4(Colours::SELECTION_ORANGE, 1.0f) : object->material.colour,
 						mesh.textureCoordinates.at(i),
 						object->normals.at(i)
 					);

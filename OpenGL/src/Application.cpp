@@ -29,7 +29,7 @@ void Application::init(char* projectDir)
 
 void Application::render()
 {
-	Renderer::clear(Colours::BLACK);
+	Renderer::clear(Scene::getMutRefBackgroundColour());
 
 	if (MouseButtons::MOUSE_3->isDown() || Keys::D->isDown())
 	{

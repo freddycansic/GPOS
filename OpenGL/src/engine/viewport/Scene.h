@@ -32,8 +32,7 @@ namespace Scene
 	[[nodiscard]] const std::vector<Object*>& getSelectedObjects();
 	[[nodiscard]] const std::vector<std::unique_ptr<Object>>& getObjects();
 
-	[[nodiscard]] const Vec3& getBackgroundColour();
-	void setBackgroundColour(const Vec3& colour);
+	[[nodiscard]] Vec3& getMutRefBackgroundColour();
 
 	void render();
 	void handleMouseClicks();

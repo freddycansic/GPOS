@@ -283,7 +283,7 @@ namespace Scene
 	}
 
 	Vec3 s_BackgroundColour = { 0, 0, 0 };
-	const Vec3& getBackgroundColour()
+	Vec3& getMutRefBackgroundColour()
 	{
 		return s_BackgroundColour;
 	}
