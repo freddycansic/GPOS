@@ -180,11 +180,11 @@ namespace GUI
 				{
 					switch (selectedCameraMode)
 					{
-					case 0:
+						case 0:
 						Camera::setMode(Camera::CameraMode::ORBIT);
 						break;
 
-					case 1:
+						case 1:
 						Camera::setMode(Camera::CameraMode::FPS_FLY);
 						break;
 					}

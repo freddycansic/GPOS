@@ -33,7 +33,8 @@ namespace Input
 		xPos = static_cast<float>(xpos);
 		yPos = static_cast<float>(ypos);
 
-		if (firstMouseMove) {
+		if (firstMouseMove) 
+		{
 			lastX = xPos;
 			lastY = yPos;
 			firstMouseMove = false;
@@ -50,15 +51,22 @@ namespace Input
 		yaw -= xOffset;
 		pitch -= yOffset;
 
-		//pitch = std::clamp(pitch, -89.9f, 89.9f);
-		pitch = std::clamp(pitch, 0.01f, Maths::PI<float>); // TODO magic values which stop orbit camera from freaking out when looking directly down/up on/to an object
-		yaw = std::fmod(yaw, Maths::PI<float> * 2);
+		switch (Camera::getMode())
+		{
+			case Camera::CameraMode::ORBIT: 
+			{
+				pitch = std::clamp(pitch, 0.01f, Maths::PI<float>); // TODO magic	values which stop orbit camera from freaking out when looking	  directly down/up on/to an object
+				break;
+			}
 
-		cameraDirection = Vec3(
-			cos(yaw) * cos(pitch),
-			sin(pitch),
-			sin(yaw) * cos(pitch)
-		).normalise();
+			case Camera::CameraMode::FPS_FLY:
+			{
+				pitch = std::clamp(pitch, -Maths::PI<float> / 2 + 0.001f, Maths::PI<float> / 2 - 0.001f);
+				break;
+			}
+		}
+
+		yaw = std::fmod(yaw, Maths::PI<float> * 2);
 	}
 
 	float getMouseX() { return xPos; }
@@ -67,9 +75,19 @@ namespace Input
 	float getLastMouseOffsetX() { return xOffset; }
 	float getLastMouseOffsetY() { return yOffset; }
 	Vec2 getLastMouseOffset() { return { xOffset, yOffset }; }
+	Vec3 getCameraDirection()
+	{
+		return Vec3{
+			cos(yaw) * cos(pitch),
+			sin(pitch),
+			sin(yaw) * cos(pitch)
+		}.normalise();
+	}
+
 	float getMouseYaw() { return yaw; }
 	float getMousePitch() { return pitch; }
-	Vec3 getCameraDirection() { return cameraDirection; }
+	void setMouseYaw(float _yaw) { yaw = _yaw; }
+	void setMousePitch(float _pitch) { pitch = _pitch; }
 
 	void GLAPIENTRY Callbacks::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{

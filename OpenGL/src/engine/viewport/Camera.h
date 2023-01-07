@@ -26,7 +26,9 @@ namespace Camera
 
 	void update();
 	void zoom(float direction);
+
 	void setMode(CameraMode mode);
+	CameraMode getMode();
 
 	void setOrbitTarget(const Vec3& target);
 	void setOrbitTargetToLastSelected();

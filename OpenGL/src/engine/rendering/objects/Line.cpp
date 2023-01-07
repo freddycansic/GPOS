@@ -76,7 +76,7 @@ Mat4x4 Line::getTransformMatrix() const
 	const Vec3 diff = p1 - p2; // difference between the two points
 	const float mag = diff.magnitude(); // mag of diff
 
-	Vec3 axis = (i.cross(diff)).normalise();
+	Vec3 axis = i.cross(diff).normalise();
 
 	if (std::isnan(axis.x)) axis = { 0, 0, 0 };
 

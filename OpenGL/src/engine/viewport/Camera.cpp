@@ -65,14 +65,17 @@ namespace Camera
 	{
 		switch (s_Mode)
 		{
-		case CameraMode::FPS_FLY: {
-			s_View = fpsFlyUpdate();
-			break;
-		}
+			case CameraMode::FPS_FLY: 
+			{
+				s_View = fpsFlyUpdate();
+				break;
+			}
 
-		case CameraMode::ORBIT:
-			s_View = orbitUpdate();
-			break;
+			case CameraMode::ORBIT: 
+			{
+				s_View = orbitUpdate();
+				break;
+			}
 		}
 	}
 
@@ -82,30 +85,54 @@ namespace Camera
 
 		switch (s_Mode)
 		{
-		case CameraMode::FPS_FLY:
-		{
-			s_CameraPos += s_CameraFront * -direction;
-			break;
-		}
-		case CameraMode::ORBIT:
-		{
-			static constexpr float ORBIT_ZOOM_STEP = 0.7f;
-			s_OrbitRadius += ORBIT_ZOOM_STEP * -direction;
-
-			if (s_OrbitRadius < 0.0f)
+			case CameraMode::FPS_FLY:
 			{
-				s_OrbitRadius = 0.0f;
-			}
+				s_CameraPos += s_CameraFront * direction;
 
-			Camera::update();
-			break;
-		}
+				update();
+				break;
+			}
+			case CameraMode::ORBIT:
+			{
+				static constexpr float ORBIT_ZOOM_STEP = 0.7f;
+				s_OrbitRadius += ORBIT_ZOOM_STEP * -direction;
+
+				static constexpr float ORBIT_ZOOM_LIMIT = 0.02f;
+				if (s_OrbitRadius < ORBIT_ZOOM_LIMIT)
+				{
+					s_OrbitRadius = ORBIT_ZOOM_LIMIT;
+				}
+
+				update();
+				break;
+			}
 		}
 	}
 
 	void setMode(CameraMode mode)
 	{
+		if (s_Mode == CameraMode::ORBIT && mode == CameraMode::FPS_FLY)
+		{
+			// set camera front to camera pos - target
+			s_CameraFront = (s_CameraPos - s_OrbitTarget).normalise();
+
+			const auto& polarCoords = s_CameraFront.toPolarCoordinates();
+			Input::setMouseYaw(-polarCoords.yaw);
+			Input::setMousePitch(-polarCoords.pitch);
+		}
+
+		if (s_Mode == CameraMode::FPS_FLY && mode == CameraMode::ORBIT)
+		{
+			// TODO
+		}
+
+		update();
 		s_Mode = mode;
+	}
+
+	CameraMode getMode()
+	{
+		return s_Mode;
 	}
 
 	void setOrbitTarget(const Vec3& target)
@@ -144,16 +171,23 @@ Mat4x4 fpsFlyUpdate()
 
 	s_CameraFront = Input::getCameraDirection();
 
-	if (Keys::W->isDown()) {
+	if (Keys::W->isDown()) 
+	{
 		s_CameraPos += s_CameraFront * moveSpeed * Window::deltatime();
 	}
-	if (Keys::S->isDown()) {
+
+	if (Keys::S->isDown()) 
+	{
 		s_CameraPos -= s_CameraFront * moveSpeed * Window::deltatime();
 	}
-	if (Keys::D->isDown()) {
+
+	if (Keys::D->isDown()) 
+	{
 		s_CameraPos -= s_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
-	if (Keys::A->isDown()) {
+
+	if (Keys::A->isDown()) 
+	{
 		s_CameraPos += s_CameraFront.cross(ls_CameraUp).normalise() * moveSpeed * Window::deltatime();
 	}
 
@@ -163,8 +197,6 @@ Mat4x4 fpsFlyUpdate()
 Mat4x4 orbitUpdate()
 {
 	static Vec3 ls_CameraUp = { 0, 1, 0 };
-
-	//static constexpr float SENSITIVITY = 0.3f;
 
 	const auto& pitch = Input::getMousePitch();
 	const auto& yaw = Input::getMouseYaw();

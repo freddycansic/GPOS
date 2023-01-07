@@ -21,9 +21,12 @@ namespace Input
 	[[nodiscard]] float getLastMouseOffsetX();
 	[[nodiscard]] float getLastMouseOffsetY();
 	[[nodiscard]] Vec2 getLastMouseOffset();
+	[[nodiscard]] Vec3 getCameraDirection();
+
 	[[nodiscard]] float getMouseYaw();
 	[[nodiscard]] float getMousePitch();
-	[[nodiscard]] Vec3 getCameraDirection();
+	void setMouseYaw(float _yaw);
+	void setMousePitch(float _pitch);
 
 	namespace Callbacks
 	{

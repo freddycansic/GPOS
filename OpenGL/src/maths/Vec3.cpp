@@ -47,6 +47,13 @@ void Vec3::operator/=(GLfloat divisor)
 	z /= divisor;
 }
 
+void Vec3::operator*=(GLfloat divisor)
+{
+	x *= divisor;
+	y *= divisor;
+	z *= divisor;
+}
+
 Vec3 Vec3::operator*(GLfloat scalar) const
 {
 	return {x * scalar, y * scalar, z * scalar};
@@ -74,6 +81,16 @@ Vec3 Vec3::cross(const Vec3& other) const
 GLfloat Vec3::angleBetween(const Vec3& other) const
 {
 	return acos(this->dot(other) / (this->magnitude() * other.magnitude()));
+}
+
+PolarCoordinates Vec3::toPolarCoordinates() const
+{
+	return
+	{
+		Maths::sqrt(x * x + y * y + z * z),
+		atan(z / x),
+		atan(Maths::sqrt(x * x + z * z) / y)
+	};
 }
 
 Vec3 Vec3::normalise() const

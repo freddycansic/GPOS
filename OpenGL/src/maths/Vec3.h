@@ -6,6 +6,13 @@
 
 struct Vec4;
 
+struct PolarCoordinates
+{
+	GLfloat radius = 0;
+	GLfloat yaw = 0;
+	GLfloat pitch = 0;
+};
+
 struct Vec3
 {
 	union { GLfloat x = 0.0f, r; };
@@ -20,17 +27,18 @@ struct Vec3
 	Vec3 operator+(const Vec3& other) const;
 	Vec3 operator-(const Vec3& other) const;
 	Vec3 operator/(GLfloat divisor) const;
+	Vec3 operator*(GLfloat scalar) const;
 	void operator+=(const Vec3& other);
 	void operator-=(const Vec3& other);
 	void operator/=(GLfloat divisor);
-
-	Vec3 operator*(GLfloat scalar) const;
+	void operator*=(GLfloat divisor);
 
 	[[nodiscard]] Vec3 normalise() const;
 	[[nodiscard]] GLfloat magnitude() const;
 	[[nodiscard]] GLfloat dot(const Vec3& other) const;
 	[[nodiscard]] Vec3 cross(const Vec3& other) const;
 	[[nodiscard]] GLfloat angleBetween(const Vec3& other) const;
+	[[nodiscard]] PolarCoordinates toPolarCoordinates() const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Vec3& vector);
