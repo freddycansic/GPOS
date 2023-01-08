@@ -15,5 +15,4 @@ public:
 	void init(char* projectDir = nullptr);
 	void render();
 	void imGuiRender();
-	void destroy();
 };

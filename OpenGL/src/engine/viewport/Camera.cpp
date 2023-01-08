@@ -119,6 +119,7 @@ namespace Camera
 			const auto& polarCoords = s_CameraFront.toPolarCoordinates();
 			Input::setMouseYaw(-polarCoords.yaw);
 			Input::setMousePitch(-polarCoords.pitch);
+			// TODO
 		}
 
 		if (s_Mode == CameraMode::FPS_FLY && mode == CameraMode::ORBIT)

@@ -140,13 +140,13 @@ namespace Input
 		{Scene::selectAll, {Keys::A}},
 		{Scene::clearSelection, {Keys::LEFT_CONTROL, Keys::D}},
 		{Scene::deleteSelected, {Keys::X}},
+		{Scene::invertSelection, {Keys::I}},
 		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
 		{Scene::loadModelIntoScene, {Keys::LEFT_CONTROL, Keys::I}},
 	};
 
 	std::unordered_map<void(*)(), Keybind> heldKeybinds =
 	{
-		{GUI::showLeo, {Keys::L, Keys::E, Keys::O}},// TODO fix not working
 	};
 
 	Keybind getFunctionKeybind(void(*function)())

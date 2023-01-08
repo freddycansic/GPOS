@@ -10,7 +10,6 @@ namespace GUI
 	void endFrame();
 
 	bool isMouseHoveringAnyWindows();
-	bool isMouseHoveredWindow(const ImVec2& mousePos, const WindowData& data);
 
 	void renderMenuBar();
 
@@ -21,6 +20,4 @@ namespace GUI
 
 	void showNewObjectMenu();
 	void renderNewObjectMenu();
-
-	void showLeo();
 }

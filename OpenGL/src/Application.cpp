@@ -31,7 +31,7 @@ void Application::render()
 {
 	Renderer::clear(Scene::getMutRefBackgroundColour());
 
-	if (MouseButtons::MOUSE_3->isDown() || Keys::D->isDown())
+	if (Keybind({ MouseButtons::MOUSE_3 }).isHeld() || Keybind({ Keys::D}).isHeld())
 	{
 		if (!Window::capturingCursor()) Window::beginCursorCapture();
 
@@ -69,8 +69,4 @@ void Application::imGuiRender()
 	//ImGui::Begin("Instructions", reinterpret_cast<bool*>(1));
 	//ImGui::Text("Hold middle mouse = orbit camera\nScroll = zoom in / out\nShift + A = new object menu\nLeft click = select object\nLeft ctrl + left click = select multiple objects\nF = set last selected object as orbit point\nG = select move tool\nS = select scale tool\nR = select rotate tool");
 	//ImGui::End();
-}
-
-void Application::destroy()
-{
 }

@@ -150,6 +150,22 @@ namespace Scene
 		s_Objects = std::move(newObjects);
 	}
 
+	void invertSelection()
+	{
+		s_SelectedObjects.clear();
+
+		for (const auto& object : s_Objects)
+		{
+			if (object->selected)
+			{
+				object->selected = false;
+			} else
+			{
+				selectObject(&*object);
+			}
+		}
+	}
+
 	void render()
 	{
 		drawAxes();

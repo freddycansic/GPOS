@@ -65,7 +65,11 @@ namespace GUI
 		ImGui_ImplOpenGL3_Init();
 		ImGui::StyleColorsDark();
 
-		ImGui::GetIO().IniFilename = nullptr; // stops immgui from creating ini file
+		auto& io = ImGui::GetIO();
+		constexpr float SIZE_PIXELS = 13;
+
+		io.Fonts->AddFontFromFileTTF("res/fonts/Cousine-Regular.ttf", SIZE_PIXELS);
+		io.IniFilename = nullptr; // stops immgui from creating ini file
 	}
 
 	void startFrame()
@@ -83,7 +87,27 @@ namespace GUI
 
 	bool isMouseHoveringAnyWindows()
 	{
-		return ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
+		// if mouse is hovering window and clicks return true until the mouse is no longer clicking
+		static bool clickingInWindow = false;
+
+		if (clickingInWindow && ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		{
+			return true;
+		}
+
+		clickingInWindow = false;
+
+		const auto& window = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow | ImGuiHoveredFlags_RootAndChildWindows);
+		const auto& item = ImGui::IsAnyItemHovered(); // TODO fix mouse hovering colour picker window not working
+		const auto& any = window || item;
+
+		if (any && ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		{
+			clickingInWindow = true;
+			return true;
+		}
+
+		return any;
 	}
 	
 	void renderMenuBar()
@@ -138,6 +162,11 @@ namespace GUI
 				if (ImGui::MenuItem("Delete Selected", Input::getFunctionKeybind(Scene::deleteSelected).toString().c_str()))
 				{
 					Scene::deleteSelected();
+				}
+
+				if (ImGui::MenuItem("Invert Selection", Input::getFunctionKeybind(Scene::invertSelection).toString().c_str()))
+				{
+					Scene::invertSelection();
 				}
 
 				ImGui::EndMenu();
@@ -213,12 +242,13 @@ namespace GUI
 
 	void renderSceneViewer()
 	{
-		if (!s_WindowsVisible.at(WindowType::SCENE_VIEWER)) return;
+		auto& visible = s_WindowsVisible.at(WindowType::SCENE_VIEWER);
+		if (!visible) return;
 
 		ImGui::SetNextWindowPos({ Window::width() - s_Padding - 200, s_Padding });
 		ImGui::SetNextWindowSize({ 200, 0 });
 
-		ImGui::Begin("Scene Viewer", nullptr);
+		ImGui::Begin("Scene Viewer", &visible);
 
 		ImGui::PushItemWidth(-1);
 		if (ImGui::BeginListBox("##"))
@@ -227,9 +257,16 @@ namespace GUI
 			{
 				const auto& object = Scene::getObjects().at(i);
 
-				if (ImGui::Selectable((std::to_string(i) + std::string(" ") + object->stringName()).c_str(), object->selected))
+				if (ImGui::Selectable((std::to_string(i) + std::string("| ") + object->stringName()).c_str(), object->selected, ImGuiSelectableFlags_AllowDoubleClick))
 				{
 					if (!Keys::LEFT_CONTROL->isDown()) Scene::clearSelection();
+
+					if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					{
+						Camera::setOrbitTarget(object->getAvgPosition());
+						Camera::update();
+					}
+
 					Scene::selectObject(&*object);
 				}
 			}
@@ -242,11 +279,12 @@ namespace GUI
 
 	void renderProperties()
 	{
-		if (!s_WindowsVisible.at(WindowType::PROPERTIES)) return;
-
 		if (Scene::getSelectedObjects().empty()) return;
 
-		ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
+		auto& visible = s_WindowsVisible.at(WindowType::PROPERTIES);
+		if (!visible) return;
+
+		ImGui::Begin("Properties", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 		
 		const auto& lastSelected = Scene::getSelectedObjects().at(Scene::getSelectedObjects().size() - 1);
 		const auto& lastSelectedTransform = lastSelected->getCombinedTransformations();
@@ -255,22 +293,21 @@ namespace GUI
 		ImGui::Text("Rotation : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.rot.x, lastSelectedTransform.rot.y, lastSelectedTransform.rot.z);
 		ImGui::Text("Scale    : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.sca.x, lastSelectedTransform.sca.y, lastSelectedTransform.sca.z);
 
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		ImGui::ColorPicker4("##", &lastSelected->material.colour.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoSidePreview);
+
 		ImGui::End();
 	}
 
 	void renderToolbar()
 	{
-		if (!s_WindowsVisible.at(WindowType::TOOLBAR)) return;
-
-		//std::cout << "POS\n" <<  * reinterpret_cast<Vec2*>(&s_Windows.at(WindowType::TOOLBAR).pos) << std::endl;
-		//std::cout << "SIZE\n" << *reinterpret_cast<Vec2*>(&s_Windows.at(WindowType::TOOLBAR).size) << std::endl;
-		//auto cursor = ImGui::GetCursorPos();
-		//std::cout << "MOUSE\n" << *reinterpret_cast<Vec2*>(&cursor) << std::endl;
-
-		//std::cout << std::endl;
+		auto& visible = s_WindowsVisible.at(WindowType::TOOLBAR);
+		if (!visible) return;
 
 		ImGui::SetNextWindowPos(ImVec2(s_Padding, s_Padding + MENU_BAR_LENGTH));
-		ImGui::Begin("Toolbar", reinterpret_cast<bool*>(1), ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
+		ImGui::Begin("Toolbar", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 		
 		static constexpr auto IMGUI_SELECTED_HOVERING_ORANGE = ImVec4(Colours::SELECTION_ORANGE.x, Colours::SELECTION_ORANGE.y, Colours::SELECTION_ORANGE.z, 1.0f);
 
@@ -300,27 +337,27 @@ namespace GUI
 			}
 		);
 
-		if (!Scene::getSelectedObjects().empty())
-		{
-			ImGui::ColorPicker4("Colour", &Scene::getSelectedObjects()[0]->material.colour.x);
-		}
-
 		ImGui::End();
 	}
 
 	void renderStats()
 	{
-		if (!s_WindowsVisible.at(WindowType::STATISTICS)) return;
+		auto& visible = s_WindowsVisible.at(WindowType::STATISTICS);
+		if (!visible) return;
 
-		ImGui::Begin("Stats", nullptr);
+		static ImVec2 statsSize;
+		ImGui::SetNextWindowPos(ImVec2(s_Padding, Window::height() - s_Padding - statsSize.y));
+
+		ImGui::Begin("Stats", &visible);
 
 		ImGui::Text("FPS : %.1f", static_cast<double>(ImGui::GetIO().Framerate));
 		ImGui::Text("Time per frame : %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
 		ImGui::Text("Draw calls per frame : %i", Stats::drawCallsPerFrame);
 
+		statsSize = ImGui::GetWindowSize();
+
 		ImGui::End();
 	}
-	
 
 	ImVec2 mousePosOnShowWindow;
 	void showNewObjectMenu()
@@ -352,16 +389,6 @@ namespace GUI
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
-		ImGui::End();
-	}
-
-	void showLeo()
-	{
-		static const Texture leo(Files::internal("textures/leo.png"));
-
-		ImGui::SetNextWindowPos(ImGui::GetMousePos());
-		ImGui::Begin("LEO", nullptr);
-		ImGui::Image(reinterpret_cast<ImTextureID>(leo.getID()), ImVec2(200, 200));
 		ImGui::End();
 	}
 }

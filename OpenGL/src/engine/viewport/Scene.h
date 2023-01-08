@@ -28,6 +28,7 @@ namespace Scene
 	void clearSelection();
 	void selectAll();
 	void deleteSelected();
+	void invertSelection();
 
 	[[nodiscard]] const std::vector<Object*>& getSelectedObjects();
 	[[nodiscard]] const std::vector<std::unique_ptr<Object>>& getObjects();

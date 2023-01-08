@@ -58,8 +58,6 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 		Window::update();
 	}
 
-	app.destroy();
-
 	ImGui_ImplGlfw_Shutdown();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui::DestroyContext();
