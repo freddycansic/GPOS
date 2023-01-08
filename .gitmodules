@@ -4,3 +4,6 @@
 [submodule "glfw"]
 	path = libraries/glfw
 	url = https://github.com/glfw/glfw
+[submodule "libraries/nativefiledialog"]
+	path = libraries/nativefiledialog
+	url = https://github.com/freddycansic/nativefiledialog-cmake
