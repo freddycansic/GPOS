@@ -29,5 +29,7 @@ namespace Files {
 		}
 
 		ASSERT_WITH_MSG(false, NFD_GetError());
+
+		return nullptr;
 	}
 }

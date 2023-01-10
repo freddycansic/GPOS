@@ -55,6 +55,8 @@ const std::array<std::unique_ptr<Object>, 3>& getHandles()
 		case GizmoTool::SCALE:
 			return s_ScaleHandles;
 	}
+
+	return s_TranslateHandles;
 }
 
 namespace Gizmo

@@ -17,7 +17,7 @@ set_property(TARGET assimp PROPERTY IMPORTED_LOCATION ${ASSIMP_LIB_PATH})
 add_library(zlib STATIC IMPORTED )
 
 if (WIN32)
-    set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/libzlibstatic.lib)
+    set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/zlibstaticd.lib)
 elseif(UNIX)
     set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/libzlibstatic.a)
 endif()
