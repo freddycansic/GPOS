@@ -2,14 +2,12 @@
 
 #include "imgui/imgui.h"
 
-#include "engine/Colours.h"
 #include "engine/rendering/gui/GUI.h"
 #include "engine/input/Files.h"
 #include "engine/rendering/Renderer.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/Window.h"
 #include "engine/input/Buttons.h"
-#include "engine/rendering/objects/Line.h"
 #include "engine/rendering/objects/Cube.h"
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"

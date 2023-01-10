@@ -1,8 +1,54 @@
 cmake_minimum_required(VERSION 3.8)
 
-file(GLOB_RECURSE OpenGL_sources *.cpp ../libraries/imgui/*.cpp ../libraries/stb/*.cpp)
-
-add_executable(${PROJECT_NAME} ${OpenGL_sources} "src/engine/input/Key.cpp" "src/engine/input/Buttons.h" "src/engine/input/Button.h" "src/engine/input/Button.cpp" "src/engine/input/MouseButton.h" "src/engine/input/MouseButton.cpp" "src/engine/rendering/objects/Model.h" "src/engine/rendering/objects/Model.cpp")
+add_executable(${PROJECT_NAME} 
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_demo.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_draw.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_impl_glfw.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_impl_opengl3.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_tables.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_widgets.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/stb/stb_image.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/Application.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/ApplicationLauncher.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/Main.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/Debug.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/Stats.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/Util.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/Window.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/input/Button.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/input/Files.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/input/Input.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/input/Key.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/input/Keybind.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/input/MouseButton.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/ObjectRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/gui/GUI.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/gui/Gizmo.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Cube.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Light.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Line.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Material.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Mesh.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Model.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Object.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/objects/Vertex.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/IndexBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/Shader.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/Texture.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/UniformBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/VertexArray.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/VertexBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/rendering/opengl/VertexBufferLayout.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/viewport/Camera.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/engine/viewport/Scene.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/maths/Maths.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/maths/Transform.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/maths/Vec2.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/maths/Vec3.cpp
+    ${CMAKE_SOURCE_DIR}/OpenGL/src/maths/Vec4.cpp
+)
 
 add_library(assimp STATIC IMPORTED)
 
