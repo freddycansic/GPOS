@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
+file(GLOB_RECURSE OpenGL_sources *.cpp ../libraries/imgui/*.cpp ../libraries/stb/*.cpp)
+
 add_executable(${PROJECT_NAME} 
     ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui.cpp
     ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_demo.cpp
@@ -63,7 +65,7 @@ set_property(TARGET assimp PROPERTY IMPORTED_LOCATION ${ASSIMP_LIB_PATH})
 add_library(zlib STATIC IMPORTED )
 
 if (WIN32)
-    set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/zlibstaticd.lib)
+    set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/libzlibstatic.lib)
 elseif(UNIX)
     set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/libzlibstatic.a)
 endif()
@@ -77,6 +79,8 @@ target_link_libraries(${PROJECT_NAME}
     assimp
     zlib
 )
+
+target_compile_options(${PROJECT_NAME} PUBLIC "-Wno-narrowing")
 
 # https://stackoverflow.com/a/60170862/17465501
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
