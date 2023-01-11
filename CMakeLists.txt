@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(OpenGL LANGUAGES CXX C)
+project(GPOS LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,7 +20,7 @@ else()
 	endif()
 endif()
 
-add_subdirectory(OpenGL)
+add_subdirectory(GPOS)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
 #add_subdirectory(libraries/assimp)
@@ -31,7 +31,7 @@ add_subdirectory(libraries/nativefiledialog)
 target_include_directories(${PROJECT_NAME} PRIVATE 
 	${CMAKE_CURRENT_SOURCE_DIR}/libraries/glfw/include
 	${CMAKE_CURRENT_SOURCE_DIR}/libraries/glew/include
-	OpenGL/src
+	GPOS/src
 	libraries
 	libraries/stb
 	libraries/assimp/include
