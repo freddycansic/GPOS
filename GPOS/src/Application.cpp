@@ -19,6 +19,8 @@ void Application::init(char* projectDir)
 	openedProject = projectDir;
 	std::cout << "Project " << (openedProject == nullptr ? "NO_PROJECT" : openedProject) << " loaded." << std::endl;
 
+	// if (projectDir == nullptr)
+
 	tex1 = Texture(Files::internal("textures/image.png"));
 	tex2 = Texture(Files::internal("textures/hashinshin.png"));
 

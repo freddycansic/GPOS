@@ -107,6 +107,11 @@ namespace Scene
 		}
 	}
 
+	void saveToFile()
+	{
+		
+	}
+
 	void clearSelection()
 	{
 		for (const auto& selectedObject : s_SelectedObjects)

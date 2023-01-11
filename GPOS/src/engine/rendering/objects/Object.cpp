@@ -245,8 +245,10 @@ Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();
 	
+	const auto& AABBPositions = getAABB().positions;
+
 	return m_AvgPos.emplace
 	(
-		std::accumulate(positions.begin(), positions.end(), Vec3(0, 0, 0)) / static_cast<float>(positions.size())
+		std::accumulate(AABBPositions.begin(), AABBPositions.end(), Vec3(0, 0, 0)) / static_cast<float>(AABBPositions.size())
 	);
 }

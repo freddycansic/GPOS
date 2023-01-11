@@ -32,4 +32,22 @@ namespace Files {
 
 		return nullptr;
 	}
+
+	const char* getSavePathFromDialogue(const char* filters)
+	{
+		nfdchar_t* outPath = nullptr;
+
+		if (const auto result = NFD_SaveDialog(filters, nullptr, &outPath); result == NFD_OKAY) 
+		{
+			return outPath;
+		}
+		else if (result == NFD_CANCEL)
+		{
+			return nullptr;
+		}
+
+		ASSERT_WITH_MSG(false, NFD_GetError());
+
+		return nullptr;
+	}
 }

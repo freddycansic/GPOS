@@ -24,6 +24,8 @@ namespace Scene
 	void duplicateCurrentSelected();
 	void loadModelIntoScene();
 
+	void saveToFile();
+
 	void selectObject(Object* obj);
 	void clearSelection();
 	void selectAll();
@@ -34,6 +36,9 @@ namespace Scene
 	[[nodiscard]] const std::vector<std::unique_ptr<Object>>& getObjects();
 
 	[[nodiscard]] Vec3& getMutRefBackgroundColour();
+
+	[[nodiscard]] const char* getPath();
+	void setName(const char* name);
 
 	void render();
 	void handleMouseClicks();

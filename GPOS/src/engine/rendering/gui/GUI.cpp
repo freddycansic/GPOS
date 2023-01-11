@@ -185,7 +185,19 @@ namespace GUI
 			{
 				static const std::array projectionTypes = { "Perspective", "Orthographic" };
 				static int selectedProjection = 0;
-				ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), static_cast<int>(projectionTypes.size()));
+				if (ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), static_cast<int>(projectionTypes.size())))
+				{
+					switch (selectedProjection)
+					{
+					case 0:
+						Renderer::setProjectionMode(ProjectionMode::PERSPECTIVE);
+						break;
+
+					case 1:
+						Renderer::setProjectionMode(ProjectionMode::ORTHOGRAPHIC);
+						break;
+					}
+				}
 
 				static const std::array drawingModes = { "Solid", "Wireframe" };
 				static int selectedDrawingMode = 0;
@@ -194,11 +206,11 @@ namespace GUI
 					switch (selectedDrawingMode)
 					{
 					case 0:
-						Renderer::setRenderMode(RenderMode::Solid);
+						Renderer::setRenderMode(RenderMode::SOLID);
 						break;
 
 					case 1:
-						Renderer::setRenderMode(RenderMode::Wireframe);
+						Renderer::setRenderMode(RenderMode::WIREFRAME);
 						break;
 					}
 				}
@@ -209,11 +221,11 @@ namespace GUI
 				{
 					switch (selectedCameraMode)
 					{
-						case 0:
+					case 0:
 						Camera::setMode(Camera::CameraMode::ORBIT);
 						break;
 
-						case 1:
+					case 1:
 						Camera::setMode(Camera::CameraMode::FPS_FLY);
 						break;
 					}

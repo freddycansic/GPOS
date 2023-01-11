@@ -7,32 +7,33 @@
 
 enum class RenderMode
 {
-	Solid,
-	Wireframe
+	SOLID,
+	WIREFRAME
 };
 
-class Renderer
+enum class ProjectionMode
 {
-private:
-
-	static Mat4x4 s_Persp, s_Ortho, s_Proj, s_View, s_ViewProj;
-
-public:
-	Renderer() = delete;
-
-	static void init();
-	static void clear(float r, float g, float b);
-	static void clear(const Vec3& colour);
-	
-	static void draw(const VertexArray& vao, const IndexBuffer& ibo, Shader& shader);
-
-	static void setProjectionMatrix(const Mat4x4& mat);
-
-	static const Mat4x4& getProjectionMatrix();
-	static const Mat4x4& getViewProjectionMatrix();
-
-	static void recalculateProjectionMatrices();
-
-	static void setRenderMode(RenderMode renderMode);
-	static RenderMode getRenderMode();
+	PERSPECTIVE,
+	ORTHOGRAPHIC
 };
+
+namespace Renderer
+{
+	void init();
+
+	void clear(float r, float g, float b);
+	void clear(const Vec3& colour);
+	
+	void draw(const VertexArray& vao, const IndexBuffer& ibo, Shader& shader);
+ 	
+ 	void recalculateProjectionMatrices();
+ 	const Mat4x4& getProjectionMatrix();
+	void setProjectionMatrix(const Mat4x4& mat);
+	
+	const Mat4x4& getViewProjectionMatrix();
+ 	
+	RenderMode getRenderMode();
+	void setRenderMode(RenderMode renderMode);
+	
+ 	void setProjectionMode(ProjectionMode projectionMode);
+}

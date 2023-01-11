@@ -169,10 +169,10 @@ namespace ObjectRenderer
 			bool wasWireframe = false;
 			if (flags & Flags::ALWAYS_SOLID)
 			{
-				if (Renderer::getRenderMode() == RenderMode::Wireframe)
+				if (Renderer::getRenderMode() == RenderMode::WIREFRAME)
 				{
 					wasWireframe = true;
-					Renderer::setRenderMode(RenderMode::Solid);
+					Renderer::setRenderMode(RenderMode::SOLID);
 				}
 			}
 
@@ -183,7 +183,7 @@ namespace ObjectRenderer
 
 			Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
 
-			if (wasWireframe) Renderer::setRenderMode(RenderMode::Wireframe);
+			if (wasWireframe) Renderer::setRenderMode(RenderMode::WIREFRAME);
 			GLAPI(glEnable(GL_DEPTH_TEST));
 		}
 
