@@ -17,6 +17,7 @@
 #include "objects/Vertex.h"
 #include "engine/Debug.h"
 #include "engine/Util.h"
+#include "engine/viewport/Scene.h"
 
 struct BatchData
 {
@@ -218,7 +219,17 @@ void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags)
 {
 	checkRendererReady(s_State);
 
-	auto& [batchObjects, indicesCount, verticesCount] = batches[std::make_pair(object.material.texHandle, flags)];
+	size_t handle;
+
+	if (object.material.texturePath)
+	{
+		handle = 0;
+	} else
+	{
+		handle = Scene::getTexture(object.material.texturePath).getHandle();
+	}
+	
+	auto& [batchObjects, indicesCount, verticesCount] = batches[std::make_pair(handle, flags)];
 
 	batchObjects.emplace_back(&object);
 

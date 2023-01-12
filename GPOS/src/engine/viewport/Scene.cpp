@@ -3,6 +3,7 @@
 #include <memory>
 #include <optional>
 #include <algorithm>
+#include <unordered_map>
 
 #include "Camera.h"
 #include "engine/Debug.h"
@@ -105,6 +106,16 @@ namespace Scene
 				GRIDLINE_WIDTH, Colours::DEFAULT
 			);
 		}
+	}
+
+	std::unordered_map<const char*, Texture> atlas;
+	const Texture& getTexture(const char* path)
+	{
+		if (atlas.contains(path)) return atlas.at(path);
+
+		atlas[path] = std::move(Texture(path));
+
+		return atlas.at(path);
 	}
 
 	void saveToFile()

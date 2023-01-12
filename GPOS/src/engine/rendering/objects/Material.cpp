@@ -1,12 +1,12 @@
 #include "Material.h"
 
-Material::Material(const Texture& texture, const Vec4& colour)
-	: colour(colour), texHandle(texture.getHandle())
+Material::Material(const char* path, const Vec4& colour)
+	: colour(colour), texturePath(path)
 {
 }
 
-Material::Material(const Texture& texture)
-	: texHandle(texture.getHandle())
+Material::Material(const char* path)
+	: texturePath(path)
 {
 }
 

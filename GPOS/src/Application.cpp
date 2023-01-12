@@ -21,8 +21,8 @@ void Application::init(char* projectDir)
 
 	// if (projectDir == nullptr)
 
-	tex1 = Texture(Files::internal("textures/image.png"));
-	tex2 = Texture(Files::internal("textures/hashinshin.png"));
+	// tex1 = Texture("res/textures/image.png");
+	// tex2 = Texture("res/textures/hashinshin.png");
 
 	Window::beginCursorCapture();
 }

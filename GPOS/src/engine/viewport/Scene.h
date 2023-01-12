@@ -37,6 +37,8 @@ namespace Scene
 
 	[[nodiscard]] Vec3& getMutRefBackgroundColour();
 
+	[[nodiscard]] const Texture& getTexture(const char* path);
+
 	[[nodiscard]] const char* getPath();
 	void setName(const char* name);
 

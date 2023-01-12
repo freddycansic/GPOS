@@ -142,8 +142,7 @@ namespace GUI
 
 			if (ImGui::BeginMenu("New"))
 			{
-				if (ImGui::MenuItem("Cube")) {}
-				if (ImGui::MenuItem("Line")) {}
+				if (ImGui::MenuItem("Cube")) { Scene::addObject<Cube>(0, 0, 0, 1, Colours::DEFAULT); }
 				ImGui::EndMenu();
 			}
 
@@ -309,6 +308,19 @@ namespace GUI
 		ImGui::Spacing();
 
 		ImGui::ColorPicker4("##", &lastSelected->material.colour.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoSidePreview);
+
+		ImGui::Separator();
+		
+		if (lastSelected->material.texturePath == nullptr)
+		{
+			// ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture("res/textures/no-texture.png").getID()), ImVec2(ImGui::GetWindowWidth() - s_Padding, ImGui::GetWindowWidth() - s_Padding));
+			const auto& windowPos = ImGui::GetWindowPos();
+			const auto& windowSize = ImGui::GetWindowSize();
+			ImGui::GetWindowDrawList()->AddRect(ImVec2(windowPos.x + s_Padding, windowPos.y + windowSize.y - windowSize.x), ImVec2(windowPos.x + windowSize.x - s_Padding, windowPos.y + windowSize.y - s_Padding), ImU32());
+		} else
+		{
+			ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture(lastSelected->material.texturePath).getID()), ImVec2(ImGui::GetWindowWidth() - s_Padding, ImGui::GetWindowWidth() - s_Padding));
+		}
 
 		ImGui::End();
 	}
