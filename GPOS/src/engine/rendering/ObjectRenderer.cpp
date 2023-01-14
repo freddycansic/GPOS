@@ -219,12 +219,8 @@ void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags)
 {
 	checkRendererReady(s_State);
 
-	size_t handle;
-
+	size_t handle = 0;
 	if (object.material.texturePath)
-	{
-		handle = 0;
-	} else
 	{
 		handle = Scene::getTexture(object.material.texturePath).getHandle();
 	}

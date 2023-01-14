@@ -56,6 +56,21 @@ std::unordered_map<WindowType, bool> s_WindowsVisible =
 	{WindowType::SCENE_VIEWER, true}
 };
 
+void addRect(float w, float h, const ImVec4& col)
+{
+	auto dl = ImGui::GetWindowDrawList();
+
+	const auto windowPos = ImGui::GetWindowPos();
+	const auto contentMin = ImGui::GetWindowContentRegionMin();
+	const auto x = windowPos.x + ImGui::GetCursorPosX();
+	const auto y = windowPos.y + ImGui::GetCursorPosY();
+
+	dl->AddRect(ImVec2(x, y), ImVec2(x + w, y + h), IM_COL32(col.x * 255, col.y * 255, col.z * 255, col.w * 255));
+	ImGui::Dummy(ImVec2(w, h));
+}
+
+void addRect(ImVec2 size, const ImVec4& col) { addRect(size.x, size.y, col); }
+
 namespace GUI
 {
 	void init()
@@ -295,9 +310,10 @@ namespace GUI
 		auto& visible = s_WindowsVisible.at(WindowType::PROPERTIES);
 		if (!visible) return;
 
+		// ImGui::SetNextWindowSize(ImVec2(250, 0));
 		ImGui::Begin("Properties", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 		
-		const auto& lastSelected = Scene::getSelectedObjects().at(Scene::getSelectedObjects().size() - 1);
+		auto& lastSelected = Scene::getSelectedObjects().at(Scene::getSelectedObjects().size() - 1);
 		const auto& lastSelectedTransform = lastSelected->getCombinedTransformations();
 
 		ImGui::Text("Position : X:%.2f Y:%.2f Z:%.2f", lastSelectedTransform.tra.x, lastSelectedTransform.tra.y, lastSelectedTransform.tra.z);
@@ -309,17 +325,23 @@ namespace GUI
 
 		ImGui::ColorPicker4("##", &lastSelected->material.colour.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoSidePreview);
 
+		ImGui::Spacing();
 		ImGui::Separator();
 		
-		if (lastSelected->material.texturePath == nullptr)
+		if (ImGui::Button("Open Image..."))
 		{
-			// ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture("res/textures/no-texture.png").getID()), ImVec2(ImGui::GetWindowWidth() - s_Padding, ImGui::GetWindowWidth() - s_Padding));
-			const auto& windowPos = ImGui::GetWindowPos();
-			const auto& windowSize = ImGui::GetWindowSize();
-			ImGui::GetWindowDrawList()->AddRect(ImVec2(windowPos.x + s_Padding, windowPos.y + windowSize.y - windowSize.x), ImVec2(windowPos.x + windowSize.x - s_Padding, windowPos.y + windowSize.y - s_Padding), ImU32());
+			lastSelected->material.texturePath = Files::getPathFromDialogue();
+		}
+
+		constexpr float IMAGE_SIZE = 200;
+		if (lastSelected->material.texturePath)
+		{
+			ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture(lastSelected->material.texturePath).getID()), ImVec2(IMAGE_SIZE, IMAGE_SIZE));
 		} else
 		{
-			ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture(lastSelected->material.texturePath).getID()), ImVec2(ImGui::GetWindowWidth() - s_Padding, ImGui::GetWindowWidth() - s_Padding));
+			ImGui::SameLine();
+			ImGui::Text("No Texture");
+			addRect(ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImGui::GetStyle().Colors[ImGuiCol_Button]);
 		}
 
 		ImGui::End();

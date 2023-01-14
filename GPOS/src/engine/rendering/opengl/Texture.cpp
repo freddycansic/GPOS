@@ -15,8 +15,8 @@ Texture::Texture(const char* path)
 	m_Buffer = stbi_load(path, &m_Width, &m_Height, &m_ColorDepth, 4);
 	if (!m_Buffer)
 	{
-		ASSERT(false);
-		throw std::runtime_error("Image failed to load!");
+		std::string msg = "Image from path " + std::string((path ? path : "NULL")) +  " failed to load!";
+		ASSERT_WITH_MSG(false, msg.c_str());
 	}
 
 	GLAPI(glGenTextures(1, &m_ID));

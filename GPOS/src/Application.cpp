@@ -56,7 +56,7 @@ void Application::render()
 
 void Application::imGuiRender()
 {
-	//ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
