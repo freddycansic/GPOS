@@ -51,9 +51,7 @@ Cube Object::getAABB() const
 
 	const auto numPositions = static_cast<float>(positions.size());
 
-	avg.x /= numPositions;
-	avg.y /= numPositions;
-	avg.z /= numPositions;
+	avg /= numPositions;
 
 	Cube AABB(avg, 1.0f, material);
 	AABB.setScale(maxX - minX, maxY - minY, maxZ - minZ);
@@ -244,8 +242,13 @@ Transform Object::getCombinedTransformations() const
 Vec3 Object::getAvgPosition()
 {
 	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();
-	
-	const auto& AABBPositions = getAABB().positions;
+
+	// TODO THIS WORKS
+	const auto& AABB = this->getAABB();
+	const auto& AABBPositions = AABB.positions;
+
+	// TODO THIS DOESNT ON HOME PC
+	//const auto& AABBPositions = this->getAABB().positions;
 
 	return m_AvgPos.emplace
 	(

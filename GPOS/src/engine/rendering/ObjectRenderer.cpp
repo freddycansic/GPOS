@@ -19,6 +19,8 @@
 #include "engine/Util.h"
 #include "engine/viewport/Scene.h"
 
+using namespace Flags;
+
 struct BatchData
 {
 	std::vector<Object*> objects;
@@ -41,6 +43,7 @@ State s_State = State::UNINITIALISED;
 
 using Batches = std::map<std::pair<size_t, RenderingFlag>, BatchData>;
 Batches s_ObjectBatches; // TODO make name better
+Batches s_DepthTestObjectBatches;
 std::vector<Light> s_Lights;
 
 std::unique_ptr<VertexArray> s_Vao = nullptr;
@@ -49,9 +52,9 @@ std::unique_ptr<IndexBuffer> s_Ibo = nullptr;
 std::unique_ptr<Shader> s_Shader = nullptr;
 
 void checkRendererReady(const State& state);
-void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags);
 std::vector<GLuint> getCompiledIndexVector(const BatchData& batchData);
 void recalculateAllBatchPositions(const BatchData& batchData);
+void renderBatch(const std::pair<size_t, RenderingFlag>& handleAndFlags, const BatchData& batchData);
 
 namespace ObjectRenderer
 {
@@ -93,7 +96,31 @@ namespace ObjectRenderer
 
 	void draw(Object& object, RenderingFlag flags)
 	{
-		addObjectToBatches(s_ObjectBatches, object, flags);
+		checkRendererReady(s_State);
+
+		size_t handle = 0;
+		if (object.material.texturePath)
+		{
+			handle = Scene::getTexture(object.material.texturePath).getHandle();
+		}
+
+		BatchData* batch = nullptr;
+		if (flags & NO_DEPTH_TEST)
+		{
+			batch = &s_DepthTestObjectBatches[std::make_pair(handle, flags)];
+		}
+		else
+		{
+			batch = &s_ObjectBatches[std::make_pair(handle, flags)];
+		}
+
+
+		batch->objects.emplace_back(&object);
+
+		const auto& mesh = object.getMesh();
+
+		batch->indicesCount += mesh.indices.size();
+		batch->verticesCount += mesh.positions.size();
 	}
 
 	void draw(const Light& light)
@@ -117,79 +144,20 @@ namespace ObjectRenderer
 			s_Shader->setUniform3f("u_Lights[" + std::to_string(i) + "].colour", colour);
 		}
 
-		// for every batch
 		for (auto& [handleAndFlags, batchData] : s_ObjectBatches)
 		{
-			const auto& handle = handleAndFlags.first;
-			const auto& flags = handleAndFlags.second;
+			renderBatch(handleAndFlags, batchData);
+		}
 
-			// TODO thread all index complication once per frame
-			auto f_BatchIndices = std::async(getCompiledIndexVector, std::ref(batchData));
-
-			// concurrently calculate mesh positions and normals
-			std::thread t_RecalculateAllBatchPositions(
-				recalculateAllBatchPositions, std::ref(batchData));
-
-			for (const auto& object : batchData.objects )
-			{
-				if (Gizmo::getTool() != GizmoTool::TRANSLATE || object->normals.empty())
-				{
-					object->normals = object->getMesh().recalculateNormals(object->getCombinedTransformations());
-				}
-			}
-
-			t_RecalculateAllBatchPositions.join();
-
-			std::vector<Vertex> batchVertices;
-			batchVertices.reserve(batchData.verticesCount);
-
-			for (const auto& object : batchData.objects)
-			{
-				auto& mesh = object->getMesh();
-
-				for (unsigned int i = 0; i < object->positions.size(); ++i)
-				{
-					batchVertices.emplace_back
-					(
-						object->positions.at(i),
-						object->selected ? Vec4(Colours::SELECTION_ORANGE, 1.0f) : object->material.colour,
-						mesh.textureCoordinates.at(i),
-						object->normals.at(i)
-					);
-				}
-			}
-
-			const auto& batchIndices = f_BatchIndices.get();
-
-			s_Vbo->setData(sizeof(Vertex) * batchVertices.size(), batchVertices.data());
-			s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
-
-			s_Shader->setUniform1ui64("u_TexHandle", handle);
-			s_Shader->setUniform1i("u_NoLighting", flags & Flags::NO_LIGHTING ? 1 : 0);
-
-			bool wasWireframe = false;
-			if (flags & Flags::ALWAYS_SOLID)
-			{
-				if (Renderer::getRenderMode() == RenderMode::WIREFRAME)
-				{
-					wasWireframe = true;
-					Renderer::setRenderMode(RenderMode::SOLID);
-				}
-			}
-
-			if (flags & Flags::NO_DEPTH_TEST)
-			{
-				GLAPI(glDisable(GL_DEPTH_TEST));
-			}
-
-			Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
-
-			if (wasWireframe) Renderer::setRenderMode(RenderMode::WIREFRAME);
-			GLAPI(glEnable(GL_DEPTH_TEST));
+		// render batches without depth testing last so they appear in front of everything else
+		for (auto& [handleAndFlags, batchData] : s_DepthTestObjectBatches)
+		{
+			renderBatch(handleAndFlags, batchData);
 		}
 
 		// clear buffers
 		s_ObjectBatches.clear();
+		s_DepthTestObjectBatches.clear();
 		s_Lights.clear();
 
 		s_Vao->unbind();
@@ -215,24 +183,72 @@ void checkRendererReady(const State& state)
 	}
 }
 
-void addObjectToBatches(Batches& batches, Object& object, RenderingFlag flags)
+void renderBatch(const std::pair<size_t, RenderingFlag>& handleAndFlags, const BatchData& batchData)
 {
-	checkRendererReady(s_State);
+	const auto& [handle, flags] = handleAndFlags;
 
-	size_t handle = 0;
-	if (object.material.texturePath)
+	auto f_BatchIndices = std::async(getCompiledIndexVector, std::ref(batchData));
+
+	// concurrently calculate mesh positions and normals
+	std::thread t_RecalculateAllBatchPositions(
+		recalculateAllBatchPositions, std::ref(batchData));
+
+	for (const auto& object : batchData.objects)
 	{
-		handle = Scene::getTexture(object.material.texturePath).getHandle();
+		if (Gizmo::getTool() != GizmoTool::TRANSLATE || object->normals.empty())
+		{
+			object->normals = object->getMesh().recalculateNormals(object->getCombinedTransformations());
+		}
 	}
-	
-	auto& [batchObjects, indicesCount, verticesCount] = batches[std::make_pair(handle, flags)];
 
-	batchObjects.emplace_back(&object);
+	t_RecalculateAllBatchPositions.join();
 
-	const auto& mesh = object.getMesh();
+	std::vector<Vertex> batchVertices;
+	batchVertices.reserve(batchData.verticesCount);
 
-	indicesCount += mesh.indices.size();
-	verticesCount += mesh.positions.size();
+	for (const auto& object : batchData.objects)
+	{
+		auto& mesh = object->getMesh();
+
+		for (unsigned int i = 0; i < object->positions.size(); ++i)
+		{
+			batchVertices.emplace_back
+			(
+				object->positions.at(i),
+				object->selected ? Vec4(Colours::SELECTION_ORANGE, 1.0f) : object->material.colour,
+				mesh.textureCoordinates.at(i),
+				object->normals.at(i)
+			);
+		}
+	}
+
+	const auto& batchIndices = f_BatchIndices.get();
+
+	s_Vbo->setData(sizeof(Vertex) * batchVertices.size(), batchVertices.data());
+	s_Ibo->setData(sizeof(GLuint) * batchIndices.size(), batchIndices.data());
+
+	s_Shader->setUniform1ui64("u_TexHandle", handle);
+	s_Shader->setUniform1i("u_NoLighting", flags & NO_LIGHTING ? 1 : 0);
+
+	bool wasWireframe = false;
+	if (flags & ALWAYS_SOLID)
+	{
+		if (Renderer::getRenderMode() == RenderMode::WIREFRAME)
+		{
+			wasWireframe = true;
+			Renderer::setRenderMode(RenderMode::SOLID);
+		}
+	}
+
+	if (flags & NO_DEPTH_TEST)
+	{
+		GLAPI(glDisable(GL_DEPTH_TEST));
+	}
+
+	Renderer::draw(*s_Vao, *s_Ibo, *s_Shader);
+
+	if (wasWireframe) Renderer::setRenderMode(RenderMode::WIREFRAME);
+	if (flags & NO_DEPTH_TEST) GLAPI(glEnable(GL_DEPTH_TEST));
 }
 
 std::vector<GLuint> getCompiledIndexVector(const BatchData& batchData)

@@ -310,7 +310,6 @@ namespace GUI
 		auto& visible = s_WindowsVisible.at(WindowType::PROPERTIES);
 		if (!visible) return;
 
-		// ImGui::SetNextWindowSize(ImVec2(250, 0));
 		ImGui::Begin("Properties", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 		
 		auto& lastSelected = Scene::getSelectedObjects().at(Scene::getSelectedObjects().size() - 1);

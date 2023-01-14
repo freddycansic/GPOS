@@ -113,14 +113,14 @@ namespace Scene
 	{
 		if (atlas.contains(path)) return atlas.at(path);
 
-		atlas[path] = std::move(Texture(path));
+		atlas[path] = Texture(path);
 
 		return atlas.at(path);
 	}
 
 	void saveToFile()
 	{
-		
+		// TODO
 	}
 
 	void clearSelection()

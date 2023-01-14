@@ -91,21 +91,14 @@ namespace Gizmo
 
 	void render(const Vec3& pos)
 	{
-		// TODO fix
 		using namespace Flags;
 
-		//s_Lines[0].p1 = pos;
-		//s_Lines[0].p2 = { pos.x - GIZMO_LINE_LENGTH, pos.y, pos.z };
 		s_Lines[0].setTranslation(pos);
 		ObjectRenderer::draw(s_Lines[0], NO_DEPTH_TEST | NO_LIGHTING | ALWAYS_SOLID);
 
-		//s_Lines[1].p1 = pos;
-		//s_Lines[1].p2 = { pos.x, pos.y - GIZMO_LINE_LENGTH, pos.z };
 		s_Lines[1].setTranslation(pos);
 		ObjectRenderer::draw(s_Lines[1], NO_DEPTH_TEST | NO_LIGHTING | ALWAYS_SOLID);
 
-		//s_Lines[2].p1 = pos;
-		//s_Lines[2].p2 = { pos.x, pos.y, pos.z + GIZMO_LINE_LENGTH };
 		s_Lines[2].setTranslation(pos);
 		ObjectRenderer::draw(s_Lines[2], NO_DEPTH_TEST | NO_LIGHTING | ALWAYS_SOLID);
 
