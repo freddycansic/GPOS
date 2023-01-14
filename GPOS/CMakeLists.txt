@@ -9,6 +9,7 @@ add_executable(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_tables.cpp
     ${CMAKE_SOURCE_DIR}/libraries/imgui/imgui_widgets.cpp
     ${CMAKE_SOURCE_DIR}/libraries/stb/stb_image.cpp
+    ${CMAKE_SOURCE_DIR}/libraries/json/include/json/json.hpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/Application.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/ApplicationLauncher.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/Main.cpp
@@ -63,7 +64,7 @@ set_property(TARGET assimp PROPERTY IMPORTED_LOCATION ${ASSIMP_LIB_PATH})
 add_library(zlib STATIC IMPORTED )
 
 if (WIN32)
-    set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/libzlibstatic.lib)
+    set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/zlibstaticd.lib)
 elseif(UNIX)
     set(ZLIB_LIB_PATH ${CMAKE_SOURCE_DIR}/libraries/zlib/lib/libzlibstatic.a)
 endif()
@@ -78,7 +79,9 @@ target_link_libraries(${PROJECT_NAME}
     zlib
 )
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-Wno-narrowing")
+if (UNIX)
+    target_compile_options(${PROJECT_NAME} PUBLIC "-Wno-narrowing")
+endif()
 
 # https://stackoverflow.com/a/60170862/17465501
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
