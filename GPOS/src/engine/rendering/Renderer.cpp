@@ -6,12 +6,10 @@
 #include "engine/Window.h"
 
 Mat4x4 s_Persp;
-Mat4x4 s_Ortho;
 Mat4x4 s_Proj;
 Mat4x4 s_ViewProj;
 
 RenderMode s_RenderMode = RenderMode::SOLID;
-ProjectionMode s_ProjectionMode = ProjectionMode::PERSPECTIVE;
 
 namespace Renderer
 {
@@ -56,7 +54,6 @@ namespace Renderer
 	void recalculateProjectionMatrices()
 	{
 		s_Persp = Maths::perspective(Maths::radians(45.0f), static_cast<float>(Window::displayWidth()) / static_cast<float>(Window::displayHeight()), 1.0f, 1000.0f);
-		s_Ortho = Maths::ortho(static_cast<float>(-Window::width()) / 2, static_cast<float>(Window::width()) / 2, static_cast<float>(-Window::height()) / 2, static_cast<float>(Window::height()) / 2, 0.1f, 100.0f);
 	}
 
 	void setRenderMode(RenderMode renderMode)
@@ -78,22 +75,6 @@ namespace Renderer
 	RenderMode getRenderMode()
 	{
 		return s_RenderMode;
-	}
-
-	void setProjectionMode(ProjectionMode projectionMode)
-	{
-		s_ProjectionMode = projectionMode;
-
-		switch (projectionMode)
-		{
-			case ProjectionMode::PERSPECTIVE:
-				s_Proj = s_Persp;
-				break;
-
-			case ProjectionMode::ORTHOGRAPHIC:
-				s_Proj = s_Ortho;
-				break;
-		}
 	}
 
 	void setProjectionMatrix(const Mat4x4& mat) {

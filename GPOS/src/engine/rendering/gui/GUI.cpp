@@ -16,9 +16,10 @@
 #include "engine/rendering/Renderer.h"
 #include "engine/viewport/Scene.h"
 #include "engine/rendering/objects/Material.h"
-#include "engine/rendering/objects/Cube.h"
+#include "engine/rendering/objects/Model.h"
 #include "engine/rendering/gui/Gizmo.h"
 #include "engine/viewport/Camera.h"
+#include "imgui/imgui_internal.h"
 
 #define CHANGE_COLOUR_IF_SELECTED(selectedTool, currentTool, buttonCode)\
 	if ((selectedTool) == (currentTool))\
@@ -44,7 +45,9 @@ enum class WindowType
 };
 
 constexpr float MENU_BAR_LENGTH = 17.0f; // px
-constexpr float s_Padding = 20.0f;
+constexpr float PADDING = 15.0f;
+constexpr float TOOLTIP_HOVER_TIMER_THRESHOLD = 0.4f;
+constexpr float DEFAULT_CUBE_SIZE = 1.4f;
 
 std::unordered_map<WindowType, bool> s_WindowsVisible = 
 {
@@ -56,20 +59,34 @@ std::unordered_map<WindowType, bool> s_WindowsVisible =
 	{WindowType::SCENE_VIEWER, true}
 };
 
-void addRect(float w, float h, const ImVec4& col)
+void addRect(ImVec2 size, const ImVec4& col)
 {
 	auto dl = ImGui::GetWindowDrawList();
 
 	const auto windowPos = ImGui::GetWindowPos();
-	const auto contentMin = ImGui::GetWindowContentRegionMin();
 	const auto x = windowPos.x + ImGui::GetCursorPosX();
 	const auto y = windowPos.y + ImGui::GetCursorPosY();
 
-	dl->AddRect(ImVec2(x, y), ImVec2(x + w, y + h), IM_COL32(col.x * 255, col.y * 255, col.z * 255, col.w * 255));
-	ImGui::Dummy(ImVec2(w, h));
+	dl->AddRect(ImVec2(x, y), ImVec2(x + size.x, y + size.y), IM_COL32(col.x * 255, col.y * 255, col.z * 255, col.w * 255));
+	ImGui::Dummy(ImVec2(size.x, size.y));
 }
 
-void addRect(ImVec2 size, const ImVec4& col) { addRect(size.x, size.y, col); }
+void addFilledRect(ImVec2 size, const ImVec4& col)
+{
+	auto dl = ImGui::GetWindowDrawList();
+
+	const auto windowPos = ImGui::GetWindowPos();
+	const auto x = windowPos.x + ImGui::GetCursorPosX();
+	const auto y = windowPos.y + ImGui::GetCursorPosY();
+
+	dl->AddRectFilled(ImVec2(x, y), ImVec2(x + size.x, y + size.y), IM_COL32(col.x * 255, col.y * 255, col.z * 255, col.w * 255));
+	ImGui::Dummy(ImVec2(size.x, size.y));
+}
+
+bool isItemHovered(float timer = 0, ImGuiHoveredFlags flags = 0)
+{
+	return ImGui::IsItemHovered(flags) && GImGui->HoveredIdTimer > timer;
+}
 
 namespace GUI
 {
@@ -157,7 +174,18 @@ namespace GUI
 
 			if (ImGui::BeginMenu("New"))
 			{
-				if (ImGui::MenuItem("Cube")) { Scene::addObject<Cube>(0, 0, 0, 1, Colours::DEFAULT); }
+				if (ImGui::MenuItem("Cube")) { Scene::addObject<Model>("res/models/program/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT); }
+
+				if (ImGui::MenuItem("Plane")) { Scene::addObject<Model>("res/models/program/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT); }
+
+				if (ImGui::MenuItem("Sphere")) { Scene::addObject<Model>("res/models/program/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT); }
+
+				if (ImGui::MenuItem("Cylinder")) { Scene::addObject<Model>("res/models/program/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT); }
+
+				if (ImGui::MenuItem("Cone")) { Scene::addObject<Model>("res/models/program/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT); }
+
+				if (ImGui::MenuItem("Torus")) { Scene::addObject<Model>("res/models/program/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT); }
+				
 				ImGui::EndMenu();
 			}
 
@@ -197,22 +225,6 @@ namespace GUI
 
 			if (ImGui::BeginMenu("View"))
 			{
-				static const std::array projectionTypes = { "Perspective", "Orthographic" };
-				static int selectedProjection = 0;
-				if (ImGui::Combo("Projection", &selectedProjection, projectionTypes.data(), static_cast<int>(projectionTypes.size())))
-				{
-					switch (selectedProjection)
-					{
-					case 0:
-						Renderer::setProjectionMode(ProjectionMode::PERSPECTIVE);
-						break;
-
-					case 1:
-						Renderer::setProjectionMode(ProjectionMode::ORTHOGRAPHIC);
-						break;
-					}
-				}
-
 				static const std::array drawingModes = { "Solid", "Wireframe" };
 				static int selectedDrawingMode = 0;
 				if (ImGui::Combo("Drawing Mode", &selectedDrawingMode, drawingModes.data(), static_cast<int>(drawingModes.size())))
@@ -271,7 +283,7 @@ namespace GUI
 		auto& visible = s_WindowsVisible.at(WindowType::SCENE_VIEWER);
 		if (!visible) return;
 
-		ImGui::SetNextWindowPos({ Window::width() - s_Padding - 200, s_Padding });
+		ImGui::SetNextWindowPos({ Window::width() - PADDING - 200, PADDING });
 		ImGui::SetNextWindowSize({ 200, 0 });
 
 		ImGui::Begin("Scene Viewer", &visible);
@@ -310,6 +322,20 @@ namespace GUI
 		auto& visible = s_WindowsVisible.at(WindowType::PROPERTIES);
 		if (!visible) return;
 
+		static float windowHeight = 0.0f;
+
+		// gross workaround but idk
+		if (static size_t numFramesVisible = 0; numFramesVisible <= 2)
+		{
+			// move out of frame until window height is calculated
+			ImGui::SetNextWindowPos(ImVec2(-999, 0));
+			numFramesVisible++;
+		}
+		else
+		{
+			ImGui::SetNextWindowPos(ImVec2(PADDING, static_cast<float>(Window::height()) / 2 - windowHeight / 2));
+		}
+
 		ImGui::Begin("Properties", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 		
 		auto& lastSelected = Scene::getSelectedObjects().at(Scene::getSelectedObjects().size() - 1);
@@ -323,6 +349,10 @@ namespace GUI
 		ImGui::Spacing();
 
 		ImGui::ColorPicker4("##", &lastSelected->material.colour.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoSidePreview);
+
+		// custom colour preview
+		ImGui::Spacing();
+		addFilledRect(ImVec2(ImGui::GetItemRectSize().x - ImGui::GetStyle().FramePadding.x / 2, 20), *reinterpret_cast<ImVec4*>(&lastSelected->material.colour));
 
 		ImGui::Spacing();
 		ImGui::Separator();
@@ -343,6 +373,7 @@ namespace GUI
 			addRect(ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImGui::GetStyle().Colors[ImGuiCol_Button]);
 		}
 
+		windowHeight = ImGui::GetWindowHeight();
 		ImGui::End();
 	}
 
@@ -351,7 +382,7 @@ namespace GUI
 		auto& visible = s_WindowsVisible.at(WindowType::TOOLBAR);
 		if (!visible) return;
 
-		ImGui::SetNextWindowPos(ImVec2(s_Padding, s_Padding + MENU_BAR_LENGTH));
+		ImGui::SetNextWindowPos(ImVec2(PADDING, PADDING + MENU_BAR_LENGTH));
 		ImGui::Begin("Toolbar", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 		
 		static constexpr auto IMGUI_SELECTED_HOVERING_ORANGE = ImVec4(Colours::SELECTION_ORANGE.x, Colours::SELECTION_ORANGE.y, Colours::SELECTION_ORANGE.z, 1.0f);
@@ -391,7 +422,7 @@ namespace GUI
 		if (!visible) return;
 
 		static ImVec2 statsSize;
-		ImGui::SetNextWindowPos(ImVec2(s_Padding, Window::height() - s_Padding - statsSize.y));
+		ImGui::SetNextWindowPos(ImVec2(PADDING, Window::height() - PADDING - statsSize.y));
 
 		ImGui::Begin("Stats", &visible);
 
@@ -416,12 +447,43 @@ namespace GUI
 		// TODO fix weird dragging thing
 		if (!s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU)) return;
 
-		ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - 1, mousePosOnShowWindow.y - 1 });
+		static constexpr float LEEWAY = 3;
+		ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - LEEWAY, mousePosOnShowWindow.y - LEEWAY });
 		ImGui::Begin("New", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
 
 		if (ImGui::Button("Cube"))
 		{
-			Scene::addObject<Cube>(0, 0, 0, 1.0f, Colours::DEFAULT);
+			Scene::addObject<Model>("res/models/program/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT);
+			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+		}
+
+		if (ImGui::Button("Plane"))
+		{
+			Scene::addObject<Model>("res/models/program/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT);
+			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+		}
+
+		if (ImGui::Button("Sphere"))
+		{
+			Scene::addObject<Model>("res/models/program/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT);
+			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+		}
+
+		if (ImGui::Button("Cylinder"))
+		{
+			Scene::addObject<Model>("res/models/program/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT);
+			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+		}
+
+		if (ImGui::Button("Cone"))
+		{
+			Scene::addObject<Model>("res/models/program/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT);
+			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+		}
+
+		if (ImGui::Button("Torus"))
+		{
+			Scene::addObject<Model>("res/models/program/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT);
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 

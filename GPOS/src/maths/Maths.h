@@ -27,7 +27,6 @@ namespace Maths
 
 	Mat4x4 lookAt(const Vec3& position, const Vec3& target, const Vec3& up);
 	Mat4x4 perspective(float fovRad, float aspect, float near, float far);
-	Mat4x4 ortho(float left, float right, float top, float bottom, float near, float far);
 
 	Mat4x4 scale(const Mat4x4& mat, float xScale, float yScale, float zScale);
 	Mat4x4 rotate(const Mat4x4& mat, float xRotate, float yRotate, float zRotate);

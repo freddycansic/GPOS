@@ -5,6 +5,7 @@
 
 #include "engine/rendering/gui/Gizmo.h"
 #include "engine/rendering/objects/Object.h"
+#include "engine/rendering/opengl/Texture.h"
 
 struct Ray;
 struct Vec3;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "engine/rendering/opengl/Texture.h"
 #include "engine/Colours.h"
 #include "maths/Vec4.h"
 

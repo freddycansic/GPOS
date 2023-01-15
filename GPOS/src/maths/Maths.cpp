@@ -71,15 +71,6 @@ namespace Maths {
 		};
 	}
 
-	Mat4x4 ortho(float left, float right, float top, float bottom, float near, float far) {
-		return {
-			{2 / (right - left), 0, 0, -(right + left) / (right - left)},
-			{0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom)},
-			{0, 0, -2 / (far - near), -(far + near) / (far - near)},
-			{0, 0, 0, 1}
-		};
-	}
-
 	Mat4x4 scale(const Mat4x4& mat, float xScale, float yScale, float zScale)
 	{
 		return

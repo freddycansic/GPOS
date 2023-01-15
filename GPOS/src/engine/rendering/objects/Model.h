@@ -14,8 +14,8 @@
 struct Model final : Object
 {
 public:
-	Model(Vec3 pos, const char* path, size_t index, const Material& material);
-	Model(float x, float y, float z, const char* path, size_t index, const Material& material);
+	Model(const char* path, size_t index, Vec3 pos, float scale, const Material& material);
+	Model(const char* path, size_t index, float x, float y, float z, float scale, const Material& material);
 	Model() = default;
 	~Model() override = default;
 

@@ -8,7 +8,7 @@
 std::unordered_map<const char*, std::vector<std::pair<Mesh, Material>>> Model::meshes;
 Assimp::Importer Model::s_Importer;
 
-Model::Model(Vec3 pos, const char* path, size_t index, const Material& material)
+Model::Model(const char* path, size_t index, Vec3 pos, float scale, const Material& material)
 	: Object(material), m_Path(path), m_Index(index)
 {
 	const std::string stringPath(path);
@@ -22,12 +22,13 @@ Model::Model(Vec3 pos, const char* path, size_t index, const Material& material)
 	m_Name = Util::replaceAll(m_Name, " ", "_");
 
 	m_Transform.tra = pos;
+	m_Transform.sca = { scale, scale, scale };
 
 	loadModelMeshes(path);
 }
 
-Model::Model(float x, float y, float z, const char* path, size_t index, const Material& material)
-	: Model(Vec3(x, y, z), path, index, material)
+Model::Model(const char* path, size_t index, float x, float y, float z, float scale, const Material& material)
+	: Model(path, index, Vec3(x, y, z), scale, material)
 {}
 
 void Model::loadModelMeshes(const char* path)

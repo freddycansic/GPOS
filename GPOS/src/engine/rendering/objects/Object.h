@@ -16,7 +16,6 @@ struct Ray;
 
 struct Object
 {
-public:
 	std::vector<Vec3> positions;
 	std::vector<Vec3> normals;
 
@@ -24,19 +23,6 @@ public:
 	bool selected = false;
 	bool moved = true;
 
-protected:
-	Transform m_Transform;
-	Transform m_TempTransform =
-	{
-		{0, 0, 0},
-		{0, 0, 0},
-		{0, 0, 0}
-	};
-
-	std::optional<Vec3> m_AvgPos;
-	bool m_Selectable = true;
-
-public:
 	Object() = default;
 	explicit Object(const Material& material);
 	virtual ~Object() = default;
@@ -79,4 +65,16 @@ public:
 	
 	[[nodiscard]] virtual Mesh& getMesh() const = 0; // should to point to static Mesh in child class
 	[[nodiscard]] virtual Mat4x4 getTransformMatrix() const;
+
+protected:
+	Transform m_Transform;
+	Transform m_TempTransform =
+	{
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0}
+	};
+
+	std::optional<Vec3> m_AvgPos;
+	bool m_Selectable = true;
 };

@@ -11,12 +11,6 @@ enum class RenderMode
 	WIREFRAME
 };
 
-enum class ProjectionMode
-{
-	PERSPECTIVE,
-	ORTHOGRAPHIC
-};
-
 namespace Renderer
 {
 	void init();
@@ -34,6 +28,4 @@ namespace Renderer
  	
 	RenderMode getRenderMode();
 	void setRenderMode(RenderMode renderMode);
-	
- 	void setProjectionMode(ProjectionMode projectionMode);
 }

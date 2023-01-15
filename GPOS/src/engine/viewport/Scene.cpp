@@ -12,8 +12,9 @@
 #include "engine/input/Input.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/rendering/Renderer.h"
-#include "engine/rendering/objects/Cube.h"
 #include "engine/rendering/objects/Model.h"
+#include "engine/rendering/objects/Cube.h"
+#include "engine/rendering/objects/Line.h"
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/Colours.h"
 
@@ -295,7 +296,7 @@ namespace Scene
 				
 			for (size_t modelIdx = 0; modelIdx < models.size(); ++modelIdx)
 			{
-				addObject(std::make_unique<Model>(0, 0, 0, path, modelIdx, models.at(modelIdx).second));
+				addObject(std::make_unique<Model>(path, modelIdx, 0, 0, 0, 1.0f, models.at(modelIdx).second));
 			}
 		}
 	}

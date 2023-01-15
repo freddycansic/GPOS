@@ -8,7 +8,6 @@
 #include "engine/rendering/ObjectRenderer.h"
 #include "engine/Window.h"
 #include "engine/input/Buttons.h"
-#include "engine/rendering/objects/Cube.h"
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
@@ -18,11 +17,6 @@ void Application::init(char* projectDir)
 {
 	openedProject = projectDir;
 	std::cout << "Project " << (openedProject == nullptr ? "NO_PROJECT" : openedProject) << " loaded." << std::endl;
-
-	// if (projectDir == nullptr)
-
-	// tex1 = Texture("res/textures/image.png");
-	// tex2 = Texture("res/textures/hashinshin.png");
 
 	Window::beginCursorCapture();
 }

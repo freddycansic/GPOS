@@ -27,9 +27,9 @@ add_executable(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/Renderer.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/gui/GUI.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/gui/Gizmo.cpp
-    ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Cube.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Light.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Line.cpp
+    ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Cube.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Material.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Mesh.cpp
     ${CMAKE_SOURCE_DIR}/GPOS/src/engine/rendering/objects/Model.cpp
