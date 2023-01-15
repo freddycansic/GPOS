@@ -33,4 +33,6 @@ namespace Util
 	void printColoured(const char* text, TextColour colour = TextColour::WHITE);
 
 	std::string replaceAll(std::string original, const std::string& match, const std::string& replace);
+
+	std::string extractFileName(const std::string& path);
 }

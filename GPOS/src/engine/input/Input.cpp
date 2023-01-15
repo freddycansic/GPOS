@@ -55,7 +55,7 @@ namespace Input
 		{
 			case Camera::CameraMode::ORBIT: 
 			{
-				pitch = std::clamp(pitch, 0.01f, Maths::PI<float>); // TODO magic	values which stop orbit camera from freaking out when looking	  directly down/up on/to an object
+				pitch = std::clamp(pitch, 0.0001f, Maths::PI<float> - 0.0001f); // TODO magic	values which stop orbit camera from freaking out when looking	  directly down/up on/to an object
 				break;
 			}
 

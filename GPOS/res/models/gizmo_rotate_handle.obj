@@ -1,6 +1,6 @@
 # Blender v3.1.2 OBJ File: ''
 # www.blender.org
-mtllib sphere_low_poly.mtl
+mtllib gizmo_rotate_handle.mtl
 o Icosphere
 v 0.000000 -1.000000 0.000000
 v 0.723607 -0.447220 0.525725

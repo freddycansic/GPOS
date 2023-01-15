@@ -5,15 +5,11 @@
 #include <vector>
 #include <string>
 
-#include <json/json.hpp>
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
 #include "Object.h"
-
-using json = nlohmann::json;
 
 struct Model final : Object
 {

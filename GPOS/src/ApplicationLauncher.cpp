@@ -61,4 +61,6 @@ ApplicationLauncher::ApplicationLauncher(Application& app, const ApplicationConf
 	ImGui_ImplGlfw_Shutdown();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui::DestroyContext();
+
+	Scene::savePreviousScenes();
 }

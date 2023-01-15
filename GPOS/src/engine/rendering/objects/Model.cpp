@@ -11,14 +11,7 @@ Assimp::Importer Model::s_Importer;
 Model::Model(const std::string& path, size_t index, Vec3 pos, float scale, const Material& material)
 	: Object(material), m_Path(path), m_Index(index)
 {
-	const std::string stringPath(path);
-
-	auto lastSlashPos = stringPath.find_last_of('\\');
-	if (lastSlashPos == std::string::npos) lastSlashPos = stringPath.find_last_of('/');
-	if (lastSlashPos == std::string::npos) lastSlashPos = 0;
-
-	const auto lastDotPos = stringPath.find_last_of('.');
-	m_Name = stringPath.substr(lastSlashPos + 1, lastDotPos - lastSlashPos - 1) + std::string("_") + std::to_string(index);
+	m_Name = Util::extractFileName(path) + std::string("_") + std::to_string(index);
 	m_Name = Util::replaceAll(m_Name, " ", "_");
 
 	m_Transform.tra = pos;
@@ -34,15 +27,23 @@ Model::Model(const std::string& path, size_t index, float x, float y, float z, f
 void Model::loadModelMeshes(const std::string& path)
 {
 	// if the model has already been loaded
-	if (meshes.contains(path))
+	if (!meshes.empty())
 	{
-		return;
+		if (meshes.contains(path))
+		{
+			return;
+		}
 	}
 
 	// load model and store in all models
-	const auto scene = s_Importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	auto scene = s_Importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 	
-	ASSERT_WITH_MSG(scene || !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || scene->mRootNode, s_Importer.GetErrorString());
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		scene = s_Importer.ReadFile("res/models/model_not_found.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
+
+		ASSERT_WITH_MSG(scene || !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || scene->mRootNode, "Default model misplaced from res/models/model_not_found.obj!");
+	}
 
 	for (size_t meshIdx = 0; meshIdx < scene->mNumMeshes; ++meshIdx)
 	{
@@ -52,7 +53,7 @@ void Model::loadModelMeshes(const std::string& path)
 		const auto p_MeshPositions = reinterpret_cast<Vec3*>(assimpMesh->mVertices);
 		std::vector<Vec3> meshPositions(p_MeshPositions, p_MeshPositions + assimpMesh->mNumVertices);
 
-		// centers models
+		// center model
 		Vec3 min, max;
 		for (const auto& pos : meshPositions)
 		{

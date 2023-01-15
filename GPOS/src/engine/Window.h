@@ -6,7 +6,7 @@ struct GLFWwindow;
 
 struct WindowConfig
 {
-	std::string title = "Hello, world!";
+	std::string title = "New Project";
 	int width = 640;
 	int height = 400;
 	bool maximised = true;
@@ -44,6 +44,9 @@ namespace Window
 	[[nodiscard]] int displayHeight();
 	[[nodiscard]] int displayWidth();
 	[[nodiscard]] bool capturingCursor();
+
+	void setTitle(const std::string& title);
+	const std::string& getTitle();
 
 	[[nodiscard]] GLFWwindow* GLFWWindow();
 };

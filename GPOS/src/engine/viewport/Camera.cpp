@@ -65,13 +65,13 @@ namespace Camera
 	{
 		switch (s_Mode)
 		{
-			case CameraMode::FPS_FLY: 
+			case CameraMode::FPS_FLY:
 			{
 				s_View = fpsFlyUpdate();
 				break;
 			}
 
-			case CameraMode::ORBIT: 
+			case CameraMode::ORBIT:
 			{
 				s_View = orbitUpdate();
 				break;

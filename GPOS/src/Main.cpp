@@ -5,7 +5,6 @@ int main(int argc, char* argv[])
 {
 	ApplicationConfig config;
 	
-	config.window.title = "Hi";
 	config.window.maximised = true;
 	config.window.vsync = false;
 	config.window.resizable = true;

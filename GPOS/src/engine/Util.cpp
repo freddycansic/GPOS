@@ -48,4 +48,14 @@ namespace Util
 
 		return original;
 	}
+
+	std::string extractFileName(const std::string& path)
+	{
+		auto lastSlashPos = path.find_last_of('\\');
+		if (lastSlashPos == std::string::npos) lastSlashPos = path.find_last_of('/');
+		if (lastSlashPos == std::string::npos) lastSlashPos = 0;
+
+		const auto lastDotPos = path.find_last_of('.');
+		return path.substr(lastSlashPos + 1, lastDotPos - lastSlashPos - 1);
+	}
 }

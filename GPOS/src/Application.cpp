@@ -13,11 +13,12 @@
 #include "engine/viewport/Scene.h"
 #include "engine/Debug.h"
 
-void Application::init(char* projectDir)
+void Application::init(const char* projectDir)
 {
-	openedProject = projectDir;
-	std::cout << "Project " << (openedProject == nullptr ? "NO_PROJECT" : openedProject) << " loaded." << std::endl;
+	std::cout << "Project " << (projectDir == nullptr ? "NO_PROJECT" : projectDir) << " loaded." << std::endl;
 
+	if (projectDir) Scene::loadFromFile(projectDir);
+	
 	Window::beginCursorCapture();
 }
 
@@ -25,7 +26,7 @@ void Application::render()
 {
 	Renderer::clear(Scene::getMutRefBackgroundColour());
 
-	if (Keybind({ MouseButtons::MOUSE_3 }).isHeld() || Keybind({ Keys::D}).isHeld())
+	if ((Keybind({ MouseButtons::MOUSE_3 }).isHeld() || Keybind({ Keys::D }).isHeld()) && !GUI::isMouseHoveringAnyWindows())
 	{
 		if (!Window::capturingCursor()) Window::beginCursorCapture();
 
@@ -34,16 +35,13 @@ void Application::render()
 	{
 		if (Window::capturingCursor()) Window::endCursorCapture();
 	}
-
-	if (!GUI::isMouseHoveringAnyWindows())
-	{
-		Scene::handleMouseClicks(); // only process mouse clicks when we're not interacting with the GUI
-	}
+	
+	Scene::handleMouseClicks();
 	
 	ObjectRenderer::begin();
 
-	ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
-	Scene::render();
+		ObjectRenderer::draw(Light(Camera::getPos(), {1, 1, 1}));
+		Scene::render();
 
 	ObjectRenderer::end();
 }
@@ -52,6 +50,7 @@ void Application::imGuiRender()
 {
 	// ImGui::ShowDemoWindow();
 
+	GUI::renderLauncher();
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
 	GUI::renderToolbar();

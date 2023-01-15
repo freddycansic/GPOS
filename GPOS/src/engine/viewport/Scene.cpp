@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <fstream>
+#include <chrono>
 
 #include <json/json.hpp>
 
@@ -19,10 +20,16 @@
 #include "engine/rendering/objects/Cube.h"
 #include "engine/rendering/objects/Line.h"
 #include "engine/Colours.h"
+#include "engine/Window.h"
+#include "engine/rendering/gui/GUI.h"
+
+using json = nlohmann::json;
 
 std::vector<std::shared_ptr<Model>> s_Models;
 std::vector<std::shared_ptr<Model>> s_SelectedModels;
+
 Vec3 s_BackgroundColour = { 0, 0, 0 };
+std::vector<std::pair<std::string, size_t>> s_PreviousScenes;
 
 Vec3 getSelectionCenter()
 {
@@ -88,12 +95,41 @@ void drawAxes()
 	}
 }
 
+void sortPreviousScenes(std::vector<std::pair<std::string, size_t>>& prevScenes)
+{
+	std::ranges::sort(prevScenes,
+		[](const auto& scene1, const auto& scene2)
+		{
+			return scene1.second > scene2.second;
+		});
+}
+
+void addToPreviousScenes(const std::string& path)
+{
+	using namespace std::chrono;
+
+	const auto currentTime = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+
+	bool found = false;
+	for (auto& [prevPath, time] : s_PreviousScenes)
+	{
+		if (prevPath == path)
+		{
+			time = currentTime;
+			found = true;
+			break;
+		}
+	}
+
+	if (!found) s_PreviousScenes.emplace_back(path, currentTime);
+
+	sortPreviousScenes(s_PreviousScenes);
+}
+
 namespace Scene
 {
 	void init()
 	{
-		//s_Models.reserve();
-
 		static constexpr float GRIDLINE_STEP = 2.5f;
 		static constexpr float GRIDLINE_WIDTH = 0.005f;
 		for (float i = -GRIDLINE_LENGTH / 2; i < GRIDLINE_LENGTH / 2; i += GRIDLINE_STEP)
@@ -124,16 +160,70 @@ namespace Scene
 		return atlas.at(path);
 	}
 
+	constexpr const char* PREVIOUS_SCENES_FILE = "previous_scenes.json";
+
+	const std::vector<std::pair<std::string, size_t>>& getPreviousScenes()
+	{
+		if (static bool first = true; first)
+		{
+			std::ifstream previousScenesIn(PREVIOUS_SCENES_FILE);
+
+			json previousScenes;
+			// if the file has someting in it
+			if (previousScenesIn) previousScenesIn >> previousScenes;
+
+			previousScenesIn.close();
+
+			for (const auto& [path, time] : previousScenes.items())
+			{
+				s_PreviousScenes.emplace_back(path, time);
+			}
+
+			sortPreviousScenes(s_PreviousScenes);
+
+			first = false;
+		}
+
+		return s_PreviousScenes;
+	}
+
+	void savePreviousScenes()
+	{
+		json previousScenes;
+
+		for (const auto& [path, time] : s_PreviousScenes)
+		{
+			// update times
+			previousScenes[path] = time;
+		}
+
+		std::ofstream output(PREVIOUS_SCENES_FILE);
+
+		output << previousScenes.dump();
+
+		output.close();
+	}
+
+
 	void loadFromFile()
 	{
-		const auto& savePath = Files::getPathFromDialogue("json");
+		const auto& savePath = Files::getPathFromDialogue("gpos");
 
 		if (!savePath) return;
+
+		loadFromFile(savePath);
+	}
+
+	void loadFromFile(const char* path)
+	{
+		addToPreviousScenes(path);
 
 		s_Models.clear();
 		s_SelectedModels.clear();
 
-		std::ifstream inputScene(savePath);
+		std::ifstream inputScene(path);
+
+		Window::setTitle(Util::extractFileName(path));
 
 		json scene;
 		inputScene >> scene;
@@ -162,12 +252,13 @@ namespace Scene
 
 			const auto& rawTexturePath = jsonModel["material"]["texturePath"].dump();
 			const auto texturePath = rawTexturePath.substr(1, rawTexturePath.size() - 2);
-			
+
 			Material mat;
 			if (texturePath == "none")
 			{
 				mat = Material(colour);
-			} else
+			}
+			else
 			{
 				mat = Material(texturePath, colour);
 			}
@@ -215,8 +306,10 @@ namespace Scene
 			scene["models"].push_back(jsonModel);
 		}
 
-		const auto& savePath = Files::getSavePathFromDialogue("json");
+		const auto& savePath = Files::getSavePathFromDialogue("gpos");
 		if (!savePath) return;
+
+		addToPreviousScenes(savePath);
 
 		std::ofstream output(savePath);
 
@@ -305,6 +398,8 @@ namespace Scene
 		static Vec2 s_FirstMousePos;
 		static std::optional<Vec3> s_IntersectingAxis;
 		static Vec2 s_CentreToFirstMouseScreen, s_SelectionCentreScreen;
+
+		if (GUI::isMouseHoveringAnyWindows()) return;
 
 		// TODO add cancelling gizmo movements
 

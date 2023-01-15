@@ -124,6 +124,18 @@ namespace Window
 
 	bool capturingCursor() { return m_Capturing; }
 
+	std::string s_Title;
+	void setTitle(const std::string& title)
+	{
+		s_Title = title;
+		glfwSetWindowTitle(m_ID, title.c_str());
+	}
+
+	const std::string& getTitle()
+	{
+		return s_Title;
+	}
+
 	float currentTime() { return static_cast<float>(glfwGetTime()); }
 	float deltatime() { return m_Delta;  }
 

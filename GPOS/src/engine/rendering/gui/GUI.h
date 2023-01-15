@@ -18,6 +18,8 @@ namespace GUI
 	void renderStats();
 	void renderSceneViewer();
 
+	void renderLauncher();
+
 	void showNewObjectMenu();
 	void renderNewObjectMenu();
 }

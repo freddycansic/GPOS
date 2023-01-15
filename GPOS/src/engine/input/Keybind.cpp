@@ -48,12 +48,14 @@ bool Keybind::isJustReleased() const
 		// if any of them are being pressed
 		if (state == GLFW_PRESS || state == GLFW_REPEAT)
 		{
+			// check if they are in the current keybind
 			bool ok = false;
 			for (const auto& button : buttons)
 			{
 				if (button->code == i)
 				{
 					ok = true;
+					break;
 				}
 			}
 
@@ -68,13 +70,16 @@ bool Keybind::isJustReleased() const
 	{
 		const auto& state = MouseButton::states[i];
 
-		// if any of them are being pressed
 		if (state == GLFW_PRESS || state == GLFW_REPEAT)
 		{
 			bool ok = false;
 			for (const auto& button : buttons)
 			{
-				if (button->code == i) ok = true;
+				if (button->code == i)
+				{
+					ok = true;
+					break;
+				}
 			}
 
 			if (!ok) 
@@ -84,18 +89,17 @@ bool Keybind::isJustReleased() const
 		}
 	}
 
+	if (numKeysDown == buttons.size()) return false;
+
 	return numKeysDown + numKeysJustReleased == buttons.size();
 }
 
 bool Keybind::isHeld() const
 {
-	//std::cout << toString() << std::endl;
-
 	for (const auto& key : this->getButtons())
 	{
 		if (!key->isDown())
 		{
-			//std::cout << key->name << " not held : " << Key::states[key->code] << std::endl;
 			return false;
 		}
 	}

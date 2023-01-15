@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <memory>
 #include <concepts>
 
@@ -21,6 +22,7 @@ namespace Scene
 
 	void saveToFile();
 	void loadFromFile();
+	void loadFromFile(const char* path);
 
 	void selectModel(const std::shared_ptr<Model>& model);
 	void clearSelection();
@@ -35,8 +37,8 @@ namespace Scene
 
 	[[nodiscard]] const Texture& getTexture(const std::string& path);
 
-	[[nodiscard]] const char* getPath();
-	void setName(const char* name);
+	[[nodiscard]] const std::vector<std::pair<std::string, size_t>>& getPreviousScenes();
+	void savePreviousScenes();
 
 	void render();
 	void handleMouseClicks();

@@ -41,7 +41,8 @@ enum class WindowType
 	PROPERTIES,
 	MENU_BAR,
 	NEW_OBJECT_MENU,
-	SCENE_VIEWER
+	SCENE_VIEWER,
+	LAUNCHER
 };
 
 constexpr float MENU_BAR_LENGTH = 17.0f; // px
@@ -56,7 +57,8 @@ std::unordered_map<WindowType, bool> s_WindowsVisible =
 	{WindowType::PROPERTIES, true},
 	{WindowType::MENU_BAR, true},
 	{WindowType::NEW_OBJECT_MENU, false},
-	{WindowType::SCENE_VIEWER, true}
+	{WindowType::SCENE_VIEWER, true},
+	{WindowType::LAUNCHER, true}
 };
 
 void addRect(ImVec2 size, const ImVec4& col)
@@ -171,17 +173,17 @@ namespace GUI
 
 			if (ImGui::BeginMenu("New"))
 			{
-				if (ImGui::MenuItem("Cube")) { Scene::addModel(Model("res/models/program/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Cube")) { Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
 
-				if (ImGui::MenuItem("Plane")) { Scene::addModel(Model("res/models/program/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Plane")) { Scene::addModel(Model("res/models/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
 
-				if (ImGui::MenuItem("Sphere")) { Scene::addModel(Model("res/models/program/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Sphere")) { Scene::addModel(Model("res/models/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
 
-				if (ImGui::MenuItem("Cylinder")) { Scene::addModel(Model("res/models/program/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Cylinder")) { Scene::addModel(Model("res/models/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
 
-				if (ImGui::MenuItem("Cone")) { Scene::addModel(Model("res/models/program/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Cone")) { Scene::addModel(Model("res/models/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
 
-				if (ImGui::MenuItem("Torus")) { Scene::addModel(Model("res/models/program/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Torus")) { Scene::addModel(Model("res/models/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
 				
 				ImGui::EndMenu();
 			}
@@ -312,6 +314,61 @@ namespace GUI
 		ImGui::End();
 	}
 
+	void renderLauncher()
+	{
+		auto& visible = s_WindowsVisible.at(WindowType::LAUNCHER);
+		if (!visible) return;
+
+		static constexpr ImVec2 LAUNCHER_SIZE = {600, 400};
+
+		//ImGui::SetNextWindowSize(LAUNCHER_SIZE);
+		ImGui::SetNextWindowPos(ImVec2(Window::width() / 2 - LAUNCHER_SIZE.x / 2, Window::height() / 2 - LAUNCHER_SIZE.y / 2));
+		ImGui::Begin("Launcher", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
+
+		ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture("res/textures/GPOS_title.png").getID()), ImVec2(590, 160));
+
+		// title
+		const auto gposText = "Graphical Positioning Orientation Scaling";
+		auto textWidth = ImGui::CalcTextSize(gposText).x;
+		ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 2 - textWidth / 2);
+		ImGui::Text(gposText);
+
+		ImGui::Separator();
+
+		// list of old projects
+		if (ImGui::BeginListBox("##"))
+		{
+			for (const auto& [path, time] : Scene::getPreviousScenes())
+			{
+				if (ImGui::Selectable(path.c_str(), false, ImGuiSelectableFlags_AllowDoubleClick))
+				{
+					if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					{
+						Scene::loadFromFile(path.c_str());
+						visible = false;
+						break;
+					}
+				}
+			}
+
+			ImGui::EndListBox();
+		}
+
+		ImGui::Separator();
+
+		// new project button
+		const auto newProjectText = "New Project";
+		textWidth = ImGui::CalcTextSize(newProjectText).x;
+		ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 2 - textWidth / 2 - 10);
+
+		if (ImGui::Button(newProjectText))
+		{
+			visible = false;
+		}
+		
+		ImGui::End();
+	}
+
 	void renderProperties()
 	{
 		if (Scene::getSelectedModels().empty()) return;
@@ -357,7 +414,8 @@ namespace GUI
 		
 		if (ImGui::Button("Open Image..."))
 		{
-			lastSelected->material.texturePath = Files::getPathFromDialogue();
+			const auto& texturePath = Files::getPathFromDialogue();
+			if (texturePath) lastSelected->material.texturePath = texturePath;
 		}
 
 		constexpr float IMAGE_SIZE = 200;
@@ -442,7 +500,6 @@ namespace GUI
 
 	void renderNewObjectMenu()
 	{
-		// TODO fix weird dragging thing
 		if (!s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU)) return;
 
 		static constexpr float LEEWAY = 3;
@@ -451,45 +508,45 @@ namespace GUI
 
 		if (ImGui::Button("Cube"))
 		{
-			Scene::addModel(Model("res/models/program/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
 		if (ImGui::Button("Plane"))
 		{
-			Scene::addModel(Model("res/models/program/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addModel(Model("res/models/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
 		if (ImGui::Button("Sphere"))
 		{
-			Scene::addModel(Model("res/models/program/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addModel(Model("res/models/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
 		if (ImGui::Button("Cylinder"))
 		{
-			Scene::addModel(Model("res/models/program/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addModel(Model("res/models/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
 		if (ImGui::Button("Cone"))
 		{
-			Scene::addModel(Model("res/models/program/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addModel(Model("res/models/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
 		if (ImGui::Button("Torus"))
 		{
-			Scene::addModel(Model("res/models/program/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
+			Scene::addModel(Model("res/models/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
 
-		const auto& windowPos = ImGui::GetWindowPos();
-		const auto& windowSize = ImGui::GetWindowSize();
-		const auto& realtimeMousePos = ImGui::GetMousePos();
+		const auto [wx, wy] = ImGui::GetWindowPos();
+		const auto [w, h] = ImGui::GetWindowSize();
+		const auto [cx, cy] = Input::getMousePos(); // idk why imgui cursor pos doesnt update itself
 
-		if (!ImGui::IsWindowHovered() && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		if (!(cx > wx && cy > wy && cx < wx + w && cy < wy + h))
 		{
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
 		}
