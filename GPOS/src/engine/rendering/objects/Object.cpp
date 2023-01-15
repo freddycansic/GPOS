@@ -239,9 +239,9 @@ Transform Object::getCombinedTransformations() const
 	return m_Transform + m_TempTransform;
 }
 
-Vec3 Object::getAvgPosition()
+Vec3 Object::getAvgPosition() const
 {
-	if (m_AvgPos.has_value() && !moved) return m_AvgPos.value();
+	if (m_AvgPos && !moved) return *m_AvgPos;
 
 	// TODO THIS WORKS
 	const auto& AABB = this->getAABB();
@@ -250,8 +250,11 @@ Vec3 Object::getAvgPosition()
 	// TODO THIS DOESNT ON HOME PC
 	//const auto& AABBPositions = this->getAABB().positions;
 
-	return m_AvgPos.emplace
-	(
-		std::accumulate(AABBPositions.begin(), AABBPositions.end(), Vec3(0, 0, 0)) / static_cast<float>(AABBPositions.size())
-	);
+	const auto& avgPos = std::accumulate(AABBPositions.begin(), AABBPositions.end(), Vec3(0, 0, 0)) / static_cast<float>(AABBPositions.size());
+
+	m_AvgPos->x = avgPos.x;
+	m_AvgPos->y = avgPos.y;
+	m_AvgPos->z = avgPos.z;
+
+	return *m_AvgPos;
 }

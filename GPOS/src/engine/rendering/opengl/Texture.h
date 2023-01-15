@@ -6,7 +6,7 @@
 class Texture
 {
 public:
-	explicit Texture(const char* path);
+	explicit Texture(const std::string& path);
 	Texture() = default;
 	~Texture();
 

@@ -36,4 +36,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	libraries/stb
 	libraries/assimp/include
 	libraries/nativefiledialog/src/include
+	libraries/json/include
 )

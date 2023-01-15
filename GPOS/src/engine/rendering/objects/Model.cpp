@@ -5,10 +5,10 @@
 #include "engine/Debug.h"
 #include "engine/Util.h"
 
-std::unordered_map<const char*, std::vector<std::pair<Mesh, Material>>> Model::meshes;
+std::unordered_map<std::string, std::vector<std::pair<Mesh, Material>>> Model::meshes;
 Assimp::Importer Model::s_Importer;
 
-Model::Model(const char* path, size_t index, Vec3 pos, float scale, const Material& material)
+Model::Model(const std::string& path, size_t index, Vec3 pos, float scale, const Material& material)
 	: Object(material), m_Path(path), m_Index(index)
 {
 	const std::string stringPath(path);
@@ -27,11 +27,11 @@ Model::Model(const char* path, size_t index, Vec3 pos, float scale, const Materi
 	loadModelMeshes(path);
 }
 
-Model::Model(const char* path, size_t index, float x, float y, float z, float scale, const Material& material)
+Model::Model(const std::string& path, size_t index, float x, float y, float z, float scale, const Material& material)
 	: Model(path, index, Vec3(x, y, z), scale, material)
 {}
 
-void Model::loadModelMeshes(const char* path)
+void Model::loadModelMeshes(const std::string& path)
 {
 	// if the model has already been loaded
 	if (meshes.contains(path))
@@ -50,7 +50,26 @@ void Model::loadModelMeshes(const char* path)
 
 		// get positions
 		const auto p_MeshPositions = reinterpret_cast<Vec3*>(assimpMesh->mVertices);
-		const std::vector<Vec3> meshPositions(p_MeshPositions, p_MeshPositions + assimpMesh->mNumVertices);
+		std::vector<Vec3> meshPositions(p_MeshPositions, p_MeshPositions + assimpMesh->mNumVertices);
+
+		// centers models
+		Vec3 min, max;
+		for (const auto& pos : meshPositions)
+		{
+			min.x = std::min(min.x, pos.x);
+			min.y = std::min(min.y, pos.y);
+			min.z = std::min(min.z, pos.z);
+
+			max.x = std::max(max.x, pos.x);
+			max.y = std::max(max.y, pos.y);
+			max.z = std::max(max.z, pos.z);
+		}
+
+		const auto& center = (max + min) / 2;
+		for (auto& pos : meshPositions)
+		{
+			pos -= center;
+		}
 
 		// get normals
 		const auto p_MeshNormals = reinterpret_cast<Vec3*>(assimpMesh->mNormals);
@@ -107,12 +126,17 @@ Mesh& Model::getMesh() const
 	return meshes.at(m_Path)[m_Index].first;
 }
 
-[[nodiscard]] std::unique_ptr<Object> Model::clone() const
-{
-	return std::make_unique<Model>(*this);
-}
-
-std::string Model::stringName() const
+const std::string& Model::stringName() const
 {
 	return m_Name;
+}
+
+const std::string& Model::getPath() const
+{
+	return m_Path;
+}
+
+size_t Model::getIndex() const
+{
+	return m_Index;
 }

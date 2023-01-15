@@ -1,11 +1,11 @@
 #include "Material.h"
 
-Material::Material(const char* path, const Vec4& colour)
+Material::Material(const std::string& path, const Vec4& colour)
 	: colour(colour), texturePath(path)
 {
 }
 
-Material::Material(const char* path)
+Material::Material(const std::string& path)
 	: texturePath(path)
 {
 }

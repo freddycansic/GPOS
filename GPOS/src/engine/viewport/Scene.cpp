@@ -4,6 +4,9 @@
 #include <optional>
 #include <algorithm>
 #include <unordered_map>
+#include <fstream>
+
+#include <json/json.hpp>
 
 #include "Camera.h"
 #include "engine/Debug.h"
@@ -15,37 +18,37 @@
 #include "engine/rendering/objects/Model.h"
 #include "engine/rendering/objects/Cube.h"
 #include "engine/rendering/objects/Line.h"
-#include "engine/rendering/ObjectRenderer.h"
 #include "engine/Colours.h"
 
-std::vector<std::unique_ptr<Object>> s_Objects;
-std::vector<Object*> s_SelectedObjects;
+std::vector<std::shared_ptr<Model>> s_Models;
+std::vector<std::shared_ptr<Model>> s_SelectedModels;
+Vec3 s_BackgroundColour = { 0, 0, 0 };
 
 Vec3 getSelectionCenter()
 {
 	Vec3 center = {0, 0, 0};
-	for (const auto& object : s_SelectedObjects)
+	for (const auto& model : s_SelectedModels)
 	{
-		center += object->getAvgPosition();
+		center += model->getAvgPosition();
 	}
 
-	center /= static_cast<float>(s_SelectedObjects.size());
+	center /= static_cast<float>(s_SelectedModels.size());
 	return center;
 }
 
-std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3& position)
+std::optional<std::shared_ptr<Model>> findClosestIntersectingModel(const Ray& ray, const Vec3& position)
 {
-	std::optional<Object*> closest;
+	std::optional<std::shared_ptr<Model>> closest;
 
-	if (s_Objects.empty()) return closest; // no selectable object in empty scene
+	if (s_Models.empty()) return closest; // no selectable model in empty scene
 
 	float closestDistance = std::numeric_limits<float>::max();
 
-	for (auto& object : s_Objects)
+	for (auto& model : s_Models)
 	{
-		if (object->getAABB().isRayIntersecting(ray))
+		if (model->getAABB().isRayIntersecting(ray))
 		{
-			if (const auto& rayIntersection = object->isRayIntersecting(ray); rayIntersection.has_value())
+			if (const auto& rayIntersection = model->isRayIntersecting(ray); rayIntersection.has_value())
 			{
 				const auto& pointOfIntersection = rayIntersection.value();
 
@@ -54,7 +57,7 @@ std::optional<Object*> findClosestIntersectingObject(const Ray& ray, const Vec3&
 				if (distanceFromPointToIntersection < closestDistance)
 				{
 					closestDistance = distanceFromPointToIntersection;
-					closest.emplace(&*object); // dereference unique ptr, get regular pointer
+					closest.emplace(model); // dereference unique ptr, get regular pointer
 				}
 			}
 		}
@@ -89,6 +92,8 @@ namespace Scene
 {
 	void init()
 	{
+		//s_Models.reserve();
+
 		static constexpr float GRIDLINE_STEP = 2.5f;
 		static constexpr float GRIDLINE_WIDTH = 0.005f;
 		for (float i = -GRIDLINE_LENGTH / 2; i < GRIDLINE_LENGTH / 2; i += GRIDLINE_STEP)
@@ -109,8 +114,8 @@ namespace Scene
 		}
 	}
 
-	std::unordered_map<const char*, Texture> atlas;
-	const Texture& getTexture(const char* path)
+	std::unordered_map<std::string, Texture> atlas;
+	const Texture& getTexture(const std::string& path)
 	{
 		if (atlas.contains(path)) return atlas.at(path);
 
@@ -119,66 +124,162 @@ namespace Scene
 		return atlas.at(path);
 	}
 
+	void loadFromFile()
+	{
+		const auto& savePath = Files::getPathFromDialogue("json");
+
+		if (!savePath) return;
+
+		s_Models.clear();
+		s_SelectedModels.clear();
+
+		std::ifstream inputScene(savePath);
+
+		json scene;
+		inputScene >> scene;
+
+		inputScene.close();
+
+		const auto& bgCol = scene["background_colour"];
+		s_BackgroundColour = Vec3(bgCol[0], bgCol[1], bgCol[2]);
+
+		for (const auto& jsonModel : scene["models"])
+		{
+			const auto& jsonTranslation = jsonModel["transform"]["translation"];
+			const auto& jsonRotation = jsonModel["transform"]["rotation"];
+			const auto& jsonScale = jsonModel["transform"]["scale"];
+
+			const auto& translation = Vec3(jsonTranslation[0], jsonTranslation[1], jsonTranslation[2]);
+			const auto& rotation = Vec3(jsonRotation[0], jsonRotation[1], jsonRotation[2]);
+			const auto& scale = Vec3(jsonScale[0], jsonScale[1], jsonScale[2]);
+
+			const auto& matCol = jsonModel["material"]["colour"];
+			const auto& colour = Vec4(matCol[0], matCol[1], matCol[2], matCol[3]);
+
+			// remove \" at the start and end of strings;
+			const auto& rawModelPath = jsonModel["path"].dump();
+			const auto modelPath = rawModelPath.substr(1, rawModelPath.size() - 2);
+
+			const auto& rawTexturePath = jsonModel["material"]["texturePath"].dump();
+			const auto texturePath = rawTexturePath.substr(1, rawTexturePath.size() - 2);
+			
+			Material mat;
+			if (texturePath == "none")
+			{
+				mat = Material(colour);
+			} else
+			{
+				mat = Material(texturePath, colour);
+			}
+
+			Model model(
+				modelPath,
+				jsonModel["index"],
+				translation,
+				1.0f,
+				mat
+			);
+
+			model.setRotation(rotation);
+			model.setScale(scale);
+
+			s_Models.push_back(std::make_shared<Model>(model));
+		}
+	}
+
 	void saveToFile()
 	{
-		// TODO
+		json scene;
+
+		// background colour
+		scene["background_colour"] = std::vector{s_BackgroundColour.x, s_BackgroundColour.y, s_BackgroundColour.z};
+
+		scene["models"];
+
+		// models
+		for (const auto& model : s_Models)
+		{
+			json jsonModel;
+			jsonModel["path"] = model->getPath();
+			jsonModel["index"] = model->getIndex();
+
+			const auto& [tra, rot, sca] = model->getTransform();
+			jsonModel["transform"]["translation"] = std::vector{ tra.x, tra.y, tra.z };
+			jsonModel["transform"]["rotation"] = std::vector{ rot.x, rot.y, rot.z };
+			jsonModel["transform"]["scale"] = std::vector{ sca.x, sca.y, sca.z };
+
+			const auto& [colour, texPath] = model->material;
+			jsonModel["material"]["colour"] = std::vector{ colour.x, colour.y, colour.z, colour.w };
+			jsonModel["material"]["texturePath"] = texPath.empty() ? "none" : texPath;
+
+			scene["models"].push_back(jsonModel);
+		}
+
+		const auto& savePath = Files::getSavePathFromDialogue("json");
+		if (!savePath) return;
+
+		std::ofstream output(savePath);
+
+		output << scene.dump();
+
+		output.close();
 	}
 
 	void clearSelection()
 	{
-		for (const auto& selectedObject : s_SelectedObjects)
+		for (const auto& selectedModel : s_SelectedModels)
 		{
-			selectedObject->selected = false;
+			selectedModel->selected = false;
 		}
 
-		s_SelectedObjects.clear();
+		s_SelectedModels.clear();
 	}
 
 	void selectAll()
 	{
-		for (const auto& object : s_Objects)
+		for (auto& model : s_Models)
 		{
-			selectObject(&*object);
+			selectModel(model);
 		}
 	}
 
-	void selectObject(Object* obj)
+	void selectModel(const std::shared_ptr<Model>& model)
 	{
-		if (obj->selected) return;
+		if (model->selected) return;
 
-		s_SelectedObjects.push_back(obj);
-		obj->selected = true;
+		s_SelectedModels.push_back(model);
+		model->selected = true;
 	}
 
 	void deleteSelected()
 	{
-		std::vector<std::unique_ptr<Object>> newObjects;
+		std::vector<std::shared_ptr<Model>> newModels;
 
-		for (auto& object : s_Objects)
+		for (const auto& model : s_Models)
 		{
-			if (!object->selected)
+			if (!model->selected)
 			{
-				newObjects.push_back(std::move(object));
+				newModels.push_back(model);
 			}
 		}
 
-		s_SelectedObjects.clear(); // dont call clearSelection cause pointers will be invalid
+		s_SelectedModels.clear(); // dont call clearSelection cause pointers will be invalid
 
-		s_Objects = std::move(newObjects);
+		s_Models = std::move(newModels);
 	}
 
 	void invertSelection()
 	{
-		s_SelectedObjects.clear();
+		s_SelectedModels.clear();
 
-		for (const auto& object : s_Objects)
+		for (auto& model : s_Models)
 		{
-			if (object->selected)
+			if (model->selected)
 			{
-				object->selected = false;
+				model->selected = false;
 			} else
 			{
-				selectObject(&*object);
+				selectModel(model);
 			}
 		}
 	}
@@ -187,12 +288,12 @@ namespace Scene
 	{
 		drawAxes();
 
-		for (const auto& object : s_Objects)
+		for (auto& model : s_Models)
 		{
-			ObjectRenderer::draw(*object);
+			ObjectRenderer::draw(*model);
 		}
 
-		if (!s_SelectedObjects.empty())
+		if (!s_SelectedModels.empty())
 		{
 			Gizmo::render(getSelectionCenter());
 		}
@@ -215,9 +316,9 @@ namespace Scene
 
 			const auto mag = s_CentreToFirstMouseScreen.dot(centreToCurrentMouse) / static_cast<float>(std::pow(s_CentreToFirstMouseScreen.magnitude(), 2));
 
-			for (const auto& object : s_SelectedObjects)
+			for (const auto& model : s_SelectedModels)
 			{
-				Gizmo::transformObject(*object, s_IntersectingAxis.value() * -1 * (mag - 1));
+				Gizmo::transformObject(*model, s_IntersectingAxis.value() * -1 * (mag - 1));
 			}
 
 			return;
@@ -225,9 +326,9 @@ namespace Scene
 
 		if (s_UsingGizmo && MouseButtons::MOUSE_1->isJustReleased())
 		{
-			for (const auto& object : s_SelectedObjects)
+			for (const auto& model : s_SelectedModels)
 			{
-				object->applyOffset();
+				model->applyOffset();
 			}
 
 			s_UsingGizmo = false;
@@ -236,11 +337,11 @@ namespace Scene
 		}
 
 		if (!MouseButtons::MOUSE_1->isDown()) return;
-		if (s_Objects.empty()) return; // cant select anything from empty scene
+		if (s_Models.empty()) return; // cant select anything from empty scene
 
 		const auto& mouseRay = Camera::perspRayFromCameraScreenPos(Input::getMousePos());
 
-		if (!s_SelectedObjects.empty())
+		if (!s_SelectedModels.empty())
 		{
 			if (s_IntersectingAxis = Gizmo::getIntersectingHandleAxis(mouseRay); s_IntersectingAxis.has_value())
 			{
@@ -262,27 +363,27 @@ namespace Scene
 			}
 		}
 
-		const auto closestObject = findClosestIntersectingObject(mouseRay, Camera::getPos());
+		const auto closestModel = findClosestIntersectingModel(mouseRay, Camera::getPos());
 
 		if (!Keys::LEFT_CONTROL->isDown())
 		{
 			clearSelection();
 		}
 
-		if (closestObject.has_value())
+		if (closestModel.has_value())
 		{
-			selectObject(closestObject.value());
+			selectModel(closestModel.value());
 		}
 	}
 
 	void duplicateCurrentSelected()
 	{
-		for (const auto& object : s_SelectedObjects)
+		for (const auto& model : s_SelectedModels)
 		{
-			s_Objects.push_back(object->clone());
+			addModel(std::move(*model));
 
-			// deselect old object
-			s_Objects.at(s_Objects.size() - 1)->selected = false;
+			// deselect new model
+			s_Models.at(s_Models.size() - 1)->selected = false;
 		}
 	}
 
@@ -296,26 +397,26 @@ namespace Scene
 				
 			for (size_t modelIdx = 0; modelIdx < models.size(); ++modelIdx)
 			{
-				addObject(std::make_unique<Model>(path, modelIdx, 0, 0, 0, 1.0f, models.at(modelIdx).second));
+				addModel(Model(path, modelIdx, 0, 0, 0, 1.0f, models.at(modelIdx).second));
 			}
 		}
 	}
 
-	void addObject(std::unique_ptr<Object>&& objectPtr)
+	void addModel(Model&& model)
 	{
-		s_Objects.push_back(std::move(objectPtr));
+		s_Models.push_back(std::make_shared<Model>(std::move(model)));
 	}
 
-	const std::vector<Object*>& getSelectedObjects()
+	std::vector<std::shared_ptr<Model>>& getSelectedModels()
 	{
-		return s_SelectedObjects;
-	}
-	const std::vector<std::unique_ptr<Object>>& getObjects()
-	{
-		return s_Objects;
+		return s_SelectedModels;
 	}
 
-	Vec3 s_BackgroundColour = { 0, 0, 0 };
+	std::vector<std::shared_ptr<Model>>& getModels()
+	{
+		return s_Models;
+	}
+
 	Vec3& getMutRefBackgroundColour()
 	{
 		return s_BackgroundColour;

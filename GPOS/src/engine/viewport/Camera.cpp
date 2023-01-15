@@ -143,9 +143,9 @@ namespace Camera
 
 	void setOrbitTargetToLastSelected()
 	{
-		if (Scene::getSelectedObjects().empty()) return;
+		if (Scene::getSelectedModels().empty()) return;
 
-		const auto& selectedObjects = Scene::getSelectedObjects();
+		const auto& selectedObjects = Scene::getSelectedModels();
 		const auto& lastSelected = selectedObjects.at(selectedObjects.size() - 1);
 
 		setOrbitTarget(lastSelected->getAvgPosition());

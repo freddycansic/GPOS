@@ -27,8 +27,7 @@ struct Object
 	explicit Object(const Material& material);
 	virtual ~Object() = default;
 
-	[[nodiscard]] virtual std::unique_ptr<Object> clone() const = 0;
-	[[nodiscard]] virtual std::string stringName() const = 0;
+	[[nodiscard]] virtual const std::string& stringName() const = 0;
 
 	virtual void setScale(float xScale, float yScale, float zScale);
 	virtual void setScale(const Vec3& scale);
@@ -59,7 +58,7 @@ struct Object
 	[[nodiscard]] Transform getCombinedTransformations() const;
 
 	[[nodiscard]] Cube getAABB() const;
-	[[nodiscard]] Vec3 getAvgPosition(); // centre of mass
+	[[nodiscard]] Vec3 getAvgPosition() const; // centre of mass
 
 	[[nodiscard]] std::optional<Vec3> isRayIntersecting(const Ray& ray) const;
 	
@@ -75,6 +74,6 @@ protected:
 		{0, 0, 0}
 	};
 
-	std::optional<Vec3> m_AvgPos;
+	std::shared_ptr<Vec3> m_AvgPos = std::make_shared<Vec3>(); // pointer hack to make get avg pos const
 	bool m_Selectable = true;
 };

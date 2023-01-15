@@ -143,7 +143,8 @@ namespace Input
 		{Scene::invertSelection, {Keys::I}},
 		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
 		{Scene::loadModelIntoScene, {Keys::LEFT_CONTROL, Keys::I}},
-		{Scene::saveToFile, {Keys::LEFT_CONTROL, Keys::S}}
+		{Scene::saveToFile, {Keys::LEFT_CONTROL, Keys::S}},
+		{Scene::loadFromFile, {Keys::LEFT_CONTROL, Keys::O}}
 	};
 
 	std::unordered_map<void(*)(), Keybind> heldKeybinds =

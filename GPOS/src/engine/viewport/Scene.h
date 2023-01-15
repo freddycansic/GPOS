@@ -4,7 +4,7 @@
 #include <concepts>
 
 #include "engine/rendering/gui/Gizmo.h"
-#include "engine/rendering/objects/Object.h"
+#include "engine/rendering/objects/Model.h"
 #include "engine/rendering/opengl/Texture.h"
 
 struct Ray;
@@ -14,31 +14,26 @@ namespace Scene
 {
 	void init();
 
-	void addObject(std::unique_ptr<Object>&& objectPtr);
-
-	template <typename T, typename... Args> requires std::derived_from<T, Object>
-	void addObject(const Args&... args)
-	{
-		addObject(std::move(std::make_unique<T>(args...)));
-	}
+	void addModel(Model&& model);
 
 	void duplicateCurrentSelected();
 	void loadModelIntoScene();
 
 	void saveToFile();
+	void loadFromFile();
 
-	void selectObject(Object* obj);
+	void selectModel(const std::shared_ptr<Model>& model);
 	void clearSelection();
 	void selectAll();
 	void deleteSelected();
 	void invertSelection();
 
-	[[nodiscard]] const std::vector<Object*>& getSelectedObjects();
-	[[nodiscard]] const std::vector<std::unique_ptr<Object>>& getObjects();
+	[[nodiscard]] std::vector<std::shared_ptr<Model>>& getSelectedModels();
+	[[nodiscard]] std::vector<std::shared_ptr<Model>>& getModels();
 
 	[[nodiscard]] Vec3& getMutRefBackgroundColour();
 
-	[[nodiscard]] const Texture& getTexture(const char* path);
+	[[nodiscard]] const Texture& getTexture(const std::string& path);
 
 	[[nodiscard]] const char* getPath();
 	void setName(const char* name);

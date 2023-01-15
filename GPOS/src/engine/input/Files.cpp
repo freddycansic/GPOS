@@ -33,11 +33,11 @@ namespace Files {
 		return nullptr;
 	}
 
-	const char* getSavePathFromDialogue(const char* filters)
+	const char* getSavePathFromDialogue(const char* saveType)
 	{
 		nfdchar_t* outPath = nullptr;
 
-		if (const auto result = NFD_SaveDialog(filters, nullptr, &outPath); result == NFD_OKAY) 
+		if (const auto result = NFD_SaveDialog(saveType, nullptr, &outPath); result == NFD_OKAY) 
 		{
 			return outPath;
 		}

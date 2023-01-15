@@ -108,14 +108,10 @@ Cube::Cube(const Vec3& pos, float size, const Material& material) : Cube(pos.x, 
 {
 }
 
-[[nodiscard]] std::unique_ptr<Object> Cube::clone() const
+const std::string& Cube::stringName() const
 {
-	return std::make_unique<Cube>(*this);
-}
-
-std::string Cube::stringName() const
-{
-	return "Cube";
+	static std::string name("Cube");
+	return name;
 }
 
 void Cube::setScale(float xScale, float yScale, float zScale) {

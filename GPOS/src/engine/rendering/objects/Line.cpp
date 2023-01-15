@@ -59,14 +59,10 @@ Line::Line(const Ray& ray, float length, float width, const Material& material) 
 {
 }
 
-[[nodiscard]] std::unique_ptr<Object> Line::clone() const
+const std::string& Line::stringName() const
 {
-	return std::make_unique<Line>(*this);
-}
-
-std::string Line::stringName() const
-{
-	return "Line";
+	static std::string name("Line");
+	return name;
 }
 
 constexpr Vec3 i = { 1.0f, 0.0f, 0.0f };

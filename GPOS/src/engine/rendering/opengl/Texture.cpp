@@ -1,22 +1,24 @@
 #include "Texture.h"
 
 #include <iostream>
-#include <stdexcept>
 
 #include "GL/glew.h"
 #include "stb/stb_image.h"
 
 #include "engine/Debug.h"
 
-Texture::Texture(const char* path)
+Texture::Texture(const std::string& path)
 {
 	// flips texture upside down as opengl expects first pixel to be bottom left as opposed to top left
 	stbi_set_flip_vertically_on_load(0);
-	m_Buffer = stbi_load(path, &m_Width, &m_Height, &m_ColorDepth, 4);
+	m_Buffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_ColorDepth, 4);
+
 	if (!m_Buffer)
 	{
-		std::string msg = "Image from path " + std::string((path ? path : "NULL")) +  " failed to load!";
-		ASSERT_WITH_MSG(false, msg.c_str());
+		std::cout << "Image from path " + (path.empty() ? "NULL" : path) + " failed to load!" << std::endl;
+		m_Buffer = stbi_load("res/textures/texture_not_found.png", &m_Width, &m_Height, &m_ColorDepth, 4);
+
+		ASSERT_WITH_MSG(m_Buffer, "Default texture misplaced from res/textures/texture_not_found.png!")
 	}
 
 	GLAPI(glGenTextures(1, &m_ID));

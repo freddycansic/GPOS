@@ -99,7 +99,7 @@ namespace ObjectRenderer
 		checkRendererReady(s_State);
 
 		size_t handle = 0;
-		if (object.material.texturePath)
+		if (!object.material.texturePath.empty())
 		{
 			handle = Scene::getTexture(object.material.texturePath).getHandle();
 		}
