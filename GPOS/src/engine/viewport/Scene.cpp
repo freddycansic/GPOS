@@ -176,7 +176,15 @@ namespace Scene
 
 			for (const auto& [path, time] : previousScenes.items())
 			{
-				s_PreviousScenes.emplace_back(path, time);
+				// if it still exists then show in launcher
+				std::ifstream scene(path.c_str());
+				if (scene.good())
+				{
+					std::cout << path << " still exists. Loading..." << std::endl;
+					s_PreviousScenes.emplace_back(path, time);
+				}
+
+				scene.close();
 			}
 
 			sortPreviousScenes(s_PreviousScenes);
@@ -198,7 +206,6 @@ namespace Scene
 		}
 
 		std::ofstream output(PREVIOUS_SCENES_FILE);
-
 		output << previousScenes.dump();
 
 		output.close();

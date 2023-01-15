@@ -16,6 +16,7 @@
 #include "engine/input/Files.h"
 #include "objects/Vertex.h"
 #include "engine/Debug.h"
+#include "engine/Stats.h"
 #include "engine/Util.h"
 #include "engine/viewport/Scene.h"
 
@@ -221,6 +222,8 @@ void renderBatch(const std::pair<size_t, RenderingFlag>& handleAndFlags, const B
 			);
 		}
 	}
+
+	Stats::numVerticesPerFrame += batchVertices.size();
 
 	const auto& batchIndices = f_BatchIndices.get();
 

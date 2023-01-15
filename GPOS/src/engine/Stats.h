@@ -1,6 +1,7 @@
 struct Stats
 {
-	static unsigned int drawCallsPerFrame;
+	static size_t drawCallsPerFrame;
+	static size_t numVerticesPerFrame;
 
 	static void resetPerFrameData();
 };

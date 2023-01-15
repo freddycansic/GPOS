@@ -25,15 +25,16 @@ namespace Input
 
 	void GLAPIENTRY Callbacks::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	{
+		// TODO option to change mouse sens
 		static constexpr float SENSITIVITY = 0.0025f;
-		static bool firstMouseMove = true;
+		
 		static float lastX = static_cast<float>(Window::width()) / 2.0f;
 		static float lastY = static_cast<float>(Window::height()) / 2.0f;
 
 		xPos = static_cast<float>(xpos);
 		yPos = static_cast<float>(ypos);
 
-		if (firstMouseMove) 
+		if (static bool firstMouseMove = true; firstMouseMove)
 		{
 			lastX = xPos;
 			lastY = yPos;
@@ -55,7 +56,7 @@ namespace Input
 		{
 			case Camera::CameraMode::ORBIT: 
 			{
-				pitch = std::clamp(pitch, 0.0001f, Maths::PI<float> - 0.0001f); // TODO magic	values which stop orbit camera from freaking out when looking	  directly down/up on/to an object
+				pitch = std::clamp(pitch, 0.0001f, Maths::PI<float> - 0.0001f);
 				break;
 			}
 

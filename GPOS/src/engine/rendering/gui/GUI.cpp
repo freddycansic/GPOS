@@ -164,13 +164,6 @@ namespace GUI
 				ImGui::EndMenu();
 			}
 
-			if (ImGui::BeginMenu("Edit"))
-			{
-				if (ImGui::MenuItem("Undo", "Ctrl+Z")) {}
-				if (ImGui::MenuItem("Redo", "Ctrl+Y")) {}
-				ImGui::EndMenu();
-			}
-
 			if (ImGui::BeginMenu("New"))
 			{
 				if (ImGui::MenuItem("Cube")) { Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
@@ -190,15 +183,9 @@ namespace GUI
 
 			if (ImGui::BeginMenu("Scene"))
 			{
-				if (ImGui::MenuItem("Select All", Input::getFunctionKeybind(Scene::selectAll).toString().c_str()))
-				{
-					Scene::selectAll();
-				}
+				if (ImGui::MenuItem("Select All", Input::getFunctionKeybind(Scene::selectAll).toString().c_str())) { Scene::selectAll(); }
 
-				if (ImGui::MenuItem("Deselect All", Input::getFunctionKeybind(Scene::clearSelection).toString().c_str()))
-				{
-					Scene::clearSelection();
-				}
+				if (ImGui::MenuItem("Deselect All", Input::getFunctionKeybind(Scene::clearSelection).toString().c_str())) { Scene::clearSelection(); }
 
 				if (ImGui::MenuItem("Delete Selected", Input::getFunctionKeybind(Scene::deleteSelected).toString().c_str()))
 				{
@@ -230,13 +217,13 @@ namespace GUI
 				{
 					switch (selectedDrawingMode)
 					{
-					case 0:
-						Renderer::setRenderMode(RenderMode::SOLID);
-						break;
+						case 0:
+							Renderer::setRenderMode(RenderMode::SOLID);
+							break;
 
-					case 1:
-						Renderer::setRenderMode(RenderMode::WIREFRAME);
-						break;
+						case 1:
+							Renderer::setRenderMode(RenderMode::WIREFRAME);
+							break;
 					}
 				}
 
@@ -246,13 +233,13 @@ namespace GUI
 				{
 					switch (selectedCameraMode)
 					{
-					case 0:
-						Camera::setMode(Camera::CameraMode::ORBIT);
-						break;
+						case 0:
+							Camera::setMode(Camera::CameraMode::ORBIT);
+							break;
 
-					case 1:
-						Camera::setMode(Camera::CameraMode::FPS_FLY);
-						break;
+						case 1:
+							Camera::setMode(Camera::CameraMode::FPS_FLY);
+							break;
 					}
 				}
 
@@ -321,9 +308,8 @@ namespace GUI
 
 		static constexpr ImVec2 LAUNCHER_SIZE = {600, 400};
 
-		//ImGui::SetNextWindowSize(LAUNCHER_SIZE);
 		ImGui::SetNextWindowPos(ImVec2(Window::width() / 2 - LAUNCHER_SIZE.x / 2, Window::height() / 2 - LAUNCHER_SIZE.y / 2));
-		ImGui::Begin("Launcher", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Launcher", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
 		ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture("res/textures/GPOS_title.png").getID()), ImVec2(590, 160));
 
@@ -336,11 +322,15 @@ namespace GUI
 		ImGui::Separator();
 
 		// list of old projects
-		if (ImGui::BeginListBox("##"))
+		if (ImGui::BeginListBox("##", ImVec2(LAUNCHER_SIZE.x, 0)))
 		{
 			for (const auto& [path, time] : Scene::getPreviousScenes())
 			{
-				if (ImGui::Selectable(path.c_str(), false, ImGuiSelectableFlags_AllowDoubleClick))
+				// center selectables
+				textWidth = ImGui::CalcTextSize(path.c_str()).x;
+				ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 2 - textWidth / 2);
+
+				if (ImGui::Selectable(path.c_str(), false, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(textWidth, 0)))
 				{
 					if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					{
@@ -480,11 +470,12 @@ namespace GUI
 		static ImVec2 statsSize;
 		ImGui::SetNextWindowPos(ImVec2(PADDING, Window::height() - PADDING - statsSize.y));
 
-		ImGui::Begin("Stats", &visible);
+		ImGui::Begin("Stats", &visible, ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::Text("FPS : %.1f", static_cast<double>(ImGui::GetIO().Framerate));
 		ImGui::Text("Time per frame : %.4fms", static_cast<double>(ImGui::GetIO().DeltaTime) * 1000.0);
-		ImGui::Text("Draw calls per frame : %i", Stats::drawCallsPerFrame);
+		ImGui::Text("Draw calls per frame : %zu", Stats::drawCallsPerFrame);
+		ImGui::Text("Num vertices per frame : %zu", Stats::numVerticesPerFrame);
 
 		statsSize = ImGui::GetWindowSize();
 
@@ -500,7 +491,8 @@ namespace GUI
 
 	void renderNewObjectMenu()
 	{
-		if (!s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU)) return;
+		auto& visible = s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU);
+		if (!visible) return;
 
 		static constexpr float LEEWAY = 3;
 		ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - LEEWAY, mousePosOnShowWindow.y - LEEWAY });
@@ -509,37 +501,37 @@ namespace GUI
 		if (ImGui::Button("Cube"))
 		{
 			Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
-			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+			visible = false;
 		}
 
 		if (ImGui::Button("Plane"))
 		{
 			Scene::addModel(Model("res/models/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
-			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+			visible = false;
 		}
 
 		if (ImGui::Button("Sphere"))
 		{
 			Scene::addModel(Model("res/models/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
-			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+			visible = false;
 		}
 
 		if (ImGui::Button("Cylinder"))
 		{
 			Scene::addModel(Model("res/models/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
-			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+			visible = false;
 		}
 
 		if (ImGui::Button("Cone"))
 		{
 			Scene::addModel(Model("res/models/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
-			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+			visible = false;
 		}
 
 		if (ImGui::Button("Torus"))
 		{
 			Scene::addModel(Model("res/models/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
-			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;
+			visible = false;
 		}
 
 		const auto [wx, wy] = ImGui::GetWindowPos();
