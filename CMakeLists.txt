@@ -20,6 +20,11 @@ else()
 	endif()
 endif()
 
+if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.12.25835)
+    set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std:c++latest")
+    set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std:c++latest")
+ endif()
+
 add_subdirectory(GPOS)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
