@@ -166,17 +166,41 @@ namespace GUI
 
 			if (ImGui::BeginMenu("New"))
 			{
-				if (ImGui::MenuItem("Cube")) { Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Cube")) 
+				{ 
+					Scene::markNewAction();
+					Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); 
+				}
 
-				if (ImGui::MenuItem("Plane")) { Scene::addModel(Model("res/models/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Plane")) 
+				{ 
+					Scene::markNewAction();
+					Scene::addModel(Model("res/models/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); 
+				}
 
-				if (ImGui::MenuItem("Sphere")) { Scene::addModel(Model("res/models/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Sphere")) 
+				{ 
+					Scene::markNewAction();
+					Scene::addModel(Model("res/models/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); 
+				}
 
-				if (ImGui::MenuItem("Cylinder")) { Scene::addModel(Model("res/models/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Cylinder")) 
+				{ 
+					Scene::markNewAction();
+					Scene::addModel(Model("res/models/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); 
+				}
 
-				if (ImGui::MenuItem("Cone")) { Scene::addModel(Model("res/models/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Cone")) 
+				{ 
+					Scene::markNewAction();
+					Scene::addModel(Model("res/models/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); 
+				}
 
-				if (ImGui::MenuItem("Torus")) { Scene::addModel(Model("res/models/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); }
+				if (ImGui::MenuItem("Torus")) 
+				{ 
+					Scene::markNewAction();
+					Scene::addModel(Model("res/models/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT)); 
+				}
 				
 				ImGui::EndMenu();
 			}
@@ -187,15 +211,9 @@ namespace GUI
 
 				if (ImGui::MenuItem("Deselect All", Input::getFunctionKeybind(Scene::clearSelection).toString().c_str())) { Scene::clearSelection(); }
 
-				if (ImGui::MenuItem("Delete Selected", Input::getFunctionKeybind(Scene::deleteSelected).toString().c_str()))
-				{
-					Scene::deleteSelected();
-				}
+				if (ImGui::MenuItem("Delete Selected", Input::getFunctionKeybind(Scene::deleteSelected).toString().c_str())) { Scene::deleteSelected(); }
 
-				if (ImGui::MenuItem("Invert Selection", Input::getFunctionKeybind(Scene::invertSelection).toString().c_str()))
-				{
-					Scene::invertSelection();
-				}
+				if (ImGui::MenuItem("Invert Selection", Input::getFunctionKeybind(Scene::invertSelection).toString().c_str())) { Scene::invertSelection(); }
 
 				ImGui::EndMenu();
 			}
@@ -383,7 +401,7 @@ namespace GUI
 		ImGui::Begin("Properties", &visible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize);
 
 		const auto& selectedModels = Scene::getSelectedModels();
-		const auto& lastSelected = selectedModels.at(Scene::getSelectedModels().size() - 1);
+		const auto& lastSelected = selectedModels.at(selectedModels.size() - 1);
 		const auto& [tra, rot, sca] = lastSelected->getCombinedTransformations();
 
 		ImGui::Text("Position : X:%.2f Y:%.2f Z:%.2f", tra.x, tra.y, tra.z);
@@ -500,36 +518,42 @@ namespace GUI
 
 		if (ImGui::Button("Cube"))
 		{
+			Scene::markNewAction();
 			Scene::addModel(Model("res/models/cube.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			visible = false;
 		}
 
 		if (ImGui::Button("Plane"))
 		{
+			Scene::markNewAction();
 			Scene::addModel(Model("res/models/plane.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			visible = false;
 		}
 
 		if (ImGui::Button("Sphere"))
 		{
+			Scene::markNewAction();
 			Scene::addModel(Model("res/models/sphere.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			visible = false;
 		}
 
 		if (ImGui::Button("Cylinder"))
 		{
+			Scene::markNewAction();
 			Scene::addModel(Model("res/models/cylinder.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			visible = false;
 		}
 
 		if (ImGui::Button("Cone"))
 		{
+			Scene::markNewAction();
 			Scene::addModel(Model("res/models/cone.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			visible = false;
 		}
 
 		if (ImGui::Button("Torus"))
 		{
+			Scene::markNewAction();
 			Scene::addModel(Model("res/models/torus.obj", 0, 0, 0, 0, 1.0f, Colours::DEFAULT));
 			visible = false;
 		}

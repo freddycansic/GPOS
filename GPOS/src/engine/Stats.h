@@ -1,3 +1,5 @@
+#include <cstddef>
+
 struct Stats
 {
 	static size_t drawCallsPerFrame;

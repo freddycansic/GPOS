@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include <stack>
+
 #include "imgui/imgui.h"
 
 #include "engine/rendering/gui/GUI.h"
@@ -11,10 +13,36 @@
 #include "engine/input/Keybind.h"
 #include "engine/viewport/Camera.h"
 #include "engine/viewport/Scene.h"
+#include "engine/Util.h"
 #include "engine/Debug.h"
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, std::stack<T> my_stack) //function header
+{
+    while(!my_stack.empty())
+    {
+        os << my_stack.top() << " ";
+        my_stack.pop();
+    }
+
+    return os;
+}
 
 void Application::init(const char* projectDir)
 {
+	std::stack<int> s0;
+	s0.push(1);
+	s0.push(2);
+	s0.push(3);
+	s0.push(4);
+	s0.push(5);
+
+	std::cout << s0 << std::endl;
+
+	Util::removeStackIndex(s0, 2);
+
+	std::cout << s0 << std::endl;
+
 	std::cout << "Project " << (projectDir == nullptr ? "NO_PROJECT" : projectDir) << " loaded." << std::endl;
 
 	if (projectDir) Scene::loadFromFile(projectDir);

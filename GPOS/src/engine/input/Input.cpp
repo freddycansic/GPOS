@@ -145,7 +145,9 @@ namespace Input
 		{Camera::setOrbitTargetToLastSelected, {Keys::F}},
 		{Scene::loadModelIntoScene, {Keys::LEFT_CONTROL, Keys::I}},
 		{Scene::saveToFile, {Keys::LEFT_CONTROL, Keys::S}},
-		{Scene::loadFromFile, {Keys::LEFT_CONTROL, Keys::O}}
+		{Scene::loadFromFile, {Keys::LEFT_CONTROL, Keys::O}},
+		{Scene::undo, {Keys::LEFT_CONTROL, Keys::Z}},
+		{Scene::redo, {Keys::LEFT_CONTROL, Keys::Y}}
 	};
 
 	std::unordered_map<void(*)(), Keybind> heldKeybinds =

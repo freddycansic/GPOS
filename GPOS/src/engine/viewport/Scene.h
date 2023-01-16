@@ -30,6 +30,10 @@ namespace Scene
 	void deleteSelected();
 	void invertSelection();
 
+	void markNewAction();
+	void undo();
+	void redo();
+
 	[[nodiscard]] std::vector<std::shared_ptr<Model>>& getSelectedModels();
 	[[nodiscard]] std::vector<std::shared_ptr<Model>>& getModels();
 

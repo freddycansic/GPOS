@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
+#include <ranges>
 
 struct Vec3;
 struct Vec4;
@@ -28,6 +30,34 @@ namespace Util
 			std::cout << el << delimitor;
 		}
 		std::cout << std::endl;
+	}
+
+	template <typename T>
+	void clearStack(std::stack<T>& stack)
+	{
+		while (!stack.empty()) stack.pop();
+	}
+
+	template <typename T>
+	void removeStackIndex(std::stack<T>& stack, size_t index)
+	{
+		const auto numItemsAfterIndex = stack.size() - index - 1;
+
+		std::vector<T> afterItems;
+		afterItems.reserve(numItemsAfterIndex);
+
+		for (size_t i = 0; i < numItemsAfterIndex; ++i)
+		{
+			afterItems.push_back(stack.top());
+			stack.pop();
+		}
+
+		stack.pop(); // remove item at index
+
+		for (const auto& item : std::ranges::views::reverse(afterItems))
+		{
+			stack.push(item);
+		}
 	}
 
 	void printColoured(const char* text, TextColour colour = TextColour::WHITE);

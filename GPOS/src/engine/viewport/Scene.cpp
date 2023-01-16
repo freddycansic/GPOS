@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <fstream>
 #include <chrono>
+#include <stack>
 
 #include <json/json.hpp>
 
@@ -25,8 +26,17 @@
 
 using json = nlohmann::json;
 
+struct SceneData
+{
+	std::vector<std::shared_ptr<Model>> models;
+	std::vector<std::shared_ptr<Model>> selectedModels;
+};
+
 std::vector<std::shared_ptr<Model>> s_Models;
 std::vector<std::shared_ptr<Model>> s_SelectedModels;
+
+std::stack<SceneData> s_UndoScenes;
+std::stack<SceneData> s_RedoScenes;
 
 Vec3 s_BackgroundColour = { 0, 0, 0 };
 std::vector<std::pair<std::string, size_t>> s_PreviousScenes;
@@ -211,7 +221,6 @@ namespace Scene
 		output.close();
 	}
 
-
 	void loadFromFile()
 	{
 		const auto& savePath = Files::getPathFromDialogue("gpos");
@@ -325,6 +334,49 @@ namespace Scene
 		output.close();
 	}
 
+	constexpr size_t MAX_HISTORY = 10;
+	void markNewAction()
+	{
+		TODO FIX
+		Util::clearStack(s_RedoScenes);
+
+		if (s_UndoScenes.size() >= MAX_HISTORY)
+		{
+			std::cout << "Shifted undo list down" << std::endl;
+			Util::removeStackIndex(s_UndoScenes, 0);
+		}
+
+		s_UndoScenes.emplace(s_Models, s_SelectedModels);
+		std::cout << "Added scene to undo : " << s_UndoScenes.size() << std::endl;
+	}
+
+	void undo()
+	{	// TODO thread big operations
+		if (s_UndoScenes.empty()) return;
+
+		// save current state if we want to go back
+		s_RedoScenes.emplace(s_Models, s_SelectedModels);
+
+		// take us back a step
+		s_Models = s_UndoScenes.top().models;
+		s_SelectedModels = s_UndoScenes.top().selectedModels;
+		s_UndoScenes.pop();
+
+		std::cout << "Undid to previous state : " << s_UndoScenes.size() << std::endl;
+		if (!s_SelectedModels.empty()) std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
+	}
+	
+	void redo()
+	{
+		if (s_RedoScenes.empty()) return;
+
+		s_UndoScenes.emplace(s_Models, s_SelectedModels);
+
+		s_Models = s_RedoScenes.top().models;
+		s_SelectedModels = s_RedoScenes.top().selectedModels;
+		s_RedoScenes.pop();
+	}
+
 	void clearSelection()
 	{
 		for (const auto& selectedModel : s_SelectedModels)
@@ -353,6 +405,8 @@ namespace Scene
 
 	void deleteSelected()
 	{
+		markNewAction();
+
 		std::vector<std::shared_ptr<Model>> newModels;
 
 		for (const auto& model : s_Models)
@@ -428,10 +482,20 @@ namespace Scene
 
 		if (s_UsingGizmo && MouseButtons::MOUSE_1->isJustReleased())
 		{
+			if (!s_SelectedModels.empty()) 
+			{
+				std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
+				markNewAction();
+			}
+
 			for (const auto& model : s_SelectedModels)
 			{
 				model->applyOffset();
+			
+			
 			}
+			
+			std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 
 			s_UsingGizmo = false;
 
@@ -480,6 +544,8 @@ namespace Scene
 
 	void duplicateCurrentSelected()
 	{
+		markNewAction();
+		
 		for (const auto& model : s_SelectedModels)
 		{
 			addModel(std::move(*model));
@@ -493,6 +559,8 @@ namespace Scene
 	{
 		if (const auto path = Files::getPathFromDialogue("amf,3ds,ac,ase,assbin,b3d,bvh,collada,dxf,csm,hmp,irrmesh,iqm,irr,lwo,lws,m3d,md2,md3,md5,mdc,mdl,nff,ndo,off,obj,ogre,opengex,ply,ms3d,cob,blend,ifc,xgl,fbx,q3d"); path)
 		{
+			markNewAction();
+			
 			Model::loadModelMeshes(path);
 			
 			const auto& models = Model::meshes.at(path);
