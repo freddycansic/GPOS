@@ -332,7 +332,7 @@ namespace GUI
 		ImGui::Image(reinterpret_cast<ImTextureID>(Scene::getTexture("res/textures/GPOS_title.png").getID()), ImVec2(590, 160));
 
 		// title
-		const auto gposText = "Graphical Positioning Orientation Scaling";
+		const auto gposText = "Graphical Positioning and Orientation System";
 		auto textWidth = ImGui::CalcTextSize(gposText).x;
 		ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 2 - textWidth / 2);
 		ImGui::Text(gposText);
@@ -514,7 +514,7 @@ namespace GUI
 
 		static constexpr float LEEWAY = 3;
 		ImGui::SetNextWindowPos({ mousePosOnShowWindow.x - LEEWAY, mousePosOnShowWindow.y - LEEWAY });
-		ImGui::Begin("New", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
+		ImGui::Begin("New", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
 
 		if (ImGui::Button("Cube"))
 		{

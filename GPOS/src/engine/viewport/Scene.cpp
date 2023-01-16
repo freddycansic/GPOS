@@ -337,17 +337,17 @@ namespace Scene
 	constexpr size_t MAX_HISTORY = 10;
 	void markNewAction()
 	{
-		TODO FIX
+		// TODO FIX
 		Util::clearStack(s_RedoScenes);
 
 		if (s_UndoScenes.size() >= MAX_HISTORY)
 		{
-			std::cout << "Shifted undo list down" << std::endl;
+			// std::cout << "Shifted undo list down" << std::endl;
 			Util::removeStackIndex(s_UndoScenes, 0);
 		}
 
 		s_UndoScenes.emplace(s_Models, s_SelectedModels);
-		std::cout << "Added scene to undo : " << s_UndoScenes.size() << std::endl;
+		// std::cout << "Added scene to undo : " << s_UndoScenes.size() << std::endl;
 	}
 
 	void undo()
@@ -362,8 +362,8 @@ namespace Scene
 		s_SelectedModels = s_UndoScenes.top().selectedModels;
 		s_UndoScenes.pop();
 
-		std::cout << "Undid to previous state : " << s_UndoScenes.size() << std::endl;
-		if (!s_SelectedModels.empty()) std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
+		// std::cout << "Undid to previous state : " << s_UndoScenes.size() << std::endl;
+		// if (!s_SelectedModels.empty()) std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 	}
 	
 	void redo()
