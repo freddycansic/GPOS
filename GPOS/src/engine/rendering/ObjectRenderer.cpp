@@ -188,7 +188,7 @@ void renderBatch(const std::pair<size_t, RenderingFlag>& handleAndFlags, const B
 {
 	const auto& [handle, flags] = handleAndFlags;
 
-	auto f_BatchIndices = std::async(getCompiledIndexVector, std::ref(batchData));
+	auto f_BatchIndices = std::async(std::launch::async, getCompiledIndexVector, std::ref(batchData));
 
 	// concurrently calculate mesh positions and normals
 	std::thread t_RecalculateAllBatchPositions(
