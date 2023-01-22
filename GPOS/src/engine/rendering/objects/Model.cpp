@@ -53,25 +53,6 @@ void Model::loadModelMeshes(const std::string& path)
 		const auto p_MeshPositions = reinterpret_cast<Vec3*>(assimpMesh->mVertices);
 		std::vector<Vec3> meshPositions(p_MeshPositions, p_MeshPositions + assimpMesh->mNumVertices);
 
-		// center model
-		Vec3 min, max;
-		for (const auto& pos : meshPositions)
-		{
-			min.x = std::min(min.x, pos.x);
-			min.y = std::min(min.y, pos.y);
-			min.z = std::min(min.z, pos.z);
-
-			max.x = std::max(max.x, pos.x);
-			max.y = std::max(max.y, pos.y);
-			max.z = std::max(max.z, pos.z);
-		}
-
-		const auto& center = (max + min) / 2;
-		for (auto& pos : meshPositions)
-		{
-			pos -= center;
-		}
-
 		// get normals
 		const auto p_MeshNormals = reinterpret_cast<Vec3*>(assimpMesh->mNormals);
 		const std::vector<Vec3> meshNormals(p_MeshNormals, p_MeshNormals + assimpMesh->mNumVertices);
