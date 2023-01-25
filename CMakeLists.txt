@@ -29,6 +29,7 @@ add_subdirectory(GPOS)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
 add_subdirectory(libraries/nativefiledialog)
+add_subdirectory(libraries/assimp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
 	${CMAKE_CURRENT_SOURCE_DIR}/libraries/glfw/include
