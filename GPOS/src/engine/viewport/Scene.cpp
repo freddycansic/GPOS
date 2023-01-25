@@ -484,7 +484,7 @@ namespace Scene
 		{
 			if (!s_SelectedModels.empty()) 
 			{
-				std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
+				// std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 				markNewAction();
 			}
 
@@ -495,7 +495,7 @@ namespace Scene
 			
 			}
 			
-			std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
+			// std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 
 			s_UsingGizmo = false;
 

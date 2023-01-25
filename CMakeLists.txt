@@ -25,6 +25,15 @@ if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.12.25835)
     set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std:c++latest")
  endif()
 
+option(GLFW_BUILD_EXAMPLES OFF)
+option(GLFW_BUILD_TESTS OFF)
+option(GLFW_BUILD_DOCS OFF)
+
+option(ASSIMP_BUILD_TESTS OFF)
+option(ASSIMP_INSTALL_PDB OFF)
+option(ASSIMP_BUILD_ALL_EXPORTERS_BY_DEFAULT OFF)
+option(ASSIMP_INSTALL OFF)
+
 add_subdirectory(GPOS)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/glew)
