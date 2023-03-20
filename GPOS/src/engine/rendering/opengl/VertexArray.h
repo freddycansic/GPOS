@@ -21,6 +21,4 @@ public:
 	void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout) const;
 	void bind() const;
 	void unbind() const;
-
 };
-

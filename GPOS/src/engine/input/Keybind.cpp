@@ -38,9 +38,6 @@ bool Keybind::isJustReleased() const
 		}
 	}
 
-	// TODO make less ugly
-	// make sure any other keys arent being pressed
-	// iterate over all keys
 	for (size_t i = 0; i < Key::states.size(); ++i)
 	{
 		const auto& state = Key::states[i];
@@ -129,7 +126,6 @@ std::string Keybind::toString() const
 	}
 	result += std::string(m_Buttons.at(m_Buttons.size() - 1)->name);
 
-	// i love c++
 	sp_StringRepresentations->operator[](*this) = result;
 
 	return result;

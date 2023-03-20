@@ -3,7 +3,6 @@
 #include <GL/glew.h>
 #include <vector>
 
-// each layout component contains these 3
 struct VertexBufferElement {
 	GLenum type;
 	unsigned int count;
@@ -28,4 +27,3 @@ public:
 	[[nodiscard]] const std::vector<VertexBufferElement>& getElements() const { return m_Elements; }
 	[[nodiscard]] size_t getStride() const { return m_Stride; }
 };
-

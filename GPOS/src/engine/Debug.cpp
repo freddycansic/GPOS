@@ -41,7 +41,7 @@ const char* sourceEnumToString(GLenum source) {
 	case GL_DEBUG_SOURCE_APPLICATION:
 		return "APPLICATION";
 
-		// GL_DEBUG_SOURCE_OTHER
+	// GL_DEBUG_SOURCE_OTHER
 	default:
 		return "UNKNOWN SOURCE";
 	}
@@ -73,7 +73,7 @@ const char* typeEnumToString(GLenum type) {
 	case GL_DEBUG_TYPE_POP_GROUP:
 		return "POP GROUP";
 
-		// GL_DEBUG_TYPE_OTHER
+	// GL_DEBUG_TYPE_OTHER
 	default:
 		return "UNKNOWN TYPE";
 	}

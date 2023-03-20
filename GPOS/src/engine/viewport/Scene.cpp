@@ -342,16 +342,14 @@ namespace Scene
 
 		if (s_UndoScenes.size() >= MAX_HISTORY)
 		{
-			// std::cout << "Shifted undo list down" << std::endl;
 			Util::removeStackIndex(s_UndoScenes, 0);
 		}
 
 		s_UndoScenes.emplace(s_Models, s_SelectedModels);
-		// std::cout << "Added scene to undo : " << s_UndoScenes.size() << std::endl;
 	}
 
 	void undo()
-	{	// TODO thread big operations
+	{
 		if (s_UndoScenes.empty()) return;
 
 		// save current state if we want to go back
@@ -361,9 +359,6 @@ namespace Scene
 		s_Models = s_UndoScenes.top().models;
 		s_SelectedModels = s_UndoScenes.top().selectedModels;
 		s_UndoScenes.pop();
-
-		// std::cout << "Undid to previous state : " << s_UndoScenes.size() << std::endl;
-		// if (!s_SelectedModels.empty()) std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 	}
 	
 	void redo()
@@ -417,7 +412,7 @@ namespace Scene
 			}
 		}
 
-		s_SelectedModels.clear(); // dont call clearSelection cause pointers will be invalid
+		s_SelectedModels.clear(); // dont call clearSelection() cause pointers will be invalid
 
 		s_Models = std::move(newModels);
 	}
@@ -454,7 +449,7 @@ namespace Scene
 	}
 
 	void handleMouseClicks()
-	{ // TODO make this readable
+	{
 		static bool s_UsingGizmo = false;
 		static Vec2 s_FirstMousePos;
 		static std::optional<Vec3> s_IntersectingAxis;
@@ -484,18 +479,13 @@ namespace Scene
 		{
 			if (!s_SelectedModels.empty()) 
 			{
-				// std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 				markNewAction();
 			}
 
 			for (const auto& model : s_SelectedModels)
 			{
 				model->applyOffset();
-			
-			
 			}
-			
-			// std::cout << s_SelectedModels.at(0)->getTransform() << std::endl;
 
 			s_UsingGizmo = false;
 

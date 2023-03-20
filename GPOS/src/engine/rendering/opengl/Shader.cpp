@@ -40,50 +40,6 @@ int Shader::getUniformLocation(const std::string& name)
 	return m_Uniforms[name];
 }
 
-//void Shader::findAndAddUniforms(const std::string& filepath) {
-//	
-//	// tokenize source
-//	std::vector<std::string> tokens;
-//	std::stringstream ss(filepath);
-//
-//	// create vector of all tokens
-//	std::string token;
-//	while (ss >> token) {
-//		tokens.push_back(token);
-//	}
-//
-//	// iterate over tokens
-//	for (unsigned int i = 0; i < tokens.size(); i++) {
-//		const auto& token = tokens[i];
-//
-//		// if we find a uniform
-//		if (token == "uniform") {
-//			// then we know the identifier of that uniform will be 2 tokens after it
-//			std::string uniformName = tokens[i + 2];
-//
-//			// remove array notation e.g "[4]"
-//			const size_t startBracketIndex = uniformName.find('[');
-//			if (startBracketIndex != std::string::npos) {
-//				uniformName = uniformName.substr(0, startBracketIndex);
-//			}
-//
-//			// remove semi colon at end
-//			if (uniformName.at(uniformName.size() - 1) == ';')
-//				uniformName = uniformName.substr(0, uniformName.size() - 1);
-//			
-//			const int uniformLocation = getUniformLocation(uniformName);
-//
-//			if (uniformLocation == -1) 
-//			{
-//				std::cout << "Uniform " << uniformName << " not in use." << std::endl;
-//			}
-//
-//			// insert the uniform into a map
-//			m_Uniforms[uniformName] = uniformLocation;
-//		}
-//	}
-//}
-
 void Shader::setUniform3f(const std::string& name, float v1, float v2, float v3)
 {
 	GLAPI(glUniform3f(getUniformLocation(name), v1, v2, v3));
@@ -116,13 +72,8 @@ void Shader::setUniform1i(const std::string& name, int value)
 
 void Shader::setUniform1ui64(const std::string& name, uint64_t value)
 {
-
-	//if (Debug::supportedExtensions.at("GL_ARB_gpu_shader_int64")) {
-	//	GLAPI(glUniform1ui64ARB(m_Uniforms.at(name), value));
-	//} else {
-		// if we cant send 64 bits in one go send them in 2 halves by bit shifting
-		GLAPI(glUniform2ui(getUniformLocation(name), static_cast<GLuint>(value), static_cast<GLuint>(value >> 32)));
-	//}
+	// send 64 bit int as 2 32 bit ints by bit shifting
+	GLAPI(glUniform2ui(getUniformLocation(name), static_cast<GLuint>(value), static_cast<GLuint>(value >> 32)));
 }
 
 void Shader::setUniform1iv(const std::string& name, size_t count, const int* value)
@@ -132,21 +83,16 @@ void Shader::setUniform1iv(const std::string& name, size_t count, const int* val
 
 unsigned int compileShader(unsigned int type, const std::string& source)
 {
-	// generate shader
 	unsigned int id = glCreateShader(type);
 
-	// link shader with its source code
 	const char* charSource = source.c_str();
 	GLAPI(glShaderSource(id, 1, &charSource, nullptr));
 
-	// compile shader with source code into executable program to be run on gpu
 	GLAPI(glCompileShader(id));
 
-	// store value of GL_COMPILE_STATUS in result
 	int result;
 	GLAPI(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
 
-	// if it failed
 	if (result == GL_FALSE) 
 	{ 
 		std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader." << std::endl;
@@ -169,19 +115,14 @@ unsigned int compileShader(unsigned int type, const std::string& source)
 
 unsigned int createProgram(const std::string& vertexSource, const std::string& fragmentSource)
 {
-
-	// generate program
 	unsigned int program = glCreateProgram());
 
-	// generate shaders
 	unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
 	unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
-	// attach shaders to program
 	GLAPI(glAttachShader(program, vertexShader));
 	GLAPI(glAttachShader(program, fragmentShader));
 
-	// link program + error check
 	GLAPI(glLinkProgram(program));
 
 	int result;
@@ -201,7 +142,6 @@ unsigned int createProgram(const std::string& vertexSource, const std::string& f
 		return 0;
 	}
 
-	// validate program + error check
 	GLAPI(glValidateProgram(program));
 
 	GLAPI(glGetProgramiv(program, GL_VALIDATE_STATUS, &result));
@@ -220,7 +160,6 @@ unsigned int createProgram(const std::string& vertexSource, const std::string& f
 		return 0;
 	}
 
-	// delete shaders as they are no longer needed as they are contained in the program
 	GLAPI(glDeleteShader(vertexShader));
 	GLAPI(glDeleteShader(fragmentShader));
 
@@ -233,9 +172,6 @@ Shader::Shader(const std::string& vertexShaderSourceDir, const std::string& frag
 	const auto fragmentShaderSource = getFileContents(fragmentShaderSourceDir);
 
 	m_ID = createProgram(vertexShaderSource, fragmentShaderSource);
-
-	//findAndAddUniforms(vertexShaderSource);
-	//findAndAddUniforms(fragmentShaderSource);
 }
 
 void Shader::bind() const

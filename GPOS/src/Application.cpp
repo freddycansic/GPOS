@@ -51,8 +51,6 @@ void Application::render()
 
 void Application::imGuiRender()
 {
-	// ImGui::ShowDemoWindow();
-
 	GUI::renderLauncher();
 	GUI::renderMenuBar();
 	GUI::renderNewObjectMenu();
@@ -60,9 +58,4 @@ void Application::imGuiRender()
 	GUI::renderStats();
 	GUI::renderSceneViewer();
 	GUI::renderProperties();
-
-	//ImGui::SetNextWindowPos(ImVec2(static_cast<float>(Window::width()) - 400.0f, 150.0f));
-	//ImGui::Begin("Instructions", reinterpret_cast<bool*>(1));
-	//ImGui::Text("Hold middle mouse = orbit camera\nScroll = zoom in / out\nShift + A = new object menu\nLeft click = select object\nLeft ctrl + left click = select multiple objects\nF = set last selected object as orbit point\nG = select move tool\nS = select scale tool\nR = select rotate tool");
-	//ImGui::End();
 }

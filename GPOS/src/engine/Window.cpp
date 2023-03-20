@@ -33,9 +33,9 @@ namespace Window
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		// GLFW_OPENGL_CORE_PROFILE = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, config.resizable ? GLFW_TRUE : GLFW_FALSE);
-		// GLFW_OPENGL_CORE_PROFILE = no default vao, GLFW_OPENGL_COMPAT_PROFILE = there is a default vao
 
 		const GLFWvidmode* vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		s_DisplayWidth = vidmode->width;
@@ -55,13 +55,10 @@ namespace Window
 			throw std::runtime_error("Failed to create window!");
 		}
 
-		// set opengl rendering context
 		glfwMakeContextCurrent(m_ID);
 
-		// vsync
 		glfwSwapInterval(config.vsync);
 
-		// initialise GLEW, must be called after there is a opengl rendering context
 		if (glewInit() != GLEW_OK) 
 		{
 			throw std::runtime_error("GLEW initialisation failed!");
@@ -69,12 +66,10 @@ namespace Window
 
 		GLAPI(glViewport(0, 0, m_Width, m_Height));
 
-		// TODO need to move this
 		GLAPI(glEnable(GL_DEBUG_OUTPUT));
 		GLAPI(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
 		glEnable(GL_MULTISAMPLE);
 
-		//GLAPI(glEnable(GL_DEPTH_TEST));
 		GLAPI(glDebugMessageCallback(Debug::GLDebugMessageCallback, nullptr));
 
 		glfwSetCursorPosCallback(m_ID, Input::Callbacks::mouseCallback);
@@ -102,11 +97,9 @@ namespace Window
 
 	int shouldClose() { return glfwWindowShouldClose(m_ID); }
 
-	// probably some way I can simplify this logic
 	bool wasCloseCalled = false;
 	bool closeCalled() { return wasCloseCalled; }
 	void close() { wasCloseCalled = true; }
-	//
 
 	bool m_Capturing = true;
 

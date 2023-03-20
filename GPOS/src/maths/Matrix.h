@@ -83,14 +83,12 @@ public:
 		{
 			for (size_t row = 0; row < rows; ++row) {
 			const auto thisRow = _mm_load_ps(reinterpret_cast<const float*>(&m_Data[row]));
-				// for every column in matrix B
 				for (size_t otherCol = 0; otherCol < otherCols; ++otherCol) {
 
 					std::array<T, 4> otherColumnArray = { other[0][otherCol], other[1][otherCol], other[2][otherCol], other[3][otherCol] };
 
 					const auto otherColumn = _mm_load_ps(reinterpret_cast<const float*>(otherColumnArray.data()));
 
-					// TODO add checking for SSE4.1 to see if i can use dp_ps
 					const auto res = _mm_dp_ps(thisRow, otherColumn, 0xFF);
 
 					result[row][otherCol] = _mm_cvtss_f32(res);
@@ -152,30 +150,13 @@ public:
 		if constexpr (rows == 1) return m_Data[0][0];
 		if constexpr (rows == 2) return m_Data[0][0] * m_Data[1][1] - m_Data[1][0] * m_Data[0][1];
 
-		//if constexpr (rows == 3)
-		//{
-		//	std::array<T, 8> f1 = { m_Data[1][1], m_Data[1][2], m_Data[1][0], m_Data[1][2], m_Data[1][0], m_Data[1][1], 0, 0 };
-		//	std::array<T, 8> f2 = { m_Data[2][1], m_Data[2][0], m_Data[2][2], m_Data[2][0], m_Data[2][1], m_Data[2][0], 0, 0 };
-
-		//	const auto multiply1 = _mm256_load_ps(reinterpret_cast<const float*>(f1.data()));
-		//	const auto multiply2 = _mm256_load_ps(reinterpret_cast<const float*>(f2.data()));
-
-		//	const auto multiplyRes = _mm256_mul_ps(multiply1, multiply2);
-
-		//	// now contains answers
-		//	_mm256_store_ps(f1.data(), multiplyRes);
-
-		//	return (f1[0] - f1[1]) - (f1[2] - f1[3]) + (f1[4] - f1[5]);
-		//}
-
 		T result = static_cast<T>(0);
 
 		// for each column make a minor
 		for (size_t col = 0; col < columns; ++col)
 		{
-			if constexpr (rows > 1) // TODO should compile without this because of the guard clauses at the start of func i think
+			if constexpr (rows > 1)
 			{
-				// generate minor
 				auto minor = this->minor(0, col);
 
 				result += (col % 2 == 0 ? 1 : -1) * m_Data[0][col] * minor.determinant();
@@ -310,7 +291,7 @@ public:
 
 				minor[minorRow][minorCol++] = m_Data[majorRow][majorCol];
 
-				if (minorCol == columns - 1) // TODO is there a better way to do this?
+				if (minorCol == columns - 1)
 				{
 					minorCol = 0;
 					++minorRow;
@@ -380,17 +361,14 @@ public:
 		return &m_Data[0][0];
 	}
 
-	// TODO make all this stuff private
 	template<size_t newRows, size_t newCols>
 	[[nodiscard]] Mat<newRows, newCols> setMatSize() const
 	{
 		Mat<newRows, newCols> newMat;
 
-		//for (size_t row = 0; row < std::min(newRows, rows); ++row)
-		for (size_t row = 0; row < newRows > rows ? rows : newRows; ++row)
+		for (size_t row = 0; row < std::min(newRows, rows); ++row)
 		{
-			//for (size_t col = 0; col < std::min(newCols, columns); ++col)
-			for (size_t col = 0; col < newCols > columns ? columns : newCols; ++col)
+			for (size_t col = 0; col < std::min(newCols, columns); ++col)
 			{
 				newMat[row][col] = m_Data[row][col];
 			}

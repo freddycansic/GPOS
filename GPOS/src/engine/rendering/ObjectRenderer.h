@@ -23,24 +23,12 @@ namespace Flags
 
 namespace ObjectRenderer
 {
-	/**
-	 * Initialises batch rendering, must be called once before the first begin() call.
-	 * @brief Initialises batch rendering.
-	**/
 	void init();
 
-	/**
-	 * Start batch rendering. Must be called after init() has been called once.
-	 * @brief Starts batch rendering.
-	**/
 	void begin();
 	
 	void draw(Object& object, RenderingFlag flags = 0);
 	void draw(const Light& light);
 
-	/**
-	 * Ends the batch and draws to the screen.
-	 * @brief Ends the batch.
-	*/
 	void end();
 };

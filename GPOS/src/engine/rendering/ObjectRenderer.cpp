@@ -61,7 +61,6 @@ namespace ObjectRenderer
 {
 	void init()
 	{
-		// TODO FIX ME DDDD: = do move semantics for opengl Shapes
 		s_Shader = std::make_unique<Shader>(Files::internal("shaders/default.vert"), Files::internal("shaders/default.frag"));
 		s_Shader->bind();
 
@@ -190,9 +189,7 @@ void renderBatch(const std::pair<size_t, RenderingFlag>& handleAndFlags, const B
 
 	auto f_BatchIndices = std::async(std::launch::async, getCompiledIndexVector, std::ref(batchData));
 
-	// concurrently calculate mesh positions and normals
-	std::thread t_RecalculateAllBatchPositions(
-		recalculateAllBatchPositions, std::ref(batchData));
+	std::thread t_RecalculateAllBatchPositions(recalculateAllBatchPositions, std::ref(batchData));
 
 	for (const auto& object : batchData.objects)
 	{
@@ -266,7 +263,6 @@ std::vector<GLuint> getCompiledIndexVector(const BatchData& batchData)
 	{
 		auto& mesh = object->getMesh();
 
-		// indices
 		const auto currentMaxShapeIndex = mesh.getMaxInt();
 
 		if (batchIndices.empty()) {

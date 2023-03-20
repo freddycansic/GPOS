@@ -139,8 +139,6 @@ namespace Gizmo
 
 	std::optional<Vec3> getHandleIntersectionPoint(const Ray& ray)
 	{
-		// TODO make more dry
-
 		std::optional<Vec3> poi;
 		const auto& handles = getHandles();
 

@@ -132,7 +132,7 @@ namespace GUI
 		clickingInWindow = false;
 
 		const auto& window = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow | ImGuiHoveredFlags_RootAndChildWindows);
-		const auto& item = ImGui::IsAnyItemHovered(); // TODO fix mouse hovering colour picker window not working
+		const auto& item = ImGui::IsAnyItemHovered();
 		const auto& any = window || item;
 
 		if (any && ImGui::IsMouseDown(ImGuiMouseButton_Left))
@@ -386,7 +386,6 @@ namespace GUI
 
 		static float windowHeight = 0.0f;
 
-		// gross workaround but idk
 		if (static size_t numFramesVisible = 0; numFramesVisible <= 2)
 		{
 			// move out of frame until window height is calculated
@@ -560,8 +559,8 @@ namespace GUI
 
 		const auto [wx, wy] = ImGui::GetWindowPos();
 		const auto [w, h] = ImGui::GetWindowSize();
-		const auto [cx, cy] = Input::getMousePos(); // idk why imgui cursor pos doesnt update itself
-
+		const auto [cx, cy] = Input::getMousePos();
+		
 		if (!(cx > wx && cy > wy && cx < wx + w && cy < wy + h))
 		{
 			s_WindowsVisible.at(WindowType::NEW_OBJECT_MENU) = false;

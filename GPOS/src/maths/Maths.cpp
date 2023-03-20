@@ -50,14 +50,6 @@ namespace Maths {
 			{ 0, 0, 1, -position.z },
 			{ 0, 0, 0, 1 }
 		};
-
-		//return
-		//{
-		//	{camRight.x, camRight.y, camRight.z, -position.x*camRight.x-camRight.y*position.y-camRight.z*position.z},
-		//	{camUp.x, camUp.y, camUp.z, -position.z*camUp.z-camUp.x*position.x-camUp.y*position.x-camUp.y*position.y},
-		//	{camDir.x, camDir.y, camDir.z, -position.z*camDir.z-position.x*camDir.x-position.y*camDir.y},
-		//	{0, 0, 0, 1}
-		//};
 	}
 
 	Mat4x4 perspective(float fovRad, float aspect, float near, float far) {

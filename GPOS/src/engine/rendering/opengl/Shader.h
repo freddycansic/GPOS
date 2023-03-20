@@ -17,7 +17,6 @@ private:
 	std::unordered_map<std::string, int> m_Uniforms;
 
 	int getUniformLocation(const std::string& name);
-	//void findAndAddUniforms(const std::string& filepath);
 
 public:
 	Shader(const std::string& vertexShaderSourceDir, const std::string& fragmentShaderSourceDir);
@@ -38,4 +37,3 @@ public:
 	void bind() const;
 	void unbind() const;
 };
-

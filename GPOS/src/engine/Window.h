@@ -10,7 +10,7 @@ struct WindowConfig
 	int width = 640;
 	int height = 400;
 	bool maximised = true;
-	bool fullscreen = false; // TODO make fullscreen a functionality
+	bool fullscreen = false;
 	bool vsync = true;
 	bool resizable = true;
 	unsigned int samples = 4;
@@ -33,7 +33,6 @@ namespace Window
 	bool closeCalled();
 	void close();
 	
-	// time
 	[[nodiscard]] float currentTime();
 	[[nodiscard]] float deltatime();
 

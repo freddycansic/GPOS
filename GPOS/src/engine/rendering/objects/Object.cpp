@@ -15,10 +15,6 @@ Object::Object(const Material& material)
 
 Mat4x4 Object::getTransformMatrix() const
 {
-	//auto m_Transform = Maths::translate(Mat4x4::identity(), m_Transform.tra.x, m_Transform.tra.y, m_Transform.tra.z);
-	//m_Transform = Maths::rotate(m_Transform, m_Transform.rot.x, m_Transform.rot.y, m_Transform.rot.z);
-	//m_Transform = Maths::scale(m_Transform, m_Transform.sca.x, m_Transform.sca.y, m_Transform.sca.z);
-
 	const auto& combined = getCombinedTransformations();
 
 	return
@@ -243,12 +239,8 @@ Vec3 Object::getAvgPosition() const
 {
 	if (m_AvgPos && !moved) return *m_AvgPos;
 
-	// TODO THIS WORKS
 	const auto& AABB = this->getAABB();
 	const auto& AABBPositions = AABB.positions;
-
-	// TODO THIS DOESNT ON HOME PC
-	//const auto& AABBPositions = this->getAABB().positions;
 
 	const auto& avgPos = std::accumulate(AABBPositions.begin(), AABBPositions.end(), Vec3(0, 0, 0)) / static_cast<float>(AABBPositions.size());
 
