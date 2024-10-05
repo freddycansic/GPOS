@@ -1,6 +1,6 @@
 Instructions are shown in a GUI window in the program.
 
-Builds with Visual Studio 2022 and G++10.
+Builds with Visual Studio 2022.
 
 ---
 
